@@ -16,6 +16,17 @@ ghost/                            quiz script/styles for the Ghost site
 scripts/                          prepare · stills · render · post · publish
 ```
 
+## Lesson Studio (on the Mac)
+
+Double-click **Lesson Studio.command** (or run `npm start`). Your browser
+opens a page where you edit the script, record each section (or the whole
+lesson in one take), make and watch the video, and approve it, which saves
+it to Ghost as a draft. Leave the Terminal window open while you work.
+
+First time on a Mac: `brew install node ffmpeg`, then `npm install`. For
+Ghost, create `.env` at the top of the project with `COURSES_GHOST_URL=…`
+and `COURSES_GHOST_ADMIN_API_KEY=…` (see below for where the key comes from).
+
 ## Publishing from chat (the easy way)
 
 Shalone works in a Claude Code session on this repo and says what she wants

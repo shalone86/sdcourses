@@ -5,6 +5,10 @@ import YAML from 'yaml';
 
 export const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 
+// Local secrets (Ghost key) live in .env at the repo root on the Mac; the
+// cloud sets them in the environment instead. Real environment values win.
+if (fs.existsSync(path.join(ROOT, '.env'))) process.loadEnvFile(path.join(ROOT, '.env'));
+
 /** Resolve "what-is-the-pope/01-what-is-the-pope" (or a path to it) to a lesson dir. */
 export function lessonDir(arg) {
   if (!arg) throw new Error('Usage: npm run <script> -- <course>/<lesson-folder>   e.g. what-is-the-pope/01-what-is-the-pope');

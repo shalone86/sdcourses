@@ -69,22 +69,31 @@ const {lesson, segments} = loadLesson(dir);
 const ids = new Set(lesson.sources.map((x) => x.id));
 const cacheDir = path.join(dir, 'sources');
 const texts = [];
+const unreachable = [];
 for (const src of lesson.sources) {
   if (!src.id || src.reference) continue;
   try {
     texts.push({src, text: norm(await fetchSource(src, cacheDir))});
   } catch (e) {
+    unreachable.push(src);
     console.warn(`  ! could not fetch ${src.label} (${e.message}); quotes from it can't be checked`);
   }
 }
 
+// A quote missing from the sources we have may still be in one we couldn't
+// fetch: that's "unchecked", not wrong. Both block publishing.
 let bad = 0;
+let unchecked = 0;
 for (const {quote, where, source} of collectQuotes(segments)) {
   if (source && !ids.has(source)) { bad++; console.log(`  ✗ ${where}: source "${source}" isn't in the sources list`); continue; }
   const pool = source ? texts.filter((t) => t.src.id === source) : texts;
   const hit = pool.find((t) => t.text.includes(norm(quote)));
+  const missing = source ? unreachable.filter((s) => s.id === source) : unreachable;
   if (hit) console.log(`  ✓ "${quote}"  [${hit.src.label}]`);
+  else if (missing.length) { unchecked++; console.log(`  ? "${quote}"  (${where}): can't be checked until ${missing.map((s) => s.label).join(' / ')} can be fetched`); }
   else { bad++; console.log(`  ✗ "${quote}"  (${where}): not found word for word in ${source ? `"${source}"` : 'any primary source'}`); }
 }
-console.log(bad ? `\n${bad} quotation(s) need fixing or a source.` : '\nAll quotations match their sources.');
-process.exit(bad ? 1 : 0);
+if (bad) console.log(`\n${bad} quotation(s) need fixing or a source.`);
+if (unchecked) console.log(`${bad ? '' : '\n'}${unchecked} quotation(s) couldn't be checked because a source site didn't answer; try again later.`);
+if (!bad && !unchecked) console.log('\nAll quotations match their sources.');
+process.exit(bad || unchecked ? 1 : 0);

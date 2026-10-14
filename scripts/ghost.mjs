@@ -10,7 +10,7 @@ export function ghost() {
   const GHOST_URL = process.env.COURSES_GHOST_URL;
   const GHOST_ADMIN_API_KEY = process.env.COURSES_GHOST_ADMIN_API_KEY;
   if (!GHOST_URL || !GHOST_ADMIN_API_KEY) {
-    throw new Error('COURSES_GHOST_URL and COURSES_GHOST_ADMIN_API_KEY are not set. Add them in the cloud environment settings (see README → Publishing from chat).');
+    throw new Error('COURSES_GHOST_URL and COURSES_GHOST_ADMIN_API_KEY are not set. On the Mac, put them in the .env file at the top of the project; in the cloud, in the environment settings (see README → Publishing from chat).');
   }
   const site = GHOST_URL.replace(/\/$/, '');
   const api = `${site}/ghost/api/admin`;

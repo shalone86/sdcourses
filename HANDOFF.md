@@ -1,12 +1,11 @@
-# Handoff: moving to a local session (Mac), 2026-10-14
+# Handoff: state of play, 2026-10-14 (local session on Shalone's Mac)
 
 Read CLAUDE.md first; it has the rules. This file is the state of play and
 the next job. Shalone wants the whole workflow in one place; if it isn't
 all-in-one she won't keep at it. Keep messages short and plain.
 
-## Where things stand
+## Decisions already made (don't relitigate)
 
-**Decisions already made (don't relitigate):**
 - Lessons are quote-anchored. Claude finds 3–5 exact quotations (Scripture
   NABRE, Catechism, Catholic Encyclopedia) and builds the script; Shalone
   writes the intro/outro, edits anything, and approves. Wikipedia is
@@ -20,72 +19,44 @@ all-in-one she won't keep at it. Keep messages short and plain.
 - Recording: she prefers natural reads (rehearse once, keep small slips,
   redo only misread quotations or wrong facts).
 
-**Lesson 1** (`courses/what-is-the-pope/01-what-is-the-pope/`): script is
-complete (her intro and outro, 5 points, 653 words, all quotations pass
-`npm run check`). `status: draft`. **Not recorded yet.** The course music is
-set in `course.yml`. Preview of the silent draft (cloud artifact):
-https://claude.ai/artifact/DMBwvzPuYhK9xncCyQRx7X
+## Where things stand
 
-**Ghost:** not connected yet. The courses site is a *different* Ghost
-install from her other site. Locally, put the credentials in a `.env` file
-at the repo root (it must stay gitignored; add loading for it):
+**Mac setup: done.** Homebrew, Node 24, ffmpeg and `npm install`. A silent
+test render of lesson 1 took about 3 minutes (2 min drawing, 45 s
+compressing) and came out at 9.7 MB for 4:48.
+
+**Local Lesson Studio: built.** `npm start` / `Lesson Studio.command` (see
+CLAUDE.md → Lesson Studio). Tested: editing and saving (lesson.yml comes back
+byte-identical after edit and undo), per-slide and one-take recording with a
+synthetic tone, render with progress, approve → publish (stops cleanly at
+"Ghost isn't connected"), and approval resetting when the script changes.
+**Not yet tested with a real microphone**; do that with her first (the
+Microphone panel has a level meter and a device picker).
+
+**Lesson 1** (`courses/what-is-the-pope/01-what-is-the-pope/`): script
+complete (653 words), `npm run check` passes, `status: draft`. **Not
+recorded yet.**
+
+**Quote check note:** bible.usccb.org sometimes answers scripts with a
+"Checking connection" bot page (HTTP 403). Don't try to get around it. The
+check now reports those quotes as "couldn't be checked" (still blocks
+publishing) instead of wrong; it usually works again a little later. All of
+lesson 1's sources are cached in `sources/` on this Mac now.
+
+**Ghost:** not connected yet. Create `.env` at the repo root with
 `COURSES_GHOST_URL=…` and `COURSES_GHOST_ADMIN_API_KEY=…` (Ghost Admin →
 Settings → Integrations → Add custom integration). She types the key into
 the file herself; never ask her to paste it into chat.
 
-**Still to do after the studio:** record + publish lesson 1; her rewrite of
-`pages/how-these-lessons-are-made.md` (needs a contact line); the Ghost
-theme redesign (course = page + tag, lesson = post with `#lesson`, quiz and
-progress built into the theme instead of Code Injection). Her current theme
-is a modified "Novel" theme; get a copy from Ghost Admin → Settings →
-Design → Change theme → Download when that work starts.
+## Next
 
-**Superseded:** the cloud "Lesson Studio" artifact
-(https://claude.ai/artifact/6psc9GJ9d1VuHeS8RW85vG, `studio/studio.html`)
-could edit text but couldn't record (artifacts can't use the microphone).
-The local app below replaces it; reuse its look and its edit logic.
-
-## Next job: the local Lesson Studio app
-
-Goal: one browser page on her Mac where she does steps 3–5 of her
-workflow: edit the script, record, watch the video, send it to Ghost.
-Browsers allow the microphone on `http://localhost`, which is why this has
-to run locally.
-
-**Setup first** (check, then install what's missing, telling her what each
-is for in one line): Homebrew, `brew install node ffmpeg`, `npm install`.
-Don't set `REMOTION_BROWSER` on the Mac; Remotion downloads its own Chrome
-on the first render.
-
-**Build** `npm start` → a small Node server (no framework needed) on
-`http://localhost:5178` that opens her default browser. Same visual identity
-as the videos (see `studio/studio.html` styles and `video/theme.ts`).
-
-- **Lesson picker** (from `courses/*/*/lesson.yml`).
-- **Slides**, one per section (intro, points, outro), like a teleprompter.
-  Intro, outro, each point's lead-in and explanation are editable in place;
-  quotations are locked (show the citation, "read exactly"). Saving writes
-  to `lesson.yml` with the splice logic in `scripts/studio.mjs` (only the
-  changed text, comments kept), then runs the quote check and shows the
-  result.
-- **Record per slide**: `MediaRecorder`, big record/stop button, play back,
-  re-record. Save to `audio/<section>.webm`, then convert to WAV with ffmpeg.
-  Show which sections have audio.
-- **One-take mode**: record continuously and tap Next between sections;
-  store the tap times and cut at those marks (more exact than
-  `scripts/split-audio.mjs`, which stays as the fallback for uploaded files).
-- **"Ask Claude" box** that appends to a requests file Claude reads (she
-  can also just say it in chat).
-- **Video tab**: render button (runs `scripts/render.mjs`, shows progress),
-  then plays `dist/…/lesson.mp4` and shows the file size.
-- **Approve and send to Ghost**: an explicit "Approve" button sets
-  `status: reviewed` (that click is her approval), then runs
-  `scripts/publish.mjs` and shows the Ghost draft link. The publish gates
-  stay as they are.
-
-**Done when:** she can open the page, record lesson 1 (per slide or one
-take), watch the rendered video with her voice and the music, and the
-publish step reaches Ghost (or reports clearly that the `.env` key is
-missing). Test the microphone with her before the full recording.
+1. Mic test with her in the studio, then record lesson 1, make the video,
+   she watches it, approves.
+2. Ghost `.env` (her key), then publish lesson 1 as a draft.
+3. Her rewrite of `pages/how-these-lessons-are-made.md` (needs a contact line).
+4. Ghost theme redesign (course = page + tag, lesson = post with `#lesson`,
+   quiz and progress built into the theme instead of Code Injection). Her
+   current theme is a modified "Novel" theme; get a copy from Ghost Admin →
+   Settings → Design → Change theme → Download when that work starts.
 
 Commit and push to `main` as you go.

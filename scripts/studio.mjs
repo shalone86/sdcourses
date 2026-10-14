@@ -40,11 +40,10 @@ function foldedBlock(text, indent, width = 78) {
 
 // Edits are spliced into the original text at each value's exact position,
 // so comments, layout and every untouched line stay byte-for-byte the same.
-function importEdits(arg, editsFile) {
-  const dir = lessonDir(arg);
+// Returns the labels of what changed. Used by the import command and the local studio.
+export function applyEdits(dir, edits) {
   const file = path.join(dir, 'lesson.yml');
   let src = fs.readFileSync(file, 'utf8');
-  const edits = JSON.parse(fs.readFileSync(editsFile, 'utf8'));
   const clean = (t) => String(t ?? '').trim().replace(/\s+/g, ' ');
   const changes = [];
   const apply = (keyPath, value, label) => {
@@ -56,7 +55,11 @@ function importEdits(arg, editsFile) {
     const lineStart = src.lastIndexOf('\n', node.range[0]) + 1;
     const keyIndent = src.slice(lineStart).match(/^ */)[0].length;
     const body = clean(value);
-    const rendered = body ? foldedBlock(body, keyIndent + 2) : '""';
+    // A short value that was on one line stays on one line, if YAML reads it back the same.
+    const keyLen = src.slice(lineStart, node.range[0]).length;
+    const readsBack = (t) => { try { return YAML.parse(`k: ${t}`)?.k === t; } catch { return false; } };
+    const plain = node.type === 'PLAIN' && keyLen + body.length <= 78 && readsBack(body);
+    const rendered = !body ? '""' : plain ? body : foldedBlock(body, keyIndent + 2);
     // A block scalar's range includes its final line break; keep one.
     const old = src.slice(node.range[0], node.range[1]);
     src = src.slice(0, node.range[0]) + rendered + (old.endsWith('\n') ? '\n' : '') + src.slice(node.range[1]);
@@ -72,11 +75,29 @@ function importEdits(arg, editsFile) {
     } else throw new Error(`Unknown section "${e.section}"`);
   }
   YAML.parse(src); // must still be valid
-  fs.writeFileSync(file, src);
+  if (changes.length) fs.writeFileSync(file, src);
+  return changes;
+}
+
+/** Set `status:` in lesson.yml, keeping its comment and every other line. */
+export function setStatus(dir, status) {
+  const file = path.join(dir, 'lesson.yml');
+  const src = fs.readFileSync(file, 'utf8');
+  const node = YAML.parseDocument(src).get('status', true);
+  if (!node?.range) throw new Error(`No status: line in ${file}`);
+  if (node.value === status) return false;
+  fs.writeFileSync(file, src.slice(0, node.range[0]) + status + src.slice(node.range[1]));
+  return true;
+}
+
+function importEdits(arg, editsFile) {
+  const changes = applyEdits(lessonDir(arg), JSON.parse(fs.readFileSync(editsFile, 'utf8')));
   console.log(changes.length ? `Applied: ${changes.join(', ')}` : 'No changes: the studio matches lesson.yml.');
 }
 
-const [cmd, arg, extra] = process.argv.slice(2);
-if (cmd === 'export') exportLesson(arg);
-else if (cmd === 'import') importEdits(arg, extra);
-else throw new Error('Usage: node scripts/studio.mjs export|import <course>/<lesson> [edits.json]');
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const [cmd, arg, extra] = process.argv.slice(2);
+  if (cmd === 'export') exportLesson(arg);
+  else if (cmd === 'import') importEdits(arg, extra);
+  else throw new Error('Usage: node scripts/studio.mjs export|import <course>/<lesson> [edits.json]');
+}

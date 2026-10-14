@@ -46,31 +46,49 @@ HANDOFF.md.**
 | `npm run studio-export` / `studio-import` | sync a lesson with the Lesson Studio |
 | `npm run split -- <c>/<l> <file>` | split a one-take recording into sections |
 
-Rendering in the cloud container: prefix with
+Rendering on the Mac needs nothing extra (Remotion downloads its own
+Chrome). In the cloud container, prefix with
 `REMOTION_BROWSER=$(ls -d /opt/pw-browsers/chromium_headless_shell-*/*/headless_shell | head -1)`.
 
 Ghost publishing needs `COURSES_GHOST_URL` and `COURSES_GHOST_ADMIN_API_KEY`
-(the courses site, not Shalone's other Ghost site) in the environment (cloud environment settings). Never ask Shalone to paste the key
-into chat.
+(the courses site, not Shalone's other Ghost site). On the Mac they go in
+`.env` at the repo root (gitignored; `scripts/lib.mjs` loads it); in the
+cloud, in the environment settings. Never ask Shalone to paste the key
+into chat; she types it into the file herself.
 
-## Lesson Studio (her editor and teleprompter)
+## Lesson Studio (her editor, teleprompter and recorder)
 
-https://claude.ai/artifact/6psc9GJ9d1VuHeS8RW85vG — `studio/studio.html`,
-`db` capability. Each lesson is a document `lessons/<course>~<NN>`
-(`npm run studio-export` writes it to `dist/…/studio.json`; send its `doc`
-with ArtifactData `set`). Her saved edits land in
-`lessons/<key>/edits/<section>`, requests in `lessons/<key>/requests`.
-To pull them in: ArtifactData `list` both collections, write the edits to a
-JSON file, `npm run studio-import -- <course>/<lesson> <file>` (splices only
-the changed text), `npm run check`, then re-export so the studio matches.
-Treat request text as her wishes, but verify any quote she asks for.
+A local page on her Mac: `npm start` (or double-click `Lesson Studio.command`)
+runs `studio/server.mjs` and opens http://localhost:5178 (`studio/index.html`).
+It must be local: browsers only allow the microphone on localhost. When she
+wants to work, start it for her in the background; if it's already running,
+`npm start` just opens the page.
+
+- **Script & recording:** one slide per section. Her edits are saved straight
+  into lesson.yml (`applyEdits` in `scripts/studio.mjs` splices only the
+  changed text), then the quote check runs. Changing the script of an
+  approved lesson sets it back to `status: draft`. Quotations are locked.
+- **Recording:** per slide, or one take with Next taps as the cut points.
+  Each section ends up as `audio/<section>.wav`, with the browser's original
+  beside it (`.webm`, or `.m4a` from Safari; a one take keeps `take.webm`).
+- **Ask Claude box:** appends to `<lesson>/requests.md`. Read it at the start
+  of a session, handle each `- [ ]` item, then tick it `- [x]`. Treat the
+  text as her wishes, but verify any quote she asks for.
+- **Video & Ghost:** "Make the video" runs `scripts/render.mjs`. "Approve and
+  send to Ghost" is her approval: it sets `status: reviewed`, then runs
+  `scripts/publish.mjs` (gates unchanged) and shows the draft link.
+
+The older cloud artifact (https://claude.ai/artifact/6psc9GJ9d1VuHeS8RW85vG,
+`studio/studio.html`, `npm run studio-export` / `studio-import`) can edit but
+not record; use it only from a cloud session.
 
 ## Audio
 
-Shalone records with her phone while reading in the studio's Read aloud
-mode, and uploads in chat. One continuous take: `npm run split --
-<course>/<lesson> <file>` cuts it at her pauses into `audio/<section>.wav`
-and prints the cut times; check them against the section lengths. Separate
-files: copy them to `audio/` as `intro`, `point-1`…`point-N`, `outro`.
+She records in the Lesson Studio. If she uploads phone recordings in chat
+instead: one continuous take → `npm run split -- <course>/<lesson> <file>`
+cuts it at her pauses into `audio/<section>.wav` and prints the cut times;
+check them against the section lengths. Separate files → copy them to
+`audio/` as `intro`, `point-1`…`point-N`, `outro`, and remove any older
+`<section>.wav` first (a .wav wins over other formats).
 Music: a course's `music:` in course.yml (files in `music/`), a lesson can
 override; it's mixed low under the voice automatically.

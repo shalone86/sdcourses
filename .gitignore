@@ -9,3 +9,6 @@ courses/*/*/sources/
 
 # Local secrets (Ghost Admin API key)
 .env
+
+# Temporary file while a one-take recording is cut into sections
+courses/*/*/audio/.take-full.wav

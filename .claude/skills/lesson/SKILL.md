@@ -26,29 +26,32 @@ Shalone. Keep messages short: she reads on her phone.
    1–2 visuals and a quiz (mix `choice`, `truefalse`, `blank`). Facts for her
    intro/outro go in `notes`; leave their `text` empty.
 3. `npm run check` until it passes; `npm run stills` and look at the sheet.
-4. Load it into the Lesson Studio (see CLAUDE.md) and send her the link with
-   a two-line summary of the points and their sources.
+4. Start the Lesson Studio (`npm start`, in the background; see CLAUDE.md)
+   and give her a two-line summary of the points and their sources.
 
 **Stop.** She writes her intro and outro, edits anything, and may ask for
-more quotes (in the studio or in chat).
+more quotes (in the studio's Ask Claude box or in chat).
 
 ## 3. Her edits
 
-Pull edits and requests from the studio, apply them, `npm run check`, and
-re-export to the studio. Repeat until she says the script is ready.
+Her studio edits are already in lesson.yml. Handle `requests.md`, run
+`npm run check`, and tell her to reload the page. Repeat until she says the
+script is ready.
 
-## 4. Record
+## 4. Record and watch
 
-She opens Read aloud, starts her phone's recorder, reads, and uploads the
-file(s). Split a one-take file with `npm run split`; check the cut times
-look sane. Render in the background, then show her the video (a preview
-Artifact with the video file) and the size.
+She records in the studio (per slide or one take), then presses "Make the
+video" on the Video & Ghost tab and watches it there. If she uploads phone
+recordings in chat instead, see CLAUDE.md → Audio, then render in the
+background.
 
-**Stop.** Re-record a section if she wants (just that file). Only her
-explicit approval sets `status: reviewed`.
+**Stop.** She re-records any section she wants (just that slide). Only her
+explicit approval sets `status: reviewed`: the studio's "Approve and send to
+Ghost" button, or her saying so in chat.
 
 ## 5. Publish
 
-`npm run publish -- <course>/<lesson>`: uploads the video, saves a Ghost
-**draft**, and sends her the editor link. She presses Publish. Commit and
-push the lesson (audio included) to `main`.
+The Approve button runs the publish step; from chat it's
+`npm run publish -- <course>/<lesson>`. Either way it uploads the video,
+saves a Ghost **draft**, and gives her the editor link. She presses Publish.
+Commit and push the lesson (audio included) to `main`.

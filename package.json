@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "start": "node studio/server.mjs",
     "prepare-lesson": "node scripts/prepare.mjs",
     "studio": "remotion studio video/index.ts",
     "render": "node scripts/render.mjs",
