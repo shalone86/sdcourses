@@ -28,7 +28,12 @@ sources:
     reference: true      # background only; never counts for a quotation
 
 intro:
-  text: ""               # Shalone writes this (~60–80 words)
+  text: >-
+    Why is the Bishop of Rome important? What's a successor, and why would
+    Christ need a representative on earth? Can't He do that job Himself? We
+    will explore exactly what the Pope claims to be based on Catholic doctrine
+    straight from the Catechism. I'm your host, Shalone Cason. Let's begin in
+    the name of the Father and of the Son and of the Holy Spirit.
   notes:                 # facts from the sources you can draw on
     - '"Pope" comes from Latin papa, from Greek pappas, "father" (Catholic Encyclopedia).'
     - Early on, many bishops were called papa; in the East it was even used for priests.
@@ -178,7 +183,11 @@ points:
         stewardship. The Pope serves the faith handed down; he doesn't own it.
 
 outro:
-  text: ""               # Shalone writes this (~40–60 words)
+  text: >-
+    So that was an intro to the Pope in a nutshell. He's the Bishop of Rome,
+    he is the successor of Saint Peter, and he is the visible source of unity
+    for the faithful. I hope you learned something new. I've been your host,
+    Shalone Cason, and until next time, stay holy, my friends.
   notes:
     - "Recap: Bishop of Rome · successor of Peter · visible source of unity · Vicar of Christ who serves."
     - "Coming next in the series: How a Pope Is Chosen; What Infallibility Does (and Doesn't) Mean; Why Vatican City Exists."

@@ -11,3 +11,11 @@ disclosure: >-
 
 # Small line on the video's closing card.
 video_credit: Narrated by {author} · Prepared with AI assistance · Sources on the lesson page
+
+# Background music: your own CC0 tracks (methodius.media). Put the file in
+# music/ and name it here; a lesson can override with its own `music:` line.
+# Volume is kept very low under the voice and rises slightly in the pauses.
+music:
+  file: ""            # e.g. music/ambient-track.mp3
+  under_voice: 0.05   # gain while you're speaking (~-26 dB)
+  between: 0.16       # gain in the title and closing moments

@@ -64,7 +64,7 @@ export function loadSite() {
     .replace(/\{author\}/g, author || 'the author')
     // Without a name, drop the "Narrated by …" part of short credits.
     .replace(/^Narrated by the author · /, '');
-  return {author, disclosure: fill(site.disclosure), videoCredit: fill(site.video_credit)};
+  return {author, disclosure: fill(site.disclosure), videoCredit: fill(site.video_credit), music: site.music ?? {}};
 }
 
 /** Straight quotes/apostrophes to typographic ones, for display text. */

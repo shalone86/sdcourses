@@ -1,10 +1,11 @@
-import {AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, interpolate, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {float, ramp} from './anim';
 import {SceneView} from './scenes';
 import {HEADING_FRAMES, theme} from './theme';
 import type {LessonProps, Segment} from './types';
 
 const FADE = 12;
+const MUSIC_TAIL = 90; // keep in sync with scripts/prepare.mjs
 
 const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson}) => {
   const frame = useCurrentFrame();
@@ -84,10 +85,35 @@ const Progress: React.FC<{lesson: LessonProps}> = ({lesson}) => {
   );
 };
 
+/**
+ * Music bed: louder ("between") before the first words and after the last,
+ * ducked to "underVoice" while narration plays, fading in and out at the ends.
+ */
+const MusicBed: React.FC<{lesson: LessonProps}> = ({lesson}) => {
+  const {fps, durationInFrames} = useVideoConfig();
+  const m = lesson.music!;
+  const first = lesson.segments[0];
+  const voiceStart = first.audioOffsetInFrames;
+  const voiceEnd = durationInFrames - 30 - MUSIC_TAIL; // see prepare.mjs
+  const duck = Math.round(fps * 0.6);
+  return (
+    <Audio
+      src={staticFile(m.src)}
+      loop
+      volume={(f) => {
+        const intro = interpolate(f, [0, fps, voiceStart, voiceStart + duck], [0, m.between, m.between, m.underVoice], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+        const outro = interpolate(f, [voiceEnd, voiceEnd + duck, durationInFrames - fps * 2, durationInFrames], [m.underVoice, m.between, m.between, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+        return f < voiceEnd ? intro : outro;
+      }}
+    />
+  );
+};
+
 export const Lesson: React.FC<LessonProps> = (lesson) => {
   let from = 0;
   return (
     <AbsoluteFill style={{background: theme.bg, color: theme.ink}}>
+      {lesson.music && <MusicBed lesson={lesson} />}
       {lesson.segments.map((seg, i) => {
         const at = from;
         from += seg.durationInFrames;

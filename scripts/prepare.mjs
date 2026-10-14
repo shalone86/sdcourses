@@ -7,7 +7,8 @@ import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartSce
 
 const FPS = 30;
 const HEADING_FRAMES = 66; // keep in sync with video/theme.ts
-const WPS = 2.4; // ~145 words/minute, used until real audio exists
+const WPS = 2.4;
+export const MUSIC_TAIL = 90; // keep in sync with video/Lesson.tsx // ~145 words/minute, used until real audio exists
 const AUDIO_EXT = ['.wav', '.m4a', '.mp3', '.aac', '.flac', '.ogg'];
 
 export function prepare(arg) {
@@ -34,16 +35,32 @@ export function prepare(arg) {
     // Points open on their heading; narration starts while it is still on screen.
     const offset = s.kind === 'point' ? 20 : s.kind === 'intro' ? 45 : 15;
     const minFrames = s.kind === 'point' ? HEADING_FRAMES + s.scenes.length * 150 : s.scenes.length * 120;
-    const durationInFrames = Math.max(minFrames, Math.ceil(offset + seconds * FPS + 30));
+    // The outro gets ~3s more so the music can close the video after the last word.
+    const tail = s.kind === 'outro' ? 30 + MUSIC_TAIL : 30;
+    const durationInFrames = Math.max(minFrames, Math.ceil(offset + seconds * FPS + tail));
     return {kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes: s.scenes.map(smartScene), audio, durationInFrames, audioOffsetInFrames: offset};
   });
+
+  // Background music: lesson override, else site default. Copied into the
+  // video's public folder; the composition loops it and keeps it low.
+  const site = loadSite();
+  const musicCfg = {...site.music, ...(typeof lesson.music === 'string' ? {file: lesson.music} : lesson.music ?? {})};
+  let music = null;
+  if (musicCfg.file) {
+    const src = path.resolve(ROOT, musicCfg.file);
+    if (!fs.existsSync(src)) throw new Error(`Music file not found: ${musicCfg.file}`);
+    const dest = path.join(publicDir, `music${path.extname(src)}`);
+    fs.copyFileSync(src, dest);
+    music = {src: path.posix.join(id, path.basename(dest)), underVoice: musicCfg.under_voice ?? 0.05, between: musicCfg.between ?? 0.16};
+  }
 
   const props = {
     courseTitle: course.title,
     number: lesson.number,
     title: lesson.title,
     headings: lesson.points.map((p) => p.heading),
-    credit: loadSite().videoCredit,
+    credit: site.videoCredit,
+    music,
     segments: out,
   };
   const dist = outDir(id);

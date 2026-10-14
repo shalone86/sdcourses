@@ -18,5 +18,6 @@ export type LessonProps = {
   title: string;
   headings: string[];
   credit?: string;
+  music?: {src: string; underVoice: number; between: number} | null;
   segments: Segment[];
 };
