@@ -3,7 +3,8 @@
 Shalone Cason's Catholic courses: each lesson is one `lesson.yml` that becomes
 a Ghost post, a quiz, and a narrated explainer video. Shalone works in chat;
 Claude does the file work. Start a lesson with `/lesson` (see
-`.claude/skills/lesson/SKILL.md`).
+`.claude/skills/lesson/SKILL.md`). **Current state and next job:
+HANDOFF.md.**
 
 ## Who decides what (never cross these lines)
 

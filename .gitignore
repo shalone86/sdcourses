@@ -6,3 +6,6 @@ video/public/*/
 
 # Cached copies of source pages (fetched by `npm run check`)
 courses/*/*/sources/
+
+# Local secrets (Ghost Admin API key)
+.env
