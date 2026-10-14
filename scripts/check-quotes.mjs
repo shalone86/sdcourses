@@ -2,9 +2,10 @@
 // its sources. Sources are fetched once and cached in the lesson's sources/
 // folder. Run: npm run check -- <course>/<lesson>
 //
-// What counts as a quotation: anything in "double quotes" of 4+ words in the
-// text, plus every `quote` scene and the `keys` scene quote. Shorter quoted
-// bits ("see", "father") are glosses, not quotations, and are skipped.
+// Each point's anchor quote must match the exact source it names. Anything
+// else in "double quotes" of 4+ words (in explanations, intro, outro, quiz)
+// must match some primary source. Shorter quoted bits ("see", "father") are
+// glosses, not quotations, and are skipped.
 // Sources marked `reference: true` (e.g. Wikipedia) are cited for background
 // but never count as verifying a quotation.
 import fs from 'node:fs';
@@ -42,17 +43,22 @@ async function fetchSource(src, cacheDir) {
 
 function collectQuotes(segments) {
   const quotes = [];
-  const add = (q, where) => {
+  const add = (q, where, source) => {
     for (const part of q.split(/\s*(?:…|\.\.\.)\s*/)) {
-      if (part.split(/\s+/).filter(Boolean).length >= MIN_WORDS) quotes.push({quote: part.trim(), where});
+      // Quotation marks inside a quotation (a source quoting another) aren't part of the words.
+      const words = part.replace(/"/g, '').trim();
+      if (words.split(/\s+/).filter(Boolean).length >= MIN_WORDS) quotes.push({quote: words, where, source});
     }
   };
+  const inline = (text, where) => { for (const m of (text ?? '').matchAll(/"([^"]+)"/g)) add(m[1], where); };
   for (const s of segments) {
     const where = s.heading ?? s.name;
-    for (const m of s.text.matchAll(/"([^"]+)"/g)) add(m[1], where);
-    for (const sc of s.scenes ?? []) {
-      if (sc.type === 'quote') add(sc.text.trim(), `${where} (quote scene)`);
-      if (sc.type === 'keys') add(sc.quote, `${where} (keys scene)`);
+    if (s.kind === 'point') {
+      add(s.quote.text, `${where} (anchor quote)`, s.quote.source);
+      inline(s.explanation, where);
+      for (const q of s.quiz) inline(q.why, `${where} (quiz)`);
+    } else {
+      inline(s.text, where);
     }
   }
   return quotes;
@@ -60,6 +66,7 @@ function collectQuotes(segments) {
 
 const dir = lessonDir(process.argv[2]);
 const {lesson, segments} = loadLesson(dir);
+const ids = new Set(lesson.sources.map((x) => x.id));
 const cacheDir = path.join(dir, 'sources');
 const texts = [];
 for (const src of lesson.sources) {
@@ -72,10 +79,12 @@ for (const src of lesson.sources) {
 }
 
 let bad = 0;
-for (const {quote, where} of collectQuotes(segments)) {
-  const hit = texts.find((t) => t.text.includes(norm(quote)));
+for (const {quote, where, source} of collectQuotes(segments)) {
+  if (source && !ids.has(source)) { bad++; console.log(`  ✗ ${where}: source "${source}" isn't in the sources list`); continue; }
+  const pool = source ? texts.filter((t) => t.src.id === source) : texts;
+  const hit = pool.find((t) => t.text.includes(norm(quote)));
   if (hit) console.log(`  ✓ "${quote}"  [${hit.src.label}]`);
-  else { bad++; console.log(`  ✗ "${quote}"  (${where}): not found word for word in any source`); }
+  else { bad++; console.log(`  ✗ "${quote}"  (${where}): not found word for word in ${source ? `"${source}"` : 'any primary source'}`); }
 }
 console.log(bad ? `\n${bad} quotation(s) need fixing or a source.` : '\nAll quotations match their sources.');
 process.exit(bad ? 1 : 0);

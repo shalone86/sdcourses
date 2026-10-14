@@ -1,14 +1,16 @@
-# One lesson = this file. Edit the `text` fields freely; they are both the
-# post body and the narration script you record. Keep the whole lesson near
-# 600 words (`npm run prepare-lesson` prints the count).
-status: draft            # draft -> reviewed (you) -> published
+# Lesson format (quote-anchored)
+#   Each point stands on one direct quotation from a primary source. The
+#   quotation is read aloud, shown on screen, and checked word for word
+#   against `source` by `npm run check`. `text` is the short explanation.
+#   intro/outro are written by Shalone.
+status: draft            # draft -> reviewed (Shalone) -> published
 course: what-is-the-pope
 number: 1
 slug: what-is-the-pope
 title: What Is the Pope?
 excerpt: >-
   Bishop of Rome, successor of Peter, source of unity, servant of servants:
-  the four answers that explain everything else about the papacy.
+  four answers from Scripture, the Catechism, and the Catholic Encyclopedia.
 
 sources:
   - id: ccc
@@ -17,25 +19,21 @@ sources:
   - id: ce-pope
     label: "Catholic Encyclopedia (1913): The Pope"
     url: https://www.newadvent.org/cathen/12260a.htm
-  - id: wikipedia-pope
-    label: "Wikipedia: Pope"
-    url: https://en.wikipedia.org/wiki/Pope
-    reference: true      # background only; quotations must come from primary sources
   - id: matthew-16
     label: Matthew 16:13–19 (NABRE)
     url: https://bible.usccb.org/bible/matthew/16
-  - id: john-21
-    label: John 21:15–17 (NABRE)
-    url: https://bible.usccb.org/bible/john/21
+  - id: wikipedia-pope
+    label: "Wikipedia: Pope"
+    url: https://en.wikipedia.org/wiki/Pope
+    reference: true      # background only; never counts for a quotation
 
 intro:
-  text: >-
-    Almost everyone can name the Pope. Far fewer can say what a pope actually
-    is. Start with the word. "Pope" comes from the Latin papa, from a Greek
-    word for "father." In the early Church many bishops were called papa, but
-    over time the title settled on one man, and in the eleventh century Pope
-    Gregory VII declared that it belonged to Peter's successors alone. So who
-    is he? There are four answers, and each one builds on the last.
+  text: ""               # Shalone writes this (~60–80 words)
+  notes:                 # facts from the sources you can draw on
+    - '"Pope" comes from Latin papa, from Greek pappas, "father" (Catholic Encyclopedia).'
+    - Early on, many bishops were called papa; in the East it was even used for priests.
+    - Pope St. Gregory VII (1073–1085) restricted the title to Peter's successors.
+    - This lesson answers the question four ways; each answer builds on the last.
   scenes:
     - type: title
     - type: term
@@ -45,48 +43,54 @@ intro:
 
 points:
   - heading: He is the Bishop of Rome
+    quote:
+      lead: The Catholic Encyclopedia puts it plainly.
+      text: >-
+        The title pope … is at present employed solely to denote the Bishop
+        of Rome
+      source: ce-pope
+      cite: Catholic Encyclopedia, "The Pope"
+      highlight: the Bishop of Rome
     text: >-
-      Before he is anything else, the Pope is a bishop: the bishop of the
-      Diocese of Rome. That is the office he is elected to, and everything
-      else flows from it. It is also why his cathedral is not St. Peter's
-      Basilica, as many people assume, but the Archbasilica of St. John
-      Lateran, called the mother and head of all churches. The Church's word
-      for a bishop's office is a "see," from the Latin for "seat." Rome's is
-      called the Holy See. Like any bishop, the Pope has a diocese, parishes,
-      and a cathedral. What makes this diocese unique is who first led it.
-    scenes:
+      Before he is anything else, the Pope is a bishop, elected to lead one
+      diocese. Everything else flows from that. It is why his cathedral is
+      not St. Peter's Basilica, as many people assume, but St. John Lateran,
+      called the mother and head of all churches. A bishop's office is called
+      a "see," from the Latin for "seat," and Rome's is the Holy See. What
+      makes this diocese unique is who first led it.
+    visuals:
       - type: compare
         left: { kicker: Most famous, title: St. Peter's Basilica, note: Built over Peter's tomb }
         right: { kicker: His cathedral, title: St. John Lateran, note: Mother and head of all churches }
         emphasis: right
-      - type: term
-        term: see
-        origin: Latin sedes
-        meaning: seat, the chair of a bishop
-        footer: Rome's see is called the Holy See
     quiz:
+      type: choice
       question: Which church is the Pope's cathedral?
       options: [St. Peter's Basilica, The Archbasilica of St. John Lateran, The Sistine Chapel]
       answer: 1
       why: >-
         The Pope is first of all Bishop of Rome, and Rome's cathedral is
-        St. John Lateran. St. Peter's is the great basilica built over
-        Peter's tomb.
+        St. John Lateran. St. Peter's is the great basilica built over Peter's
+        tomb.
 
   - heading: He is the successor of St. Peter
+    quote:
+      lead: In Matthew's Gospel, Jesus says to Simon,
+      text: >-
+        And so I say to you, you are Peter, and upon this rock I will build
+        my church, and the gates of the netherworld shall not prevail against
+        it.
+      source: matthew-16
+      cite: Matthew 16:18
+      scene: keys
     text: >-
-      The Church of Rome traces its bishops back to St. Peter, who preached
-      there and was martyred there. In Matthew's Gospel, Jesus renames Simon:
-      "You are Peter, and upon this rock I will build my church." He promises
-      him "the keys to the kingdom of heaven." After the Resurrection he tells
-      Peter three times, "Feed my sheep." The Catechism teaches that Peter's
-      office belongs to the Church's very foundation and continues in his
-      successors. Pope Leo XIV, elected in May 2025, stands in a line the
-      Church counts back through 267 popes to Peter himself.
-    scenes:
-      - type: keys
-        quote: "You are Peter, and upon this rock I will build my church."
-        cite: Matthew 16:18
+      In the next verse, Jesus promises Peter the keys to the kingdom of
+      heaven. Peter later led the Church in Rome and died there as a martyr,
+      and the bishops of Rome have succeeded him ever since. The Catechism
+      teaches that his office belongs to the Church's very foundation and
+      continues in those successors. Pope Leo XIV, elected in May 2025, is
+      counted as the 267th.
+    visuals:
       - type: timeline
         items:
           - { year: "c. 64", label: St. Peter martyred in Rome }
@@ -96,32 +100,31 @@ points:
           - { year: "2025", label: Leo XIV elected }
         counter: { to: 267, label: popes, from Peter to Leo XIV }
     quiz:
-      question: What did Jesus promise Peter in Matthew 16?
-      options: [The keys to the kingdom of heaven, A kingdom on earth, That he would never sin]
-      answer: 0
+      type: blank
+      question: '"You are Peter, and upon this ____ I will build my church."'
+      accept: [rock]
       why: >-
-        Jesus names Simon "Peter," the rock, and gives him the keys, a sign of
-        authority over the household. The Church teaches this office
-        continues in Peter's successors (CCC 881).
+        Matthew 16:18. "Peter" comes from the word for rock. Jesus names
+        Simon the rock on which he will build his Church.
 
   - heading: He is the visible source of unity
+    quote:
+      lead: The Catechism explains why the Church has a pope at all.
+      text: >-
+        The Pope, Bishop of Rome and Peter's successor, "is the perpetual and
+        visible source and foundation of the unity both of the bishops and of
+        the whole company of the faithful."
+      source: ccc
+      cite: Catechism 882
+      highlight: visible source and foundation of the unity
     text: >-
-      Why does the Church need a pope at all? The Catechism answers in one
-      sentence: the Pope is "the perpetual and visible source and foundation
-      of the unity both of the bishops and of the whole company of the
-      faithful." Just as Christ placed Peter at the head of the Twelve, the
-      Pope heads the college of bishops. The bishops are not his branch
-      managers. Each one is a true successor of the apostles. But together
-      they act as one body only in union with their head. More than a billion
-      Catholics, in thousands of dioceses, are one Church because they are in
-      communion with him.
-    scenes:
-      - type: quote
-        text: >-
-          The Pope … is the perpetual and visible source and foundation of the
-          unity both of the bishops and of the whole company of the faithful.
-        highlight: visible source and foundation of the unity
-        cite: Catechism 882
+      Just as Christ placed Peter at the head of the Twelve, the Pope heads
+      the college of bishops. The bishops are not his branch managers. Each
+      one is a true successor of the apostles. But together they act as one
+      body only in union with their head. More than a billion Catholics, in
+      thousands of dioceses, are one Church because they are in communion
+      with him.
+    visuals:
       - type: college
         center: Peter
         ring: The Twelve
@@ -129,28 +132,32 @@ points:
         ringAfter: The bishops
         caption: One college, one head
     quiz:
-      question: How does the Church describe the bishops' relationship to the Pope?
-      options:
-        - They are his local managers
-        - They are successors of the apostles, united with him as their head
-        - They are independent of him
-      answer: 1
+      type: truefalse
+      question: The bishops are the Pope's local managers, acting on his behalf.
+      answer: false
       why: >-
-        Each bishop is a true successor of the apostles. Together they form
-        one college, which acts as one only in union with Peter's successor
-        (CCC 880, 883).
+        False. Each bishop is a true successor of the apostles. Together they
+        form one college, which acts as one only in union with Peter's
+        successor (CCC 880, 883).
 
   - heading: He is the Vicar of Christ, who serves
+    quote:
+      lead: The Catechism continues,
+      text: >-
+        For the Roman Pontiff, by reason of his office as Vicar of Christ, and
+        as pastor of the entire Church has full, supreme, and universal power
+        over the whole Church
+      source: ccc
+      cite: Catechism 882
+      highlight: Vicar of Christ
     text: >-
-      The Pope's most striking title is "Vicar of Christ": one who stands in
-      Christ's place as shepherd of the whole Church. That is an immense
-      claim, and the Church pairs it with a humble one. Pope St. Gregory the
-      Great called himself "servant of the servants of God," and popes have
-      used that title ever since. The Pope's authority is real. The Catechism
-      calls it "full, supreme, and universal." But it exists to serve: to
-      guard the faith handed down from the apostles, not to invent a new one.
-      He is a steward, not an owner.
-    scenes:
+      A vicar is one who stands in another's place. It is an immense claim,
+      and the Church pairs it with a humble one. Pope St. Gregory the Great
+      called himself the "servant of the servants of God," and papal bulls
+      still open with that title. The Pope's authority exists
+      to guard the faith handed down from the apostles, not to invent a new
+      one. He is a steward, not an owner.
+    visuals:
       - type: titles
         items:
           - { latin: Vicarius Christi, english: Vicar of Christ }
@@ -159,6 +166,7 @@ points:
         items: [Christ, The Apostles, Their successors, The Pope today, You]
         caption: A steward of what was handed down
     quiz:
+      type: choice
       question: What is the purpose of the Pope's authority?
       options:
         - To create new doctrines
@@ -166,14 +174,13 @@ points:
         - To govern the city of Rome
       answer: 1
       why: >-
-        Papal authority is "full, supreme, and universal" (CCC 882), but it is
-        a stewardship: the Pope serves the faith handed down. He doesn't own it.
+        His authority is "full, supreme, and universal" (CCC 882), but it is a
+        stewardship. The Pope serves the faith handed down; he doesn't own it.
 
 outro:
-  text: >-
-    So the Pope is the Bishop of Rome, the successor of Peter, the visible
-    source of the Church's unity, and the Vicar of Christ who serves. In the
-    next lessons we'll look at how a pope is chosen, what infallibility does
-    and doesn't mean, and why Vatican City exists at all.
+  text: ""               # Shalone writes this (~40–60 words)
+  notes:
+    - "Recap: Bishop of Rome · successor of Peter · visible source of unity · Vicar of Christ who serves."
+    - "Coming next in the series: How a Pope Is Chosen; What Infallibility Does (and Doesn't) Mean; Why Vatican City Exists."
   scenes:
     - type: recap

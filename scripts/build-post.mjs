@@ -10,39 +10,54 @@ export const POSTER_PLACEHOLDER = '__POSTER_URL__';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 // Typographic quotes for prose; the YAML stays plain-ASCII and easy to edit.
 const smart = (s) => esc(s).replace(/(^|[\s(\[—-])&quot;/g, '$1“').replace(/&quot;/g, '”').replace(/(\w)'(\w)/g, '$1’$2').replace(/'/g, '’');
+const clean = (t) => String(t ?? '').trim().replace(/\s+/g, ' ');
+
+/** Question types: choice (default), truefalse, blank. Fails loudly on mistakes. */
+function normalizeQuestion(q, where) {
+  const type = q.type ?? 'choice';
+  const base = {type, question: clean(q.question), why: clean(q.why)};
+  if (!base.question || !base.why) throw new Error(`Quiz in "${where}" needs a question and a why`);
+  if (type === 'choice') {
+    if (!(Number.isInteger(q.answer) && q.answer >= 0 && q.answer < (q.options?.length ?? 0))) throw new Error(`Quiz in "${where}": answer must be the index (from 0) of one of the options`);
+    return {...base, options: q.options.map(clean), answer: q.answer};
+  }
+  if (type === 'truefalse') {
+    if (typeof q.answer !== 'boolean') throw new Error(`Quiz in "${where}": a truefalse answer must be true or false`);
+    return {...base, answer: q.answer};
+  }
+  if (type === 'blank') {
+    if (!/_{2,}/.test(base.question) || !q.accept?.length) throw new Error(`Quiz in "${where}": a blank question needs ____ in it and an accept list`);
+    return {...base, accept: q.accept.map((a) => clean(a))};
+  }
+  throw new Error(`Quiz in "${where}": unknown type "${type}" (use choice, truefalse or blank)`);
+}
+
 const htmlCard = (inner) => `<!--kg-card-begin: html-->\n${inner}\n<!--kg-card-end: html-->`;
 
 export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER_PLACEHOLDER} = {}) {
   const dir = lessonDir(arg);
-  const {lesson, course, segments, id} = loadLesson(dir);
+  const {lesson, course, segments, points, id} = loadLesson(dir);
   const intro = segments[0];
   const outro = segments[segments.length - 1];
-  const points = segments.filter((s) => s.kind === 'point');
 
-  const quiz = {
-    questions: lesson.points.map((p) => ({
-      question: p.quiz.question,
-      options: p.quiz.options,
-      answer: p.quiz.answer,
-      why: p.quiz.why.trim().replace(/\s+/g, ' '),
-    })),
-  };
-  for (const [i, q] of quiz.questions.entries()) {
-    if (!(q.answer >= 0 && q.answer < q.options.length)) throw new Error(`Point ${i + 1}: quiz answer index ${q.answer} is out of range`);
-  }
+  const quiz = {questions: points.flatMap((p) => p.quiz.map((q) => normalizeQuestion(q, p.heading)))};
   // Readers without JavaScript (and search engines) still get the questions.
   const fallback = `<ol class="cc-quiz-fallback">${quiz.questions.map((q) => `<li>${esc(q.question)}</li>`).join('')}</ol>`;
   const json = JSON.stringify(quiz).replace(/</g, '\\u003c');
 
   const html = [
     htmlCard(`<figure class="cc-video"><video controls playsinline preload="none" poster="${posterUrl}" src="${videoUrl}"></video></figure>`),
-    `<p>${smart(intro.text)}</p>`,
-    ...points.map((p) => `<h2>${smart(p.heading)}</h2>\n<p>${smart(p.text)}</p>`),
-    `<p>${smart(outro.text)}</p>`,
-    htmlCard(`<section class="cc-quiz" data-lesson="${esc(lesson.slug)}"><h2>Check your understanding</h2><p class="cc-quiz-intro">One question for each point. Your answers stay on your device.</p>${fallback}<script type="application/json">${json}</script></section>`),
+    intro.text && `<p>${smart(intro.text)}</p>`,
+    ...points.map((p) => [
+      `<h2>${smart(p.heading)}</h2>`,
+      `<blockquote><p>${smart(p.quote.text)}</p><p>— ${smart(p.quote.cite)}</p></blockquote>`,
+      `<p>${smart(p.explanation)}</p>`,
+    ].join('\n')),
+    outro.text && `<p>${smart(outro.text)}</p>`,
+    htmlCard(`<section class="cc-quiz" data-lesson="${esc(lesson.slug)}"><h2>Check your understanding</h2><p class="cc-quiz-intro">Your answers stay on your device.</p>${fallback}<script type="application/json">${json}</script></section>`),
     `<h3>Sources</h3>\n<ul>${lesson.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.label)}</a></li>`).join('')}</ul>`,
     `<p class="cc-credit"><em>${esc(loadSite().disclosure)}</em></p>`,
-  ].join('\n\n');
+  ].filter(Boolean).join('\n\n');
 
   const meta = {
     title: lesson.title,

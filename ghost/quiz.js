@@ -1,5 +1,6 @@
 // Renders every .cc-quiz block on the page from its embedded JSON.
-// Results are kept in this browser only (localStorage), keyed by lesson.
+// Question types: choice, truefalse, blank. Results stay in this browser
+// only (localStorage), keyed by lesson.
 (function () {
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -13,12 +14,78 @@
       localStorage.setItem(key, JSON.stringify(val));
     } catch (e) { return null; }
   }
+  function shuffled(n) {
+    var order = [];
+    for (var i = 0; i < n; i++) order.push(i);
+    for (var k = n - 1; k > 0; k--) {
+      var j = Math.floor(Math.random() * (k + 1)), t = order[k]; order[k] = order[j]; order[j] = t;
+    }
+    return order;
+  }
+  function simplify(s) {
+    return String(s).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
+  // Each builder adds its controls to `box` and calls done(correct) once.
+  var builders = {
+    choice: function (q, box, done) {
+      var opts = el('div', 'cc-opts');
+      shuffled(q.options.length).forEach(function (oi) {
+        var b = el('button', 'cc-opt', q.options[oi]);
+        b.type = 'button';
+        b.setAttribute('data-i', oi);
+        b.addEventListener('click', function () {
+          opts.querySelectorAll('button').forEach(function (x) {
+            var xi = +x.getAttribute('data-i');
+            x.disabled = true;
+            if (xi === q.answer) x.classList.add('is-right');
+            else if (xi === oi) x.classList.add('is-wrong');
+          });
+          done(oi === q.answer);
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+    },
+    truefalse: function (q, box, done) {
+      builders.choice({options: ['True', 'False'], answer: q.answer ? 0 : 1}, box, done);
+      // True/False read better in a fixed order.
+      var opts = box.querySelector('.cc-opts');
+      opts.classList.add('cc-opts-row');
+      if (opts.firstChild.getAttribute('data-i') === '1') opts.appendChild(opts.firstChild);
+    },
+    blank: function (q, box, done, id) {
+      var form = el('form', 'cc-blank');
+      var input = el('input', 'cc-input');
+      input.type = 'text';
+      input.id = id;
+      input.autocomplete = 'off';
+      input.setAttribute('aria-label', 'Your answer');
+      var go = el('button', 'cc-opt cc-check', 'Check');
+      go.type = 'submit';
+      form.appendChild(input);
+      form.appendChild(go);
+      var reveal = el('p', 'cc-answer');
+      reveal.hidden = true;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!input.value.trim()) { input.focus(); return; }
+        var ok = q.accept.some(function (a) { return simplify(a) === simplify(input.value); });
+        input.disabled = go.disabled = true;
+        form.classList.add(ok ? 'is-right' : 'is-wrong');
+        if (!ok) { reveal.textContent = 'Answer: ' + q.accept[0]; reveal.hidden = false; }
+        done(ok);
+      });
+      box.appendChild(form);
+      box.appendChild(reveal);
+    },
+  };
 
   function render(root) {
     var data;
     try { data = JSON.parse(root.querySelector('script[type="application/json"]').textContent); } catch (e) { return; }
     var key = 'cc-quiz:' + (root.getAttribute('data-lesson') || location.pathname);
-    var answers = [];
+    var results = [];
     root.querySelectorAll('.cc-q, .cc-score, .cc-quiz-fallback').forEach(function (n) { n.remove(); });
 
     var score = el('p', 'cc-score');
@@ -26,42 +93,24 @@
 
     data.questions.forEach(function (q, qi) {
       var box = el('div', 'cc-q');
-      box.appendChild(el('p', 'cc-q-text', (qi + 1) + '. ' + q.question));
-      var opts = el('div', 'cc-opts');
+      var label = { choice: '', truefalse: 'True or false? ', blank: 'Fill in the blank: ' }[q.type || 'choice'] || '';
+      box.appendChild(el('p', 'cc-q-text', (qi + 1) + '. ' + label + q.question));
       var why = el('p', 'cc-why', q.why);
-      // Shuffle so the right answer isn't always in the same place.
-      var order = q.options.map(function (_, i) { return i; });
-      for (var i = order.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t;
-      }
       why.hidden = true;
-      order.forEach(function (oi) {
-        var b = el('button', 'cc-opt', q.options[oi]);
-        b.setAttribute('data-i', oi);
-        b.type = 'button';
-        b.addEventListener('click', function () {
-          answers[qi] = oi;
-          opts.querySelectorAll('button').forEach(function (x) {
-            var xi = +x.getAttribute('data-i');
-            x.disabled = true;
-            if (xi === q.answer) x.classList.add('is-right');
-            else if (xi === oi) x.classList.add('is-wrong');
-          });
-          why.hidden = false;
-          update();
-        });
-        opts.appendChild(b);
-      });
-      box.appendChild(opts);
+      (builders[q.type] || builders.choice)(q, box, function (ok) {
+        results[qi] = ok;
+        why.hidden = false;
+        update();
+      }, 'cc-' + (root.getAttribute('data-lesson') || 'q') + '-' + qi);
       box.appendChild(why);
       root.appendChild(box);
     });
     root.appendChild(score);
 
     function update() {
-      var done = answers.filter(function (a) { return a != null; }).length;
+      var done = results.filter(function (r) { return r != null; }).length;
       if (done < data.questions.length) { score.textContent = ''; return; }
-      var right = data.questions.filter(function (q, i) { return answers[i] === q.answer; }).length;
+      var right = results.filter(Boolean).length;
       score.textContent = 'You got ' + right + ' of ' + data.questions.length + '.';
       var retry = el('button', 'cc-retry', 'Try again');
       retry.type = 'button';

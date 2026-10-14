@@ -1,0 +1,42 @@
+# Quote-anchored lesson. See courses/what-is-the-pope/01-what-is-the-pope
+# for a complete example.
+status: draft
+course: __COURSE__
+number: __NUMBER__
+slug: __SLUG__
+title: __TITLE__
+excerpt: TODO
+
+sources:
+  - id: ccc
+    label: Catechism of the Catholic Church, TODO
+    url: TODO
+
+intro:
+  text: ""               # Shalone writes this
+  notes: []
+  scenes:
+    - type: title
+
+points:
+  - heading: TODO
+    quote:
+      lead: ""
+      text: TODO exact words
+      source: ccc
+      cite: TODO
+      highlight: ""
+    text: TODO explanation (60–100 words)
+    visuals: []
+    quiz:
+      type: choice       # choice | truefalse | blank
+      question: TODO
+      options: [TODO, TODO, TODO]
+      answer: 0
+      why: TODO
+
+outro:
+  text: ""               # Shalone writes this
+  notes: []
+  scenes:
+    - type: recap

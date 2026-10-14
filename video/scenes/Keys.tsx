@@ -24,8 +24,8 @@ export const Keys: React.FC<SceneProps<KeysScene>> = ({scene}) => {
         <Key p={ramp(f, 4, 50)} color={theme.gold} angle={-38} />
         <Key p={ramp(f, 20, 66)} color={theme.ink} angle={38} />
       </svg>
-      <div style={{maxWidth: 900}}>
-        <div style={{...enter(f, 50), fontFamily: theme.serif, fontSize: 78, lineHeight: 1.2}}>“{scene.quote}”</div>
+      <div style={{maxWidth: 1000}}>
+        <div style={{...enter(f, 50), fontFamily: theme.serif, fontSize: scene.quote.length > 90 ? 60 : 78, lineHeight: 1.25}}>“{scene.quote}”</div>
         <div style={{...enter(f, 72), fontFamily: theme.sans, fontSize: 30, letterSpacing: 4, color: theme.accent, marginTop: 30, fontWeight: 600}}>
           {scene.cite.toUpperCase()}
         </div>

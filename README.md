@@ -16,13 +16,36 @@ ghost/                            quiz script/styles for the Ghost site
 scripts/                          prepare · stills · render · post · publish
 ```
 
-## Making a lesson
+## Publishing from chat (the easy way)
 
-1. **Topic and sources.** Ask Claude for candidate points from the Catholic
-   Encyclopedia, Wikipedia and the Catechism, then pick 3–6.
-2. **Draft → edit.** Claude drafts `lesson.yml` (~600 words, about 100–150
-   per point, two scenes and one quiz question per point). You edit the text
-   until it's yours, then set `status: reviewed`.
+Shalone works in a Claude Code session on this repo and says what she wants
+("new lesson on how a pope is chosen"). Claude follows `CLAUDE.md` and the
+`/lesson` skill: it offers candidate points, drafts, shows previews, takes her
+intro/outro and recordings, renders, and saves the lesson to Ghost as a
+draft. She presses Publish in Ghost.
+
+One-time setup, in the cloud environment's settings (environment menu in the
+session title bar → Edit):
+
+1. **Environment variables:** `GHOST_URL=https://your-site.com` and
+   `GHOST_ADMIN_API_KEY=<key>`. Get the key in Ghost Admin → Settings →
+   Integrations → Add custom integration → Admin API key. Don't paste it
+   into chat.
+2. **Network access:** add your Ghost site's domain under Allowed domains
+   (keep "Allow package managers" ticked).
+
+A new session picks both up.
+
+## Making a lesson by hand
+
+1. **Topic and candidates.** Claude reads the Catholic Encyclopedia, the
+   Catechism, Scripture (and Wikipedia for orientation) and offers 6–8
+   candidate points, each with the exact quotation it would stand on. Shalone
+   picks 3–6.
+2. **Draft → her words.** Claude fills in `lesson.yml`: each point has an
+   anchor `quote`, a 60–100-word explanation, 1–2 visuals and a quiz
+   (`choice`, `truefalse` or `blank`). Shalone writes the intro and outro,
+   edits the rest, and approves it (`status: reviewed`).
 3. **Check the look:** `npm run stills -- what-is-the-pope/01-what-is-the-pope`
    writes `dist/…/contact-sheet.jpg` (one frame per scene).
 4. **Record.** `npm run prepare-lesson -- <course>/<lesson>` writes

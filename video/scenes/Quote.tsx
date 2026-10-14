@@ -24,7 +24,7 @@ export const Quote: React.FC<SceneProps<QuoteScene>> = ({scene, duration}) => {
 
   return (
     <Center>
-      <div style={{fontFamily: theme.serif, fontSize: 72, lineHeight: 1.35, maxWidth: 1500, textAlign: 'center'}}>
+      <div style={{fontFamily: theme.serif, fontSize: text.length > 160 ? 60 : 72, lineHeight: 1.35, maxWidth: 1500, textAlign: 'center'}}>
         {words.map((w, i) => {
           const inHl = hlStart >= 0 && i >= hlStart && i < hlStart + hl.length;
           return (

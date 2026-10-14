@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, words} from './lib.mjs';
+import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
 
 const FPS = 30;
 const HEADING_FRAMES = 66; // keep in sync with video/theme.ts
@@ -35,7 +35,7 @@ export function prepare(arg) {
     const offset = s.kind === 'point' ? 20 : s.kind === 'intro' ? 45 : 15;
     const minFrames = s.kind === 'point' ? HEADING_FRAMES + s.scenes.length * 150 : s.scenes.length * 120;
     const durationInFrames = Math.max(minFrames, Math.ceil(offset + seconds * FPS + 30));
-    return {kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes: s.scenes, audio, durationInFrames, audioOffsetInFrames: offset};
+    return {kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes: s.scenes.map(smartScene), audio, durationInFrames, audioOffsetInFrames: offset};
   });
 
   const props = {
@@ -54,16 +54,24 @@ export function prepare(arg) {
   const secs = out.reduce((n, s) => n + s.durationInFrames, 0) / FPS;
   console.log(`${id}: ${total} words, ${segments.length} segments (${recorded} recorded), video ${Math.floor(secs / 60)}:${String(Math.round(secs % 60)).padStart(2, '0')}`);
   if (total > 650) console.warn(`  ! ${total} words; aim for ~600`);
+  for (const s of segments) if ((s.kind === 'intro' || s.kind === 'outro') && !s.text) console.log(`  ${s.name}: not written yet (Shalone writes this)`);
   if (recorded < segments.length) console.log(`  missing audio: ${segments.filter((s, i) => !out[i].audio).map((s) => s.name).join(', ')} (timing estimated)`);
   return {props, dist, id};
 }
 
 function recordingScript(lesson, segments) {
   const lines = [`# Recording script: ${lesson.title}`, '',
-    'Record one file per section and save it in this lesson\'s `audio/` folder with the name shown.',
-    'Any of .wav .m4a .mp3 works. Pauses at the start/end are trimmed and volume is leveled for you.', ''];
+    'Record one file per section and save it with the name shown (.m4a, .mp3 or .wav).',
+    'Pauses at the start and end are trimmed and the volume is leveled for you.',
+    'Quotations are in **bold**: read them exactly as written.', ''];
   for (const s of segments) {
-    lines.push(`## ${s.name}${s.heading ? ` (${s.heading})` : ''}`, '', s.text, '');
+    lines.push(`## ${s.name}${s.heading ? ` (${s.heading})` : ''}`, '');
+    if (s.kind === 'point') {
+      if (s.quote.lead) lines.push(s.quote.lead, '');
+      lines.push(`**${s.quote.text}**`, '', `(${s.quote.cite})`, '', s.explanation, '');
+    } else {
+      lines.push(s.text || '_Not written yet._', '');
+    }
   }
   return lines.join('\n');
 }

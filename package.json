@@ -10,13 +10,17 @@
     "publish": "node scripts/publish.mjs",
     "typecheck": "tsc --noEmit",
     "stills": "node scripts/stills.mjs",
-    "check": "node scripts/check-quotes.mjs"
+    "check": "node scripts/check-quotes.mjs",
+    "publish-course": "node scripts/publish-course.mjs",
+    "publish-page": "node scripts/publish-page.mjs",
+    "new": "node scripts/new.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.530",
     "@remotion/cli": "4.0.530",
     "@remotion/fonts": "^4.0.530",
     "@remotion/renderer": "4.0.530",
+    "marked": "^17.0.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "remotion": "4.0.530",
