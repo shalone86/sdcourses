@@ -41,10 +41,11 @@ export function prepare(arg) {
     return {kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes: s.scenes.map(smartScene), audio, durationInFrames, audioOffsetInFrames: offset};
   });
 
-  // Background music: lesson override, else site default. Copied into the
+  // Background music: lesson override, else the course's track, else site default. Copied into the
   // video's public folder; the composition loops it and keeps it low.
   const site = loadSite();
-  const musicCfg = {...site.music, ...(typeof lesson.music === 'string' ? {file: lesson.music} : lesson.music ?? {})};
+  const asCfg = (m) => (typeof m === 'string' ? {file: m} : m ?? {});
+  const musicCfg = {...site.music, ...asCfg(course.music), ...asCfg(lesson.music)};
   let music = null;
   if (musicCfg.file) {
     const src = path.resolve(ROOT, musicCfg.file);

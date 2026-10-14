@@ -22,6 +22,15 @@ sources:
   - id: matthew-16
     label: Matthew 16:13–19 (NABRE)
     url: https://bible.usccb.org/bible/matthew/16
+  - id: luke-10
+    label: Luke 10:16 (NABRE)
+    url: https://bible.usccb.org/bible/luke/10
+  - id: matthew-28
+    label: Matthew 28:20 (NABRE)
+    url: https://bible.usccb.org/bible/matthew/28
+  - id: ccc-1548
+    label: Catechism of the Catholic Church, 1548
+    url: https://www.vatican.va/archive/ENG0015/__P4T.HTM
   - id: wikipedia-pope
     label: "Wikipedia: Pope"
     url: https://en.wikipedia.org/wiki/Pope
@@ -32,13 +41,13 @@ intro:
     Why is the Bishop of Rome important? What's a successor, and why would
     Christ need a representative on earth? Can't He do that job Himself? We
     will explore exactly what the Pope claims to be based on Catholic doctrine
-    straight from the Catechism. I'm your host, Shalone Cason. Let's begin in
+    straight from Scripture and the Catechism. I'm your host, Shalone Cason. Let's begin in
     the name of the Father and of the Son and of the Holy Spirit.
   notes:                 # facts from the sources you can draw on
     - '"Pope" comes from Latin papa, from Greek pappas, "father" (Catholic Encyclopedia).'
     - Early on, many bishops were called papa; in the East it was even used for priests.
     - Pope St. Gregory VII (1073–1085) restricted the title to Peter's successors.
-    - This lesson answers the question four ways; each answer builds on the last.
+    - This lesson answers the question in five points; each builds on the last.
   scenes:
     - type: title
     - type: term
@@ -145,9 +154,39 @@ points:
         form one college, which acts as one only in union with Peter's
         successor (CCC 880, 883).
 
+  - heading: Why Christ works through him
+    quote:
+      lead: Jesus answers this himself when he sends out his disciples.
+      text: >-
+        Whoever listens to you listens to me. Whoever rejects you rejects me.
+        And whoever rejects me rejects the one who sent me.
+      source: luke-10
+      cite: Luke 10:16
+      highlight: listens to me
+    text: >-
+      So Christ does do the job himself. He chooses to do it through the
+      people he sends. After the Resurrection he promised the apostles, "I am
+      with you always, until the end of the age." The Catechism says that in the
+      ordained ministry "it is Christ himself who is present to his Church as
+      Head of his Body." The Pope doesn't stand in for an absent Christ. Like
+      every bishop and priest, he is a visible sign of the One who is still
+      the Church's head.
+    visuals:
+      - type: chain
+        items: [Christ, The Apostles, Their successors, The Pope today, You]
+        caption: Christ, working through those he sends
+    quiz:
+      type: blank
+      question: '"Whoever listens to you listens to ____."'
+      accept: [me]
+      why: >-
+        Luke 10:16. Christ works through those he sends, so hearing them is
+        hearing him. The Catechism says it is "Christ himself who is present
+        to his Church" in the ordained ministry (CCC 1548).
+
   - heading: He is the Vicar of Christ, who serves
     quote:
-      lead: The Catechism continues,
+      lead: The Catechism gives the Pope a striking title.
       text: >-
         For the Roman Pontiff, by reason of his office as Vicar of Christ, and
         as pastor of the entire Church has full, supreme, and universal power
@@ -156,20 +195,21 @@ points:
       cite: Catechism 882
       highlight: Vicar of Christ
     text: >-
-      A vicar is one who stands in another's place. It is an immense claim,
+      A vicar is one who stands in another's place. It is an immense title,
       and the Church pairs it with a humble one. Pope St. Gregory the Great
       called himself the "servant of the servants of God," and papal bulls
-      still open with that title. The Pope's authority exists
-      to guard the faith handed down from the apostles, not to invent a new
-      one. He is a steward, not an owner.
+      still open with that title. The Pope's authority exists to guard the
+      faith handed down from the apostles, not to invent a new one. He is a
+      steward, not an owner.
     visuals:
+      - type: term
+        term: vicar
+        origin: Latin vicarius
+        meaning: one who stands in another's place
       - type: titles
         items:
           - { latin: Vicarius Christi, english: Vicar of Christ }
           - { latin: Servus servorum Dei, english: Servant of the servants of God }
-      - type: chain
-        items: [Christ, The Apostles, Their successors, The Pope today, You]
-        caption: A steward of what was handed down
     quiz:
       type: choice
       question: What is the purpose of the Pope's authority?

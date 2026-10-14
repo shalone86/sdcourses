@@ -13,7 +13,10 @@
     "check": "node scripts/check-quotes.mjs",
     "publish-course": "node scripts/publish-course.mjs",
     "publish-page": "node scripts/publish-page.mjs",
-    "new": "node scripts/new.mjs"
+    "new": "node scripts/new.mjs",
+    "studio-export": "node scripts/studio.mjs export",
+    "studio-import": "node scripts/studio.mjs import",
+    "split": "node scripts/split-audio.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.530",

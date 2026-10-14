@@ -5,57 +5,50 @@ description: Make a new course lesson with Shalone, from topic to Ghost draft. U
 
 # Making a lesson
 
-Follow CLAUDE.md's "who decides what" rules throughout. Each step that ends
-in **Stop** waits for Shalone's reply. Keep messages short: she reads on her
-phone.
+Follow CLAUDE.md's "who decides what" rules. Each **Stop** waits for
+Shalone. Keep messages short: she reads on her phone.
 
-## 1. Topic and candidates
+## 1. Topic and music
 
-1. If the course doesn't exist: `npm run new -- course <slug> "<Title>"`, fill
-   in `summary`, and ask whether to create it in Ghost now
-   (`npm run publish-course -- <slug>`).
-2. Read the primary sources for the topic: the Catechism section
-   (vatican.va/archive/ENG0015), the Catholic Encyclopedia article
-   (newadvent.org/cathen), the relevant Scripture (bible.usccb.org, NABRE),
-   and Wikipedia for orientation only.
-3. Offer **6–8 candidate points**. For each: a one-line heading and the exact
-   quotation it would stand on, with its citation. Number them.
+- New course: `npm run new -- course <slug> "<Title>"`, write `summary`, and
+  ask whether to create it in Ghost (`npm run publish-course -- <slug>`).
+- Music: if she uploads a track, copy it to `music/` and set `music:` in
+  course.yml (whole course) or lesson.yml (this lesson). Otherwise the
+  course's track is used.
 
-**Stop.** Shalone picks 3–6 (she may swap quotes or add her own).
+## 2. Quotes and script
 
-## 2. Draft
+1. Read the primary sources: Catechism (vatican.va/archive/ENG0015),
+   Catholic Encyclopedia (newadvent.org/cathen), Scripture (bible.usccb.org,
+   NABRE); Wikipedia for orientation only.
+2. `npm run new -- lesson <course> "<Title>"` and build `lesson.yml`: 3–5
+   points, each on one exact quotation, with a 60–100-word explanation,
+   1–2 visuals and a quiz (mix `choice`, `truefalse`, `blank`). Facts for her
+   intro/outro go in `notes`; leave their `text` empty.
+3. `npm run check` until it passes; `npm run stills` and look at the sheet.
+4. Load it into the Lesson Studio (see CLAUDE.md) and send her the link with
+   a two-line summary of the points and their sources.
 
-1. `npm run new -- lesson <course> "<Title>"`, then fill in `lesson.yml`:
-   - `sources` with an `id` for each; Wikipedia gets `reference: true`.
-   - Each point: `quote` (exact text, `source` id, `cite`, optional `lead` and
-     `highlight`), a 60–100-word `text` explanation, 1–2 `visuals` (scene
-     types are listed in README.md), and a quiz. Mix quiz types across the
-     lesson.
-   - `intro.notes` / `outro.notes`: facts she can use. Leave `text: ""`.
-2. `npm run check`, fix until it passes.
-3. `npm run stills` and `npm run post`. Show her the contact sheet and a
-   preview page (publish `dist/…/preview.html` as an Artifact with the
-   video/poster files if they exist).
+**Stop.** She writes her intro and outro, edits anything, and may ask for
+more quotes (in the studio or in chat).
 
-**Stop.** Ask for edits, and for her intro and outro.
+## 3. Her edits
 
-## 3. Her words, then her voice
+Pull edits and requests from the studio, apply them, `npm run check`, and
+re-export to the studio. Repeat until she says the script is ready.
 
-1. Put her intro and outro in as written. Apply her edits.
-2. `npm run prepare-lesson` and send her `dist/…/recording-script.md`.
+## 4. Record
 
-**Stop.** She records and uploads audio files.
+She opens Read aloud, starts her phone's recorder, reads, and uploads the
+file(s). Split a one-take file with `npm run split`; check the cut times
+look sane. Render in the background, then show her the video (a preview
+Artifact with the video file) and the size.
 
-## 4. Render and approve
+**Stop.** Re-record a section if she wants (just that file). Only her
+explicit approval sets `status: reviewed`.
 
-1. Copy the audio into `audio/` with the right names, then render in the
-   background. The video re-times itself to her voice.
-2. Update the preview; tell her the file size.
+## 5. Publish
 
-**Stop.** Only her explicit approval sets `status: reviewed`.
-
-## 5. Publish the draft
-
-`npm run publish -- <course>/<lesson>`. It uploads the video and saves a
-**draft**. Send her the Ghost editor link; she presses Publish. Commit and
+`npm run publish -- <course>/<lesson>`: uploads the video, saves a Ghost
+**draft**, and sends her the editor link. She presses Publish. Commit and
 push the lesson (audio included) to `main`.

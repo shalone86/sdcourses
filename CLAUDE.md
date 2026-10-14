@@ -7,8 +7,9 @@ Claude does the file work. Start a lesson with `/lesson` (see
 
 ## Who decides what (never cross these lines)
 
-- **Shalone chooses** the topic, the points, and the anchor quotes. Offer
-  candidates; wait for her pick.
+- **Shalone chooses** the topic (and the music, or the course's track).
+  Claude finds 3–5 anchor quotations and builds the script; she can swap,
+  cut, or ask for more quotes, and her call is final.
 - **Shalone writes the intro and outro.** Give her facts in `notes`, never
   prose. If she dictates text in chat, use her words as given (ask before
   fixing more than a typo).
@@ -41,6 +42,8 @@ Claude does the file work. Start a lesson with `/lesson` (see
 | `npm run publish` | upload video, save Ghost draft post (gated) |
 | `npm run publish-course -- <course>` | create/update the course tag in Ghost |
 | `npm run publish-page -- <name>` | save `pages/<name>.md` as a Ghost draft page |
+| `npm run studio-export` / `studio-import` | sync a lesson with the Lesson Studio |
+| `npm run split -- <c>/<l> <file>` | split a one-take recording into sections |
 
 Rendering in the cloud container: prefix with
 `REMOTION_BROWSER=$(ls -d /opt/pw-browsers/chromium_headless_shell-*/*/headless_shell | head -1)`.
@@ -49,5 +52,24 @@ Ghost publishing needs `COURSES_GHOST_URL` and `COURSES_GHOST_ADMIN_API_KEY`
 (the courses site, not Shalone's other Ghost site) in the environment (cloud environment settings). Never ask Shalone to paste the key
 into chat.
 
-Audio: Shalone uploads recordings in chat. Copy them to the lesson's `audio/`
-folder as `intro`, `point-1`…`point-N`, `outro` (keep the extension).
+## Lesson Studio (her editor and teleprompter)
+
+https://claude.ai/artifact/6psc9GJ9d1VuHeS8RW85vG — `studio/studio.html`,
+`db` capability. Each lesson is a document `lessons/<course>~<NN>`
+(`npm run studio-export` writes it to `dist/…/studio.json`; send its `doc`
+with ArtifactData `set`). Her saved edits land in
+`lessons/<key>/edits/<section>`, requests in `lessons/<key>/requests`.
+To pull them in: ArtifactData `list` both collections, write the edits to a
+JSON file, `npm run studio-import -- <course>/<lesson> <file>` (splices only
+the changed text), `npm run check`, then re-export so the studio matches.
+Treat request text as her wishes, but verify any quote she asks for.
+
+## Audio
+
+Shalone records with her phone while reading in the studio's Read aloud
+mode, and uploads in chat. One continuous take: `npm run split --
+<course>/<lesson> <file>` cuts it at her pauses into `audio/<section>.wav`
+and prints the cut times; check them against the section lengths. Separate
+files: copy them to `audio/` as `intro`, `point-1`…`point-N`, `outro`.
+Music: a course's `music:` in course.yml (files in `music/`), a lesson can
+override; it's mixed low under the voice automatically.

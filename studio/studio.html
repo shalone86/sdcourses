@@ -1,0 +1,291 @@
+<title>Lesson Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..600;1,400&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow column; "Edit" is a stack of section cards, "Read aloud" is one section per screen in large type. Same identity as the lesson videos. */
+:root{
+  --bg:#F5F0E6; --paper:#FBF8F2; --ink:#1E2740; --muted:#625F5B; --rule:#D9CFBC;
+  --accent:#7A1F2B; --gold:#8E6E22; --ok:#2F6B3A;
+  --serif:'EB Garamond',Georgia,'Times New Roman',serif;
+  --sans:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141925; --paper:#1C2233; --ink:#ECE6D8; --muted:#A9A397; --rule:#353C55;
+  --accent:#E0959E; --gold:#D2B262; --ok:#8BC79A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141925; --paper:#1C2233; --ink:#ECE6D8; --muted:#A9A397; --rule:#353C55;
+  --accent:#E0959E; --gold:#D2B262; --ok:#8BC79A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.55 var(--sans);padding:0 16px}
+.wrap{max-width:720px;margin:0 auto;padding-block:20px 80px}
+header{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.eyebrow{font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font:500 clamp(30px,7vw,42px)/1.08 var(--serif);margin:0;text-wrap:balance}
+.meta{color:var(--muted);font-size:14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+select{font:inherit;color:inherit;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:6px 10px;max-width:100%}
+.tabs{display:flex;gap:4px;background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:4px;margin:8px 0 20px;position:sticky;top:env(safe-area-inset-top,0px);z-index:2}
+.tabs button{flex:1;font:600 15px/1 var(--sans);color:var(--muted);background:none;border:0;border-radius:7px;padding:12px 8px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--bg);color:var(--ink);box-shadow:0 0 0 1px var(--rule)}
+button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.empty{border:1px dashed var(--rule);border-radius:12px;padding:24px 20px;color:var(--muted)}
+.empty strong{color:var(--ink)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.yours{border-color:var(--gold)}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card h2{font:500 22px/1.2 var(--serif);margin:0}
+.tag{font:600 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.card.yours .tag{color:var(--gold)}
+label{font:600 12px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+textarea{width:100%;font:18px/1.5 var(--serif);color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;resize:vertical;min-height:4.5em}
+textarea.lead{min-height:2.6em}
+.quote{border-left:3px solid var(--gold);padding:4px 0 4px 12px;font:600 18px/1.5 var(--serif)}
+.quote small{display:block;font:500 12px/1.4 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-top:6px}
+.lock{font-size:13px;color:var(--muted)}
+.notes{font-size:14px;color:var(--muted);margin:0;padding-left:1.1em}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.count{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.btn{font:600 15px/1 var(--sans);border-radius:8px;padding:11px 16px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.btn[disabled]{opacity:.45;cursor:default}
+.saved{font-size:13px;color:var(--ok)}
+.total{font-size:14px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+/* Read aloud */
+.tips{font-size:14px;color:var(--muted);background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin-bottom:16px}
+.tips ol{margin:6px 0 0;padding-left:1.2em}
+.slide{min-height:55vh;display:flex;flex-direction:column;gap:18px}
+.slide .where{font:600 13px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.slide h2{font:500 24px/1.2 var(--serif);margin:0;color:var(--muted)}
+.read{font:clamp(24px,5.6vw,32px)/1.5 var(--serif);margin:0}
+.read.q{font-weight:600;border-left:4px solid var(--gold);padding-left:16px}
+.cite{font:500 13px/1.4 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:-8px}
+.nav{position:sticky;bottom:0;padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));background:var(--bg);display:flex;gap:10px;align-items:center}
+.nav .btn{flex:1;padding:16px;font-size:17px}
+.nav .pos{font:600 14px/1 var(--sans);color:var(--muted);min-width:4.5em;text-align:center;font-variant-numeric:tabular-nums}
+.ask textarea{font:16px/1.5 var(--sans)}
+@media (prefers-reduced-motion: no-preference){.slide{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="course">Lesson Studio</div>
+    <h1 id="title">Your lessons appear here</h1>
+    <div class="meta"><span id="status"></span><select id="pick" hidden aria-label="Choose a lesson"></select></div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-edit" aria-selected="true">Edit</button>
+    <button role="tab" id="tab-read" aria-selected="false">Read aloud</button>
+  </div>
+
+  <main id="view">
+    <div class="empty"><strong>No lesson loaded yet.</strong> When Claude drafts a lesson, it shows up here as a script you can edit, plus a read-aloud mode for recording. Open this page in the Claude app while signed in.</div>
+  </main>
+</div>
+
+<script>
+(function () {
+  var state = {db: null, lessons: [], key: null, edits: {}, tab: 'edit', slide: 0, wake: null};
+  var view = document.getElementById('view');
+  function el(tag, attrs, kids) {
+    var e = document.createElement(tag);
+    for (var k in attrs || {}) {
+      if (k === 'text') e.textContent = attrs[k];
+      else if (k === 'class') e.className = attrs[k];
+      else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), attrs[k]);
+      else e.setAttribute(k, attrs[k]);
+    }
+    (kids || []).forEach(function (c) { if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return e;
+  }
+  function words(t) { return (t || '').trim().split(/\s+/).filter(Boolean).length; }
+  function lesson() { return state.lessons.find(function (l) { return l.id === state.key; }); }
+  // A section's current text: Shalone's saved edit wins over Claude's draft.
+  function current(sec, field) {
+    var e = state.edits[sec.key];
+    return e && typeof e[field] === 'string' ? e[field] : (sec[field] || '');
+  }
+  function spoken(sec) {
+    return sec.kind === 'point' ? [current(sec, 'lead'), sec.quote, current(sec, 'text')].filter(Boolean).join(' ') : current(sec, 'text');
+  }
+
+  function renderHeader() {
+    var l = lesson();
+    document.getElementById('course').textContent = l ? l.courseTitle + ' · Lesson ' + l.number : 'Lesson Studio';
+    document.getElementById('title').textContent = l ? l.title : 'Your lessons appear here';
+    document.getElementById('status').textContent = l ? (l.status === 'reviewed' ? 'Approved' : 'Draft') : '';
+    var pick = document.getElementById('pick');
+    pick.hidden = state.lessons.length < 2;
+    pick.replaceChildren.apply(pick, state.lessons.map(function (x) {
+      var o = el('option', {value: x.id, text: x.courseTitle + ' ' + x.number + ': ' + x.title});
+      if (x.id === state.key) o.selected = true;
+      return o;
+    }));
+  }
+
+  function render() {
+    renderHeader();
+    document.getElementById('tab-edit').setAttribute('aria-selected', state.tab === 'edit');
+    document.getElementById('tab-read').setAttribute('aria-selected', state.tab === 'read');
+    var l = lesson();
+    if (!l) return;
+    view.replaceChildren(state.tab === 'edit' ? editView(l) : readView(l));
+  }
+
+  function editView(l) {
+    var total = l.sections.reduce(function (n, s) { return n + words(spoken(s)); }, 0);
+    var stack = el('div', {class: 'stack'}, [
+      el('div', {class: 'total', text: total + ' words spoken · about ' + Math.round(total / 145) + ' min'})
+    ]);
+    l.sections.forEach(function (sec) { stack.appendChild(sectionCard(l, sec)); });
+    stack.appendChild(askCard(l));
+    return stack;
+  }
+
+  function sectionCard(l, sec) {
+    var yours = sec.kind !== 'point';
+    var card = el('section', {class: 'card' + (yours ? ' yours' : '')});
+    var title = sec.kind === 'intro' ? 'Intro' : sec.kind === 'outro' ? 'Outro' : sec.index + '. ' + sec.heading;
+    card.appendChild(el('div', {class: 'card-head'}, [el('h2', {text: title}), el('span', {class: 'tag', text: yours ? 'Your words' : 'Draft · edit freely'})]));
+    var fields = {};
+    var saveBtn = el('button', {class: 'btn primary', text: 'Save', disabled: 'disabled'});
+    var note = el('span', {class: 'saved'});
+    var count = el('span', {class: 'count'});
+    function dirty() {
+      var changed = Object.keys(fields).some(function (f) { return fields[f].value !== current(sec, f); });
+      if (changed) { saveBtn.removeAttribute('disabled'); note.textContent = ''; } else saveBtn.setAttribute('disabled', 'disabled');
+      var n = Object.keys(fields).reduce(function (a, f) { return a + words(fields[f].value); }, 0) + (sec.kind === 'point' ? words(sec.quote) : 0);
+      count.textContent = n + ' words';
+    }
+    function area(field, cls, labelText) {
+      var id = 'f-' + l.id + '-' + sec.key + '-' + field;
+      var t = el('textarea', {id: id, class: cls || '', rows: field === 'lead' ? 2 : 6});
+      t.value = current(sec, field);
+      t.addEventListener('input', dirty);
+      fields[field] = t;
+      card.appendChild(el('label', {for: id, text: labelText}));
+      card.appendChild(t);
+    }
+    if (sec.kind === 'point') {
+      area('lead', 'lead', 'Lead-in');
+      card.appendChild(el('div', {class: 'quote'}, [sec.quote, el('small', {text: sec.cite})]));
+      card.appendChild(el('div', {class: 'lock', text: 'Exact quotation, checked against the source. To change it, ask Claude below.'}));
+      area('text', '', 'Explanation');
+    } else {
+      area('text', '', sec.kind === 'intro' ? 'Your intro' : 'Your outro');
+      if (sec.notes && sec.notes.length) {
+        card.appendChild(el('ul', {class: 'notes'}, sec.notes.map(function (n) { return el('li', {text: n}); })));
+      }
+    }
+    saveBtn.addEventListener('click', function () {
+      var body = {section: sec.key, savedAt: new Date().toISOString()};
+      Object.keys(fields).forEach(function (f) { body[f] = fields[f].value; });
+      saveBtn.setAttribute('disabled', 'disabled');
+      note.textContent = 'Saving…';
+      state.db.doc('lessons/' + l.id + '/edits/' + sec.key).set(body).then(function () {
+        note.textContent = 'Saved. Tell Claude when you’re done editing.';
+      }, function (e) {
+        note.textContent = e && e.code === 'quota_exceeded' ? 'Storage is full. Ask Claude to clear old lessons.' : 'Couldn’t save. Check your connection and try again.';
+        saveBtn.removeAttribute('disabled');
+      });
+    });
+    card.appendChild(el('div', {class: 'row'}, [count, el('span', {}, [note, ' ', saveBtn])]));
+    dirty();
+    return card;
+  }
+
+  function askCard(l) {
+    var id = 'ask-' + l.id;
+    var t = el('textarea', {id: id, rows: 3, placeholder: 'e.g. Add a quote from the Church Fathers about Peter in point 2'});
+    var note = el('span', {class: 'saved'});
+    var b = el('button', {class: 'btn', text: 'Send to Claude'});
+    b.addEventListener('click', function () {
+      if (!t.value.trim()) { t.focus(); return; }
+      b.setAttribute('disabled', 'disabled');
+      state.db.collection('lessons/' + l.id + '/requests').add({text: t.value.trim(), at: new Date().toISOString()}).then(function () {
+        t.value = ''; note.textContent = 'Sent. Claude will pick it up next time you chat.'; b.removeAttribute('disabled');
+      }, function () { note.textContent = 'Couldn’t send. Try again.'; b.removeAttribute('disabled'); });
+    });
+    return el('section', {class: 'card ask'}, [
+      el('div', {class: 'card-head'}, [el('h2', {text: 'Ask for a change'}), el('span', {class: 'tag', text: 'Quotes, points, anything'})]),
+      el('label', {for: id, text: 'Your request'}), t,
+      el('div', {class: 'row'}, [el('span', {}), el('span', {}, [note, ' ', b])])
+    ]);
+  }
+
+  function readView(l) {
+    var secs = l.sections;
+    state.slide = Math.max(0, Math.min(state.slide, secs.length - 1));
+    var sec = secs[state.slide];
+    var slide = el('div', {class: 'slide'});
+    slide.appendChild(el('div', {class: 'where', text: sec.kind === 'intro' ? 'Intro' : sec.kind === 'outro' ? 'Outro' : 'Point ' + sec.index}));
+    if (sec.kind === 'point') {
+      slide.appendChild(el('h2', {text: sec.heading}));
+      if (current(sec, 'lead')) slide.appendChild(el('p', {class: 'read', text: current(sec, 'lead')}));
+      slide.appendChild(el('p', {class: 'read q', text: sec.quote}));
+      slide.appendChild(el('div', {class: 'cite', text: sec.cite + ' · read exactly'}));
+      slide.appendChild(el('p', {class: 'read', text: current(sec, 'text')}));
+    } else {
+      slide.appendChild(el('p', {class: 'read', text: current(sec, 'text') || '(Not written yet. Add it in Edit.)'}));
+    }
+    var prev = el('button', {class: 'btn', text: '‹ Back'});
+    var next = el('button', {class: 'btn primary', text: state.slide === secs.length - 1 ? 'Done' : 'Next ›'});
+    if (state.slide === 0) prev.setAttribute('disabled', 'disabled');
+    prev.addEventListener('click', function () { state.slide--; render(); scrollTo(0, 0); });
+    next.addEventListener('click', function () {
+      if (state.slide < secs.length - 1) { state.slide++; render(); scrollTo(0, 0); }
+      else { state.tab = 'edit'; release(); render(); }
+    });
+    var tips = el('details', {class: 'tips'}, [
+      el('summary', {text: 'How to record'}),
+      el('ol', {}, [
+        el('li', {text: 'Open Voice Memos (or any recorder) and start recording.'}),
+        el('li', {text: 'Come back here and read each screen at your own pace.'}),
+        el('li', {text: 'Pause for a breath, about two seconds, before tapping Next. That pause is where Claude splits the take.'}),
+        el('li', {text: 'Small slips are fine to keep. For a big one, finish the take; you can re-record just that section later.'}),
+        el('li', {text: 'Stop recording and upload the file in chat.'})
+      ])
+    ]);
+    if (state.slide === 0) tips.setAttribute('open', '');
+    return el('div', {}, [tips, slide, el('div', {class: 'nav'}, [prev, el('span', {class: 'pos', text: (state.slide + 1) + ' / ' + secs.length}), next])]);
+  }
+
+  // Keep the screen on while reading aloud (best effort).
+  function hold() {
+    try { if (navigator.wakeLock && !state.wake) navigator.wakeLock.request('screen').then(function (w) { state.wake = w; }, function () {}); } catch (e) {}
+  }
+  function release() { try { if (state.wake) state.wake.release(); } catch (e) {} state.wake = null; }
+
+  document.getElementById('tab-edit').addEventListener('click', function () { state.tab = 'edit'; release(); render(); });
+  document.getElementById('tab-read').addEventListener('click', function () { state.tab = 'read'; hold(); render(); });
+  document.getElementById('pick').addEventListener('change', function (e) { switchTo(e.target.value); });
+
+  var unsubEdits = null;
+  function switchTo(key) {
+    state.key = key; state.edits = {}; state.slide = 0;
+    if (unsubEdits) unsubEdits();
+    unsubEdits = state.db.collection('lessons/' + key + '/edits').onSnapshot(function (snap) {
+      var edits = {};
+      snap.docs.forEach(function (d) { edits[d.id] = d.data(); });
+      state.edits = edits;
+      // Don't redraw the editor under someone's typing; read view updates live.
+      if (state.tab === 'read' || !document.activeElement || document.activeElement.tagName !== 'TEXTAREA') render();
+    }, function () {});
+    render();
+  }
+
+  if (window.claude && window.claude.use) {
+    window.claude.use('db').then(function (db) {
+      if (!db) return;
+      state.db = db;
+      db.collection('lessons').orderBy('updatedAt', 'desc').onSnapshot(function (snap) {
+        state.lessons = snap.docs.map(function (d) { var x = d.data(); x.id = d.id; return x; });
+        if (!state.lessons.length) return;
+        if (!state.key || !lesson()) switchTo(state.lessons[0].id);
+        else if (state.tab === 'read' || !document.activeElement || document.activeElement.tagName !== 'TEXTAREA') render();
+      }, function () {});
+    });
+  }
+})();
+</script>
