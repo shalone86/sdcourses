@@ -17,3 +17,14 @@ export const pop = (frame: number, start: number, fps: number) =>
 
 /** stroke-dashoffset style for SVG elements with pathLength={1}. */
 export const draw = (p: number) => ({strokeDasharray: 1, strokeDashoffset: 1 - p});
+
+/**
+ * Gentle idle motion so held frames never look frozen: a slow bob plus a
+ * very slight drift-zoom across the scene. `seed` varies the phase per scene.
+ */
+export const float = (frame: number, fps: number, duration: number, seed = 0) => {
+  const t = frame / fps;
+  const y = Math.sin(t * ((2 * Math.PI) / 6) + seed) * 6; // ±6px, 6s period
+  const s = 1 + 0.015 * Math.min(1, frame / Math.max(1, duration)); // +1.5% over the scene
+  return `translateY(${y.toFixed(2)}px) scale(${s.toFixed(4)})`;
+};

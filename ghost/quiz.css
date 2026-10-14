@@ -16,3 +16,4 @@
 .cc-retry { all: unset; cursor: pointer; text-decoration: underline; margin-left: .75em; font-weight: 400; }
 .cc-video { margin: 0 0 2em; }
 .cc-video video { width: 100%; height: auto; border-radius: 8px; display: block; background: #F5F0E6; aspect-ratio: 16 / 9; }
+.cc-credit { margin-top: 2em; font-size: .85em; opacity: .75; }

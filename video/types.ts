@@ -17,5 +17,6 @@ export type LessonProps = {
   number: number;
   title: string;
   headings: string[];
+  credit?: string;
   segments: Segment[];
 };

@@ -32,11 +32,19 @@ scripts/                          prepare · stills · render · post · publish
    automatically, and the video times itself to your voice.
 5. **Tweak (optional):** `npm run studio`, then load `dist/…/props.json`
    as props to scrub through the video and adjust.
-6. **Render:** `npm run render -- <course>/<lesson>` writes `dist/…/lesson.mp4`
+6. **Check quotes:** `npm run check -- <course>/<lesson>` confirms every
+   quotation appears word for word in a primary source (Scripture, the
+   Catechism, the Catholic Encyclopedia). Wikipedia is background only.
+7. **Render:** `npm run render -- <course>/<lesson>` writes `dist/…/lesson.mp4`
    (small web copy) and `poster.jpg`. Add `--720` for an even smaller file.
-7. **Publish:** `npm run publish -- <course>/<lesson>` uploads the video and
+8. **Publish:** `npm run publish -- <course>/<lesson>` uploads the video and
    creates a **draft** post in Ghost (see `scripts/publish.mjs` for the API key
-   setup). Review it in Ghost and press Publish.
+   setup). It refuses to run until the lesson says `status: reviewed`, your
+   name is in `site.yml`, and the quote check passes. Review the draft in
+   Ghost and press Publish.
+
+Every post ends with the AI-assistance credit from `site.yml`, and the video's
+closing card carries a short version of it.
 
 Without the API key, `npm run post -- <course>/<lesson>` writes `post.html`. Paste
 it into a Ghost HTML card and swap in the video URL by hand.

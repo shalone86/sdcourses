@@ -11,14 +11,22 @@ excerpt: >-
   the four answers that explain everything else about the papacy.
 
 sources:
-  - label: Catechism of the Catholic Church, 880–883, 936–937
+  - id: ccc
+    label: Catechism of the Catholic Church, 880–883, 936–937
     url: https://www.vatican.va/archive/ENG0015/__P2A.HTM
-  - label: "Catholic Encyclopedia (1913): The Pope"
+  - id: ce-pope
+    label: "Catholic Encyclopedia (1913): The Pope"
     url: https://www.newadvent.org/cathen/12260a.htm
-  - label: "Wikipedia: Pope"
+  - id: wikipedia-pope
+    label: "Wikipedia: Pope"
     url: https://en.wikipedia.org/wiki/Pope
-  - label: Matthew 16:13–19; John 21:15–17
+    reference: true      # background only; quotations must come from primary sources
+  - id: matthew-16
+    label: Matthew 16:13–19 (NABRE)
     url: https://bible.usccb.org/bible/matthew/16
+  - id: john-21
+    label: John 21:15–17 (NABRE)
+    url: https://bible.usccb.org/bible/john/21
 
 intro:
   text: >-

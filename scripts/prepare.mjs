@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {ROOT, ffprobeDuration, lessonDir, loadLesson, outDir, words} from './lib.mjs';
+import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, words} from './lib.mjs';
 
 const FPS = 30;
 const HEADING_FRAMES = 66; // keep in sync with video/theme.ts
@@ -43,6 +43,7 @@ export function prepare(arg) {
     number: lesson.number,
     title: lesson.title,
     headings: lesson.points.map((p) => p.heading),
+    credit: loadSite().videoCredit,
     segments: out,
   };
   const dist = outDir(id);

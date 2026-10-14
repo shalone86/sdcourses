@@ -1,5 +1,5 @@
 import {AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
-import {ramp} from './anim';
+import {float, ramp} from './anim';
 import {SceneView} from './scenes';
 import {HEADING_FRAMES, theme} from './theme';
 import type {LessonProps, Segment} from './types';
@@ -23,7 +23,7 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
       {isPoint && <PointHeading seg={seg} total={lesson.headings.length} />}
       {seg.scenes.map((scene, i) => (
         <Sequence key={i} from={start + i * per} durationInFrames={i === seg.scenes.length - 1 ? undefined : per}>
-          <SceneShell last={i === seg.scenes.length - 1} duration={per} top={isPoint ? 250 : 110}>
+          <SceneShell last={i === seg.scenes.length - 1} duration={per} top={isPoint ? 250 : 110} seed={i * 2.1 + seg.index}>
             <SceneView scene={scene} lesson={lesson} duration={per} />
           </SceneShell>
         </Sequence>
@@ -33,10 +33,11 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
 };
 
 /** Crossfade between scenes inside a segment; the segment itself fades at its end. */
-const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: number; top: number}> = ({children, last, duration, top}) => {
+const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: number; top: number; seed: number}> = ({children, last, duration, top, seed}) => {
   const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
   const opacity = ramp(frame, 0, FADE) * (last ? 1 : 1 - ramp(frame, duration - FADE, duration));
-  return <AbsoluteFill style={{opacity, top, bottom: 110, height: 'auto'}}>{children}</AbsoluteFill>;
+  return <AbsoluteFill style={{opacity, top, bottom: 110, height: 'auto', transform: float(frame, fps, duration, seed)}}>{children}</AbsoluteFill>;
 };
 
 /** Point number + heading: large and centered, then settles into the top bar. */

@@ -2,7 +2,7 @@
 // Run: npm run post -- <course>/<lesson>
 import fs from 'node:fs';
 import path from 'node:path';
-import {ROOT, lessonDir, loadLesson, outDir} from './lib.mjs';
+import {ROOT, lessonDir, loadLesson, loadSite, outDir} from './lib.mjs';
 
 export const VIDEO_PLACEHOLDER = '__VIDEO_URL__';
 export const POSTER_PLACEHOLDER = '__POSTER_URL__';
@@ -41,6 +41,7 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
     `<p>${smart(outro.text)}</p>`,
     htmlCard(`<section class="cc-quiz" data-lesson="${esc(lesson.slug)}"><h2>Check your understanding</h2><p class="cc-quiz-intro">One question for each point. Your answers stay on your device.</p>${fallback}<script type="application/json">${json}</script></section>`),
     `<h3>Sources</h3>\n<ul>${lesson.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.label)}</a></li>`).join('')}</ul>`,
+    `<p class="cc-credit"><em>${esc(loadSite().disclosure)}</em></p>`,
   ].join('\n\n');
 
   const meta = {

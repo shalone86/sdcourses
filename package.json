@@ -9,7 +9,8 @@
     "post": "node scripts/build-post.mjs",
     "publish": "node scripts/publish.mjs",
     "typecheck": "tsc --noEmit",
-    "stills": "node scripts/stills.mjs"
+    "stills": "node scripts/stills.mjs",
+    "check": "node scripts/check-quotes.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.530",

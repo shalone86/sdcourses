@@ -1,5 +1,5 @@
 import {useCurrentFrame, useVideoConfig} from 'remotion';
-import {enter, pop} from '../anim';
+import {enter, pop, ramp} from '../anim';
 import {theme} from '../theme';
 import {Center} from './Center';
 import {Check} from './Check';
@@ -18,6 +18,12 @@ export const Recap: React.FC<SceneProps> = ({lesson, duration}) => {
           <div style={{fontFamily: theme.serif, fontSize: 72}}>{h}</div>
         </div>
       ))}
+      {lesson.credit && (
+        <div style={{position: 'absolute', left: 0, right: 0, bottom: 20, textAlign: 'center', opacity: ramp(f, duration * 0.6, duration * 0.6 + 20),
+          fontFamily: theme.sans, fontSize: 24, letterSpacing: 1, color: theme.muted}}>
+          {lesson.credit}
+        </div>
+      )}
     </Center>
   );
 };

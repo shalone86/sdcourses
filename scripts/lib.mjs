@@ -38,3 +38,14 @@ export function outDir(id) {
   fs.mkdirSync(d, {recursive: true});
   return d;
 }
+
+/** Site-wide settings (author, AI disclosure) with {author} filled in. */
+export function loadSite() {
+  const site = YAML.parse(fs.readFileSync(path.join(ROOT, 'site.yml'), 'utf8')) ?? {};
+  const author = (site.author ?? '').trim();
+  const fill = (t) => (t ?? '').trim().replace(/\s+/g, ' ')
+    .replace(/\{author\}/g, author || 'the author')
+    // Without a name, drop the "Narrated by …" part of short credits.
+    .replace(/^Narrated by the author · /, '');
+  return {author, disclosure: fill(site.disclosure), videoCredit: fill(site.video_credit)};
+}

@@ -8,8 +8,9 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import {execFileSync} from 'node:child_process';
 import {buildPost} from './build-post.mjs';
-import {lessonDir, loadLesson} from './lib.mjs';
+import {lessonDir, loadLesson, loadSite} from './lib.mjs';
 
 const {GHOST_URL, GHOST_ADMIN_API_KEY} = process.env;
 if (!GHOST_URL || !GHOST_ADMIN_API_KEY) throw new Error('Set GHOST_URL and GHOST_ADMIN_API_KEY first (see the comment at the top of this file).');
@@ -43,7 +44,16 @@ async function upload(kind, file, type) {
 }
 
 const arg = process.argv[2];
-const {id} = loadLesson(lessonDir(arg));
+const {id, lesson} = loadLesson(lessonDir(arg));
+
+// A person signs off on every lesson before it can reach the site.
+if (lesson.status !== 'reviewed') throw new Error(`lesson.yml says status: ${lesson.status}. Read and edit it, then set status: reviewed.`);
+if (!loadSite().author) throw new Error('Add your name as `author` in site.yml (it goes in the credit line).');
+try {
+  execFileSync(process.execPath, [path.join(path.dirname(new URL(import.meta.url).pathname), 'check-quotes.mjs'), arg], {stdio: 'inherit'});
+} catch {
+  throw new Error('Quotation check failed; fix the quotes above before publishing.');
+}
 const dist = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'dist', id);
 for (const f of ['lesson.mp4', 'poster.jpg']) {
   if (!fs.existsSync(path.join(dist, f))) throw new Error(`Missing ${f}; run npm run render -- ${arg} first`);
