@@ -30,7 +30,14 @@ async function fetchSource(src, cacheDir) {
   let url = src.url;
   const wiki = url.match(/^https:\/\/en\.wikipedia\.org\/wiki\/(.+)$/);
   if (wiki) url = `https://en.wikipedia.org/api/rest_v1/page/html/${wiki[1]}`;
-  const res = await fetch(url, {headers: {'User-Agent': 'sdcourses-quote-check/1.0'}});
+  // bible.usccb.org sometimes turns scripts away for a minute or two (403):
+  // wait politely and ask again rather than fail. Pages are cached after one success.
+  let res;
+  for (const wait of [0, 20, 60]) {
+    if (wait) { console.warn(`  … ${src.label} didn't answer; asking again in ${wait} s`); await new Promise((r) => setTimeout(r, wait * 1000)); }
+    res = await fetch(url, {headers: {'User-Agent': 'sdcourses-quote-check/1.0'}});
+    if (res.ok || ![403, 429, 503].includes(res.status)) break;
+  }
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const buf = Buffer.from(await res.arrayBuffer());
   const ctype = res.headers.get('content-type') ?? '';
