@@ -1,13 +1,16 @@
 // Minimal Ghost Admin API client (no dependencies).
-// Needs GHOST_URL and GHOST_ADMIN_API_KEY in the environment; see README.
+// Reads COURSES_GHOST_URL and COURSES_GHOST_ADMIN_API_KEY (names specific to
+// the courses site, so another Ghost site's key can live in the same
+// environment without mix-ups); see README.
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
 export function ghost() {
-  const {GHOST_URL, GHOST_ADMIN_API_KEY} = process.env;
+  const GHOST_URL = process.env.COURSES_GHOST_URL;
+  const GHOST_ADMIN_API_KEY = process.env.COURSES_GHOST_ADMIN_API_KEY;
   if (!GHOST_URL || !GHOST_ADMIN_API_KEY) {
-    throw new Error('GHOST_URL and GHOST_ADMIN_API_KEY are not set. Add them in the cloud environment settings (see README → Publishing from chat).');
+    throw new Error('COURSES_GHOST_URL and COURSES_GHOST_ADMIN_API_KEY are not set. Add them in the cloud environment settings (see README → Publishing from chat).');
   }
   const site = GHOST_URL.replace(/\/$/, '');
   const api = `${site}/ghost/api/admin`;

@@ -45,8 +45,8 @@ Claude does the file work. Start a lesson with `/lesson` (see
 Rendering in the cloud container: prefix with
 `REMOTION_BROWSER=$(ls -d /opt/pw-browsers/chromium_headless_shell-*/*/headless_shell | head -1)`.
 
-Ghost publishing needs `GHOST_URL` and `GHOST_ADMIN_API_KEY` in the
-environment (cloud environment settings). Never ask Shalone to paste the key
+Ghost publishing needs `COURSES_GHOST_URL` and `COURSES_GHOST_ADMIN_API_KEY`
+(the courses site, not Shalone's other Ghost site) in the environment (cloud environment settings). Never ask Shalone to paste the key
 into chat.
 
 Audio: Shalone uploads recordings in chat. Copy them to the lesson's `audio/`

@@ -27,9 +27,10 @@ draft. She presses Publish in Ghost.
 One-time setup, in the cloud environment's settings (environment menu in the
 session title bar → Edit):
 
-1. **Environment variables:** `GHOST_URL=https://your-site.com` and
-   `GHOST_ADMIN_API_KEY=<key>`. Get the key in Ghost Admin → Settings →
-   Integrations → Add custom integration → Admin API key. Don't paste it
+1. **Environment variables:** `COURSES_GHOST_URL=https://your-courses-site.com` and
+   `COURSES_GHOST_ADMIN_API_KEY=<key>`. Get the key in the **courses** site's
+   Ghost Admin → Settings → Integrations → Add custom integration → Admin API
+   key (each Ghost site has its own). Don't paste it
    into chat.
 2. **Network access:** add your Ghost site's domain under Allowed domains
    (keep "Allow package managers" ticked).
