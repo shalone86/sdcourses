@@ -1,0 +1,28 @@
+{
+  "name": "catholic-courses",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare-lesson": "node scripts/prepare.mjs",
+    "studio": "remotion studio video/index.ts",
+    "render": "node scripts/render.mjs",
+    "post": "node scripts/build-post.mjs",
+    "publish": "node scripts/publish.mjs",
+    "typecheck": "tsc --noEmit",
+    "stills": "node scripts/stills.mjs"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.530",
+    "@remotion/cli": "4.0.530",
+    "@remotion/fonts": "^4.0.530",
+    "@remotion/renderer": "4.0.530",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.530",
+    "yaml": "2.6.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}

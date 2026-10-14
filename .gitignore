@@ -1,0 +1,5 @@
+node_modules/
+dist/
+# Generated from courses/*/audio by `npm run prepare-lesson`
+video/public/*/
+!video/public/fonts/

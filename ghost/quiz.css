@@ -1,0 +1,18 @@
+/* Lesson quiz. Uses the theme's fonts/colors when available. */
+.cc-quiz { margin: 2.5em 0; padding: 1.5em; border: 1px solid rgba(0,0,0,.12); border-radius: 12px; }
+.cc-quiz h2 { margin: 0 0 .25em; font-size: 1.4em; }
+.cc-quiz-intro { margin: 0 0 1.25em; opacity: .75; font-size: .95em; }
+.cc-q { margin: 0 0 1.5em; }
+.cc-q-text { font-weight: 600; margin: 0 0 .6em; }
+.cc-opts { display: grid; gap: .5em; }
+.cc-opt { all: unset; box-sizing: border-box; display: block; padding: .7em 1em; border: 1px solid rgba(0,0,0,.18); border-radius: 8px; cursor: pointer; font: inherit; line-height: 1.4; }
+.cc-opt:hover:not([disabled]), .cc-opt:focus-visible { border-color: currentColor; }
+.cc-opt[disabled] { cursor: default; }
+.cc-opt.is-right { border-color: #2f6b3a; background: rgba(47,107,58,.08); }
+.cc-opt.is-wrong { border-color: #8a2230; background: rgba(138,34,48,.08); }
+.cc-why { margin: .6em 0 0; padding: .7em 1em; border-left: 3px solid currentColor; font-size: .95em; opacity: .9; }
+.cc-why[hidden] { display: none; }
+.cc-score { font-weight: 600; margin: 0; }
+.cc-retry { all: unset; cursor: pointer; text-decoration: underline; margin-left: .75em; font-weight: 400; }
+.cc-video { margin: 0 0 2em; }
+.cc-video video { width: 100%; height: auto; border-radius: 8px; display: block; background: #F5F0E6; aspect-ratio: 16 / 9; }
