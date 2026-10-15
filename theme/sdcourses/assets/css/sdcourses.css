@@ -111,6 +111,9 @@
 .cc-btn:hover { opacity: 0.9; }
 .cc-btn-quiet { background: transparent; color: var(--cc-accent); }
 
+/* The course slider only appears once a course is Featured in Ghost. */
+.gh-header.is-slider:not(:has(.swiper-slide)) { display: none; }
+
 /* ---------- Video lessons ---------- */
 
 .cc-lesson-label {

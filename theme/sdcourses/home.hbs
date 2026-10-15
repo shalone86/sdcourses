@@ -10,7 +10,8 @@
                 <p class="cc-hero-text">{{@custom.hero_text}}</p>
             {{/if}}
             <div class="cc-hero-actions">
-                <a class="cc-btn" href="{{@site.url}}/tag/_courses/">Browse the courses</a>
+                {{!-- Ghost gives the real address (this site uses /topic/ for tags) --}}
+                {{#get "tags" filter="slug:_courses" limit="1"}}{{#foreach tags}}<a class="cc-btn" href="{{url}}">Browse the courses</a>{{/foreach}}{{/get}}
                 {{#if @site.members_enabled}}{{#unless @member}}
                     <a class="cc-btn cc-btn-quiet" href="#/portal/signup" data-portal="signup">Get new lessons by email</a>
                 {{/unless}}{{/if}}

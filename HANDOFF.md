@@ -49,8 +49,10 @@ Lesson 1 is approved and saved there as a draft.
 **New Ghost theme:** `theme/sdcourses` (from her Novel theme). Previewed on a
 private local Ghost (`theme/.ghost-local`, test login in its
 `test-login.json`; start it with `cd theme/.ghost-local && NODE_ENV=development
-npx -y -p node@22 -- node current/index.js`). Not on the live site yet: upload
-and activate only when she says so. Build: `cd theme/sdcourses && npm run zip`.
+npx -y -p node@22 -- node current/index.js`). **Live since 2026-10-15** (her go-ahead). Update it by
+uploading a new zip via the Admin API (`POST /themes/upload/`, same name keeps it
+active); her old Novel theme is still installed for rollback. This site's
+addresses are custom: lessons `/course/<slug>/`, courses `/topic/<slug>/`. Build: `cd theme/sdcourses && npm run zip`.
 
 **Redo every course:** `courses/ROADMAP.md` lists all 27 courses and their
 posts from the live site. One course at a time: script together (/lesson),
@@ -59,8 +61,8 @@ she records, publish, tick it off. Course pictures: `npm run cover`, set
 
 ## Next
 
-1. She reviews the theme preview; on her go-ahead, upload and activate it on
-   the live site, then set Brand accent #7A1F2B and mark courses Featured.
+1. She sets Brand accent #7A1F2B and marks 3–5 courses Featured (the home
+   slider stays hidden until one is).
 2. Publish the Pope course picture (`npm run publish-course -- what-is-the-pope`)
    and resend lesson 1 so it gets #book and All Courses.
 3. Her rewrite of `pages/how-these-lessons-are-made.md` (needs a contact line).
