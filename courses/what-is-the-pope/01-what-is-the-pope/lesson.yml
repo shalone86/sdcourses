@@ -3,7 +3,7 @@
 #   quotation is read aloud, shown on screen, and checked word for word
 #   against `source` by `npm run check`. `text` is the short explanation.
 #   intro/outro are written by Shalone.
-status: draft            # draft -> reviewed (Shalone) -> published
+status: reviewed            # draft -> reviewed (Shalone) -> published
 course: what-is-the-pope
 number: 1
 slug: what-is-the-pope
