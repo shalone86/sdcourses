@@ -1,7 +1,11 @@
 // Renders every .cc-quiz block on the page from its embedded JSON.
 // Question types: choice, truefalse, blank. Results stay in this browser
-// only (localStorage), keyed by lesson.
+// only (localStorage), keyed by lesson. Built into the theme
+// (theme/sdcourses) and usable on its own via Code Injection; when both are
+// present it runs once. Fires a `cc-quiz-done` event when finished.
 (function () {
+  if (window.ccQuizLoaded) return;
+  window.ccQuizLoaded = true;
   function el(tag, cls, text) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -118,6 +122,7 @@
       score.appendChild(retry);
       var prev = store(key) || {};
       store(key, {best: Math.max(prev.best || 0, right), total: data.questions.length, at: Date.now()});
+      document.dispatchEvent(new CustomEvent('cc-quiz-done', {detail: {lesson: root.getAttribute('data-lesson'), right: right, total: data.questions.length}}));
     }
   }
 

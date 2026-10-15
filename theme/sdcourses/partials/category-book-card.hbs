@@ -1,0 +1,45 @@
+<article class="category-card category-book-card gh-card">
+    <a class="category-card-link gh-card-link" href="{{primary_tag.url}}">
+        {{#if primary_tag.feature_image}}
+            <figure class="gh-card-image">
+                <img srcset="{{img_url primary_tag.feature_image size="xs" format="webp"}} 160w,
+                            {{img_url primary_tag.feature_image size="s" format="webp"}} 320w,
+                            {{img_url primary_tag.feature_image size="m" format="webp"}} 600w,
+                            {{img_url primary_tag.feature_image size="l" format="webp"}} 960w,
+                            {{img_url primary_tag.feature_image size="xl" format="webp"}} 1200w,
+                            {{img_url primary_tag.feature_image size="xxl" format="webp"}} 2000w"
+                     sizes="{{#if imageSizes}}{{imageSizes}}{{else}}320px{{/if}}"
+                     src="{{img_url primary_tag.feature_image size="m"}}"
+                     alt="{{#if primary_tag}}{{concat primary_tag.name " cover"}}{{/if}}"
+                     {{#if lazyLoad}}loading="lazy"{{/if}}
+                >
+            </figure>
+        {{/if}}
+        <div class="gh-card-wrapper">
+            <div class="gh-card-tag">
+                {{#if featured}}
+                    <div class="card-tag-featured">{{> "icons/fire"}} <span>Featured</span></div>
+                {{/if}}
+            </div>
+            {{#if primary_tag}}
+                {{#if primary_tag.name}}
+                    <h3 class="gh-card-title is-title">{{primary_tag.name}}</h3>
+                {{/if}}
+
+                {{#if primary_tag.description}}
+                    <p class="gh-card-excerpt is-body">{{primary_tag.description}}</p>
+                {{/if}}
+            {{/if}}
+            <footer class="gh-card-meta">
+                {{#if @custom.show_author}}
+                    <span class="gh-card-author">
+                        By {{#foreach authors}}{{#if @first}}{{name}}{{else}}, {{name}}{{/if}}{{/foreach}}
+                    </span>
+                {{/if}}
+                {{#if @custom.show_publish_date}}
+                    <time class="gh-card-date" datetime="{{date format="YYYY-MM-DD"}}">{{date}}</time>
+                {{/if}}
+            </footer>
+        </div>
+    </a>
+</article>

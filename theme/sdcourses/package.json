@@ -1,0 +1,218 @@
+{
+  "name": "sdcourses",
+  "description": "Free Catholic Courses theme (based on Novel by Rakihub): lessons with video, quiz and progress.",
+  "version": "2.0.0",
+  "engines": {
+    "ghost": ">=5.0.0"
+  },
+  "license": "MIT",
+  "screenshots": {
+    "desktop": "assets/screenshot-desktop.jpg",
+    "mobile": "assets/screenshot-mobile.jpg"
+  },
+  "scripts": {
+    "dev": "rollup -c --environment BUILD:development -w",
+    "test": "gscan .",
+    "test:ci": "gscan --fatal --verbose .",
+    "build": "rollup -c --environment BUILD:production",
+    "zip": "mkdir -p dist && npm run build && bestzip ./dist/$npm_package_name.zip assets/* partials/* splashscreens/* *.hbs sw.js package.json README.md",
+    "pretest": "npm run build"
+  },
+  "author": {
+    "name": "Rakihub",
+    "email": "hello@rakihub.com",
+    "url": "https://rakihub.com"
+  },
+  "gpm": {
+    "type": "theme",
+    "categories": [
+      "Beautiful",
+      "Clean",
+      "Minimal",
+      "Novel",
+      "Blog"
+    ]
+  },
+  "keywords": [
+    "ghost",
+    "theme",
+    "ghost-theme"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.0",
+    "bestzip": "^2.2.1",
+    "gscan": "4.43.1",
+    "postcss": "^8.4.38",
+    "postcss-import": "^16.1.0",
+    "postcss-preset-env": "^8.0.1",
+    "rollup": "^3.29.4",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-postcss": "^4.0.2"
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "config": {
+    "posts_per_page": 12,
+    "image_sizes": {
+      "xs": {
+        "width": 160
+      },
+      "s": {
+        "width": 320
+      },
+      "m": {
+        "width": 600
+      },
+      "l": {
+        "width": 960
+      },
+      "xl": {
+        "width": 1200
+      },
+      "xxl": {
+        "width": 2000
+      }
+    },
+    "card_assets": true,
+    "custom": {
+      "navigation_layout": {
+        "type": "select",
+        "options": [
+          "Logo in the middle",
+          "Logo on the left",
+          "Stacked"
+        ],
+        "default": "Logo in the middle"
+      },
+      "site_background_color": {
+        "type": "color",
+        "default": "#F5F0E6"
+      },
+      "header_and_footer_color": {
+        "type": "select",
+        "options": [
+          "Background color",
+          "Accent color"
+        ],
+        "default": "Background color"
+      },
+      "title_font": {
+        "type": "select",
+        "options": [
+          "Modern sans-serif",
+          "Elegant serif",
+          "Consistent mono"
+        ],
+        "default": "Elegant serif"
+      },
+      "body_font": {
+        "type": "select",
+        "options": [
+          "Modern sans-serif",
+          "Elegant serif"
+        ],
+        "default": "Elegant serif"
+      },
+      "header_style": {
+        "type": "select",
+        "options": [
+          "Featured slider",
+          "Landing",
+          "Search",
+          "Off"
+        ],
+        "default": "Featured slider",
+        "group": "homepage"
+      },
+      "header_text": {
+        "type": "text",
+        "group": "homepage",
+        "description": "Defaults to site description when empty",
+        "visibility": "header_style:[Landing, Search]"
+      },
+      "background_image": {
+        "type": "boolean",
+        "default": true,
+        "description": "Use the publication cover set on the Brand tab as your background",
+        "group": "homepage",
+        "visibility": "header_style:[Landing, Search]"
+      },
+      "featured_category_tags": {
+        "type": "text",
+        "default": "all",
+        "description": "Use the tag slugs separated by commas without spaces, e.g, '_novel,_tech'",
+        "group": "homepage"
+      },
+      "featured_category_tags_limit": {
+        "type": "text",
+        "default": 4,
+        "description": "Limit the category tags number. Accept number or text 'all'.",
+        "group": "homepage"
+      },
+      "featured_category_posts_limit": {
+        "type": "text",
+        "default": 4,
+        "description": "The maximum number of posts displayed in each category. Accept number or text 'all'.",
+        "group": "homepage"
+      },
+      "tag_cloud": {
+        "type": "text",
+        "default": "all",
+        "description": "Accept 'all' or  tag slugs separated by commas without spaces, e.g, '_novel,_romance'",
+        "group": "homepage"
+      },
+      "subscribe_heading": {
+        "type": "text",
+        "default": "Subscribe to our newsletter",
+        "description": "Used in your subscribe section across your theme.",
+        "group": "homepage"
+      },
+      "subscribe_subheading": {
+        "type": "text",
+        "default": "Get the latest news, updates and guides.",
+        "group": "homepage"
+      },
+      "post_feed_style": {
+        "type": "select",
+        "options": [
+          "Grid",
+          "List"
+        ],
+        "default": "Grid",
+        "group": "homepage"
+      },
+      "show_images_in_feed": {
+        "type": "boolean",
+        "default": true,
+        "group": "homepage",
+        "visibility": "post_feed_style:List"
+      },
+      "show_author": {
+        "type": "boolean",
+        "default": true,
+        "group": "homepage"
+      },
+      "show_publish_date": {
+        "type": "boolean",
+        "default": true,
+        "group": "homepage"
+      }
+    }
+  },
+  "type": "module",
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "dependencies": {
+    "alpinejs": "^3.14.1",
+    "imagesloaded": "^5.0.0",
+    "photoswipe": "4.1.3",
+    "reframe.js": "^4.0.2",
+    "swiper": "^11.1.12",
+    "tocbot": "^4.29.0"
+  }
+}

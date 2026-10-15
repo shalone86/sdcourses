@@ -1,0 +1,19 @@
+<div class="slider-card slider-card-img swiper-slide">
+    {{#if primary_tag.feature_image}}
+        <a class="slider-card-link" href="{{primary_tag.url}}" aria-label="{{primary_tag.name}} Link">
+            <figure>
+                <img srcset="{{img_url primary_tag.feature_image size="xs" format="webp"}} 160w,
+                            {{img_url primary_tag.feature_image size="s" format="webp"}} 320w,
+                            {{img_url primary_tag.feature_image size="m" format="webp"}} 600w,
+                            {{img_url primary_tag.feature_image size="l" format="webp"}} 960w,
+                            {{img_url primary_tag.feature_image size="xl" format="webp"}} 1200w,
+                            {{img_url primary_tag.feature_image size="xxl" format="webp"}} 2000w"
+                     sizes="{{#if imageSizes}}{{imageSizes}}{{else}}320px{{/if}}"
+                     src="{{img_url primary_tag.feature_image size="m"}}" alt="{{primary_tag.name}} Cover"
+                     {{#if lazyLoad}}loading="lazy"{{/if}}
+                >
+            </figure>
+        </a>
+    {{/if}}
+</div>
+

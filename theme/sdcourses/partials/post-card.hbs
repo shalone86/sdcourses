@@ -1,0 +1,7 @@
+{{#foreach tags visibility="internal" limit=1}}
+    {{#match slug "=" "hash-book"}}
+        {{> "post-book-card" lazyLoad=lazyLoad post=../this}}
+    {{else match slug "=" "hash-blog"}}
+        {{> "post-blog-card" lazyLoad=lazyLoad post=../this}}
+    {{/match}}
+{{/foreach}}

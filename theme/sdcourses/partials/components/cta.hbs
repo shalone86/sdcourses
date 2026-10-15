@@ -1,0 +1,31 @@
+{{#if @site.members_enabled}}
+    {{#unless @member}}
+        {{#unless @site.members_invite_only}}
+            {{#match @custom.header_style "!=" "Landing"}}
+                {{#match @custom.header_style "!=" "Off"}}
+                    <section class="gh-cta gh-outer">
+                        <div class="gh-cta-inner gh-inner">
+                            <div class="gh-cta-content">
+                                <h2 class="gh-cta-title is-title">
+                                    {{#if @custom.subscribe_heading}}
+                                        {{@custom.subscribe_heading}}
+                                    {{else}}
+                                        {{@site.title}}
+                                    {{/if}}
+                                </h2>
+                                <p class="gh-cta-description is-body">
+                                    {{#if @custom.subscribe_subheading}}
+                                        {{@custom.subscribe_subheading}}
+                                    {{else}}
+                                        {{@site.description}}
+                                    {{/if}}
+                                </p>
+                            </div>
+                            {{> "email-subscription" email_field_id="cta-email"}}
+                        </div>
+                    </section>
+                {{/match}}
+            {{/match}}
+        {{/unless}}
+    {{/unless}}
+{{/if}}

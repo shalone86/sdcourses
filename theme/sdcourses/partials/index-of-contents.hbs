@@ -1,0 +1,30 @@
+<div class="index-of-contents">
+    <ul>
+        {{#get "tags" filter="slug:~^'{{primaryTag.slug}}_'" order="created_at asc"}}
+            {{#foreach tags}}
+                <li class="has-sublist" x-data="{subListOpen: true}">
+                    <button @click="subListOpen = !subListOpen">
+                        <span x-text="`{{name}}`.includes('_') ? `{{name}}`.split('_')[1] : `{{name}}`"></span>
+                        {{> "icons/arrow-down"}}
+                    </button>
+                    {{#get "posts" filter="tag:{{slug}}" include="tags" order="published_at asc"}}
+                        <ul class="sublist" x-show="subListOpen">
+                            {{#foreach posts}}
+                                {{> "index-of-contents-item"}}
+                            {{/foreach}}
+                        </ul>
+                    {{/get}}
+                </li>
+            {{else}}
+                {{{block "bookChapters"}}}
+            {{/foreach}}
+        {{/get}}
+        {{#contentFor "bookChapters"}}
+            {{#get "posts" filter="tag:{{primaryTag.slug}}" include="tags" order="published_at asc"}}
+                {{#foreach posts}}
+                    {{> "index-of-contents-item"}}
+                {{/foreach}}
+            {{/get}}
+        {{/contentFor}}
+    </ul>
+</div>

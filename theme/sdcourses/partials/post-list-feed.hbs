@@ -1,0 +1,25 @@
+<main class="gh-main">
+    <div class="gh-feed">
+
+        {{!-- Homepage --}}
+        {{#match feed "home"}}
+            {{#foreach posts}}
+                {{> "post-card" lazyLoad=true}}
+            {{/foreach}}
+        {{/match}}
+
+        {{!-- All posts --}}
+        {{#match feed "index"}}
+            {{#foreach posts}}
+                {{> "post-card" lazyLoad=true}}
+            {{/foreach}}
+        {{/match}}
+
+    </div>
+
+    {{#match pagination.pages ">" 1}}
+        <div class="gh-more is-title">
+            <button class="button-secondary gh-loadmore">Load more</button>
+        </div>
+    {{/match}}
+</main>

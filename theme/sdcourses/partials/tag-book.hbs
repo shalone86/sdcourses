@@ -1,0 +1,57 @@
+{{#tag}}
+    <section class="gh-archive{{#if feature_image}} has-image{{/if}} gh-inner">
+        <div class="gh-archive-inner">
+            <header class="gh-archive-wrapper" x-data="{categoriesHtml: ''}">
+                <div class="category-tag" x-html="categoriesHtml"></div>
+                <h1 class="gh-article-title is-title" x-text="`{{name}}`.replace('_', ' ')"></h1>
+
+                {{#get "posts" filter="primary_tag:{{slug}}+tag:hash-book" include="tags,authors" order="published_at asc" limit=1}}
+                    {{#foreach posts}}
+                        <div class="gh-article-meta">
+                             <div class="gh-article-author-image">
+                                {{#foreach authors}}
+                                    {{#if profile_image}}
+                                        <a href="{{url}}">
+                                            <img class="author-profile-image" src="{{img_url profile_image size="xs"}}" alt="{{name}}">
+                                        </a>
+                                    {{else}}
+                                        <a href="{{url}}">{{> "icons/avatar"}}</a>
+                                    {{/if}}
+                                {{/foreach}}
+                             </div>
+                            <div class="gh-article-meta-wrapper">
+                                <h4 class="gh-article-author-name">{{authors}}</h4>
+                                <div class="gh-article-meta-content">
+                                    {{{block "lastUpdate"}}}
+                                </div>
+                            </div>
+                        </div>
+                         <div x-init="categoriesHtml = $el.innerHTML" style="display: none">
+                            {{#foreach tags}}
+                                {{#match slug.[0] "=" "_"}}
+                                    <a class="gh-article-tag" href="{{url}}" aria-label="Category {{name}}" x-text="`{{name}}`[0] === '_' ? `{{name}}`.slice(1) : `{{name}}`"></a>
+                                {{/match}}
+                            {{/foreach}}
+                        </div>
+                    {{/foreach}}
+                {{/get}}
+
+                {{#if description}}
+                    <p class="gh-article-excerpt">{{description}}</p>
+                {{/if}}
+                <p class="cc-course-progress" data-cc-progress hidden></p>
+
+                {{#contentFor "lastUpdate"}}
+                    {{#get "posts" filter="primary_tag:{{slug}}" field="published_at" order="published_at desc" limit=1}}
+                        {{#foreach posts}}
+                            <time class="gh-article-meta-date" datetime="{{date format="YYYY-MM-DD"}}">Last Update: {{date}}</time>
+                        {{/foreach}}
+                    {{/get}}
+                {{/contentFor}}
+            </header>
+            {{> "feature-image"}}
+        </div>
+    </section>
+{{/tag}}
+
+{{> "components/post-list" feed="indexOfContents" primaryTag=tag postFeedStyle="list" showTitle=false showSidebar=true}}

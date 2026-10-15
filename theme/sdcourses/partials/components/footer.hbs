@@ -1,0 +1,29 @@
+<footer class="gh-footer{{#match @custom.header_and_footer_color "Accent color"}} has-accent-color{{/match}} gh-outer">
+    <div class="gh-footer-inner gh-inner">
+        <div class="footer-nav">
+            <div class="footer-nav-site">
+                <h3>{{@site.title}}</h3>
+                <p>{{@site.description}}</p>
+                <div class="social-links">
+                    {{#if @site.facebook}}
+                        <a href={{facebook_url}} target="_blank" rel="noopener noreferrer" aria-label="{{@site.title}} facebook link">{{>icons/facebook}}</a>
+                    {{/if}}
+                    {{#if @site.twitter}}
+                        <a href={{twitter_url}} target="_blank" rel="noopener noreferrer" aria-label="{{@site.title}} twitter link">{{>icons/twitter}}</a>
+                    {{/if}}
+                </div>
+            </div>
+            <nav class="gh-footer-menu">
+                {{navigation type="secondary"}}
+            </nav>
+        </div>
+        <div class="gh-footer-bar">
+            <span class="gh-footer-copyright">
+                 © 2024 {{@site.title}}
+            </span>
+            <div class="gh-footer-copyright">
+                Published with <a href="https://ghost.org" target="_blank" rel="noopener" aria-label="Ghost CMS official website link">Ghost</a> and <a href="{{@site.url}}" aria-label="{{@site.title}} Website link">{{@site.title}}</a>
+            </div>
+        </div>
+    </div>
+</footer>

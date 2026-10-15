@@ -1,0 +1,162 @@
+.gh-content {
+    position: relative;
+}
+
+/* index-of-contents-control-container  */
+.index-of-contents-control-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    grid-column: main;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    z-index: 99;
+    margin-top: 0 !important;
+}
+
+.index-of-contents-control-container.invisible{
+    display: none !important;
+}
+
+@media (min-width: 992px) {
+    .index-of-contents-control-container {
+        grid-column: main-end / wide-end !important;
+        padding-left: max(4vmin, 20px);
+        left: 0 !important;
+    }
+}
+
+.index-of-contents-control-inner {
+    position: sticky;
+    bottom: 80px;
+}
+
+.index-of-contents-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--color-primary-text) !important;
+    background-color: var(--background-color) !important;
+    border: 1px solid var(--color-border);
+    border-radius: 99px;
+    padding: 8px 8px;
+}
+
+.index-of-contents-button svg {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.index-of-contents-button:hover {
+    cursor: pointer;
+}
+
+/* index-of-contents-container  */
+
+.index-of-contents-container.float {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    margin-top: 0 !important;
+    padding: max(4vmin, 20px);
+    background-color: var(--background-color);
+    box-shadow: 0 25px 50px -12px var(--color-shadow);
+    z-index: 100;
+    overflow-y: auto;
+    scrollbar-color: var(--color-shadow) var(--background-color);
+}
+
+.index-of-contents-container.float .close-button {
+    background-color: transparent;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+:is(.index-of-contents-container, .index-of-contents) button {
+    border: none;
+    color: var(--color-primary-text);
+}
+
+:is(.index-of-contents-container, .index-of-contents) button:hover {
+    cursor: pointer;
+}
+
+.index-of-contents-container .index-of-contents-title {
+    margin-bottom: 30px;
+    display: block;
+    text-align: center;
+}
+
+.index-of-contents-container a {
+    text-decoration: none !important;
+    color: var(--color-primary-text) !important;
+}
+
+:is(.index-of-contents-container, .index-of-contents) a svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* index-of-contents  */
+
+.index-of-contents ul {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.index-of-contents .has-sublist {
+    margin-bottom: 30px !important;
+}
+
+.index-of-contents .sublist {
+    margin-top: 10px !important;
+}
+
+.index-of-contents li {
+    margin-top: 0 !important;
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.index-of-contents :is(button, a) {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.index-of-contents button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    background-color: var(--color-lighter-gray);
+}
+
+.post-template .index-of-contents button {
+    font-size: 1.4rem;
+    line-height: 1.2;
+}
+
+.index-of-contents a {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none !important;
+    color: var(--color-primary-text) !important;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.post-template .index-of-contents a {
+    font-size: 1.4rem;
+    line-height: 1.2;
+}
+
+.index-of-contents a:hover {
+    background-color: var(--color-lighter-gray);
+}

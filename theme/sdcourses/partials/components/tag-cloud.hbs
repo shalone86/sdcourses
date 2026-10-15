@@ -1,0 +1,24 @@
+<section class="gh-container tag-cloud-container no-image gh-outer">
+    <div class="gh-container-inner gh-inner">
+        <h2 class="gh-container-title">Tag Cloud</h2>
+        <div class="gh-main">
+            {{#match @custom.tag_cloud "=" "all"}}
+                {{#get "tags" filter="slug:~^'_'" include="count.posts" order="count.posts desc"}}
+                    {{#foreach tags}}
+                        <a class="gh-card" href="{{url}}" x-data="{tagName: `{{name}}`}"
+                           x-init="tagName = tagName[0] === '_'  ? tagName.slice(1) : tagName" x-text="tagName">
+                        </a>
+                    {{/foreach}}
+                {{/get}}
+            {{else}}
+                {{#get "tags" filter="slug:[{{@custom.tag_cloud}}]" include="count.posts" order="count.posts desc"}}
+                    {{#foreach tags}}
+                        <a href="{{url}}" x-data="{tagName: `{{name}}`}"
+                           x-init="tagName = tagName[0] === '_'  ? tagName.slice(1) : tagName" x-text="tagName">
+                        </a>
+                    {{/foreach}}
+                {{/get}}
+            {{/match}}
+        </div>
+    </div>
+</section>

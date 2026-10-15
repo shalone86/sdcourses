@@ -63,7 +63,10 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
     title: lesson.title,
     slug: lesson.slug,
     custom_excerpt: lesson.excerpt.trim(),
-    tags: [course.title, '#lesson'],
+    // Course tag first (it's the post's primary tag: course page, prev/next).
+    // The first lesson also carries #book and the course's categories, which
+    // is how the theme lists a course on the home page and category pages.
+    tags: [course.title, '#lesson', ...(lesson.number === 1 ? ['#book', ...(course.categories ?? ['All Courses'])] : [])],
     courseSlug: course.slug,
     number: lesson.number,
   };

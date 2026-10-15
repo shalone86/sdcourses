@@ -1,0 +1,10 @@
+<li>
+    <a href="{{url}}" data-cc-slug="{{slug}}"{{#has tag="#lesson"}} data-cc-lesson{{/has}} x-init="if (`{{slug}}` === currentSlug) {$el.scrollIntoView({ behavior: 'smooth', block: 'center' }); $el.style.fontWeight = 'bold'}">
+        <span>{{title}}</span>
+        {{#unless access}}
+            {{^has visibility="public"}}
+                {{> "icons/lock"}}
+            {{/has}}
+        {{/unless}}
+    </a>
+</li>

@@ -1,0 +1,15 @@
+{{#tag}}
+    <section class="gh-archive{{#if feature_image}} has-image{{/if}} gh-inner">
+        <div class="gh-archive-inner">
+            <header class="gh-archive-wrapper">
+                <h1 class="gh-article-title is-title" x-data x-text="`{{name}}`[0] === '_'  ? `{{name}}`.slice(1) : `{{name}}`"></h1>
+                {{#if description}}
+                    <p class="gh-article-excerpt">{{description}}</p>
+                {{/if}}
+            </header>
+            {{> "feature-image"}}
+        </div>
+    </section>
+{{/tag}}
+
+{{> "components/post-list" feed="categoryArchive" authorOrTagSlug=tag.slug postFeedStyle=@custom.post_feed_style showTitle=false showSidebar=true}}

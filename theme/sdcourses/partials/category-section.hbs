@@ -1,0 +1,21 @@
+<div class="gh-container-inner gh-inner category-section"
+     x-data="{categoryTag: `{{name}}`, categoryUrl: `{{url}}`}"
+     x-init="categoryTag = categoryTag[0] === '_'  ? categoryTag.slice(1) : categoryTag">
+    <main :class="'gh-main category-' + categoryTag.toLowerCase()">
+         <a href="{{url}}" :aria-label="'Category' + categoryTag.toLowerCase() + 'link'" class="gh-container-title category-section-title is-title title-with-arrow">
+             <h4 x-text="categoryTag"></h4>
+             {{> "icons/arrow"}}
+         </a>
+        <div class="gh-feed category-feed">
+            {{#get "posts" filter="tag:{{slug}}+tag:[hash-book,hash-blog]" include="tags,authors" limit=@custom.featured_category_posts_limit}}
+                {{#foreach posts}}
+                    {{#has tag="#book"}}
+                        {{> "category-book-card" lazyLoad=true}}
+                    {{else has tag="#blog"}}
+                        {{> "category-blog-card" lazyLoad=true}}
+                    {{/has}}
+                {{/foreach}}
+            {{/get}}
+        </div>
+    </main>
+</div>

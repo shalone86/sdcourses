@@ -1,0 +1,14 @@
+<article class="slider-card slider-card-content swiper-slide">
+    <a class="slider-card-link" href="{{primary_tag.url}}">
+        <h1 class="slider-card-title gh-header-title is-title">{{primary_tag.name}}</h1>
+        {{#if primary_tag.description}}
+            <p class="slider-card-excerpt is-body">{{primary_tag.description}}</p>
+        {{/if}}
+        {{#if @custom.show_author}}
+            <span class="slider-card-author gh-card-meta">
+                By {{#foreach authors}}{{#if @first}}{{name}}{{else}}, {{name}}{{/if}}{{/foreach}}
+            </span>
+        {{/if}}
+    </a>
+</article>
+

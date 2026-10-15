@@ -1,0 +1,57 @@
+<article class="gh-card post-card {{post_class}}{{#if @custom.show_images_in_feed}}{{#if post.feature_image}} has-image{{/if}}{{else}} no-image{{/if}}">
+    <a class="gh-card-link" href="{{post.url}}">
+        {{#if post.feature_image}}
+            <figure class="gh-card-image">
+                <img
+                    srcset="{{img_url post.feature_image size="xs" format="webp"}} 160w,
+                            {{img_url post.feature_image size="s" format="webp"}} 320w,
+                            {{img_url post.feature_image size="m" format="webp"}} 600w,
+                            {{img_url post.feature_image size="l" format="webp"}} 960w,
+                            {{img_url post.feature_image size="xl" format="webp"}} 1200w,
+                            {{img_url post.feature_image size="xxl" format="webp"}} 2000w"
+                    sizes="{{#if imageSizes}}{{imageSizes}}{{else}}320px{{/if}}"
+                    src="{{img_url post.feature_image size="m"}}"
+                    alt="{{#if post.feature_image.feature_image_alt}}{{post.feature_image.feature_image_alt}}{{else}}{{title}}{{/if}}"
+                    {{#if lazyLoad}}loading="lazy"{{/if}}
+                >
+            </figure>
+        {{/if}}
+        <div class="gh-card-wrapper">
+
+            <div class="gh-card-tag">
+                {{#if post.primary_tag}}
+                    <p x-data="{tagName: `{{post.primary_tag.name}}`}"
+                       x-init="tagName = tagName[0] === '_'  ? tagName.slice(1) : tagName">
+                        {{post.primary_tag.name}}
+                    </p>
+                {{/if}}
+                {{#unless post.access}}
+                    {{^match post.visibility "=" "public"}}
+                        {{> "icons/lock"}}
+                    {{/match}}
+                {{/unless}}
+                {{#if featured}}
+                    <div class="card-tag-featured">{{> "icons/fire"}} <span>Featured</span></div>
+                {{/if}}
+            </div>
+
+            <h3 class="gh-card-title is-title">{{post.title}}</h3>
+            {{#if post.custom_excerpt}}
+                <p class="gh-card-excerpt is-body">{{post.custom_excerpt}}</p>
+            {{/if}}
+            {{#unless post.custom_excerpt}}
+                {{#if excerpt}}
+                    <p class="gh-card-excerpt is-body">{{post.excerpt}}</p>
+                {{/if}}
+            {{/unless}}
+            <footer class="gh-card-meta">
+             {{#if @custom.show_author}}
+                    <span class="gh-card-author">By {{#foreach post.authors}}{{#if @first}}{{name}}{{else}}, {{name}}{{/if}}{{/foreach}}</span>
+                {{/if}}
+                {{#if @custom.show_publish_date}}
+                    <time class="gh-card-date" datetime="{{date post.published_at format="YYYY-MM-DD"}}">{{date post.published_at format="MMMM DD, YYYY"}}</time>
+                {{/if}}
+             </footer>
+        </div>
+    </a>
+</article>

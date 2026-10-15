@@ -1,0 +1,54 @@
+ <article class="gh-card book-card {{post_class}} {{#if @custom.show_images_in_feed}}{{#if post.primary_tag.feature_image}} has-image{{/if}}{{else}} no-image{{/if}}">
+      <a class="gh-card-link" href="{{#if post.primary_tag}}{{post.primary_tag.url}}{{/if}}">
+          {{#if post.primary_tag.feature_image}}
+               <figure class="gh-card-image">
+                   <img
+                        srcset="{{img_url post.primary_tag.feature_image size="xs" format="webp"}} 160w,
+                                {{img_url post.primary_tag.feature_image size="s" format="webp"}} 320w,
+                                {{img_url post.primary_tag.feature_image size="m" format="webp"}} 600w,
+                                {{img_url post.primary_tag.feature_image size="l" format="webp"}} 960w,
+                                {{img_url post.primary_tag.feature_image size="xl" format="webp"}} 1200w,
+                                {{img_url post.primary_tag.feature_image size="xxl" format="webp"}} 2000w"
+                       sizes="{{#if imageSizes}}{{imageSizes}}{{else}}320px{{/if}}"
+                        src="{{img_url post.feature_image size="m"}}"
+                        alt="{{#if post.primary_tag}}{{concat post.primary_tag.name " cover"}}{{/if}}"
+                        {{#if lazyLoad}}loading="lazy"{{/if}}
+                   >
+               </figure>
+          {{/if}}
+           <div class="gh-card-wrapper">
+               <div class="gh-card-tag">
+                   {{#if post.tags}}
+                       <p x-data x-init="$el.textContent = $el.textContent ? ($el.textContent.split(',')[0].trim().charAt(0) === '_' ? $el.textContent.split(',')[0].trim().slice(1) : $el.textContent.split(',')[0].trim()) : ''">
+                           {{#foreach post.tags as |bookTag|}}
+                               {{#match bookTag.slug.[0] "=" "_"}}
+                                   {{bookTag.name}},
+                               {{/match}}
+                           {{/foreach}}
+                       </p>
+                   {{/if}}
+                   {{#if post.featured}}
+                       <div class="card-tag-featured">{{> "icons/fire"}} <span>Featured</span></div>
+                   {{/if}}
+               </div>
+
+               {{#if post.primary_tag}}
+                   {{#if post.primary_tag.name}}
+                       <h3 class="gh-card-title is-title">{{post.primary_tag.name}}</h3>
+                   {{/if}}
+
+                   {{#if post.primary_tag.description}}
+                       <p class="gh-card-excerpt is-body">{{post.primary_tag.description}}</p>
+                   {{/if}}
+               {{/if}}
+               <footer class="gh-card-meta">
+                   {{#if @custom.show_author}}
+                       <span class="gh-card-author">By {{#foreach post.authors}}{{#if @first}}{{name}}{{else}}, {{name}}{{/if}}{{/foreach}}</span>
+                   {{/if}}
+                   {{#if @custom.show_publish_date}}
+                       <time class="gh-card-date" datetime="{{date post.published_at format="YYYY-MM-DD"}}">{{date post.published_at format="MMMM DD, YYYY"}}</time>
+                   {{/if}}
+               </footer>
+           </div>
+      </a>
+ </article>

@@ -1,0 +1,16 @@
+<section class="gh-container category-container is-grid gh-outer">
+
+    {{#match @custom.featured_category_tags "=" "all"}}
+        {{#get "tags" filter="slug:~^'_'" include="count.posts" limit=@custom.featured_category_tags_limit order="count.posts desc"}}
+            {{#foreach tags}}
+               {{> "category-section"}}
+            {{/foreach}}
+        {{/get}}
+    {{else}}
+        {{#get "tags" filter="slug:[{{@custom.featured_category_tags}}]" include="count.posts" limit=@custom.featured_category_tags_limit }}
+            {{#foreach tags}}
+                {{> "category-section"}}
+            {{/foreach}}
+        {{/get}}
+    {{/match}}
+</section>

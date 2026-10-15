@@ -1,0 +1,32 @@
+{{#if isBlog}}
+    {{#get "posts" filter="id:-{{post.id}}+tag:[hash-book,hash-blog]" include="authors,tags"  limit="4" as |next|}}
+        {{#if next}}
+            <section class="gh-container is-grid gh-outer">
+                <div class="gh-container-inner gh-inner">
+                    <h2 class="gh-container-title">Read more</h2>
+                    <div class="gh-feed">
+                        {{#foreach next}}
+                            {{> "post-card" lazyLoad=true}}
+                        {{/foreach}}
+                    </div>
+                </div>
+            </section>
+        {{/if}}
+    {{/get}}
+{{else}}
+    {{#get "posts" filter="tag:-{{bookTitle}}+tag:[hash-book,hash-blog]" include="authors,tags"  limit="4" as |next|}}
+        {{#if next}}
+            <section class="gh-container is-grid gh-outer">
+                <div class="gh-container-inner gh-inner">
+                    <h2 class="gh-container-title">Read more</h2>
+                    <div class="gh-feed">
+                        {{#foreach next}}
+                            {{> "post-card" lazyLoad=true}}
+                        {{/foreach}}
+                    </div>
+                </div>
+            </section>
+        {{/if}}
+    {{/get}}
+{{/if}}
+

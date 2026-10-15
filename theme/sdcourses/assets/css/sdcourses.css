@@ -1,0 +1,150 @@
+/* Free Catholic Courses: the lesson videos' look (video/theme.ts) across the site,
+   plus video lessons (#lesson posts): label, video, quotations, sources, quiz,
+   progress. Loaded last, so it refines Novel rather than replacing it. */
+
+:root {
+    --cc-ink: #1E2740;
+    --cc-card: #FBF8F2;
+    --cc-rule: #D9CFBC;
+    --cc-accent: #7A1F2B;
+    --cc-gold: #8E6E22;
+    --cc-ok: #2F6B3A;
+    --cc-muted: #625F5B;
+}
+
+/* Light backgrounds (the default cream): ink text and warm hairlines. */
+:root.has-dark-text {
+    --color-darker-gray: var(--cc-ink);
+    --color-primary-text: var(--cc-ink);
+    --color-secondary-text: rgb(30 39 64 / 0.62);
+    --color-border: rgb(30 39 64 / 0.12);
+    --color-lighter-gray: rgb(30 39 64 / 0.04);
+}
+
+/* Dark backgrounds: lighter accents that still read. */
+:root.has-light-text {
+    --cc-card: rgb(255 255 255 / 0.05);
+    --cc-rule: rgb(255 255 255 / 0.16);
+    --cc-accent: #E0959E;
+    --cc-gold: #D2B262;
+    --cc-ok: #8BC79A;
+    --cc-muted: rgb(255 255 255 / 0.64);
+}
+
+/* Body text in EB Garamond, like the videos (Novel's default serif body is Georgia). */
+.has-serif-body .gh-content > :is(p, ul, ol, dl, blockquote),
+.has-serif-body .gh-article-excerpt {
+    font-family: var(--font-serif);
+}
+.has-serif-body .gh-content { font-size: 2.1rem; }
+
+::selection { background: rgb(142 110 34 / 0.25); }
+
+.gh-content a { color: var(--cc-accent); }
+.gh-content a:hover { opacity: 0.8; }
+
+/* Quotations: gold rule, serif, like the video's quote cards. */
+.gh-content > blockquote:not([class]) {
+    border-left: 3px solid var(--cc-gold);
+    padding-left: 1em;
+    font-family: var(--font-serif);
+    font-style: normal;
+}
+.gh-content > blockquote:not([class]) p:last-child:not(:first-child) {
+    font-family: var(--font-sans);
+    font-size: 0.72em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cc-accent);
+    margin-top: 0.6em;
+}
+
+/* ---------- Video lessons ---------- */
+
+.cc-lesson-label {
+    font: 600 1.3rem/1 var(--font-sans);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cc-accent);
+    margin-bottom: 14px;
+}
+
+.gh-content > .cc-video,
+.gh-content .cc-video {
+    margin: 0 0 2.2em;
+}
+.cc-video video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    aspect-ratio: 16 / 9;
+    background: var(--cc-card);
+    box-shadow: 0 0 0 1px var(--cc-rule);
+}
+
+.gh-content > h3 + ul {
+    font-size: 0.9em;
+    color: var(--color-secondary-text);
+}
+.cc-credit {
+    margin-top: 2em;
+    padding-top: 1.2em;
+    border-top: 1px solid var(--cc-rule);
+    font-size: 0.85em;
+    color: var(--color-secondary-text);
+}
+
+/* "Take the quiz" under the video */
+.cc-jump-row { margin: -1.2em 0 2.2em; display: flex; justify-content: flex-end; }
+.gh-content a.cc-jump {
+    display: inline-block;
+    font: 600 1.5rem/1 var(--font-sans);
+    letter-spacing: 0.02em;
+    color: var(--background-color);
+    background: var(--cc-accent);
+    border-radius: 999px;
+    padding: 12px 20px;
+    text-decoration: none;
+}
+.gh-content a.cc-jump:hover { opacity: 0.9; }
+.cc-quiz { scroll-margin-top: 90px; }
+
+/* Quiz: themed version of ghost/quiz.css */
+.cc-quiz {
+    background: var(--cc-card);
+    border: 1px solid var(--cc-rule);
+    border-radius: 14px;
+    padding: 1.4em 1.4em 1.2em;
+}
+.cc-quiz h2 { font-family: var(--font-serif); font-weight: 500; }
+.cc-quiz-intro { color: var(--color-secondary-text); opacity: 1; font-family: var(--font-sans); font-size: 0.8em; }
+.cc-q-text { font-family: var(--font-sans); font-size: 0.85em; font-weight: 600; }
+.cc-opt {
+    background: var(--background-color);
+    border-color: var(--cc-rule);
+    font-family: var(--font-sans);
+    font-size: 0.85em;
+}
+.cc-opt:hover:not([disabled]), .cc-opt:focus-visible { border-color: var(--cc-gold); }
+.cc-opt.is-right, .cc-blank.is-right .cc-input { border-color: var(--cc-ok); background: rgb(47 107 58 / 0.1); }
+.cc-opt.is-wrong, .cc-blank.is-wrong .cc-input { border-color: var(--cc-accent); background: rgb(122 31 43 / 0.08); }
+.cc-input { border-color: var(--cc-rule); background: var(--background-color); font-family: var(--font-sans); font-size: 0.85em; }
+.cc-why { border-left-color: var(--cc-gold); font-size: 0.85em; opacity: 1; color: var(--color-secondary-text); }
+.cc-score { font-family: var(--font-sans); font-size: 0.85em; color: var(--cc-ok); }
+.cc-retry { color: var(--cc-accent); }
+
+/* Progress */
+.cc-course-progress {
+    margin: 12px 0 0;
+    font: 600 1.4rem/1.3 var(--font-sans);
+    letter-spacing: 0.04em;
+    color: var(--cc-ok);
+}
+.cc-course-progress[hidden] { display: none; }
+a.cc-done::after {
+    content: "✓";
+    margin-left: 0.5em;
+    color: var(--cc-ok);
+    font-weight: 600;
+}

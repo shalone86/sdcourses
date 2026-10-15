@@ -1,0 +1,13 @@
+<aside class="index-of-contents-control-container">
+    <div class="index-of-contents-control-inner">
+        <button class="index-of-contents-button" aria-label="Toggle index of contents" @click="indexOpen = !indexOpen">
+            {{> "icons/list-bullet"}}
+        </button>
+    </div>
+</aside>
+<aside class="index-of-contents-container float" x-show="indexOpen" @click.outside="indexOpen = false"
+       x-init="(() => { initIndexOfContents(); handleScroll(); stopScroll();})()">
+    <button class="close-button" aria-label="Close index of contents" @click="indexOpen = !indexOpen">{{> "icons/close"}}</button>
+    <a class="index-of-contents-title" href="{{primaryTag.url}}" aria-label="{{primaryTag.name}} Link"><h3>{{primaryTag.name}}</h3></a>
+    {{> "index-of-contents" primaryTag=primaryTag}}
+</aside>

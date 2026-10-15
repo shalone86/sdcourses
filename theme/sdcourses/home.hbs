@@ -1,0 +1,12 @@
+{{!< default}}
+{{!-- The tag above means: insert everything in this file into the body of the default.hbs template --}}
+
+{{> "components/header" headerStyle=@custom.header_style}}
+
+{{> "components/category-list"}}
+
+{{> "components/post-list" feed="home" postFeedStyle=@custom.post_feed_style showTitle=true showSidebar=true}}
+
+{{> "components/tag-cloud"}}
+
+{{> "components/cta"}}

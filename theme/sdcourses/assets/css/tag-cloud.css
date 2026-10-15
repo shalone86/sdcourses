@@ -1,0 +1,21 @@
+.tag-cloud-container .gh-main {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    row-gap: 20px;
+}
+
+.tag-cloud-container a {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.004em;
+    padding: 8px 15px;
+    border-radius: 100px;
+    border: 2px solid var(--color-darker-gray);
+}
+
+.tag-cloud-container a:hover {
+    color: white;
+    background-color: var(--ghost-accent-color);
+    border: 2px solid var(--ghost-accent-color);
+}

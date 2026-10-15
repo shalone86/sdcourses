@@ -1,0 +1,141 @@
+{{!--
+    Parameters:
+    * feed (index, home, categoryArchive, authorArchive, indexOfContents)
+    * postFeedStyle (list, grid)
+    * showTitle (true, false)
+    * showSidebar (true, false)
+    * authorOrTagSlug: slug of author or tag
+    * primaryTag
+--}}
+
+ <section class="gh-container is-{{#match postFeedStyle "List"}}list{{else}}grid{{/match}}{{#if showSidebar}}{{#if @site.recommendations_enabled}} has-sidebar{{/if}}{{/if}}{{#unless @custom.show_images_in_feed}} no-image{{/unless}} gh-outer">
+    <div class="gh-container-inner gh-inner">
+
+        {{#if showTitle}}
+            <h2 class="gh-container-title">
+                {{#unless title}}Latest{{else}}{{title}}{{/unless}}
+            </h2>
+        {{/if}}
+
+        {{#match feed "!=" "indexOfContents"}}
+            <main class="gh-main feed-container" x-data>
+                <div class="gh-feed">
+
+                    {{!-- Homepage --}}
+                    {{#match feed "home"}}
+                        {{#get "posts" filter="tag:[hash-book,hash-blog]" include="tags,authors"
+                               limit=@config.posts_per_page page=pagination.page}}
+
+                            {{#foreach posts}}
+                                {{> "post-card" lazyLoad=true}}
+                            {{/foreach}}
+
+                            {{#match pagination.pages ">" pagination.page}}
+                                <template x-teleport=".feed-container">
+                                    <div class="gh-more is-title">
+                                        <button class="button-secondary custom-loadmore"
+                                                data-current-page="{{pagination.page}}">Load more
+                                        </button>
+                                    </div>
+                                </template>
+                            {{/match}}
+
+                        {{/get}}
+                    {{/match}}
+
+                    {{#match feed "index"}}
+                        {{#get "posts" filter="tag:[hash-book,hash-blog]" include="tags,authors"
+                               limit=@config.posts_per_page page=pagination.page}}
+
+                            {{#foreach posts}}
+                                {{> "post-card" lazyLoad=true}}
+                            {{/foreach}}
+
+                            {{#match pagination.pages ">" pagination.page}}
+                                <template x-teleport=".feed-container">
+                                    <div class="gh-more is-title">
+                                        <button class="button-secondary custom-loadmore"
+                                                data-current-page="{{pagination.page}}">Load more
+                                        </button>
+                                    </div>
+                                </template>
+                            {{/match}}
+
+                        {{/get}}
+                    {{/match}}
+
+                    {{!-- Tag pages --}}
+                    {{#match feed "categoryArchive"}}
+                        {{#get "posts" filter="tag:{{authorOrTagSlug}}+tag:[hash-book,hash-blog]" include="tags,authors"
+                               limit=@config.posts_per_page page=pagination.page}}
+
+                            {{#foreach posts}}
+                                {{> "post-card" lazyLoad=true}}
+                            {{/foreach}}
+
+                            {{#match pagination.pages ">" pagination.page}}
+                                <template x-teleport=".feed-container">
+                                    <div class="gh-more is-title">
+                                        <button class="button-secondary custom-loadmore"
+                                                data-current-page="{{pagination.page}}">Load more
+                                        </button>
+                                    </div>
+                                </template>
+                            {{/match}}
+
+                        {{/get}}
+                    {{/match}}
+
+                    {{!-- Author pages --}}
+                    {{#match feed "authorArchive"}}
+
+                        {{#get "posts" filter="author:{{authorOrTagSlug}}+tag:[hash-book,hash-blog]" include="tags,authors"
+                               limit=@config.posts_per_page page=pagination.page}}
+
+                            {{#foreach posts}}
+                                {{> "post-card" lazyLoad=true}}
+                            {{/foreach}}
+
+                            {{#match pagination.pages ">" pagination.page}}
+                                <template x-teleport=".feed-container">
+                                    <div class="gh-more is-title">
+                                        <button class="button-secondary custom-loadmore"
+                                                data-current-page="{{pagination.page}}">Load more
+                                        </button>
+                                    </div>
+                                </template>
+                            {{/match}}
+
+                        {{/get}}
+                    {{/match}}
+                </div>
+
+            </main>
+        {{/match}}
+
+        {{#match feed "=" "indexOfContents"}}
+            <main class="gh-main">
+                <div class="index-of-contents-container static" x-data="{currentSlug: ''}">
+                    <h2 class="is-title index-of-contents-title">Index of Contents</h2>
+                    {{> "index-of-contents" primaryTag=tag}}
+                </div>
+            </main>
+        {{/match}}
+
+        {{#if showSidebar}}
+            {{#if @site.recommendations_enabled}}
+                <aside class="gh-sidebar">
+                    <div class="gh-sidebar-inner">
+                        <section class="gh-recommendations">
+                            <a class="gh-sidebar-title title-with-arrow" href="#/portal/recommendations" data-portal="recommendations" aria-label="Recommendations portal">
+                                <h4 class="">Recommendations</h4>
+                                {{> "icons/arrow"}}
+                            </a>
+                            {{recommendations limit=6}}
+                        </section>
+                    </div>
+                </aside>
+            {{/if}}
+        {{/if}}
+    </div>
+</section>
