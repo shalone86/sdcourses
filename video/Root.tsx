@@ -1,4 +1,5 @@
 import {Composition} from 'remotion';
+import {Cover, type CoverProps} from './Cover';
 import {Lesson} from './Lesson';
 import {FPS} from './theme';
 import type {LessonProps} from './types';
@@ -14,6 +15,7 @@ const placeholder: LessonProps = {
 };
 
 export const Root: React.FC = () => (
+  <>
   <Composition
     id="Lesson"
     component={Lesson}
@@ -25,4 +27,8 @@ export const Root: React.FC = () => (
       durationInFrames: props.segments.reduce((sum, s) => sum + s.durationInFrames, 0),
     })}
   />
+  {/* Course cover image for Ghost (npm run cover -- <course>) */}
+  <Composition id="Cover" component={Cover} fps={30} width={1200} height={675} durationInFrames={1}
+    defaultProps={{title: 'Course title', icon: 'book-open'} satisfies CoverProps} />
+  </>
 );

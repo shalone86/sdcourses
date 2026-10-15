@@ -48,6 +48,17 @@ lesson 1's sources are cached in `sources/` on this Mac now.
 Settings → Integrations → Add custom integration). She types the key into
 the file herself; never ask her to paste it into chat.
 
+**New Ghost theme:** `theme/sdcourses` (from her Novel theme). Previewed on a
+private local Ghost (`theme/.ghost-local`, test login in its
+`test-login.json`; start it with `cd theme/.ghost-local && NODE_ENV=development
+npx -y -p node@22 -- node current/index.js`). Not on the live site yet: upload
+and activate only when she says so. Build: `cd theme/sdcourses && npm run zip`.
+
+**Redo every course:** `courses/ROADMAP.md` lists all 27 courses and their
+posts from the live site. One course at a time: script together (/lesson),
+she records, publish, tick it off. Course pictures: `npm run cover`, set
+`cover: {icon: …}` in course.yml (lucide.dev icons).
+
 ## Next
 
 1. Mic test with her in the studio, then record lesson 1, make the video,

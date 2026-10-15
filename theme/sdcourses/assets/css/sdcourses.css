@@ -59,6 +59,41 @@
     margin-top: 0.6em;
 }
 
+/* ---------- Home: welcome ---------- */
+
+.cc-hero { padding-top: clamp(40px, 6vw, 88px); padding-bottom: clamp(24px, 3vw, 40px); }
+.cc-hero-inner { max-width: 860px; text-align: center; }
+.cc-hero-title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(3.4rem, 2rem + 3.4vw, 6rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+}
+.cc-hero-text {
+    margin: 20px auto 0;
+    max-width: 640px;
+    font-family: var(--font-serif);
+    font-size: clamp(1.9rem, 1.6rem + 0.5vw, 2.3rem);
+    line-height: 1.5;
+    color: var(--color-secondary-text);
+    text-wrap: pretty;
+}
+.cc-hero-actions { margin-top: 28px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cc-btn {
+    display: inline-block;
+    font: 600 1.5rem/1 var(--font-sans);
+    padding: 14px 22px;
+    border-radius: 999px;
+    background: var(--cc-accent);
+    color: var(--background-color);
+    border: 1px solid var(--cc-accent);
+}
+.cc-btn:hover { opacity: 0.9; }
+.cc-btn-quiet { background: transparent; color: var(--cc-accent); }
+
 /* ---------- Video lessons ---------- */
 
 .cc-lesson-label {

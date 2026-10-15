@@ -195,13 +195,25 @@
       },
       "show_author": {
         "type": "boolean",
-        "default": true,
+        "default": false,
         "group": "homepage"
       },
       "show_publish_date": {
         "type": "boolean",
         "default": true,
         "group": "homepage"
+      },
+      "hero_title": {
+        "type": "text",
+        "group": "homepage",
+        "default": "Learn the Catholic faith, one short lesson at a time",
+        "description": "Big line at the top of the home page. Leave empty to hide the welcome."
+      },
+      "hero_text": {
+        "type": "text",
+        "group": "homepage",
+        "default": "Free video lessons on what the Church teaches and why, drawn straight from Scripture, the Catechism and the Church's own writings. Watch, read the sources, and check what you've learned with a short quiz.",
+        "description": "A sentence or two under the big line."
       }
     }
   },

@@ -3,6 +3,8 @@ title: What Is the Pope?
 summary: >-
   Who the Pope is, where his office comes from, and what it is for, in short
   lessons grounded in Scripture, the Catechism, and the Catholic Encyclopedia.
+# Cover picture: an icon from https://lucide.dev/icons for the course's main idea (npm run cover)
+cover: {icon: key-round}
 # Category tags on the site (Ghost tags starting with _); the first lesson carries them.
 categories: [All Courses]
 planned:

@@ -8,6 +8,7 @@
                 {{#get "posts" filter="primary_tag:{{slug}}+tag:hash-book" include="tags,authors" order="published_at asc" limit=1}}
                     {{#foreach posts}}
                         <div class="gh-article-meta">
+                             {{#if @custom.show_author}}
                              <div class="gh-article-author-image">
                                 {{#foreach authors}}
                                     {{#if profile_image}}
@@ -19,8 +20,11 @@
                                     {{/if}}
                                 {{/foreach}}
                              </div>
+                             {{/if}}
                             <div class="gh-article-meta-wrapper">
+                                {{#if @custom.show_author}}
                                 <h4 class="gh-article-author-name">{{authors}}</h4>
+                                {{/if}}
                                 <div class="gh-article-meta-content">
                                     {{{block "lastUpdate"}}}
                                 </div>
