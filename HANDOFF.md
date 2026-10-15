@@ -43,10 +43,8 @@ check now reports those quotes as "couldn't be checked" (still blocks
 publishing) instead of wrong; it usually works again a little later. All of
 lesson 1's sources are cached in `sources/` on this Mac now.
 
-**Ghost:** not connected yet. Create `.env` at the repo root with
-`COURSES_GHOST_URL=…` and `COURSES_GHOST_ADMIN_API_KEY=…` (Ghost Admin →
-Settings → Integrations → Add custom integration). She types the key into
-the file herself; never ask her to paste it into chat.
+**Ghost:** connected (`.env` on the Mac, Free Catholic Courses, courses.sdcason.com).
+Lesson 1 is approved and saved there as a draft.
 
 **New Ghost theme:** `theme/sdcourses` (from her Novel theme). Previewed on a
 private local Ghost (`theme/.ghost-local`, test login in its
@@ -61,13 +59,11 @@ she records, publish, tick it off. Course pictures: `npm run cover`, set
 
 ## Next
 
-1. Mic test with her in the studio, then record lesson 1, make the video,
-   she watches it, approves.
-2. Ghost `.env` (her key), then publish lesson 1 as a draft.
+1. She reviews the theme preview; on her go-ahead, upload and activate it on
+   the live site, then set Brand accent #7A1F2B and mark courses Featured.
+2. Publish the Pope course picture (`npm run publish-course -- what-is-the-pope`)
+   and resend lesson 1 so it gets #book and All Courses.
 3. Her rewrite of `pages/how-these-lessons-are-made.md` (needs a contact line).
-4. Ghost theme redesign (course = page + tag, lesson = post with `#lesson`,
-   quiz and progress built into the theme instead of Code Injection). Her
-   current theme is a modified "Novel" theme; get a copy from Ghost Admin →
-   Settings → Design → Change theme → Download when that work starts.
+4. Start redoing courses from `courses/ROADMAP.md`, one at a time.
 
 Commit and push to `main` as you go.
