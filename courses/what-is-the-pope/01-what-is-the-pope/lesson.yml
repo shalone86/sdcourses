@@ -69,8 +69,8 @@ points:
       highlight: the Bishop of Rome
     text: >-
       Before he is anything else, the Pope is a bishop, elected to lead one
-      diocese. Everything else flows from that. It is why his cathedral is
-      not St. Peter's Basilica, as many people assume, but St. John Lateran,
+      diocese. Everything else flows from that. It's why his cathedral is not
+      St. Peter's Basilica, as many people assume, but St. John Lateran,
       called the mother and head of all churches. A bishop's office is called
       a "see," from the Latin for "seat," and Rome's is the Holy See. What
       makes this diocese unique is who first led it.
@@ -104,8 +104,8 @@ points:
       heaven. Peter later led the Church in Rome and died there as a martyr,
       and the bishops of Rome have succeeded him ever since. The Catechism
       teaches that his office belongs to the Church's very foundation and
-      continues in those successors. Pope Leo XIV, elected in May 2025, is
-      counted as the 267th.
+      continues in those successors. Pope Leo XIV, elected in May of 2025, is
+      counted as the 267th pope.
     visuals:
       - type: timeline
         items:
@@ -138,8 +138,8 @@ points:
       the college of bishops. The bishops are not his branch managers. Each
       one is a true successor of the apostles. But together they act as one
       body only in union with their head. More than a billion Catholics, in
-      thousands of dioceses, are one Church because they are in communion
-      with him.
+      thousands of dioceses, are one Church because they are in communion with
+      the Pope.
     visuals:
       - type: college
         center: Peter
@@ -158,7 +158,9 @@ points:
 
   - heading: Why Christ works through him
     quote:
-      lead: Jesus answers this himself when he sends out his disciples.
+      lead: >-
+        So why does Christ work through the Pope? Jesus answers this himself
+        when he sends out his disciples.
       text: >-
         Whoever listens to you listens to me. Whoever rejects you rejects me.
         And whoever rejects me rejects the one who sent me.
@@ -166,13 +168,13 @@ points:
       cite: Luke 10:16
       highlight: listens to me
     text: >-
-      So Christ does do the job himself. He chooses to do it through the
-      people he sends. After the Resurrection he promised the apostles, "I am
-      with you always, until the end of the age." The Catechism says that in the
-      ordained ministry "it is Christ himself who is present to his Church as
-      Head of his Body." The Pope doesn't stand in for an absent Christ. Like
-      every bishop and priest, he is a visible sign of the One who is still
-      the Church's head.
+      So Christ chooses to lead the Church through the people he sends. This
+      is right here in the Gospel of Luke. And after the Resurrection he
+      promises the apostles, "I am with you always, until the end of the age."
+      The Catechism says that in the ordained ministry "it is Christ himself
+      who is present to his Church as Head of his Body." The Pope doesn't
+      stand in for an absent Christ. No, like every bishop and priest, he is a
+      visible sign of the One who is still the Church's head.
     visuals:
       - type: chain
         items: [Christ, The Apostles, Their successors, The Pope today, You]
@@ -188,7 +190,9 @@ points:
 
   - heading: He is the Vicar of Christ, who serves
     quote:
-      lead: The Catechism gives the Pope a striking title.
+      lead: >-
+        The Pope is the Vicar of Christ, who serves. The Catechism gives the
+        Pope a striking title.
       text: >-
         For the Roman Pontiff, by reason of his office as Vicar of Christ, and
         as pastor of the entire Church has full, supreme, and universal power
@@ -226,8 +230,8 @@ points:
 
 outro:
   text: >-
-    So that was an intro to the Pope in a nutshell. He's the Bishop of Rome,
-    he is the successor of Saint Peter, and he is the visible source of unity
+    And that was an intro to the Pope in a nutshell. He's the Bishop of Rome,
+    he's the successor of Saint Peter, and he is the visible source of unity
     for the faithful. I hope you learned something new. I've been your host,
     Shalone Cason, and until next time, stay holy, my friends.
   notes:

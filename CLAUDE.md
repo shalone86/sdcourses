@@ -84,7 +84,12 @@ not record; use it only from a cloud session.
 
 ## Audio
 
-She records in the Lesson Studio. If she uploads phone recordings in chat
+She records in the Lesson Studio and reads freely until it feels right.
+After she records, transcribe each section (`whisper-cli -m "$HOME/Library/Application Support/LyricsTranscriber/models/ggml-small.bin" -f <16 kHz wav> -l en -nt`)
+and update the script's lead-ins, explanations, intro and outro to her
+spoken words (the post text should match the video). Quotations must stay
+exact: if she misreads one, tell her which section to re-record.
+If she uploads phone recordings in chat
 instead: one continuous take → `npm run split -- <course>/<lesson> <file>`
 cuts it at her pauses into `audio/<section>.wav` and prints the cut times;
 check them against the section lengths. Separate files → copy them to

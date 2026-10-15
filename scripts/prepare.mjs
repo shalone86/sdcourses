@@ -23,10 +23,11 @@ export function prepare(arg) {
     let audio = null;
     let seconds = words(s.text) / WPS;
     if (src) {
-      // Trim silence at both ends, level to -16 LUFS, mono. Your raw file is untouched.
+      // Trim silence at both ends (gently: soft last syllables sit near -50 dB, so keep
+      // a little air after them), level to -16 LUFS, mono. Your raw file is untouched.
       const dest = path.join(publicDir, `${s.name}.wav`);
       execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', src, '-af',
-        'silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,loudnorm=I=-16:TP=-1.5:LRA=11',
+        'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.1,areverse,silenceremove=start_periods=1:start_threshold=-55dB:start_silence=0.35,areverse,loudnorm=I=-16:TP=-1.5:LRA=11',
         '-ac', '1', '-ar', '48000', dest]);
       audio = path.posix.join(id, `${s.name}.wav`);
       seconds = ffprobeDuration(dest);
@@ -64,7 +65,7 @@ export function prepare(arg) {
     if (!fs.existsSync(src)) throw new Error(`Music file not found: ${musicCfg.file}`);
     const dest = path.join(publicDir, `music${path.extname(src)}`);
     fs.copyFileSync(src, dest);
-    music = {src: path.posix.join(id, path.basename(dest)), underVoice: musicCfg.under_voice ?? 0.05, between: musicCfg.between ?? 0.16};
+    music = {src: path.posix.join(id, path.basename(dest)), underVoice: musicCfg.under_voice ?? 0.05, between: musicCfg.between ?? 0.16, credit: musicCfg.credit ?? ''};
   }
 
   const props = {

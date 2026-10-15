@@ -19,9 +19,15 @@ export const Recap: React.FC<SceneProps> = ({lesson, duration}) => {
         </div>
       ))}
       {lesson.credit && (
-        <div style={{position: 'absolute', left: 0, right: 0, bottom: 20, textAlign: 'center', opacity: ramp(f, duration * 0.6, duration * 0.6 + 20),
+        <div style={{position: 'absolute', left: 0, right: 0, bottom: 56, textAlign: 'center', opacity: ramp(f, duration * 0.6, duration * 0.6 + 20),
           fontFamily: theme.sans, fontSize: 24, letterSpacing: 1, color: theme.muted}}>
           {lesson.credit}
+        </div>
+      )}
+      {lesson.music?.credit && (
+        <div style={{position: 'absolute', left: 0, right: 0, bottom: 12, textAlign: 'center', opacity: ramp(f, duration * 0.6 + 15, duration * 0.6 + 35),
+          fontFamily: theme.serif, fontStyle: 'italic', fontSize: 30, color: theme.gold}}>
+          {lesson.music.credit}
         </div>
       )}
     </Center>

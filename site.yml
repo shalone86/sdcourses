@@ -21,3 +21,4 @@ music:
   file: ""            # e.g. music/ambient-track.mp3
   under_voice: 0.05   # gain while you're speaking (~-26 dB)
   between: 0.16       # gain in the title and closing moments
+  credit: Human-made music by methodius.media   # on the closing card

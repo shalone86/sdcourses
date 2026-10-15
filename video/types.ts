@@ -21,6 +21,6 @@ export type LessonProps = {
   credit?: string;
   author?: string;
   hostPhoto?: string | null; // path relative to video/public
-  music?: {src: string; underVoice: number; between: number} | null;
+  music?: {src: string; underVoice: number; between: number; credit?: string} | null;
   segments: Segment[];
 };

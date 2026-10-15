@@ -423,6 +423,7 @@ function dock(s) {
 
   const center = el('div', {class: 'center'});
   if (S.busy) center.append(el('span', {class: 'muted', role: 'status', text: S.busy}));
+  else if (r && r.stopping) center.append(el('span', {class: 'muted', role: 'status', text: 'Finishing…'}));
   else if (S.failed) {
     center.append(
       el('span', {class: 'bad small', text: 'The recording didn’t save.'}),
@@ -549,9 +550,10 @@ async function startRecording(kind) {
 
 function takeNext() {
   const r = S.rec;
-  if (!r || r.kind !== 'take') return;
+  if (!r || r.kind !== 'take' || r.stopping) return;
   if (S.slide >= sections().length - 1) return stopRecording(false);
-  r.marks.push((performance.now() - r.t0) / 1000);
+  // Cut a little after the tap: the next section only starts once its slide is up.
+  r.marks.push((performance.now() - r.t0) / 1000 + 0.35);
   S.slide++; remember();
   render();
   scrollTo({top: 0});
@@ -560,10 +562,14 @@ function takeNext() {
 function stopRecording(asked) {
   const r = S.rec;
   if (!r) return;
+  if (r.stopping) return;
   if (asked && r.kind === 'take' && S.slide < sections().length - 1) {
     if (!confirm('Stop the take here? ' + sections().slice(r.start, S.slide + 1).map(sectionName).join(', ') + ' will be saved; you can record the rest later.')) return;
   }
-  r.recorder.stop();
+  // Keep listening a moment: people often tap Stop on their last syllable.
+  r.stopping = true;
+  render();
+  setTimeout(() => r.recorder.stop(), 700);
 }
 
 function finishRecording(r) {
