@@ -1,0 +1,31 @@
+# Course cover pictures (the course page image in Ghost) for courses that
+# aren't in this repo yet. `npm run covers` renders and uploads them all.
+# icon: any name from https://lucide.dev/icons · title: shorter than the tag
+# name if needed · eyebrow: the small line above the title.
+# Courses with their own course.yml use its `cover:` instead.
+byzantine-catholic-fasting: {icon: utensils-crossed, eyebrow: Byzantine Catholic Course}
+what-is-the-great-fast: {icon: hourglass, eyebrow: Byzantine Catholic Course}
+byzantine-catholic-basics: {icon: church, eyebrow: Byzantine Catholic Course}
+ecclesiastical-art-history: {icon: palette, eyebrow: Catholic Art History}
+ivory-in-art-history: {icon: gem, eyebrow: Catholic Art History}
+all-about-the-eucharist: {icon: wheat}
+an-explanation-of-the-our-father-prayer: {icon: scroll-text, title: The Our Father}
+fasting-and-abstinence: {icon: fish}
+unveiling-easter: {icon: sunrise}
+what-are-angels: {icon: feather}
+what-are-holy-days-of-obligation: {icon: calendar-check, title: Holy Days of Obligation}
+what-are-litanies: {icon: list-ordered}
+what-is-advent: {icon: star}
+what-is-lent: {icon: sprout, title: What Is Lent?}
+what-is-prayer: {icon: hand-heart}
+all-about-angels: {icon: sparkles, eyebrow: Catholic Kids Course}
+all-about-easter-for-kids: {icon: egg, eyebrow: Catholic Kids Course, title: All About Easter}
+catholic-confirmation-class-2023-with-father-kluge: {icon: flame, eyebrow: With Father Kluge, title: Confirmation Class}
+the-history-and-parts-of-the-latin-mass: {icon: book-open-text, title: The Latin Mass}
+what-is-lent-for-kids: {icon: sprout, eyebrow: Catholic Kids Course, title: What Is Lent?}
+augustine-class-with-father-kluge: {icon: heart, eyebrow: With Father Kluge, title: Saint Augustine}
+saint-dymphna: {icon: flower, eyebrow: Catholic Saints}
+all-about-the-pope: {icon: crown}
+catholic-chatbots: {icon: message-circle}
+jesse-tree: {icon: tree-deciduous, eyebrow: Advent Course}
+the-catholic-christian-instructed: {icon: graduation-cap}
