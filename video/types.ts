@@ -1,5 +1,6 @@
 // Mirrors lesson.yml after scripts/prepare.mjs adds timing and audio paths.
-export type Scene = {type: string; [key: string]: any};
+// `from`: start frame within the segment; `cues`: named frames within the scene.
+export type Scene = {type: string; from?: number; cues?: Record<string, number>; [key: string]: any};
 
 export type Segment = {
   kind: 'intro' | 'point' | 'outro';
@@ -18,6 +19,8 @@ export type LessonProps = {
   title: string;
   headings: string[];
   credit?: string;
+  author?: string;
+  hostPhoto?: string | null; // path relative to video/public
   music?: {src: string; underVoice: number; between: number} | null;
   segments: Segment[];
 };

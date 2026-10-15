@@ -12,6 +12,9 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
   const isPoint = seg.kind === 'point';
   const start = isPoint ? HEADING_FRAMES : 0;
   const per = Math.floor((seg.durationInFrames - start) / seg.scenes.length);
+  // Scenes timed to the narration (`from`, see prepare.mjs), else evenly split.
+  const starts = seg.scenes.map((s, i) => s.from ?? start + i * per);
+  const lengthOf = (i: number) => (starts[i + 1] ?? seg.durationInFrames) - starts[i];
   const fadeOut = 1 - ramp(frame, seg.durationInFrames - FADE, seg.durationInFrames);
 
   return (
@@ -23,9 +26,9 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
       )}
       {isPoint && <PointHeading seg={seg} total={lesson.headings.length} />}
       {seg.scenes.map((scene, i) => (
-        <Sequence key={i} from={start + i * per} durationInFrames={i === seg.scenes.length - 1 ? undefined : per}>
-          <SceneShell last={i === seg.scenes.length - 1} duration={per} top={isPoint ? 250 : 110} seed={i * 2.1 + seg.index}>
-            <SceneView scene={scene} lesson={lesson} duration={per} />
+        <Sequence key={i} from={starts[i]} durationInFrames={i === seg.scenes.length - 1 ? undefined : lengthOf(i)}>
+          <SceneShell last={i === seg.scenes.length - 1} duration={lengthOf(i)} top={isPoint ? 250 : 110} seed={i * 2.1 + seg.index}>
+            <SceneView scene={scene} lesson={lesson} duration={lengthOf(i)} />
           </SceneShell>
         </Sequence>
       ))}

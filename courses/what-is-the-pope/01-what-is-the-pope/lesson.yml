@@ -38,22 +38,24 @@ sources:
 
 intro:
   text: >-
-    Why is the Bishop of Rome important? What's a successor, and why would
-    Christ need a representative on earth? Can't He do that job Himself? We
+    Why is the Bishop of Rome important? What's a successor? And why would
+    Christ need a representative on earth? Can't He do the job Himself? We
     will explore exactly what the Pope claims to be based on Catholic doctrine
-    straight from Scripture and the Catechism. I'm your host, Shalone Cason. Let's begin in
-    the name of the Father and of the Son and of the Holy Spirit.
+    straight from Scripture and the Catechism. I'm your host, Shalone Cason.
+    Let's begin in the name of the Father and of the Son and of the Holy
+    Spirit.
   notes:                 # facts from the sources you can draw on
     - '"Pope" comes from Latin papa, from Greek pappas, "father" (Catholic Encyclopedia).'
     - Early on, many bishops were called papa; in the East it was even used for priests.
     - Pope St. Gregory VII (1073–1085) restricted the title to Peter's successors.
     - This lesson answers the question in five points; each builds on the last.
-  scenes:
+  scenes:                # `at:` starts a scene when that phrase is spoken
     - type: title
-    - type: term
-      term: papa
-      origin: Greek pappas
-      meaning: father
+    - type: host         # photo and name from site.yml
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
 
 points:
   - heading: He is the Bishop of Rome

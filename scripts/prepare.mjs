@@ -35,15 +35,27 @@ export function prepare(arg) {
     // Points open on their heading; narration starts while it is still on screen.
     const offset = s.kind === 'point' ? 20 : s.kind === 'intro' ? 45 : 15;
     const minFrames = s.kind === 'point' ? HEADING_FRAMES + s.scenes.length * 150 : s.scenes.length * 120;
-    // The outro gets ~3s more so the music can close the video after the last word.
-    const tail = s.kind === 'outro' ? 30 + MUSIC_TAIL : 30;
+    // The outro gets ~3s more so the music can close the video after the last word;
+    // the intro ~1.5s more so its last picture (the Sign of the Cross) can be seen.
+    const tail = s.kind === 'outro' ? 30 + MUSIC_TAIL : s.kind === 'intro' ? 75 : 30;
     const durationInFrames = Math.max(minFrames, Math.ceil(offset + seconds * FPS + tail));
-    return {kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes: s.scenes.map(smartScene), audio, durationInFrames, audioOffsetInFrames: offset};
+    const scenes = timeScenes(s, offset, seconds, durationInFrames);
+    return {kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes, audio, durationInFrames, audioOffsetInFrames: offset};
   });
+
+  // The host scene's photo (site.yml host_photo); without one it shows initials.
+  const site = loadSite();
+  let hostPhoto = null;
+  if (site.hostPhoto && fs.existsSync(path.resolve(ROOT, site.hostPhoto))) {
+    const dest = path.join(publicDir, `host${path.extname(site.hostPhoto)}`);
+    fs.copyFileSync(path.resolve(ROOT, site.hostPhoto), dest);
+    hostPhoto = path.posix.join(id, path.basename(dest));
+  } else if (out.some((s) => s.scenes.some((sc) => sc.type === 'host'))) {
+    console.log(`  host photo not found (${site.hostPhoto || 'site.yml host_photo'}); showing initials`);
+  }
 
   // Background music: lesson override, else the course's track, else site default. Copied into the
   // video's public folder; the composition loops it and keeps it low.
-  const site = loadSite();
   const asCfg = (m) => (typeof m === 'string' ? {file: m} : m ?? {});
   const musicCfg = {...site.music, ...asCfg(course.music), ...asCfg(lesson.music)};
   let music = null;
@@ -61,6 +73,8 @@ export function prepare(arg) {
     title: lesson.title,
     headings: lesson.points.map((p) => p.heading),
     credit: site.videoCredit,
+    author: site.author,
+    hostPhoto,
     music,
     segments: out,
   };
@@ -75,6 +89,37 @@ export function prepare(arg) {
   for (const s of segments) if ((s.kind === 'intro' || s.kind === 'outro') && !s.text) console.log(`  ${s.name}: not written yet (Shalone writes this)`);
   if (recorded < segments.length) console.log(`  missing audio: ${segments.filter((s, i) => !out[i].audio).map((s) => s.name).join(', ')} (timing estimated)`);
   return {props, dist, id};
+}
+
+/**
+ * Scene start frames. A scene with `at: <phrase>` starts when that phrase is
+ * spoken, estimated from where it sits in the text (speech pace is even
+ * enough for this, and it survives re-recording). `cues: {name: <phrase>}`
+ * become frames relative to the scene's start. Scenes without `at` share the
+ * time between their neighbors. Without any `at`, the video splits evenly.
+ */
+function timeScenes(s, offset, seconds, durationInFrames) {
+  if (!s.scenes.some((sc) => sc.at)) return s.scenes.map(smartScene);
+  const text = s.text.toLowerCase();
+  const frameOf = (phrase) => {
+    const i = text.indexOf(String(phrase).toLowerCase());
+    if (i < 0) throw new Error(`${s.name}: the phrase "${phrase}" isn't in the text`);
+    return Math.round(offset + (i / text.length) * seconds * FPS);
+  };
+  const starts = s.scenes.map((sc, i) => (sc.at ? frameOf(sc.at) : i === 0 ? (s.kind === 'point' ? HEADING_FRAMES : 0) : null));
+  for (let i = 1; i < starts.length; i++) {
+    if (starts[i] != null) continue;
+    let j = i;
+    while (j < starts.length && starts[j] == null) j++;
+    const a = starts[i - 1];
+    const b = j < starts.length ? starts[j] : durationInFrames;
+    for (let k = i; k < j; k++) starts[k] = Math.round(a + ((k - i + 1) * (b - a)) / (j - i + 1));
+  }
+  return s.scenes.map(({at, cues, ...scene}, i) => ({
+    ...smartScene(scene),
+    from: starts[i],
+    ...(cues ? {cues: Object.fromEntries(Object.entries(cues).map(([k, p]) => [k, Math.max(0, frameOf(p) - starts[i])]))} : {}),
+  }));
 }
 
 function recordingScript(lesson, segments) {

@@ -1,5 +1,7 @@
 # Site-wide settings used by every lesson.
 author: Shalone Cason
+# Your photo for the "host" scene (when you say your name). Square works best.
+host_photo: images/shalone.jpg
 
 # Shown at the end of every lesson post. {author} is filled in from above.
 # Keep it true: publishing is blocked until a lesson is marked `status: reviewed`.
