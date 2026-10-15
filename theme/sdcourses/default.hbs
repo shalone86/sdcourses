@@ -41,6 +41,17 @@
         var textColor = (yiq >= 128) ? 'dark' : 'light';
 
         document.documentElement.className = `has-${textColor}-text`;
+
+        /* Dark mode: the reader's choice (sun/moon button), else the device setting */
+        (function () {
+            var choice = null;
+            try { choice = localStorage.getItem('cc-theme'); } catch (e) {}
+            var dark = choice ? choice === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (dark) {
+                document.documentElement.style.setProperty('--background-color', '#141925');
+                document.documentElement.className = 'has-light-text is-dark';
+            }
+        })();
     </script>
 
     {{!-- This tag outputs all your advanced SEO meta, structured data, and other important settings, it should always be the last tag before the closing head tag --}}

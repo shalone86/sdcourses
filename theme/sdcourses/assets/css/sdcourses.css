@@ -4,7 +4,7 @@
 
 :root {
     --cc-ink: #1E2740;
-    --cc-card: #FBF8F2;
+    --cc-card: #F5F0E6; /* panels (quiz) share the videos' cream; the page is lighter */
     --cc-rule: #D9CFBC;
     --cc-accent: #7A1F2B;
     --cc-gold: #8E6E22;
@@ -21,8 +21,10 @@
     --color-lighter-gray: rgb(30 39 64 / 0.04);
 }
 
-/* Dark backgrounds: lighter accents that still read. */
+/* Dark backgrounds (dark mode, or a dark site color): lighter accents that still read. */
 :root.has-light-text {
+    --color-darker-gray: #ECE6D8;
+    --color-primary-text: #ECE6D8;
     --cc-card: rgb(255 255 255 / 0.05);
     --cc-rule: rgb(255 255 255 / 0.16);
     --cc-accent: #E0959E;
@@ -37,6 +39,21 @@
     font-family: var(--font-serif);
 }
 .has-serif-body .gh-content { font-size: 2.1rem; }
+
+/* Dark mode button (sun shows in dark mode, moon in light) */
+.cc-theme-toggle { color: inherit; }
+.cc-theme-toggle .cc-icon-sun, .is-dark .cc-theme-toggle .cc-icon-moon { display: none; }
+.is-dark .cc-theme-toggle .cc-icon-sun { display: block; }
+.is-dark .cc-video video { box-shadow: none; }
+/* One button per width, like Novel's search icon (phone: next to the logo) */
+@media (max-width: 767px) {
+    .gh-navigation-actions .cc-theme-toggle { display: none; }
+    #gh-navigation .gh-navigation-brand { grid-template-columns: 1fr auto auto auto; }
+}
+@media (min-width: 768px) {
+    .gh-navigation-brand .cc-theme-toggle { display: none; }
+}
+.is-dark .gh-content > blockquote:not([class]) { border-left-color: var(--cc-gold); }
 
 ::selection { background: rgb(142 110 34 / 0.25); }
 

@@ -8,15 +8,22 @@ import {makeFooterNavi} from './navigation.js';
 import {initToc, adjustTocPosition} from './table-of-contents.js';
 import {initIndexOfContents, handleScroll, stopScroll} from './index-of-contents.js';
 import {initLessons} from './lessons.js';
+import {initThemeToggle} from './theme-toggle.js';
 // The lesson quiz lives in the course repo (ghost/quiz.js) so posts, previews and theme share it.
 import '../../../../ghost/quiz.js';
 
 import '../css/app.css';
+// After Novel's styles so these refine them: the lesson quiz, then the site's own look.
+import '../../../../ghost/quiz.css';
+import '../css/sdcourses.css';
 
 window.initSliders = initSliders;
 window.initIndexOfContents = initIndexOfContents;
 window.handleScroll = handleScroll;
 window.stopScroll = stopScroll;
+
+/* Dark mode button */
+initThemeToggle();
 
 /* Init Alpine */
 window.Alpine = Alpine;
