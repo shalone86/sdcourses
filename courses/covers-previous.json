@@ -106,5 +106,27 @@
   "what-is-the-pope": {
     "name": "What Is the Pope?",
     "feature_image": "https://courses.sdcason.com/content/images/2026/10/cover.jpg"
+  },
+  "posts": {
+    "the-testimony-of-bishop-mounir-khairallah": {
+      "title": "The Testimony of Bishop Mounir Khairallah",
+      "feature_image": "https://courses.sdcason.com/content/images/2024/10/2020082813080_5f48e452c2bf74d8cce45341jpeg-2.png"
+    },
+    "2025-yearly-review": {
+      "title": "2025 Yearly Review",
+      "feature_image": "https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMTc3M3wwfDF8c2VhcmNofDQ2fHx2aXJnaW4lMjBtYXJ5fGVufDB8fHx8MTc2NzI3NDM1MHww&ixlib=rb-4.1.0&q=80&w=2000"
+    },
+    "year-in-review": {
+      "title": "Year in Review",
+      "feature_image": "https://courses.sdcason.com/content/images/2025/01/1966.237_web.jpg"
+    },
+    "confirmation-memorization-list-2": {
+      "title": "Confirmation Memorization List",
+      "feature_image": "https://courses.sdcason.com/content/images/2023/11/DALL-E-2023-11-02-12.22.31---Cartoon-style-sticker-design-on-a-white-background-that-illustrates-a-serene-landscape-with-rolling-hills-and-a-calm-river.-On-one-hill--a-cross-stand.png"
+    },
+    "current-fasting-practices-for-catholics-in-the-united-states": {
+      "title": "Current Fasting Practices for Catholics in the United States",
+      "feature_image": "https://courses.sdcason.com/content/images/2024/10/00072701-1.jpg"
+    }
   }
 }

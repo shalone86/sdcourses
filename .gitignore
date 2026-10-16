@@ -3,6 +3,7 @@ dist/
 # Generated from courses/*/audio by `npm run prepare-lesson`
 video/public/*/
 !video/public/fonts/
+!video/public/covers/
 
 # Cached copies of source pages (fetched by `npm run check`)
 courses/*/*/sources/

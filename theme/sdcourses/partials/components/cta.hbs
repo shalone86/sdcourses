@@ -7,18 +7,23 @@
                         <div class="gh-cta-inner gh-inner">
                             <div class="gh-cta-content">
                                 <h2 class="gh-cta-title is-title">
-                                    {{#if @custom.subscribe_heading}}
+                                    {{!-- Novel's stock wording is replaced; anything she writes in Design settings wins --}}
+                                    {{#match @custom.subscribe_heading "Subscribe to our newsletter"}}
+                                        Get updates when new lessons are posted
+                                    {{else if @custom.subscribe_heading}}
                                         {{@custom.subscribe_heading}}
                                     {{else}}
                                         {{@site.title}}
-                                    {{/if}}
+                                    {{/match}}
                                 </h2>
                                 <p class="gh-cta-description is-body">
-                                    {{#if @custom.subscribe_subheading}}
+                                    {{#match @custom.subscribe_subheading "Get the latest news, updates and guides."}}
+                                        We'll email you when new courses and lessons go up. It's free, and you can unsubscribe anytime.
+                                    {{else if @custom.subscribe_subheading}}
                                         {{@custom.subscribe_subheading}}
                                     {{else}}
                                         {{@site.description}}
-                                    {{/if}}
+                                    {{/match}}
                                 </p>
                             </div>
                             {{> "email-subscription" email_field_id="cta-email"}}

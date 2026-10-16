@@ -16,6 +16,10 @@ const dry = args.includes('--dry-run');
 const only = args.filter((a) => !a.startsWith('--'));
 
 const covers = YAML.parse(fs.readFileSync(path.join(ROOT, 'courses/covers.yml'), 'utf8'));
+// Single posts (feature image) are listed under `posts:`; everything else is a course (tag image).
+const postCovers = covers.posts ?? {};
+delete covers.posts;
+for (const [slug, c] of Object.entries(postCovers)) covers[slug] = {...c, post: true};
 for (const d of fs.readdirSync(path.join(ROOT, 'courses'))) {
   const f = path.join(ROOT, 'courses', d, 'course.yml');
   if (!fs.existsSync(f)) continue;
@@ -30,9 +34,9 @@ const out = path.join(ROOT, 'dist', 'covers');
 fs.mkdirSync(out, {recursive: true});
 const serveUrl = await bundle({entryPoint: path.join(ROOT, 'video/index.ts'), publicDir: path.join(ROOT, 'video/public')});
 for (const slug of slugs) {
-  const tag = (await g.call('GET', `/tags/slug/${slug}/`)).tags[0];
   const c = covers[slug];
-  const inputProps = {title: c.title ?? tag.name, icon: c.icon, eyebrow: c.eyebrow};
+  const item = (await g.call('GET', `/${c.post ? 'posts' : 'tags'}/slug/${slug}/`))[c.post ? 'posts' : 'tags'][0];
+  const inputProps = {title: c.title ?? item.title ?? item.name, icon: c.icon, eyebrow: c.eyebrow, photo: c.photo};
   const composition = await selectComposition({serveUrl, id: 'Cover', inputProps});
   const png = path.join(out, `${slug}.png`);
   await renderStill({serveUrl, composition, output: png, inputProps});
@@ -41,11 +45,12 @@ for (const slug of slugs) {
   console.log(`rendered ${slug}`);
 }
 // A contact sheet to look over before (or after) uploading.
-execFileSync('ffmpeg', ['-y', '-v', 'error', '-pattern_type', 'glob', '-i', path.join(out, '*.jpg').replace(/ /g, '\\ '), '-vf', 'scale=400:-1,tile=4x7:padding=8:color=white', '-frames:v', '1', path.join(out, 'sheet.jpg')], {cwd: out});
+execFileSync('ffmpeg', ['-y', '-v', 'error', '-pattern_type', 'glob', '-i', path.join(out, '*.jpg').replace(/ /g, '\\ '), '-vf', 'scale=400:-1,tile=4x8:padding=8:color=white', '-frames:v', '1', path.join(out, 'sheet.jpg')], {cwd: out});
 if (dry) process.exit(0);
 for (const slug of slugs) {
   const url = await g.upload('images', path.join(out, `${slug}.jpg`), 'image/jpeg');
-  const tag = (await g.call('GET', `/tags/slug/${slug}/`)).tags[0];
-  await g.call('PUT', `/tags/${tag.id}/`, {tags: [{feature_image: url, updated_at: tag.updated_at}]});
+  const kind = covers[slug].post ? 'posts' : 'tags';
+  const item = (await g.call('GET', `/${kind}/slug/${slug}/`))[kind][0];
+  await g.call('PUT', `/${kind}/${item.id}/`, {[kind]: [{feature_image: url, updated_at: item.updated_at}]});
   console.log(`uploaded ${slug}`);
 }

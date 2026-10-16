@@ -3,6 +3,8 @@
 # icon: any name from https://lucide.dev/icons · title: shorter than the tag
 # name if needed · eyebrow: the small line above the title.
 # Courses with their own course.yml use its `cover:` instead.
+# posts: single posts outside a course get a cover as their feature image;
+# photo: a picture in video/public shown in the circle instead of an icon.
 byzantine-catholic-fasting: {icon: utensils-crossed, eyebrow: Byzantine Catholic Course}
 what-is-the-great-fast: {icon: hourglass, eyebrow: Byzantine Catholic Course}
 byzantine-catholic-basics: {icon: church, eyebrow: Byzantine Catholic Course}
@@ -29,3 +31,10 @@ all-about-the-pope: {icon: crown}
 catholic-chatbots: {icon: message-circle}
 jesse-tree: {icon: tree-deciduous, eyebrow: Advent Course}
 the-catholic-christian-instructed: {icon: graduation-cap}
+
+posts:
+  the-testimony-of-bishop-mounir-khairallah: {photo: covers/mounir.jpg, eyebrow: A Testimony, title: Bishop Mounir Khairallah}
+  2025-yearly-review: {icon: calendar-heart, eyebrow: Free Catholic Courses}
+  year-in-review: {icon: calendar-days, eyebrow: Free Catholic Courses}
+  confirmation-memorization-list-2: {icon: amphora, eyebrow: Confirmation}
+  current-fasting-practices-for-catholics-in-the-united-states: {icon: wheat-off, eyebrow: Catholic Faith & Practices, title: Fasting in the United States}

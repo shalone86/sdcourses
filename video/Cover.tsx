@@ -1,8 +1,9 @@
 import {icons} from 'lucide-react';
-import {AbsoluteFill} from 'remotion';
+import {AbsoluteFill, Img, staticFile} from 'remotion';
 import {theme} from './theme';
 
-export type CoverProps = {title: string; eyebrow?: string; icon?: string};
+// photo: a picture in video/public (e.g. covers/mounir.jpg) shown in the circle instead of an icon.
+export type CoverProps = {title: string; eyebrow?: string; icon?: string; photo?: string};
 
 /** Lucide icon by its kebab-case name ("key-round"), or a book if unknown. */
 const iconFor = (name?: string) => {
@@ -11,17 +12,23 @@ const iconFor = (name?: string) => {
 };
 
 /** Course cover (Ghost tag image, 1200×675): an icon for the course's main idea, and its title. */
-export const Cover: React.FC<CoverProps> = ({title, eyebrow = 'Free Catholic Course', icon}) => {
+export const Cover: React.FC<CoverProps> = ({title, eyebrow = 'Free Catholic Course', icon, photo}) => {
   const Icon = iconFor(icon);
   const size = 340;
   return (
     <AbsoluteFill style={{background: theme.bg, color: theme.ink, flexDirection: 'row', alignItems: 'center', padding: '0 90px', gap: 70}}>
       <div style={{position: 'relative', width: size, height: size, flexShrink: 0}}>
         <div style={{position: 'absolute', inset: 0, borderRadius: '50%', background: theme.card, boxShadow: `0 0 0 4px ${theme.gold}`}} />
-        <div style={{position: 'absolute', inset: 26, borderRadius: '50%', boxShadow: `inset 0 0 0 1.5px ${theme.rule}`}} />
-        <div style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <Icon size={170} color={theme.accent} strokeWidth={1.4} absoluteStrokeWidth={false} />
-        </div>
+        {photo ? (
+          <Img src={staticFile(photo)} style={{position: 'absolute', inset: 12, width: size - 24, height: size - 24, borderRadius: '50%', objectFit: 'cover'}} />
+        ) : (
+          <>
+            <div style={{position: 'absolute', inset: 26, borderRadius: '50%', boxShadow: `inset 0 0 0 1.5px ${theme.rule}`}} />
+            <div style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <Icon size={170} color={theme.accent} strokeWidth={1.4} absoluteStrokeWidth={false} />
+            </div>
+          </>
+        )}
       </div>
       <div style={{minWidth: 0}}>
         <div style={{fontFamily: theme.sans, fontSize: 24, letterSpacing: 6, color: theme.accent, fontWeight: 600}}>{eyebrow.toUpperCase()}</div>

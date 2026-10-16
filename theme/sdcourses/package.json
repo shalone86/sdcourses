@@ -169,13 +169,13 @@
       },
       "subscribe_heading": {
         "type": "text",
-        "default": "Subscribe to our newsletter",
+        "default": "Get updates when new lessons are posted",
         "description": "Used in your subscribe section across your theme.",
         "group": "homepage"
       },
       "subscribe_subheading": {
         "type": "text",
-        "default": "Get the latest news, updates and guides.",
+        "default": "We'll email you when new courses and lessons go up. It's free, and you can unsubscribe anytime.",
         "group": "homepage"
       },
       "post_feed_style": {
