@@ -4,13 +4,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
-import {phraseTime, transcribe, trimVoice, whisperAvailable} from './voice.mjs';
+import {phraseSpan, phraseTime, transcribe, trimVoice, whisperAvailable} from './voice.mjs';
 
 const FPS = 30;
 const HEADING_FRAMES = 66; // keep in sync with video/theme.ts
 const WPS = 2.4;
 export const MUSIC_TAIL = 90; // keep in sync with video/Lesson.tsx // ~145 words/minute, used until real audio exists
 const AUDIO_EXT = ['.wav', '.m4a', '.mp3', '.aac', '.flac', '.ogg'];
+
+let lessonHeadings = [];
 
 export function prepare(arg) {
   const dir = lessonDir(arg);
@@ -19,6 +21,7 @@ export function prepare(arg) {
   fs.mkdirSync(publicDir, {recursive: true});
 
   let recorded = 0;
+  lessonHeadings = lesson.points.map((p) => p.heading);
   const useWhisper = whisperAvailable();
   const out = segments.map((s) => {
     const src = AUDIO_EXT.map((e) => path.join(dir, 'audio', s.name + e)).find((f) => fs.existsSync(f));
@@ -97,24 +100,74 @@ export function prepare(arg) {
 }
 
 /**
- * Scene start frames. A scene with `at: <phrase>` starts when that phrase is
- * spoken: from the recording's word timings (Whisper) when there are any,
- * else estimated from where it sits in the text. `cues: {name: <phrase>}`
- * become frames relative to the scene's start. Scenes without `at` share the
- * time between their neighbors. Without any `at`, the video splits evenly.
+ * Scene timing, in frames from the segment's start.
+ * - A scene with `at: <phrase>` starts when that phrase is said (word timings
+ *   from the recording when there are any, else its place in the script).
+ * - In a point with a recording, the first visual starts when the quotation
+ *   has been read, and later visuals when their first item is said.
+ * - Items inside a scene (map places, titles, timeline and chain items,
+ *   compare cards, recap lines) appear when they are said (`cues`), and a
+ *   quotation reveals at the pace it was read. Explicit `cues:` phrases win.
+ * Anything not found keeps the old even spacing.
  */
 function timeScenes(s, offset, seconds, durationInFrames, spoken) {
-  if (!s.scenes.some((sc) => sc.at || sc.cues)) return s.scenes.map(smartScene);
   const text = s.text.toLowerCase();
-  const frameOf = (phrase) => {
-    // When it was actually said (word timings), else where it sits in the script.
-    const t = spoken ? phraseTime(spoken, String(phrase)) : null;
-    if (t != null) return Math.round(offset + t * FPS);
+  const sec = (t) => Math.round(offset + t * FPS);
+  const at = (phrase, fromSec = 0) => {
+    if (!phrase) return null;
+    if (spoken) {
+      const t = phraseTime(spoken, String(phrase), fromSec);
+      if (t != null) return sec(t);
+    }
     const i = text.indexOf(String(phrase).toLowerCase());
-    if (i < 0) throw new Error(`${s.name}: the phrase "${phrase}" isn't in the text`);
-    return Math.round(offset + (i / text.length) * seconds * FPS);
+    return i < 0 ? null : Math.round(offset + (i / text.length) * seconds * FPS);
   };
-  const starts = s.scenes.map((sc, i) => (sc.at ? frameOf(sc.at) : i === 0 ? (s.kind === 'point' ? HEADING_FRAMES : 0) : null));
+  const first = s.kind === 'point' ? HEADING_FRAMES : 0;
+  const quoteSpan = s.kind === 'point' && spoken ? phraseSpan(spoken, s.quote.text) : null;
+  const items = (sc) => {
+    switch (sc.type) {
+      case 'map': return (sc.places ?? []).map((p) => (typeof p === 'string' ? p : p.name)).map((n) => [n, n]);
+      case 'titles': return (sc.items ?? []).map((it, i) => [String(i), it.latin]);
+      case 'timeline': return (sc.items ?? []).map((it, i) => [String(i), it.label]);
+      case 'chain': return (sc.items ?? []).map((it, i) => [String(i), it]);
+      case 'compare': return [['left', sc.left?.title], ['right', sc.right?.title]];
+      case 'recap': return (s.kind === 'outro' ? lessonHeadings : []).map((h, i) => [String(i), h]);
+      default: return [];
+    }
+  };
+  // When an item is said: the whole phrase, else its first or last few words,
+  // else its most distinctive word (people rarely say a whole title). Spoken only.
+  const said = (phrase, fromSec) => {
+    if (!spoken || !phrase) return null;
+    const w = String(phrase).replace(/[.,;:!?]/g, '').split(/\s+/).filter(Boolean);
+    // The distinctive word: the longest one said only once in this recording ("Melkite", not "Catholic").
+    const count = (x) => spoken.filter((sw) => sw.w.toLowerCase().replace(/[^a-z]/g, '') === x.toLowerCase().replace(/[^a-z]/g, '')).length;
+    const rare = [...w].sort((a, b) => b.length - a.length).find((x) => x.length >= 6 && count(x) === 1) ?? '';
+    for (const p of [w.join(' '), w.slice(0, 3).join(' '), w.slice(-3).join(' '), rare]) {
+      const t = p ? phraseTime(spoken, p, fromSec) : null;
+      if (t != null) return sec(t);
+    }
+    return null;
+  };
+
+  const starts = s.scenes.map((sc, i) => {
+    if (sc.at) {
+      const f = at(sc.at);
+      if (f == null) console.warn(`  ! ${s.name}: "${sc.at}" isn't in the recording or the script; timing estimated`);
+      return f;
+    }
+    if (i === 0) return first;
+    if (i === 1 && quoteSpan) return sec(quoteSpan.end) + 10;
+    return null;
+  });
+  // Later visuals: when their first item is said, if that's well after the scene before.
+  for (let i = 2; i < starts.length; i++) {
+    if (starts[i] != null || !spoken) continue;
+    const prev = starts[i - 1] ?? first;
+    const [, phrase] = items(s.scenes[i])[0] ?? [];
+    const f = said(phrase, Math.max(0, (prev - offset) / FPS));
+    if (f != null && f > prev + 60) starts[i] = f - 10;
+  }
   for (let i = 1; i < starts.length; i++) {
     if (starts[i] != null) continue;
     let j = i;
@@ -123,11 +176,29 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
     const b = j < starts.length ? starts[j] : durationInFrames;
     for (let k = i; k < j; k++) starts[k] = Math.round(a + ((k - i + 1) * (b - a)) / (j - i + 1));
   }
-  return s.scenes.map(({at, cues, ...scene}, i) => ({
-    ...smartScene(scene),
-    from: starts[i],
-    ...(cues ? {cues: Object.fromEntries(Object.entries(cues).map(([k, p]) => [k, Math.max(0, frameOf(p) - starts[i])]))} : {}),
-  }));
+  for (let i = 1; i < starts.length; i++) starts[i] = Math.max(starts[i], starts[i - 1] + 30);
+
+  return s.scenes.map(({at: _at, cues, ...scene}, i) => {
+    const from = starts[i];
+    const rel = (f) => (f == null ? null : Math.max(4, f - from));
+    const auto = {};
+    if (spoken) {
+      // Each item where it's first said in this scene (in any order); two items
+      // never share one mention.
+      const sceneSec = Math.max(0, (from - offset) / FPS - 1);
+      const used = [];
+      for (const [k, phrase] of items(scene)) {
+        let abs = said(phrase, sceneSec);
+        while (abs != null && used.includes(abs)) abs = said(phrase, (abs - offset) / FPS + 0.2);
+        const f = rel(abs);
+        if (f != null && f < (starts[i + 1] ?? durationInFrames) - from) { auto[k] = f; used.push(abs); }
+      }
+      if (scene.type === 'quote' && quoteSpan) Object.assign(auto, {start: rel(sec(quoteSpan.start)), end: rel(sec(quoteSpan.end))});
+    }
+    const explicit = Object.fromEntries(Object.entries(cues ?? {}).map(([k, p]) => [k, rel(at(p))]).filter(([, v]) => v != null));
+    const all = {...auto, ...explicit};
+    return {...smartScene(scene), from, ...(Object.keys(all).length ? {cues: all} : {})};
+  });
 }
 
 function recordingScript(lesson, segments) {

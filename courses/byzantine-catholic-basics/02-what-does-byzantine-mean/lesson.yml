@@ -32,6 +32,11 @@ intro:
     - This lesson answers the question in five points, from a Greek colony to today.
   scenes:
     - type: title
+    - type: host         # your photo and name, when you say "I'm your host"
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
 
 points:
   - heading: A city named for its founder

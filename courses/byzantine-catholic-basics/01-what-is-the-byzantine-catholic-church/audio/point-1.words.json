@@ -1,0 +1,515 @@
+{
+ "stamp": "2:4118478:1792113121996",
+ "words": [
+  {
+   "w": "After",
+   "start": 0.09,
+   "end": 0.46
+  },
+  {
+   "w": "Pentecost,",
+   "start": 0.46,
+   "end": 1.31
+  },
+  {
+   "w": "the",
+   "start": 1.31,
+   "end": 1.56
+  },
+  {
+   "w": "gospel",
+   "start": 1.56,
+   "end": 2.06
+  },
+  {
+   "w": "spread",
+   "start": 2.06,
+   "end": 2.54
+  },
+  {
+   "w": "north",
+   "start": 2.54,
+   "end": 3.09
+  },
+  {
+   "w": "from",
+   "start": 3.09,
+   "end": 3.3
+  },
+  {
+   "w": "Jerusalem",
+   "start": 3.3,
+   "end": 4.2
+  },
+  {
+   "w": "and",
+   "start": 4.2,
+   "end": 4.33
+  },
+  {
+   "w": "Acts",
+   "start": 4.33,
+   "end": 4.89
+  },
+  {
+   "w": "tells",
+   "start": 4.89,
+   "end": 5.09
+  },
+  {
+   "w": "us",
+   "start": 5.09,
+   "end": 5.4
+  },
+  {
+   "w": "where",
+   "start": 5.4,
+   "end": 5.52
+  },
+  {
+   "w": "a",
+   "start": 5.52,
+   "end": 5.68
+  },
+  {
+   "w": "new",
+   "start": 5.68,
+   "end": 6.23
+  },
+  {
+   "w": "name",
+   "start": 6.23,
+   "end": 6.48
+  },
+  {
+   "w": "was",
+   "start": 6.48,
+   "end": 6.71
+  },
+  {
+   "w": "born.",
+   "start": 6.71,
+   "end": 7.6
+  },
+  {
+   "w": "It",
+   "start": 7.6,
+   "end": 7.78
+  },
+  {
+   "w": "was",
+   "start": 7.78,
+   "end": 8.06
+  },
+  {
+   "w": "in",
+   "start": 8.06,
+   "end": 8.23
+  },
+  {
+   "w": "Antioch",
+   "start": 8.23,
+   "end": 8.86
+  },
+  {
+   "w": "that",
+   "start": 8.86,
+   "end": 9.22
+  },
+  {
+   "w": "the",
+   "start": 9.22,
+   "end": 9.55
+  },
+  {
+   "w": "disciples",
+   "start": 9.55,
+   "end": 10.3
+  },
+  {
+   "w": "were",
+   "start": 10.3,
+   "end": 10.69
+  },
+  {
+   "w": "first",
+   "start": 10.69,
+   "end": 11.11
+  },
+  {
+   "w": "called",
+   "start": 11.11,
+   "end": 11.8
+  },
+  {
+   "w": "Christians.",
+   "start": 11.8,
+   "end": 12.88
+  },
+  {
+   "w": "Antioch",
+   "start": 12.88,
+   "end": 13.34
+  },
+  {
+   "w": "was",
+   "start": 13.34,
+   "end": 13.58
+  },
+  {
+   "w": "one",
+   "start": 13.58,
+   "end": 13.73
+  },
+  {
+   "w": "of",
+   "start": 13.73,
+   "end": 13.87
+  },
+  {
+   "w": "the",
+   "start": 13.87,
+   "end": 14.1
+  },
+  {
+   "w": "great",
+   "start": 14.1,
+   "end": 14.41
+  },
+  {
+   "w": "cities",
+   "start": 14.41,
+   "end": 14.85
+  },
+  {
+   "w": "of",
+   "start": 14.85,
+   "end": 14.95
+  },
+  {
+   "w": "the",
+   "start": 14.95,
+   "end": 15.15
+  },
+  {
+   "w": "Roman",
+   "start": 15.15,
+   "end": 15.49
+  },
+  {
+   "w": "Empire",
+   "start": 15.49,
+   "end": 16
+  },
+  {
+   "w": "and",
+   "start": 16,
+   "end": 16.22
+  },
+  {
+   "w": "its",
+   "start": 16.22,
+   "end": 16.44
+  },
+  {
+   "w": "people",
+   "start": 16.44,
+   "end": 17.08
+  },
+  {
+   "w": "spoke",
+   "start": 17.08,
+   "end": 17.3
+  },
+  {
+   "w": "Greek.",
+   "start": 17.3,
+   "end": 17.84
+  },
+  {
+   "w": "Saint",
+   "start": 17.84,
+   "end": 18.16
+  },
+  {
+   "w": "Paul",
+   "start": 18.16,
+   "end": 18.42
+  },
+  {
+   "w": "made",
+   "start": 18.42,
+   "end": 18.68
+  },
+  {
+   "w": "it",
+   "start": 18.68,
+   "end": 18.81
+  },
+  {
+   "w": "the",
+   "start": 18.81,
+   "end": 19.06
+  },
+  {
+   "w": "starting",
+   "start": 19.06,
+   "end": 19.54
+  },
+  {
+   "w": "point",
+   "start": 19.54,
+   "end": 19.9
+  },
+  {
+   "w": "of",
+   "start": 19.9,
+   "end": 19.97
+  },
+  {
+   "w": "his",
+   "start": 19.97,
+   "end": 20.21
+  },
+  {
+   "w": "missionary",
+   "start": 20.21,
+   "end": 20.93
+  },
+  {
+   "w": "journeys",
+   "start": 20.93,
+   "end": 21.36
+  },
+  {
+   "w": "and",
+   "start": 21.36,
+   "end": 21.55
+  },
+  {
+   "w": "Saint",
+   "start": 21.55,
+   "end": 22.04
+  },
+  {
+   "w": "Peter",
+   "start": 22.04,
+   "end": 22.26
+  },
+  {
+   "w": "himself",
+   "start": 22.26,
+   "end": 22.88
+  },
+  {
+   "w": "lived",
+   "start": 22.88,
+   "end": 23.24
+  },
+  {
+   "w": "there",
+   "start": 23.24,
+   "end": 23.62
+  },
+  {
+   "w": "for",
+   "start": 23.62,
+   "end": 23.81
+  },
+  {
+   "w": "a",
+   "start": 23.81,
+   "end": 23.99
+  },
+  {
+   "w": "time.",
+   "start": 23.99,
+   "end": 24.4
+  },
+  {
+   "w": "From",
+   "start": 24.4,
+   "end": 24.68
+  },
+  {
+   "w": "churches",
+   "start": 24.68,
+   "end": 25.25
+  },
+  {
+   "w": "like",
+   "start": 25.25,
+   "end": 25.52
+  },
+  {
+   "w": "Antioch,",
+   "start": 25.52,
+   "end": 26.19
+  },
+  {
+   "w": "Jerusalem,",
+   "start": 26.19,
+   "end": 27.08
+  },
+  {
+   "w": "and",
+   "start": 27.08,
+   "end": 27.3
+  },
+  {
+   "w": "Alexandria,",
+   "start": 27.3,
+   "end": 28.24
+  },
+  {
+   "w": "grew",
+   "start": 28.33,
+   "end": 28.54
+  },
+  {
+   "w": "the",
+   "start": 28.54,
+   "end": 28.7
+  },
+  {
+   "w": "eastern",
+   "start": 28.7,
+   "end": 29.16
+  },
+  {
+   "w": "traditions",
+   "start": 29.16,
+   "end": 29.82
+  },
+  {
+   "w": "of",
+   "start": 29.82,
+   "end": 29.95
+  },
+  {
+   "w": "Christianity",
+   "start": 29.95,
+   "end": 30.75
+  },
+  {
+   "w": "with",
+   "start": 30.75,
+   "end": 31.33
+  },
+  {
+   "w": "their",
+   "start": 31.33,
+   "end": 31.34
+  },
+  {
+   "w": "own",
+   "start": 31.34,
+   "end": 31.55
+  },
+  {
+   "w": "languages,",
+   "start": 31.55,
+   "end": 32.44
+  },
+  {
+   "w": "prayers,",
+   "start": 32.44,
+   "end": 33.1
+  },
+  {
+   "w": "and",
+   "start": 33.1,
+   "end": 33.13
+  },
+  {
+   "w": "customs.",
+   "start": 33.13,
+   "end": 33.84
+  },
+  {
+   "w": "The",
+   "start": 33.84,
+   "end": 34.14
+  },
+  {
+   "w": "Byzantine",
+   "start": 34.14,
+   "end": 34.77
+  },
+  {
+   "w": "tradition",
+   "start": 34.77,
+   "end": 35.47
+  },
+  {
+   "w": "is",
+   "start": 35.47,
+   "end": 35.63
+  },
+  {
+   "w": "one",
+   "start": 35.63,
+   "end": 35.9
+  },
+  {
+   "w": "of",
+   "start": 35.9,
+   "end": 36
+  },
+  {
+   "w": "them",
+   "start": 36,
+   "end": 36.31
+  },
+  {
+   "w": "and",
+   "start": 36.31,
+   "end": 36.53
+  },
+  {
+   "w": "its",
+   "start": 36.53,
+   "end": 36.93
+  },
+  {
+   "w": "roots",
+   "start": 36.93,
+   "end": 37.16
+  },
+  {
+   "w": "run",
+   "start": 37.16,
+   "end": 37.39
+  },
+  {
+   "w": "back",
+   "start": 37.39,
+   "end": 37.7
+  },
+  {
+   "w": "to",
+   "start": 37.7,
+   "end": 38.04
+  },
+  {
+   "w": "these",
+   "start": 38.04,
+   "end": 38.32
+  },
+  {
+   "w": "first",
+   "start": 38.32,
+   "end": 39.04
+  },
+  {
+   "w": "Greek-speaking",
+   "start": 39.04,
+   "end": 40.24
+  },
+  {
+   "w": "believers.",
+   "start": 40.24,
+   "end": 41.44
+  }
+ ]
+}

@@ -15,8 +15,15 @@ sources:
 intro:
   text: ""               # Shalone writes this
   notes: []
+  # Every lesson opens the same way: title, her photo at "I'm your host",
+  # and the Trinity at the Sign of the Cross.
   scenes:
     - type: title
+    - type: host         # your photo and name, when you say "I'm your host"
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
 
 points:
   - heading: TODO

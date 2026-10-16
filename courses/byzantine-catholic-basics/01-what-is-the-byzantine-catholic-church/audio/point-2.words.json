@@ -1,0 +1,450 @@
+{
+ "stamp": "2:3559758:1792113171535",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.22
+  },
+  {
+   "w": "Catholic",
+   "start": 0.22,
+   "end": 0.79
+  },
+  {
+   "w": "Encyclopedia",
+   "start": 0.79,
+   "end": 1.69
+  },
+  {
+   "w": "traces",
+   "start": 1.69,
+   "end": 2.09
+  },
+  {
+   "w": "the",
+   "start": 2.09,
+   "end": 2.27
+  },
+  {
+   "w": "Byzantine",
+   "start": 2.27,
+   "end": 2.91
+  },
+  {
+   "w": "way",
+   "start": 2.91,
+   "end": 3.12
+  },
+  {
+   "w": "of",
+   "start": 3.12,
+   "end": 3.26
+  },
+  {
+   "w": "worship",
+   "start": 3.26,
+   "end": 4
+  },
+  {
+   "w": "to",
+   "start": 4,
+   "end": 4.03
+  },
+  {
+   "w": "the",
+   "start": 4.03,
+   "end": 4.45
+  },
+  {
+   "w": "same",
+   "start": 4.45,
+   "end": 4.72
+  },
+  {
+   "w": "city.",
+   "start": 4.72,
+   "end": 5.6
+  },
+  {
+   "w": "It",
+   "start": 5.6,
+   "end": 5.86
+  },
+  {
+   "w": "is",
+   "start": 5.86,
+   "end": 5.99
+  },
+  {
+   "w": "derived",
+   "start": 5.99,
+   "end": 6.56
+  },
+  {
+   "w": "from",
+   "start": 6.56,
+   "end": 7.03
+  },
+  {
+   "w": "that",
+   "start": 7.03,
+   "end": 7.54
+  },
+  {
+   "w": "of",
+   "start": 7.54,
+   "end": 7.73
+  },
+  {
+   "w": "Antioch.",
+   "start": 7.73,
+   "end": 8.88
+  },
+  {
+   "w": "A",
+   "start": 8.88,
+   "end": 8.95
+  },
+  {
+   "w": "Rite",
+   "start": 8.95,
+   "end": 9.25
+  },
+  {
+   "w": "is",
+   "start": 9.25,
+   "end": 9.4
+  },
+  {
+   "w": "a",
+   "start": 9.4,
+   "end": 9.47
+  },
+  {
+   "w": "Church's",
+   "start": 9.47,
+   "end": 9.97
+  },
+  {
+   "w": "whole",
+   "start": 9.97,
+   "end": 10.57
+  },
+  {
+   "w": "way",
+   "start": 10.57,
+   "end": 10.66
+  },
+  {
+   "w": "of",
+   "start": 10.66,
+   "end": 10.81
+  },
+  {
+   "w": "worship,",
+   "start": 10.81,
+   "end": 11.52
+  },
+  {
+   "w": "its",
+   "start": 11.52,
+   "end": 12.11
+  },
+  {
+   "w": "prayers,",
+   "start": 12.11,
+   "end": 12.42
+  },
+  {
+   "w": "its",
+   "start": 12.42,
+   "end": 12.56
+  },
+  {
+   "w": "music,",
+   "start": 12.56,
+   "end": 13.04
+  },
+  {
+   "w": "the",
+   "start": 13.04,
+   "end": 13.26
+  },
+  {
+   "w": "way",
+   "start": 13.26,
+   "end": 13.51
+  },
+  {
+   "w": "it",
+   "start": 13.51,
+   "end": 13.65
+  },
+  {
+   "w": "celebrates",
+   "start": 13.65,
+   "end": 14.3
+  },
+  {
+   "w": "the",
+   "start": 14.3,
+   "end": 14.51
+  },
+  {
+   "w": "sacraments.",
+   "start": 14.51,
+   "end": 15.42
+  },
+  {
+   "w": "The",
+   "start": 15.42,
+   "end": 15.65
+  },
+  {
+   "w": "Byzantine",
+   "start": 15.65,
+   "end": 16.26
+  },
+  {
+   "w": "Rite",
+   "start": 16.26,
+   "end": 16.49
+  },
+  {
+   "w": "took",
+   "start": 16.49,
+   "end": 17.03
+  },
+  {
+   "w": "its",
+   "start": 17.03,
+   "end": 17.05
+  },
+  {
+   "w": "shape",
+   "start": 17.05,
+   "end": 17.49
+  },
+  {
+   "w": "in",
+   "start": 17.49,
+   "end": 17.52
+  },
+  {
+   "w": "Constantinople,",
+   "start": 17.52,
+   "end": 18.56
+  },
+  {
+   "w": "but",
+   "start": 18.56,
+   "end": 18.78
+  },
+  {
+   "w": "it",
+   "start": 18.78,
+   "end": 18.91
+  },
+  {
+   "w": "follows",
+   "start": 18.91,
+   "end": 19.41
+  },
+  {
+   "w": "the",
+   "start": 19.41,
+   "end": 19.73
+  },
+  {
+   "w": "pattern",
+   "start": 19.73,
+   "end": 20.14
+  },
+  {
+   "w": "of",
+   "start": 20.14,
+   "end": 20.26
+  },
+  {
+   "w": "the",
+   "start": 20.26,
+   "end": 20.47
+  },
+  {
+   "w": "ancient",
+   "start": 20.47,
+   "end": 20.97
+  },
+  {
+   "w": "liturgy",
+   "start": 20.97,
+   "end": 21.46
+  },
+  {
+   "w": "of",
+   "start": 21.46,
+   "end": 21.6
+  },
+  {
+   "w": "Antioch.",
+   "start": 21.6,
+   "end": 22.56
+  },
+  {
+   "w": "Its",
+   "start": 22.56,
+   "end": 22.61
+  },
+  {
+   "w": "two",
+   "start": 22.61,
+   "end": 22.8
+  },
+  {
+   "w": "main",
+   "start": 22.8,
+   "end": 23.06
+  },
+  {
+   "w": "liturgies",
+   "start": 23.06,
+   "end": 23.67
+  },
+  {
+   "w": "carry",
+   "start": 23.67,
+   "end": 24.11
+  },
+  {
+   "w": "the",
+   "start": 24.11,
+   "end": 24.16
+  },
+  {
+   "w": "names",
+   "start": 24.16,
+   "end": 24.72
+  },
+  {
+   "w": "of",
+   "start": 24.81,
+   "end": 24.87
+  },
+  {
+   "w": "two",
+   "start": 24.87,
+   "end": 25.1
+  },
+  {
+   "w": "great",
+   "start": 25.1,
+   "end": 25.51
+  },
+  {
+   "w": "bishops",
+   "start": 25.51,
+   "end": 26.01
+  },
+  {
+   "w": "of",
+   "start": 26.01,
+   "end": 26.16
+  },
+  {
+   "w": "the",
+   "start": 26.16,
+   "end": 26.41
+  },
+  {
+   "w": "fourth",
+   "start": 26.41,
+   "end": 26.85
+  },
+  {
+   "w": "century,",
+   "start": 26.85,
+   "end": 27.53
+  },
+  {
+   "w": "Saint",
+   "start": 27.53,
+   "end": 27.94
+  },
+  {
+   "w": "Basil",
+   "start": 27.94,
+   "end": 28.29
+  },
+  {
+   "w": "the",
+   "start": 28.29,
+   "end": 28.73
+  },
+  {
+   "w": "Great",
+   "start": 28.73,
+   "end": 28.9
+  },
+  {
+   "w": "and",
+   "start": 28.9,
+   "end": 29.17
+  },
+  {
+   "w": "Saint",
+   "start": 29.17,
+   "end": 29.6
+  },
+  {
+   "w": "John",
+   "start": 29.6,
+   "end": 29.81
+  },
+  {
+   "w": "Chrysostom.",
+   "start": 29.81,
+   "end": 30.88
+  },
+  {
+   "w": "Byzantine",
+   "start": 30.88,
+   "end": 31.66
+  },
+  {
+   "w": "Catholics",
+   "start": 31.66,
+   "end": 32.47
+  },
+  {
+   "w": "still",
+   "start": 32.47,
+   "end": 32.97
+  },
+  {
+   "w": "pray",
+   "start": 32.97,
+   "end": 33.26
+  },
+  {
+   "w": "the",
+   "start": 33.26,
+   "end": 33.52
+  },
+  {
+   "w": "same",
+   "start": 33.52,
+   "end": 33.87
+  },
+  {
+   "w": "liturgies",
+   "start": 33.87,
+   "end": 34.88
+  },
+  {
+   "w": "today.",
+   "start": 34.88,
+   "end": 35.44
+  }
+ ]
+}

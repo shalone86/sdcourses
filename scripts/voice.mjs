@@ -13,7 +13,7 @@ import {execFileSync} from 'node:child_process';
 import {ROOT, loadSite} from './lib.mjs';
 
 const TRIM = 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.1,areverse,silenceremove=start_periods=1:start_threshold=-55dB:start_silence=0.35,areverse,loudnorm=I=-16:TP=-1.5:LRA=11';
-const VERSION = 1; // bump if TRIM changes, so cached word timings are redone
+const VERSION = 2; // bump if TRIM or the hint changes, so cached word timings are redone
 
 /** Trim silence at both ends and level the voice (raw file untouched). Skips work if dest is current. */
 export function trimVoice(src, dest) {
@@ -44,6 +44,18 @@ export function cachedWords(src) {
 }
 
 /**
+ * A short hint for Whisper: the names and unusual words in the script, not the
+ * script itself (a long hint makes Whisper skip and repeat passages).
+ */
+function vocabulary(text) {
+  const author = loadSite().author;
+  const words = String(text).match(/\b[A-Z][a-zA-Z’'-]{2,}\b/g) ?? [];
+  const common = new Set(['The', 'This', 'That', 'There', 'These', 'They', 'Then', 'When', 'What', 'Why', 'How', 'And', 'But', 'From', 'With', 'For', 'Its', 'His', 'Her', 'Our', 'Your', 'Let', 'Well', 'Even', 'Thanks', 'Until', 'Before', 'After', 'Each', 'Every', 'Like', 'Just', 'Both', 'Among', 'Over', 'Most', 'Other']);
+  const names = [...new Set(words.filter((w) => !common.has(w)))].slice(0, 30);
+  return [author, ...names].filter(Boolean).join(', ') + '.';
+}
+
+/**
  * Transcribe a recording (its trimmed version, so times match the video).
  * `hint` is the script text: it helps Whisper with names and spellings.
  */
@@ -56,7 +68,7 @@ export function transcribe(src, trimmed, hint = '') {
     const wav16 = path.join(tmp, 'v.wav');
     execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', trimmed, '-ar', '16000', '-ac', '1', wav16]);
     execFileSync('whisper-cli', ['-m', modelPath(), '-f', wav16, '-l', 'en', '-ml', '1', '-sow', '-dtw', 'small', '-oj', '-of', path.join(tmp, 'out'),
-      ...(hint ? ['--prompt', hint.slice(0, 600)] : [])], {stdio: 'ignore'});
+      ...(hint ? ['--prompt', vocabulary(hint)] : [])], {stdio: 'ignore'});
     const out = JSON.parse(fs.readFileSync(path.join(tmp, 'out.json'), 'utf8'));
     const words = out.transcription
       .map((t) => ({w: t.text.trim(), start: t.offsets.from / 1000, end: t.offsets.to / 1000}))
@@ -127,13 +139,29 @@ export function compare(parts, words) {
   };
 }
 
-/** Seconds into the trimmed voice when `phrase` begins, or null if it isn't found. */
-export function phraseTime(words, phrase) {
+/** Start and end (seconds) of a long passage, e.g. a quotation: found by its first and last few words. */
+export function phraseSpan(words, phrase, from = 0) {
+  const t = tokens(phrase).map((x) => x.t);
+  if (!t.length) return null;
+  const n = Math.min(4, t.length);
+  const start = phraseTime(words, t.slice(0, n).join(' '), from);
+  if (start == null) return null;
+  const endAt = phraseTime(words, t.slice(-n).join(' '), start);
+  if (endAt == null) return null;
+  // The end: the last matched word's end time.
+  const w = words.filter((x) => key(x.w));
+  const i = w.findIndex((x) => x.start >= endAt);
+  const last = w[Math.min(w.length - 1, i + n - 1)];
+  return {start, end: last ? last.end : endAt};
+}
+
+/** Seconds into the trimmed voice when `phrase` begins (at or after `from` seconds), or null. */
+export function phraseTime(words, phrase, from = 0) {
   const p = tokens(phrase).map((x) => x.k);
-  const w = words.map((x) => ({...x, k: key(x.w)})).filter((x) => x.k);
+  const w = words.map((x) => ({...x, k: key(x.w)})).filter((x) => x.k && x.start >= from);
   if (!p.length) return null;
-  // Exact run first, then allow one word to differ.
-  for (const slack of [0, 1]) {
+  // Exact run first, then (for phrases of 4+ words) allow one word to differ.
+  for (const slack of p.length >= 4 ? [0, 1] : [0]) {
     for (let s = 0; s + p.length <= w.length; s++) {
       let miss = 0;
       for (let q = 0; q < p.length && miss <= slack; q++) if (w[s + q].k !== p[q]) miss++;

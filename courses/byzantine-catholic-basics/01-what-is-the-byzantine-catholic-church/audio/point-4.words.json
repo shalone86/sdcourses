@@ -1,0 +1,550 @@
+{
+ "stamp": "2:4259598:1792115196038",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.2
+  },
+  {
+   "w": "Catholic",
+   "start": 0.2,
+   "end": 0.73
+  },
+  {
+   "w": "Church",
+   "start": 0.73,
+   "end": 1.13
+  },
+  {
+   "w": "is",
+   "start": 1.13,
+   "end": 1.32
+  },
+  {
+   "w": "a",
+   "start": 1.32,
+   "end": 1.38
+  },
+  {
+   "w": "family",
+   "start": 1.38,
+   "end": 1.72
+  },
+  {
+   "w": "of",
+   "start": 1.72,
+   "end": 1.85
+  },
+  {
+   "w": "self-governing",
+   "start": 1.85,
+   "end": 2.76
+  },
+  {
+   "w": "churches,",
+   "start": 2.76,
+   "end": 3.69
+  },
+  {
+   "w": "the",
+   "start": 3.69,
+   "end": 3.71
+  },
+  {
+   "w": "Byzantine",
+   "start": 3.71,
+   "end": 4.32
+  },
+  {
+   "w": "Catholic",
+   "start": 4.32,
+   "end": 4.82
+  },
+  {
+   "w": "Catechism",
+   "start": 4.82,
+   "end": 5.28
+  },
+  {
+   "w": "describes",
+   "start": 5.28,
+   "end": 5.9
+  },
+  {
+   "w": "how",
+   "start": 5.9,
+   "end": 6.25
+  },
+  {
+   "w": "the",
+   "start": 6.25,
+   "end": 6.3
+  },
+  {
+   "w": "Catholic",
+   "start": 6.3,
+   "end": 6.85
+  },
+  {
+   "w": "Church",
+   "start": 6.85,
+   "end": 7.39
+  },
+  {
+   "w": "is",
+   "start": 7.39,
+   "end": 7.4
+  },
+  {
+   "w": "built.",
+   "start": 7.4,
+   "end": 8
+  },
+  {
+   "w": "It",
+   "start": 8,
+   "end": 8.14
+  },
+  {
+   "w": "is",
+   "start": 8.14,
+   "end": 8.28
+  },
+  {
+   "w": "in",
+   "start": 8.28,
+   "end": 8.46
+  },
+  {
+   "w": "these,",
+   "start": 8.46,
+   "end": 8.97
+  },
+  {
+   "w": "and",
+   "start": 8.97,
+   "end": 9.13
+  },
+  {
+   "w": "formed",
+   "start": 9.13,
+   "end": 9.56
+  },
+  {
+   "w": "out",
+   "start": 9.56,
+   "end": 9.77
+  },
+  {
+   "w": "of",
+   "start": 9.77,
+   "end": 9.91
+  },
+  {
+   "w": "them,",
+   "start": 9.91,
+   "end": 10.4
+  },
+  {
+   "w": "that",
+   "start": 10.4,
+   "end": 10.63
+  },
+  {
+   "w": "the",
+   "start": 10.63,
+   "end": 10.87
+  },
+  {
+   "w": "one",
+   "start": 10.87,
+   "end": 11.13
+  },
+  {
+   "w": "and",
+   "start": 11.13,
+   "end": 11.26
+  },
+  {
+   "w": "unique",
+   "start": 11.26,
+   "end": 11.71
+  },
+  {
+   "w": "Catholic",
+   "start": 11.71,
+   "end": 12.27
+  },
+  {
+   "w": "Church",
+   "start": 12.27,
+   "end": 12.7
+  },
+  {
+   "w": "exists.",
+   "start": 12.7,
+   "end": 13.48
+  },
+  {
+   "w": "These,",
+   "start": 13.48,
+   "end": 13.97
+  },
+  {
+   "w": "quote-unquote,",
+   "start": 13.97,
+   "end": 15.02
+  },
+  {
+   "w": "are",
+   "start": 15.02,
+   "end": 15.23
+  },
+  {
+   "w": "the",
+   "start": 15.23,
+   "end": 15.6
+  },
+  {
+   "w": "self-governing",
+   "start": 15.6,
+   "end": 16.42
+  },
+  {
+   "w": "churches.",
+   "start": 16.42,
+   "end": 17.2
+  },
+  {
+   "w": "The",
+   "start": 17.2,
+   "end": 17.4
+  },
+  {
+   "w": "Catholic",
+   "start": 17.4,
+   "end": 17.93
+  },
+  {
+   "w": "Church",
+   "start": 17.93,
+   "end": 18.32
+  },
+  {
+   "w": "is",
+   "start": 18.32,
+   "end": 18.58
+  },
+  {
+   "w": "not",
+   "start": 18.58,
+   "end": 18.65
+  },
+  {
+   "w": "only",
+   "start": 18.65,
+   "end": 18.9
+  },
+  {
+   "w": "the",
+   "start": 18.9,
+   "end": 19.11
+  },
+  {
+   "w": "Roman",
+   "start": 19.11,
+   "end": 19.44
+  },
+  {
+   "w": "Church,",
+   "start": 19.44,
+   "end": 19.96
+  },
+  {
+   "w": "it",
+   "start": 19.96,
+   "end": 20.11
+  },
+  {
+   "w": "is",
+   "start": 20.11,
+   "end": 20.22
+  },
+  {
+   "w": "a",
+   "start": 20.22,
+   "end": 20.28
+  },
+  {
+   "w": "communion",
+   "start": 20.28,
+   "end": 20.91
+  },
+  {
+   "w": "of",
+   "start": 20.91,
+   "end": 21.02
+  },
+  {
+   "w": "churches,",
+   "start": 21.02,
+   "end": 21.66
+  },
+  {
+   "w": "Eastern",
+   "start": 21.66,
+   "end": 22.2
+  },
+  {
+   "w": "and",
+   "start": 22.2,
+   "end": 22.42
+  },
+  {
+   "w": "Western,",
+   "start": 22.42,
+   "end": 23.17
+  },
+  {
+   "w": "each",
+   "start": 23.17,
+   "end": 23.4
+  },
+  {
+   "w": "with",
+   "start": 23.4,
+   "end": 23.7
+  },
+  {
+   "w": "its",
+   "start": 23.7,
+   "end": 23.91
+  },
+  {
+   "w": "own",
+   "start": 23.91,
+   "end": 24.14
+  },
+  {
+   "w": "bishops,",
+   "start": 24.14,
+   "end": 24.81
+  },
+  {
+   "w": "laws,",
+   "start": 24.81,
+   "end": 25.33
+  },
+  {
+   "w": "and",
+   "start": 25.33,
+   "end": 25.91
+  },
+  {
+   "w": "tradition.",
+   "start": 25.91,
+   "end": 26.48
+  },
+  {
+   "w": "The",
+   "start": 26.48,
+   "end": 26.76
+  },
+  {
+   "w": "Latin",
+   "start": 26.76,
+   "end": 27.23
+  },
+  {
+   "w": "Church",
+   "start": 27.23,
+   "end": 27.86
+  },
+  {
+   "w": "is",
+   "start": 27.86,
+   "end": 27.99
+  },
+  {
+   "w": "the",
+   "start": 27.99,
+   "end": 28.33
+  },
+  {
+   "w": "largest.",
+   "start": 28.33,
+   "end": 29.24
+  },
+  {
+   "w": "Among",
+   "start": 29.33,
+   "end": 29.55
+  },
+  {
+   "w": "the",
+   "start": 29.55,
+   "end": 29.74
+  },
+  {
+   "w": "Eastern",
+   "start": 29.74,
+   "end": 30.21
+  },
+  {
+   "w": "Catholic",
+   "start": 30.21,
+   "end": 30.69
+  },
+  {
+   "w": "Churches,",
+   "start": 30.69,
+   "end": 31.36
+  },
+  {
+   "w": "several",
+   "start": 31.36,
+   "end": 31.75
+  },
+  {
+   "w": "share",
+   "start": 31.75,
+   "end": 32.11
+  },
+  {
+   "w": "the",
+   "start": 32.11,
+   "end": 32.25
+  },
+  {
+   "w": "Byzantine",
+   "start": 32.25,
+   "end": 32.95
+  },
+  {
+   "w": "tradition,",
+   "start": 32.95,
+   "end": 33.51
+  },
+  {
+   "w": "such",
+   "start": 33.51,
+   "end": 33.76
+  },
+  {
+   "w": "as",
+   "start": 33.76,
+   "end": 33.96
+  },
+  {
+   "w": "Ruthenian,",
+   "start": 33.96,
+   "end": 34.76
+  },
+  {
+   "w": "Ukrainian,",
+   "start": 34.76,
+   "end": 35.73
+  },
+  {
+   "w": "and",
+   "start": 35.73,
+   "end": 35.8
+  },
+  {
+   "w": "Melkite",
+   "start": 35.8,
+   "end": 36.32
+  },
+  {
+   "w": "Churches.",
+   "start": 36.32,
+   "end": 37.2
+  },
+  {
+   "w": "A",
+   "start": 37.2,
+   "end": 37.29
+  },
+  {
+   "w": "Byzantine",
+   "start": 37.29,
+   "end": 38
+  },
+  {
+   "w": "Catholic",
+   "start": 38,
+   "end": 38.65
+  },
+  {
+   "w": "belongs",
+   "start": 38.65,
+   "end": 39.32
+  },
+  {
+   "w": "to",
+   "start": 39.32,
+   "end": 39.38
+  },
+  {
+   "w": "one",
+   "start": 39.38,
+   "end": 39.62
+  },
+  {
+   "w": "of",
+   "start": 39.62,
+   "end": 39.78
+  },
+  {
+   "w": "these,",
+   "start": 39.78,
+   "end": 40.27
+  },
+  {
+   "w": "and",
+   "start": 40.27,
+   "end": 40.57
+  },
+  {
+   "w": "so",
+   "start": 40.57,
+   "end": 40.91
+  },
+  {
+   "w": "belongs",
+   "start": 40.91,
+   "end": 41.35
+  },
+  {
+   "w": "fully",
+   "start": 41.35,
+   "end": 41.71
+  },
+  {
+   "w": "to",
+   "start": 41.71,
+   "end": 41.88
+  },
+  {
+   "w": "the",
+   "start": 41.88,
+   "end": 42.11
+  },
+  {
+   "w": "one",
+   "start": 42.11,
+   "end": 42.35
+  },
+  {
+   "w": "Catholic",
+   "start": 42.35,
+   "end": 43.17
+  },
+  {
+   "w": "Church.",
+   "start": 43.17,
+   "end": 43.72
+  }
+ ]
+}

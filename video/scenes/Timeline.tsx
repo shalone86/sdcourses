@@ -12,7 +12,7 @@ export const Timeline: React.FC<SceneProps<TimelineScene>> = ({scene, duration})
   const W = 1560;
   const n = scene.items.length;
   const lineEnd = Math.min(duration * 0.55, 150);
-  const at = (i: number) => 10 + (i / (n - 1)) * (lineEnd - 10);
+  const at = (i: number) => (scene as any).cues?.[i] ?? 10 + (i / (n - 1)) * (lineEnd - 10); // when it's said, else spaced
   const countStart = lineEnd + 10;
   const count = Math.round(interpolate(f, [countStart, countStart + 60], [1, scene.counter?.to ?? 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}));
 

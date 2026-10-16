@@ -11,8 +11,11 @@ export const Quote: React.FC<SceneProps<QuoteScene>> = ({scene, duration}) => {
   const f = useCurrentFrame();
   const text = scene.text.trim();
   const words = text.split(/\s+/);
-  const perWord = Math.max(2, Math.min(5, Math.floor((duration * 0.45) / words.length)));
-  const doneAt = 6 + words.length * perWord;
+  // Spoken pace when known (cues from the recording), else a steady reveal.
+  const c = (scene as any).cues as {start?: number; end?: number} | undefined;
+  const begin = c?.start ?? 6;
+  const perWord = c?.start != null && c?.end != null ? Math.max(1, (c.end - c.start) / words.length) : Math.max(2, Math.min(5, Math.floor((duration * 0.45) / words.length)));
+  const doneAt = begin + words.length * perWord;
 
   // Find which words belong to the highlight phrase.
   const hl = scene.highlight?.split(/\s+/) ?? [];
@@ -28,7 +31,7 @@ export const Quote: React.FC<SceneProps<QuoteScene>> = ({scene, duration}) => {
         {words.map((w, i) => {
           const inHl = hlStart >= 0 && i >= hlStart && i < hlStart + hl.length;
           return (
-            <span key={i} style={{opacity: ramp(f, 6 + i * perWord, 14 + i * perWord), position: 'relative'}}>
+            <span key={i} style={{opacity: ramp(f, begin + i * perWord, begin + 8 + i * perWord), position: 'relative'}}>
               {inHl && (
                 <span
                   style={{

@@ -13,8 +13,9 @@ export const Titles: React.FC<SceneProps<TitlesScene>> = ({scene, duration}) => 
   return (
     <Center style={{gap: 70}}>
       {scene.items.map((t, i) => {
-        const s = 6 + i * gap;
-        const later = i < scene.items.length - 1 ? 1 - ramp(f, s + gap, s + gap + 20) * 0.4 : 1;
+        const cue = (k: number) => (scene as any).cues?.[k] ?? 6 + k * gap; // when it's said, else spaced
+        const s = cue(i);
+        const later = i < scene.items.length - 1 ? 1 - ramp(f, cue(i + 1), cue(i + 1) + 20) * 0.4 : 1;
         return (
           <div key={i} style={{textAlign: 'center', opacity: later}}>
             <div style={{...enter(f, s), fontFamily: theme.serif, fontStyle: 'italic', fontSize: 110, lineHeight: 1.1, color: i === scene.items.length - 1 ? theme.accent : theme.ink}}>

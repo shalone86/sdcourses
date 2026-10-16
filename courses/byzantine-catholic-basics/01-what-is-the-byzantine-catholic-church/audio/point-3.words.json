@@ -1,0 +1,545 @@
+{
+ "stamp": "2:4590798:1792113231959",
+ "words": [
+  {
+   "w": "And",
+   "start": 0.09,
+   "end": 0.24
+  },
+  {
+   "w": "the",
+   "start": 0.24,
+   "end": 0.48
+  },
+  {
+   "w": "catechism",
+   "start": 0.48,
+   "end": 1.41
+  },
+  {
+   "w": "explains",
+   "start": 1.41,
+   "end": 1.85
+  },
+  {
+   "w": "why",
+   "start": 1.85,
+   "end": 2.09
+  },
+  {
+   "w": "the",
+   "start": 2.09,
+   "end": 2.33
+  },
+  {
+   "w": "Church",
+   "start": 2.33,
+   "end": 2.89
+  },
+  {
+   "w": "celebrates",
+   "start": 2.89,
+   "end": 3.64
+  },
+  {
+   "w": "in",
+   "start": 3.64,
+   "end": 3.8
+  },
+  {
+   "w": "different",
+   "start": 3.8,
+   "end": 4.52
+  },
+  {
+   "w": "ways.",
+   "start": 4.52,
+   "end": 5.2
+  },
+  {
+   "w": "Churches",
+   "start": 5.2,
+   "end": 5.78
+  },
+  {
+   "w": "of",
+   "start": 5.78,
+   "end": 5.96
+  },
+  {
+   "w": "the",
+   "start": 5.96,
+   "end": 6.14
+  },
+  {
+   "w": "same",
+   "start": 6.14,
+   "end": 6.61
+  },
+  {
+   "w": "geographical",
+   "start": 6.61,
+   "end": 7.31
+  },
+  {
+   "w": "and",
+   "start": 7.31,
+   "end": 7.53
+  },
+  {
+   "w": "cultural",
+   "start": 7.53,
+   "end": 8.16
+  },
+  {
+   "w": "area",
+   "start": 8.16,
+   "end": 8.8
+  },
+  {
+   "w": "came",
+   "start": 8.8,
+   "end": 9.16
+  },
+  {
+   "w": "to",
+   "start": 9.16,
+   "end": 9.2
+  },
+  {
+   "w": "celebrate",
+   "start": 9.2,
+   "end": 9.72
+  },
+  {
+   "w": "the",
+   "start": 9.72,
+   "end": 10.47
+  },
+  {
+   "w": "mystery",
+   "start": 10.47,
+   "end": 10.48
+  },
+  {
+   "w": "of",
+   "start": 10.48,
+   "end": 10.7
+  },
+  {
+   "w": "Christ",
+   "start": 10.7,
+   "end": 11.36
+  },
+  {
+   "w": "through",
+   "start": 11.36,
+   "end": 11.91
+  },
+  {
+   "w": "particular",
+   "start": 11.91,
+   "end": 12.77
+  },
+  {
+   "w": "expressions",
+   "start": 12.77,
+   "end": 13.55
+  },
+  {
+   "w": "characterized",
+   "start": 13.55,
+   "end": 14.56
+  },
+  {
+   "w": "by",
+   "start": 14.56,
+   "end": 14.81
+  },
+  {
+   "w": "their",
+   "start": 14.81,
+   "end": 15.12
+  },
+  {
+   "w": "culture.",
+   "start": 15.12,
+   "end": 15.92
+  },
+  {
+   "w": "A",
+   "start": 15.92,
+   "end": 16.01
+  },
+  {
+   "w": "Byzantine",
+   "start": 16.01,
+   "end": 16.68
+  },
+  {
+   "w": "Catholic",
+   "start": 16.68,
+   "end": 17.33
+  },
+  {
+   "w": "and",
+   "start": 17.33,
+   "end": 17.48
+  },
+  {
+   "w": "a",
+   "start": 17.48,
+   "end": 17.55
+  },
+  {
+   "w": "Roman",
+   "start": 17.55,
+   "end": 17.92
+  },
+  {
+   "w": "Catholic",
+   "start": 17.92,
+   "end": 18.52
+  },
+  {
+   "w": "share",
+   "start": 18.52,
+   "end": 18.89
+  },
+  {
+   "w": "the",
+   "start": 18.89,
+   "end": 19.11
+  },
+  {
+   "w": "same",
+   "start": 19.11,
+   "end": 19.45
+  },
+  {
+   "w": "faith,",
+   "start": 19.45,
+   "end": 20
+  },
+  {
+   "w": "the",
+   "start": 20,
+   "end": 20.22
+  },
+  {
+   "w": "same",
+   "start": 20.22,
+   "end": 20.51
+  },
+  {
+   "w": "seven",
+   "start": 20.51,
+   "end": 20.91
+  },
+  {
+   "w": "sacraments,",
+   "start": 20.91,
+   "end": 21.75
+  },
+  {
+   "w": "and",
+   "start": 21.75,
+   "end": 21.97
+  },
+  {
+   "w": "the",
+   "start": 21.97,
+   "end": 22.19
+  },
+  {
+   "w": "same",
+   "start": 22.19,
+   "end": 22.47
+  },
+  {
+   "w": "Eucharis.",
+   "start": 22.47,
+   "end": 23.36
+  },
+  {
+   "w": "What",
+   "start": 23.36,
+   "end": 23.8
+  },
+  {
+   "w": "differs",
+   "start": 23.8,
+   "end": 24.36
+  },
+  {
+   "w": "is",
+   "start": 24.36,
+   "end": 24.54
+  },
+  {
+   "w": "how",
+   "start": 24.54,
+   "end": 24.81
+  },
+  {
+   "w": "they",
+   "start": 24.81,
+   "end": 25.17
+  },
+  {
+   "w": "pray.",
+   "start": 25.17,
+   "end": 25.84
+  },
+  {
+   "w": "Byzantine",
+   "start": 25.93,
+   "end": 26.47
+  },
+  {
+   "w": "churches",
+   "start": 26.47,
+   "end": 27.17
+  },
+  {
+   "w": "are",
+   "start": 27.17,
+   "end": 27.25
+  },
+  {
+   "w": "filled",
+   "start": 27.25,
+   "end": 27.66
+  },
+  {
+   "w": "with",
+   "start": 27.66,
+   "end": 27.94
+  },
+  {
+   "w": "icons,",
+   "start": 27.94,
+   "end": 28.43
+  },
+  {
+   "w": "the",
+   "start": 28.43,
+   "end": 28.73
+  },
+  {
+   "w": "liturgy",
+   "start": 28.73,
+   "end": 29.13
+  },
+  {
+   "w": "is",
+   "start": 29.13,
+   "end": 29.29
+  },
+  {
+   "w": "sung",
+   "start": 29.29,
+   "end": 29.6
+  },
+  {
+   "w": "from",
+   "start": 29.6,
+   "end": 29.83
+  },
+  {
+   "w": "beginning",
+   "start": 29.83,
+   "end": 30.27
+  },
+  {
+   "w": "to",
+   "start": 30.27,
+   "end": 30.48
+  },
+  {
+   "w": "end,",
+   "start": 30.48,
+   "end": 30.88
+  },
+  {
+   "w": "and",
+   "start": 30.88,
+   "end": 31.07
+  },
+  {
+   "w": "its",
+   "start": 31.07,
+   "end": 31.32
+  },
+  {
+   "w": "prayers",
+   "start": 31.32,
+   "end": 31.7
+  },
+  {
+   "w": "come",
+   "start": 31.7,
+   "end": 31.95
+  },
+  {
+   "w": "from",
+   "start": 31.95,
+   "end": 32.29
+  },
+  {
+   "w": "the",
+   "start": 32.29,
+   "end": 32.39
+  },
+  {
+   "w": "Greek",
+   "start": 32.39,
+   "end": 32.7
+  },
+  {
+   "w": "fathers",
+   "start": 32.7,
+   "end": 33.14
+  },
+  {
+   "w": "of",
+   "start": 33.14,
+   "end": 33.37
+  },
+  {
+   "w": "the",
+   "start": 33.37,
+   "end": 33.45
+  },
+  {
+   "w": "Church.",
+   "start": 33.45,
+   "end": 34.08
+  },
+  {
+   "w": "The",
+   "start": 34.08,
+   "end": 34.28
+  },
+  {
+   "w": "catechism",
+   "start": 34.28,
+   "end": 34.87
+  },
+  {
+   "w": "counts",
+   "start": 34.87,
+   "end": 35.41
+  },
+  {
+   "w": "the",
+   "start": 35.41,
+   "end": 35.49
+  },
+  {
+   "w": "Byzantine",
+   "start": 35.49,
+   "end": 36.07
+  },
+  {
+   "w": "Rite",
+   "start": 36.07,
+   "end": 36.4
+  },
+  {
+   "w": "among",
+   "start": 36.4,
+   "end": 36.74
+  },
+  {
+   "w": "the",
+   "start": 36.74,
+   "end": 36.97
+  },
+  {
+   "w": "Riates",
+   "start": 36.97,
+   "end": 37.36
+  },
+  {
+   "w": "in",
+   "start": 37.36,
+   "end": 37.71
+  },
+  {
+   "w": "use",
+   "start": 37.71,
+   "end": 38.25
+  },
+  {
+   "w": "in",
+   "start": 38.25,
+   "end": 38.35
+  },
+  {
+   "w": "the",
+   "start": 38.35,
+   "end": 38.52
+  },
+  {
+   "w": "Church",
+   "start": 38.52,
+   "end": 39.35
+  },
+  {
+   "w": "today,",
+   "start": 39.35,
+   "end": 39.36
+  },
+  {
+   "w": "alongside",
+   "start": 39.36,
+   "end": 40
+  },
+  {
+   "w": "the",
+   "start": 40,
+   "end": 40.2
+  },
+  {
+   "w": "Latin,",
+   "start": 40.2,
+   "end": 40.77
+  },
+  {
+   "w": "Alexandria,",
+   "start": 40.77,
+   "end": 41.68
+  },
+  {
+   "w": "Syriac,",
+   "start": 41.68,
+   "end": 42.25
+  },
+  {
+   "w": "Armenian,",
+   "start": 42.25,
+   "end": 42.9
+  },
+  {
+   "w": "Maronite,",
+   "start": 42.9,
+   "end": 43.78
+  },
+  {
+   "w": "and",
+   "start": 43.78,
+   "end": 44.13
+  },
+  {
+   "w": "Chaldean",
+   "start": 44.13,
+   "end": 44.77
+  },
+  {
+   "w": "Riates.",
+   "start": 44.77,
+   "end": 45.52
+  }
+ ]
+}

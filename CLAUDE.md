@@ -27,6 +27,8 @@ HANDOFF.md.**
 - Copy quotations exactly. `npm run check -- <course>/<lesson>` must pass.
 - Explanations: 60–100 words, plain, no flourishes. Whole lesson ~550–650 words.
 - Quizzes: one or more per point, mixing `choice`, `truefalse`, and `blank`.
+- Every intro opens the same way: `title`, then `host` (her photo) at "I'm your
+  host", then `trinity` at "in the name of the Father" (templates/lesson.yml has it).
 - Don't state contested history more confidently than the sources do.
 
 ## Commands (all take `<course>/<lesson-folder>`)

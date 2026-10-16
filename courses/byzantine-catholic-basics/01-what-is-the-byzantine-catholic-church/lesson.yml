@@ -25,13 +25,26 @@ sources:
     file: sources-local/ugcc-catechism.txt
 
 intro:
-  text: ""               # Shalone writes this
+  text: >-
+    What is the Byzantine Catholic Church? Why do they take communion with a
+    spoon and why does their liturgy look so different? Well, the Byzantine
+    Catholic Church is a family of Eastern Churches that share the Byzantine
+    tradition. They include Ruthenians, Melkites, Ukrainian Catholics and many
+    more. But before we get ahead of ourselves, let's get a basic introduction
+    to the Byzantine Catholic Church with this lesson. I'm your host Shalone
+    Cason and let's begin in the name of the Father and of the Son and of the
+    Holy Spirit.
   notes:
     - "Your old intro asked: why screens in front of the altar, why Communion with a spoon, why the liturgy looks different (lesson 3 answers the first two)."
     - The Byzantine Catholic Church isn't one Church but a family of Eastern Catholic Churches sharing the Byzantine tradition (Ruthenian, Ukrainian, Melkite, and others).
     - This lesson answers the question in five points, from Antioch to Rome.
   scenes:
     - type: title
+    - type: host         # your photo and name, when you say "I'm your host"
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
 
 points:
   - heading: It began in Antioch
@@ -162,7 +175,9 @@ points:
 
   - heading: In communion with Rome
     quote:
-      lead: What makes these Churches Catholic is their communion with Peter's successor.
+      lead: >-
+        So what does it mean to be in Communion with Rome? What makes these
+        Churches Catholic? Well, it is their communion with Peter's successor.
       text: >-
         The first among self-governing Churches is the Church of Rome, because
         its presider is the Pope of Rome, the successor of the apostle Peter.
@@ -170,12 +185,12 @@ points:
       cite: Christ – Our Pascha 291
       highlight: successor of the apostle Peter
     text: >-
-      So what is the Byzantine Catholic Church? It is Eastern in its worship
-      and fully Catholic in its faith. It keeps the prayers, icons and
-      customs of the Byzantine tradition, and it is in full communion with
-      the Pope, just like the Latin Church. A Byzantine Catholic can receive
-      Communion at a Roman Catholic Mass, and a Roman Catholic can receive at
-      a Byzantine Divine Liturgy.
+      So the Byzantine Catholic Church is Eastern in its worship but also
+      fully Catholic because its faith is fully Catholic. It keeps the
+      prayers, icons, and customs of the Byzantine tradition, but it is in
+      full communion with the Pope, just like the Latin Church. Therefore, a
+      Byzantine Catholic can receive Communion at a Roman Catholic Mass, and a
+      Roman Catholic can receive at a Byzantine Divine Liturgy.
     visuals:
       - type: map
         region: mediterranean
@@ -197,7 +212,13 @@ points:
         (Christ – Our Pascha 291).
 
 outro:
-  text: ""               # Shalone writes this
+  text: >-
+    And that is your intro to the Byzantine Catholic Church in a nutshell. It
+    started in Antioch and grew into a family of self-governing Churches in
+    communion with Rome. Even though their worship is somewhat different than
+    Roman Catholics, we share the same faith and follow the Pope. Thanks for
+    learning with us and until next time, I've been your host, Shalone Cason,
+    please stay holy my friends.
   notes:
     - "Recap: began in Antioch · worship grew from Antioch's · one faith, more than one tradition · a family of self-governing Churches · in communion with Rome."
     - "Next lesson: What Does \"Byzantine\" Mean?"
