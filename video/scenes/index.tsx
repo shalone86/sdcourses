@@ -3,7 +3,9 @@ import {Chain} from './Chain';
 import {College} from './College';
 import {Compare} from './Compare';
 import {Host} from './Host';
+import {Iconostasis} from './Iconostasis';
 import {Keys} from './Keys';
+import {MapView} from './Map';
 import {Quote} from './Quote';
 import {Recap} from './Recap';
 import {Timeline} from './Timeline';
@@ -26,6 +28,8 @@ const registry: Record<string, React.FC<SceneProps<any>>> = {
   chain: Chain,
   recap: Recap,
   host: Host,
+  map: MapView,
+  iconostasis: Iconostasis,
   trinity: Trinity,
 };
 

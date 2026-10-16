@@ -1,0 +1,22 @@
+slug: byzantine-catholic-basics
+title: Byzantine Catholic Basics
+summary: >-
+  Who Byzantine Catholics are, where the name comes from, and why their
+  churches and Divine Liturgy look the way they do, from Scripture, the
+  Catechism, the Catholic Encyclopedia, and the Byzantine Catholic catechism.
+# The course's instrumental (Shalone's CC0 music, methodius.media).
+music: music/blessed-art-thou-ambient-instrumental.mp3
+# Cover picture: an icon from https://lucide.dev/icons (npm run cover)
+cover: {icon: church, eyebrow: Byzantine Catholic Course}
+# Category tags on the site (Ghost tags starting with _); the first lesson carries them.
+categories: [All Courses, Byzantine Catholic Courses, Catholic Faith & Practices]
+planned:
+  - What Is the Byzantine Catholic Church?
+  - What Does "Byzantine" Mean?
+  - Inside a Byzantine Church
+  # Later (from the course introduction's questions and common topics):
+  - Why Is the Divine Liturgy So Different?
+  - Baptism, Chrismation and Communion Together
+  - The Sign of the Cross, Right to Left
+  - The Church Year and the Great Feasts
+  - Married Priests in the Eastern Churches

@@ -1,3 +1,4 @@
+import {icons} from 'lucide-react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {draw, enter, pop, ramp} from '../anim';
 import {theme} from '../theme';
@@ -5,7 +6,8 @@ import {Center} from './Center';
 import {Check} from './Check';
 import type {SceneProps} from '.';
 
-type Side = {kicker: string; title: string; note: string};
+// icon: 'dome' | 'facade' (line-drawn churches) or any https://lucide.dev icon name.
+type Side = {kicker: string; title: string; note: string; icon?: string};
 type CompareScene = {left: Side; right: Side; emphasis?: 'left' | 'right'};
 
 /** Simple line-drawn church facades: a dome, and a columned front. */
@@ -23,6 +25,13 @@ const Facade: React.FC<{p: number; color: string}> = ({p, color}) => (
     <path pathLength={1} style={draw(p)} d="M45 80 V190 M85 80 V190 M125 80 V190 M165 80 V190 M205 80 V190" />
   </svg>
 );
+
+const SideIcon: React.FC<{name: string; p: number}> = ({name, p}) => {
+  if (name === 'dome') return <Dome p={p} color={theme.ink} />;
+  if (name === 'facade') return <Facade p={p} color={theme.ink} />;
+  const Icon = (icons as Record<string, React.FC<any>>)[name.replace(/(^|-)([a-z0-9])/g, (_, __, c: string) => c.toUpperCase())] ?? icons.Circle;
+  return <div style={{height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: p}}><Icon size={150} color={theme.ink} strokeWidth={1.3} /></div>;
+};
 
 export const Compare: React.FC<SceneProps<CompareScene>> = ({scene, duration}) => {
   const f = useCurrentFrame();
@@ -43,7 +52,7 @@ export const Compare: React.FC<SceneProps<CompareScene>> = ({scene, duration}) =
           border: `3px solid ${on ? `rgba(122,31,43,${border})` : 'transparent'}`, position: 'relative',
         }}
       >
-        {which === 'left' ? <Dome p={ramp(f, start + 6, start + 46)} color={theme.ink} /> : <Facade p={ramp(f, start + 6, start + 46)} color={theme.ink} />}
+        <SideIcon name={side.icon ?? (which === 'left' ? 'dome' : 'facade')} p={ramp(f, start + 6, start + 46)} />
         <div style={{fontFamily: theme.sans, fontSize: 24, letterSpacing: 5, color: on ? theme.accent : theme.muted, marginTop: 24, fontWeight: 600}}>
           {side.kicker.toUpperCase()}
         </div>

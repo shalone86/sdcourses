@@ -1,0 +1,217 @@
+# Quote-anchored lesson. See courses/what-is-the-pope/01-what-is-the-pope
+# for a complete example.
+status: draft
+course: byzantine-catholic-basics
+number: 2
+slug: what-does-byzantine-mean
+title: What Does “Byzantine” Mean?
+excerpt: >-
+  A Greek city named for its founder, an emperor's new capital, a Church
+  whose worship spread to the Slavs, and a split that Byzantine Catholics
+  live across.
+
+sources:
+  - id: ce-constantinople
+    label: "Catholic Encyclopedia (1908): Constantinople"
+    url: https://www.newadvent.org/cathen/04301a.htm
+  - id: ce-byzantine-rite
+    label: "Catholic Encyclopedia (1908): The Rite of Constantinople"
+    url: https://www.newadvent.org/cathen/04312d.htm
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 307"
+    file: sources-local/ugcc-catechism.txt
+  - id: ccc-church
+    label: Catechism of the Catholic Church, 830–838
+    url: https://www.vatican.va/archive/ENG0015/__P29.HTM
+
+intro:
+  text: ""               # Shalone writes this
+  notes:
+    - Byzantine Catholics today live across the world; many in America came from the Carpathian Mountains (Ruthenians) and from Ukraine.
+    - "Background (Wikipedia, not quoted): the Ruthenian Church's own union with Rome was the Union of Uzhhorod, 1646."
+    - This lesson answers the question in five points, from a Greek colony to today.
+  scenes:
+    - type: title
+
+points:
+  - heading: A city named for its founder
+    quote:
+      lead: The Catholic Encyclopedia tells where the name comes from.
+      text: >-
+        The chief of the Megarian expedition was Byzas, after whom the city
+        was naturally called Byzantion (Lat. Byzantium).
+      source: ce-constantinople
+      cite: Catholic Encyclopedia, "Constantinople"
+      highlight: Byzantium
+    text: >-
+      Byzantium began as a Greek colony on the Bosporus, the narrow strait
+      where Europe meets Asia, about six hundred and fifty years before
+      Christ. Its position made it a natural crossroads for trade by land
+      and sea. Centuries later, its name would be given to an empire, an
+      art, and a whole way of Christian worship. When we say "Byzantine,"
+      we are pointing back to this city.
+    visuals:
+      - type: term
+        term: Byzantium
+        origin: Greek Byzantion
+        meaning: the city of Byzas
+      - type: map
+        region: east
+        places: [{name: Byzantium, label: above}, Athens, Antioch, Jerusalem]
+        highlight: Byzantium
+        caption: Where Europe meets Asia
+    quiz:
+      type: choice
+      question: Where does the name "Byzantine" come from?
+      options:
+        - A Roman emperor
+        - The city of Byzantium, named for its founder, Byzas
+        - A Greek word for "church"
+      answer: 1
+      why: >-
+        The Catholic Encyclopedia says the city "was naturally called
+        Byzantion (Lat. Byzantium)" after Byzas, its founder.
+
+  - heading: Constantine's new capital
+    quote:
+      lead: Emperor Constantine chose Byzantium as his new capital and gave it his name.
+      text: >-
+        the solemn inauguration of the new city did not occur until 11 May,
+        330
+      source: ce-constantinople
+      cite: Catholic Encyclopedia, "Constantinople"
+      highlight: 11 May, 330
+    text: >-
+      Constantine was the first Christian emperor. He rebuilt Byzantium as
+      Constantinople, the city of Constantine, a "New Rome" in the east.
+      As the western half of the empire broke apart, the eastern half went
+      on for more than a thousand years, until Constantinople fell in 1453.
+      Historians call it the Byzantine Empire, though its people simply
+      called themselves Romans. Its great church was Hagia Sophia, Holy
+      Wisdom.
+    visuals:
+      - type: map
+        region: mediterranean
+        places: [Rome, {name: Constantinople, label: above}]
+        routes: [[Rome, Constantinople]]
+        highlight: Constantinople
+        caption: From Old Rome to New Rome
+      - type: timeline
+        items:
+          - { year: "c. 658 BC", label: Byzantium founded }
+          - { year: "330", label: Constantinople inaugurated }
+          - { year: "1453", label: The city falls }
+    quiz:
+      type: blank
+      question: Byzantium was renamed ____, after the emperor who made it his capital.
+      accept: [Constantinople]
+      why: >-
+        Constantine made the city his new capital, inaugurated on 11 May,
+        330, and it took his name.
+
+  - heading: Its worship spread across the East
+    quote:
+      lead: The Church of Constantinople developed a rite that traveled far beyond the city.
+      text: >-
+        the Church of Constantinople, which is now, after the Roman Rite, by
+        far the most widely spread in the world.
+      source: ce-byzantine-rite
+      cite: Catholic Encyclopedia, "The Rite of Constantinople"
+      highlight: by far the most widely spread
+    text: >-
+      From Constantinople, missionaries carried the Gospel to the Slavic
+      peoples. Saints Cyril and Methodius brought the liturgy to the Slavs
+      in their own language, and in 988 Prince Volodymyr of Kyiv was
+      baptized with his people. Greeks, Slavs, Arabs and others came to
+      pray the same Byzantine liturgy. That is why "Byzantine" describes a
+      tradition of worship, not one nation.
+    visuals:
+      - type: map
+        region: east
+        places: [{name: Constantinople, label: below}, {name: Kyiv, label: above}, Antioch]
+        routes: [[Constantinople, Kyiv]]
+        highlight: Kyiv
+        caption: The Byzantine liturgy reaches Kyiv, 988
+    quiz:
+      type: truefalse
+      question: '"Byzantine" names a tradition of worship shared by many peoples, not a single nation.'
+      answer: true
+      why: >-
+        True. Greeks, Slavs, Arabs and others pray the Byzantine liturgy,
+        which spread from the Church of Constantinople.
+
+  - heading: Through the split, communion with Rome
+    quote:
+      lead: The Byzantine Catholic catechism tells how the Church of Kyiv held to both East and West.
+      text: >-
+        Born in the Baptism of Saint Volodymyr, the Metropolitanate of Kyiv
+        became the Daughter-Church of the Church of Constantinople, and
+        through her remained in communion with the Church of Rome
+      source: ugcc
+      cite: Christ – Our Pascha 307
+      highlight: remained in communion with the Church of Rome
+    text: >-
+      Over the centuries, Rome and Constantinople drifted apart, and in 1054
+      their break became open. Most of the Byzantine Churches went with
+      Constantinople and are today the Orthodox Churches. In 1596, at the
+      Union of Brest, the Church of Kyiv reconfirmed its communion with
+      Rome while keeping its Byzantine tradition. Other Byzantine
+      communities, including the Ruthenians, did the same. Their
+      descendants are the Byzantine Catholics.
+    visuals:
+      - type: timeline
+        items:
+          - { year: "988", label: Baptism of Kyiv }
+          - { year: "1054", label: Rome and Constantinople break }
+          - { year: "1596", label: Union of Brest }
+    quiz:
+      type: choice
+      question: What happened at the Union of Brest in 1596?
+      options:
+        - The Church of Kyiv reconfirmed its communion with Rome, keeping its Byzantine tradition
+        - Constantinople was founded
+        - The Byzantine liturgy was replaced by the Roman Rite
+      answer: 0
+      why: >-
+        The Church of Kyiv reconfirmed its communion with Rome while keeping
+        its own Byzantine tradition.
+
+  - heading: Close to the Orthodox
+    quote:
+      lead: The Catechism describes how near the Catholic and Orthodox Churches remain.
+      text: >-
+        With the Orthodox Churches, this communion is so profound "that it
+        lacks little to attain the fullness that would permit a common
+        celebration of the Lord's Eucharist."
+      source: ccc-church
+      cite: Catechism 838
+      highlight: it lacks little
+    text: >-
+      Byzantine Catholics and Orthodox Christians pray the same liturgies,
+      venerate the same icons, and keep the same feasts and fasts. What
+      differs is communion with the Pope. So what does "Byzantine" mean? It
+      names a city, an empire and, above all, a way of worship that grew in
+      Constantinople. Byzantine Catholics keep that way of worship, in full
+      communion with Rome, and pray for the day East and West share one
+      table again.
+    visuals:
+      - type: compare
+        left: { kicker: Orthodox, title: Same liturgy, note: Not in communion with Rome, icon: dome }
+        right: { kicker: Byzantine Catholic, title: Same liturgy, note: In full communion with Rome, icon: dome }
+        emphasis: right
+    quiz:
+      type: truefalse
+      question: Byzantine Catholics and Orthodox Christians pray the same Byzantine liturgies.
+      answer: true
+      why: >-
+        True. The difference is communion with the Pope. The Catechism says
+        Catholic and Orthodox communion "lacks little" to reach its fullness
+        (CCC 838).
+
+outro:
+  text: ""               # Shalone writes this
+  notes:
+    - "Recap: a city named for Byzas · Constantine's new capital · a rite that spread across the East · communion with Rome through the split · close to the Orthodox."
+    - "Next lesson: Inside a Byzantine Church."
+  scenes:
+    - type: recap

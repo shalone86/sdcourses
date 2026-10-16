@@ -10,7 +10,7 @@
 // but never count as verifying a quotation.
 import fs from 'node:fs';
 import path from 'node:path';
-import {lessonDir, loadLesson} from './lib.mjs';
+import {ROOT, lessonDir, loadLesson} from './lib.mjs';
 
 const MIN_WORDS = 4;
 
@@ -25,6 +25,12 @@ function textOf(html) {
 }
 
 async function fetchSource(src, cacheDir) {
+  // A book kept on this Mac (e.g. sources-local/ugcc-catechism.txt, extracted from the PDF).
+  if (src.file) {
+    const local = path.resolve(ROOT, src.file);
+    if (!fs.existsSync(local)) throw new Error(`${src.file} isn't on this computer`);
+    return fs.readFileSync(local, 'utf8');
+  }
   const file = path.join(cacheDir, `${src.id}.txt`);
   if (fs.existsSync(file)) return fs.readFileSync(file, 'utf8');
   let url = src.url;
@@ -80,7 +86,9 @@ const unreachable = [];
 for (const src of lesson.sources) {
   if (!src.id || src.reference) continue;
   try {
-    texts.push({src, text: norm(await fetchSource(src, cacheDir))});
+    const raw = await fetchSource(src, cacheDir);
+    const joined = raw.replace(/(\w)\s?-\s+(\w)/g, '$1$2');
+    texts.push({src, text: norm(raw) + ' | ' + norm(joined)});
   } catch (e) {
     unreachable.push(src);
     console.warn(`  ! could not fetch ${src.label} (${e.message}); quotes from it can't be checked`);

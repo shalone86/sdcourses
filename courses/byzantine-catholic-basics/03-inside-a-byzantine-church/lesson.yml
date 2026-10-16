@@ -1,0 +1,194 @@
+# Quote-anchored lesson. See courses/what-is-the-pope/01-what-is-the-pope
+# for a complete example.
+status: draft
+course: byzantine-catholic-basics
+number: 3
+slug: inside-a-byzantine-church
+title: Inside a Byzantine Church
+excerpt: >-
+  Why there is a wall of icons before the altar, what the Royal Doors mean,
+  and why Communion is given with a spoon.
+
+sources:
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 600–604, 646"
+    file: sources-local/ugcc-catechism.txt
+  - id: ccc-images
+    label: Catechism of the Catholic Church, 1159–1162
+    url: https://www.vatican.va/archive/ENG0015/__P38.HTM
+  - id: isaiah-6
+    label: Isaiah 6:1–8 (NABRE)
+    url: https://bible.usccb.org/bible/isaiah/6
+  - id: ccc-liturgy
+    label: Catechism of the Catholic Church, 1200–1206
+    url: https://www.vatican.va/archive/ENG0015/__P3C.HTM
+
+intro:
+  text: ""               # Shalone writes this
+  notes:
+    - "From your course introduction: \"Why do they have screens in front of their altar? Why do they take communion with a spoon?\" This lesson answers both."
+    - The screen is the iconostasis, a wall of icons between the sanctuary and the nave.
+    - This lesson walks through the church in five points, from the iconostasis to the spoon.
+  scenes:
+    - type: title
+
+points:
+  - heading: A wall of icons
+    quote:
+      lead: The first thing you notice is a wall of icons in front of the altar, the iconostasis.
+      text: >-
+        This is a wall that separates and at the same time unites the
+        sanctuary and nave.
+      source: ugcc
+      cite: Christ – Our Pascha 600
+      highlight: separates and at the same time unites
+    text: >-
+      The sanctuary, where the altar stands, is an image of heaven. The nave,
+      where the people stand, is an image of the world we live in. The
+      iconostasis stands between them. It reminds us that heaven is still
+      beyond us, and at the same time it is covered with faces of Christ and
+      his saints looking out at us. It is less a barrier than a window, and
+      during the Divine Liturgy its doors open.
+    visuals:
+      - type: iconostasis
+        highlight: [wall]
+        caption: Heaven behind, earth in front
+    quiz:
+      type: choice
+      question: What does the iconostasis do, according to the Byzantine catechism?
+      options:
+        - It hides the altar so no one can see it
+        - It separates and at the same time unites the sanctuary and the nave
+        - It holds the church's bells
+      answer: 1
+      why: >-
+        It is "a wall that separates and at the same time unites the
+        sanctuary and nave": heaven and earth meet there.
+
+  - heading: The doors to the Kingdom
+    quote:
+      lead: Metropolitan Andrey Sheptytsky put it this way.
+      text: >-
+        The iconostasis is, as it were, the doors to God's eternal kingdom.
+      source: ugcc
+      cite: Christ – Our Pascha 601
+      highlight: the doors to God's eternal kingdom
+    text: >-
+      The iconostasis has three doors. In the middle are the Royal Doors,
+      also called the Holy Doors, with icons of the Annunciation and the four
+      evangelists. On either side are the Deacons' Doors. When the doors open
+      during the services, they show that God opens heaven to us. The priest
+      and deacon come out through them to bring us the Gospel and Holy
+      Communion.
+    visuals:
+      - type: iconostasis
+        highlight: [doors]
+        open: true
+        caption: The Royal Doors open during the Divine Liturgy
+    quiz:
+      type: blank
+      question: The doors in the middle of the iconostasis are called the ____ Doors.
+      accept: [Royal, Holy]
+      why: >-
+        The Royal (or Holy) Doors are in the center; the Deacons' Doors are
+        on either side (Christ – Our Pascha 602).
+
+  - heading: Christ and his Mother
+    quote:
+      lead: Every icon points to one person, as the Catechism explains.
+      text: >-
+        The sacred image, the liturgical icon, principally represents Christ.
+      source: ccc-images
+      cite: Catechism 1159
+      highlight: principally represents Christ
+    text: >-
+      To the right of the Royal Doors is the icon of Christ, holding the Book
+      of the Gospels and blessing. To the left is the Mother of God, holding
+      the Christ Child and pointing to him, showing us the way. Above the
+      doors is the Mystical Supper, the Last Supper, and higher still are
+      the great feasts of the year. Read together, the iconostasis tells the
+      whole story of our salvation.
+    visuals:
+      - type: iconostasis
+        highlight: [icons, supper]
+        caption: Christ on the right, his Mother on the left
+    quiz:
+      type: choice
+      question: Where is the icon of Christ on the iconostasis?
+      options:
+        - To the right of the Royal Doors
+        - Above the feasts
+        - On the back wall only
+      answer: 0
+      why: >-
+        Christ is to the right of the Royal Doors, and the Mother of God is to
+        the left, pointing to him (Christ – Our Pascha 604).
+
+  - heading: Communion with a spoon
+    quote:
+      lead: Byzantine Catholics receive the Body and Blood of Christ together, from a golden spoon.
+      text: >-
+        with a spoon, the priest gives the faithful the most pure Body and
+        precious Blood of Christ for the cleansing from sins.
+      source: ugcc
+      cite: Christ – Our Pascha 646
+      highlight: for the cleansing from sins
+    text: >-
+      The catechism explains the spoon with a scene from Isaiah. The prophet
+      sees God's glory and cries out that his lips are unclean. An angel
+      takes a burning coal from the altar with tongs and touches his mouth:
+      "now that this has touched your lips, your wickedness is removed, your
+      sin purged." In the same way, Christ comes to our lips in Holy
+      Communion to cleanse and heal us.
+    visuals:
+      - type: compare
+        left: { kicker: Isaiah 6, title: A burning coal, note: An angel touches the prophet's lips, icon: flame }
+        right: { kicker: Divine Liturgy, title: The golden spoon, note: The priest brings Christ to our lips, icon: sparkles }
+        emphasis: right
+    quiz:
+      type: truefalse
+      question: In the Byzantine tradition, the faithful receive the Body and Blood of Christ together from a spoon.
+      answer: true
+      why: >-
+        True. The catechism compares the spoon to the tongs the angel used to
+        touch Isaiah's lips with a burning coal (Isaiah 6:6–7).
+
+  - heading: One mystery, many forms
+    quote:
+      lead: Why does all of this look so different from a Roman Catholic church? The Catechism answers.
+      text: >-
+        The mystery of Christ is so unfathomably rich that it cannot be
+        exhausted by its expression in any single liturgical tradition.
+      source: ccc-liturgy
+      cite: Catechism 1201
+      highlight: so unfathomably rich
+    text: >-
+      The iconostasis, the Royal Doors and the spoon are not decorations or
+      oddities. Each one teaches something about heaven, about Christ, and
+      about what happens when we receive him. A Roman Catholic church
+      teaches the same faith in its own way. Both traditions come from the
+      apostles, and together they show more of Christ than either could
+      alone.
+    visuals:
+      - type: chain
+        items: [Jerusalem, Antioch, Constantinople, Kyiv, Your parish]
+        caption: One faith, handed on
+    quiz:
+      type: choice
+      question: Why does the Church have more than one liturgical tradition?
+      options:
+        - Because some traditions are mistakes
+        - Because the mystery of Christ is too rich for any single tradition to exhaust
+        - Because each country invents its own faith
+      answer: 1
+      why: >-
+        "The mystery of Christ is so unfathomably rich that it cannot be
+        exhausted by its expression in any single liturgical tradition" (CCC 1201).
+
+outro:
+  text: ""               # Shalone writes this
+  notes:
+    - "Recap: a wall of icons · the doors to the Kingdom · Christ and his Mother · Communion with a spoon · one mystery, many forms."
+    - "Coming later in this course: Why Is the Divine Liturgy So Different?; Baptism, Chrismation and Communion Together; The Sign of the Cross, Right to Left."
+  scenes:
+    - type: recap

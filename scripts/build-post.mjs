@@ -55,7 +55,7 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
     ].join('\n')),
     outro.text && `<p>${smart(outro.text)}</p>`,
     htmlCard(`<section class="cc-quiz" data-lesson="${esc(lesson.slug)}"><h2>Check your understanding</h2><p class="cc-quiz-intro">Your answers stay on your device.</p>${fallback}<script type="application/json">${json}</script></section>`),
-    `<h3>Sources</h3>\n<ul>${lesson.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.label)}</a></li>`).join('')}</ul>`,
+    `<h3>Sources</h3>\n<ul>${lesson.sources.map((s) => `<li>${s.url ? `<a href="${esc(s.url)}">${esc(s.label)}</a>` : esc(s.label)}</li>`).join('')}</ul>`,
     `<p class="cc-credit"><em>${esc(loadSite().disclosure)}</em></p>`,
   ].filter(Boolean).join('\n\n');
 

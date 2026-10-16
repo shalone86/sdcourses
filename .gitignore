@@ -21,3 +21,6 @@ theme/*/node_modules/
 theme/*/dist/
 theme/*/splashscreens/
 theme/.ghost-local/
+
+# Source books kept on this Mac only (copyrighted; not for the public repo)
+sources-local/

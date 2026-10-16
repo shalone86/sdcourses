@@ -1,0 +1,205 @@
+# Quote-anchored lesson. See courses/what-is-the-pope/01-what-is-the-pope
+# for a complete example.
+status: draft
+course: byzantine-catholic-basics
+number: 1
+# New address; the old lesson (/course/what-is-the-byzantine-catholic-church/) is still live.
+slug: byzantine-catholic-church
+title: What Is the Byzantine Catholic Church?
+excerpt: >-
+  Born in Antioch, shaped by Greek-speaking Christians, and in full communion
+  with Rome: what it means to be a Byzantine Catholic.
+
+sources:
+  - id: acts-11
+    label: Acts 11:19–26 (NABRE)
+    url: https://bible.usccb.org/bible/acts/11
+  - id: ce-byzantine-rite
+    label: "Catholic Encyclopedia (1908): The Rite of Constantinople"
+    url: https://www.newadvent.org/cathen/04312d.htm
+  - id: ccc-liturgy
+    label: Catechism of the Catholic Church, 1200–1206
+    url: https://www.vatican.va/archive/ENG0015/__P3C.HTM
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 285, 291"
+    file: sources-local/ugcc-catechism.txt
+
+intro:
+  text: ""               # Shalone writes this
+  notes:
+    - "Your old intro asked: why screens in front of the altar, why Communion with a spoon, why the liturgy looks different (lesson 3 answers the first two)."
+    - The Byzantine Catholic Church isn't one Church but a family of Eastern Catholic Churches sharing the Byzantine tradition (Ruthenian, Ukrainian, Melkite, and others).
+    - This lesson answers the question in five points, from Antioch to Rome.
+  scenes:
+    - type: title
+
+points:
+  - heading: It began in Antioch
+    quote:
+      lead: After Pentecost, the Gospel spread north from Jerusalem, and Acts tells us where a new name was born.
+      text: >-
+        it was in Antioch that the disciples were first called Christians.
+      source: acts-11
+      cite: Acts 11:26
+      highlight: first called Christians
+    text: >-
+      Antioch was one of the great cities of the Roman Empire, and its
+      people spoke Greek. Saint Paul made it the starting point of his
+      missionary journeys, and Saint Peter himself lived there for a time.
+      From churches like Antioch, Jerusalem and Alexandria grew the
+      Eastern traditions of Christianity, with their own languages, prayers
+      and customs. The Byzantine tradition is one of them, and its roots run
+      back to these first Greek-speaking believers.
+    visuals:
+      - type: map
+        region: holyland
+        places: [Jerusalem, {name: Antioch, label: left}, Tarsus, Alexandria]
+        routes: [[Jerusalem, Antioch]]
+        highlight: Antioch
+        caption: From Jerusalem to Antioch
+    quiz:
+      type: blank
+      question: '"It was in ____ that the disciples were first called Christians."'
+      accept: [Antioch]
+      why: >-
+        Acts 11:26. Antioch was a great Greek-speaking city, and its church
+        became a center of Eastern Christianity.
+
+  - heading: Its worship grew from Antioch's
+    quote:
+      lead: The Catholic Encyclopedia traces the Byzantine way of worship to the same city.
+      text: >-
+        It is derived from that of Antioch.
+      source: ce-byzantine-rite
+      cite: Catholic Encyclopedia, "The Rite of Constantinople"
+      highlight: Antioch
+    text: >-
+      A rite is a Church's whole way of worship: its prayers, its music, the
+      way it celebrates the sacraments. The Byzantine Rite took its shape in
+      Constantinople, but it follows the pattern of the ancient liturgy of
+      Antioch. Its two main liturgies carry the names of two great bishops of
+      the fourth century, Saint Basil the Great and Saint John Chrysostom.
+      Byzantine Catholics still pray these same liturgies today.
+    visuals:
+      - type: titles
+        items:
+          - { latin: Divine Liturgy of St. John Chrysostom, english: Archbishop of Constantinople }
+          - { latin: Divine Liturgy of St. Basil the Great, english: Bishop of Caesarea, d. 379 }
+    quiz:
+      type: truefalse
+      question: The Byzantine Rite follows the pattern of the ancient liturgy of Antioch.
+      answer: true
+      why: >-
+        True. The Catholic Encyclopedia says the Rite of Constantinople "is
+        derived from that of Antioch."
+
+  - heading: One faith, more than one tradition
+    quote:
+      lead: The Catechism explains why the Church celebrates in different ways.
+      text: >-
+        Churches of the same geographical and cultural area came to celebrate
+        the mystery of Christ through particular expressions characterized by
+        the culture
+      source: ccc-liturgy
+      cite: Catechism 1202
+      highlight: particular expressions
+    text: >-
+      A Byzantine Catholic and a Roman Catholic share the same faith, the same
+      seven sacraments, and the same Eucharist. What differs is how they
+      pray. Byzantine churches are filled with icons, the liturgy is sung
+      from beginning to end, and its prayers come from the Greek
+      Fathers of the Church. The Catechism counts the Byzantine Rite among
+      the rites in use in the Church today, alongside the Latin, Alexandrian,
+      Syriac, Armenian, Maronite and Chaldean rites.
+    visuals:
+      - type: compare
+        left: { kicker: Latin tradition, title: Roman Rite, note: Grew from the Church of Rome, icon: facade }
+        right: { kicker: Eastern tradition, title: Byzantine Rite, note: Grew from Antioch and Constantinople, icon: dome }
+        emphasis: right
+    quiz:
+      type: choice
+      question: What do Byzantine Catholics and Roman Catholics share?
+      options:
+        - The same languages and customs
+        - The same faith and sacraments, with different ways of worship
+        - Nothing; they are separate religions
+      answer: 1
+      why: >-
+        They share one faith and the same sacraments. Different cultures
+        "came to celebrate the mystery of Christ through particular
+        expressions" (CCC 1202).
+
+  - heading: A family of self-governing Churches
+    quote:
+      lead: The Byzantine Catholic catechism describes how the Catholic Church is built.
+      text: >-
+        It is in these, and formed out of them, that the one and unique
+        Catholic Church exists.
+      source: ugcc
+      cite: Christ – Our Pascha 285
+      highlight: one and unique Catholic Church
+    text: >-
+      "These" are the self-governing Churches. The Catholic Church is not
+      only the Roman Church. It is a communion of Churches, Eastern and
+      Western, each with its own bishops, laws and tradition. The Latin
+      Church is the largest. Among the Eastern Catholic Churches, several
+      share the Byzantine tradition, such as the Ruthenian, Ukrainian and
+      Melkite Churches. A Byzantine Catholic belongs to one of these, and so
+      belongs fully to the one Catholic Church.
+    visuals:
+      - type: titles
+        items:
+          - { latin: Ruthenian Catholic Church, english: Byzantine tradition }
+          - { latin: Ukrainian Greek Catholic Church, english: Byzantine tradition }
+          - { latin: Melkite Greek Catholic Church, english: Byzantine tradition }
+    quiz:
+      type: truefalse
+      question: The Catholic Church is made up only of the Roman, or Latin, Church.
+      answer: false
+      why: >-
+        False. The one Catholic Church exists in self-governing Churches,
+        Eastern and Western, and "is formed out of them" (Christ – Our Pascha 285).
+
+  - heading: In communion with Rome
+    quote:
+      lead: What makes these Churches Catholic is their communion with Peter's successor.
+      text: >-
+        The first among self-governing Churches is the Church of Rome, because
+        its presider is the Pope of Rome, the successor of the apostle Peter.
+      source: ugcc
+      cite: Christ – Our Pascha 291
+      highlight: successor of the apostle Peter
+    text: >-
+      So what is the Byzantine Catholic Church? It is Eastern in its worship
+      and fully Catholic in its faith. It keeps the prayers, icons and
+      customs of the Byzantine tradition, and it is in full communion with
+      the Pope, just like the Latin Church. A Byzantine Catholic can receive
+      Communion at a Roman Catholic Mass, and a Roman Catholic can receive at
+      a Byzantine Divine Liturgy.
+    visuals:
+      - type: map
+        region: mediterranean
+        places: [Rome, Constantinople, Antioch, Jerusalem]
+        routes: [[Antioch, Rome]]
+        highlight: Rome
+        caption: Eastern in worship, Catholic in communion
+    quiz:
+      type: choice
+      question: What makes the Byzantine Catholic Church Catholic?
+      options:
+        - It uses Latin in its liturgy
+        - It is in full communion with the Pope, the successor of Peter
+        - It was founded in Rome
+      answer: 1
+      why: >-
+        Its worship is Eastern, but it is in communion with the Church of
+        Rome, whose presider is "the successor of the apostle Peter"
+        (Christ – Our Pascha 291).
+
+outro:
+  text: ""               # Shalone writes this
+  notes:
+    - "Recap: began in Antioch · worship grew from Antioch's · one faith, more than one tradition · a family of self-governing Churches · in communion with Rome."
+    - "Next lesson: What Does \"Byzantine\" Mean?"
+  scenes:
+    - type: recap
