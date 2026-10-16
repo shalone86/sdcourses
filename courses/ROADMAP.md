@@ -3,34 +3,34 @@
 Every course on courses.sdcason.com, redone one at a time as video lessons
 (quote-anchored script → Lesson Studio recording → video + quiz). Order: easiest
 first, by number of lessons. Old quiz posts are folded into their lessons now, so
-they don't count. Read from the live site on 2026-10-15.
+they don't count (old Review posts are quizzes too). Read from the live site on 2026-10-15.
 
 ## Order
 
-| # | Course | Lessons | Old quiz posts | Category |
+| # | Course | Lessons | Old quiz/review posts | Category |
 |---|---|---|---|---|
 | 1 | [Byzantine Catholic Basics](#byzantine-catholic-basics) | 3 |  | Byzantine Catholic Courses, Catholic Faith & Practices |
 | 2 | [Catholic Chatbots](#catholic-chatbots) | 4 |  | — |
-| 3 | [Ivory in Art History](#ivory-in-art-history) | 5 |  | Catholic Art History |
-| 4 | [The Catholic Christian Instructed](#the-catholic-christian-instructed) | 5 |  | — |
-| 5 | [What is the Great Fast?](#what-is-the-great-fast) | 5 |  | Byzantine Catholic Courses |
-| 6 | [An Explanation of the Our Father Prayer](#an-explanation-of-the-our-father-prayer) | 6 |  | Catholic Faith & Practices |
-| 7 | [Saint Dymphna](#saint-dymphna) | 6 |  | Catholic Saints |
-| 8 | [Unveiling Easter](#unveiling-easter) | 6 | 5 | Catholic Faith & Practices |
-| 9 | [What are Litanies?](#what-are-litanies) | 6 |  | Catholic Faith & Practices |
+| 3 | [Ivory in Art History](#ivory-in-art-history) | 4 | 1 | Catholic Art History |
+| 4 | [An Explanation of the Our Father Prayer](#an-explanation-of-the-our-father-prayer) | 5 | 1 | Catholic Faith & Practices |
+| 5 | [Saint Dymphna](#saint-dymphna) | 5 | 1 | Catholic Saints |
+| 6 | [The Catholic Christian Instructed](#the-catholic-christian-instructed) | 5 |  | — |
+| 7 | [What are Litanies?](#what-are-litanies) | 5 | 1 | Catholic Faith & Practices |
+| 8 | [What is the Great Fast?](#what-is-the-great-fast) | 5 |  | Byzantine Catholic Courses |
+| 9 | [Unveiling Easter](#unveiling-easter) | 6 | 5 | Catholic Faith & Practices |
 | 10 | [All About Easter for Kids](#all-about-easter-for-kids) | 7 |  | Catholic Kids Courses |
 | 11 | [Byzantine Catholic Fasting](#byzantine-catholic-fasting) | 7 |  | Byzantine Catholic Courses |
 | 12 | [Fasting and Abstinence](#fasting-and-abstinence) | 7 | 5 | Catholic Faith & Practices |
 | 13 | [What Are Holy Days of Obligation](#what-are-holy-days-of-obligation) | 7 |  | Catholic Faith & Practices |
 | 14 | [What is Advent?](#what-is-advent) | 7 |  | Catholic Faith & Practices |
-| 15 | [All About Angels](#all-about-angels) | 9 |  | Catholic Kids Courses |
-| 16 | [All About the Eucharist](#all-about-the-eucharist) | 9 |  | Catholic Faith & Practices |
-| 17 | [What is Lent for Kids](#what-is-lent-for-kids) | 10 |  | Catholic Kids Courses |
-| 18 | [The History and Parts of the Latin Mass](#the-history-and-parts-of-the-latin-mass) | 11 |  | Catholic Kids Courses |
-| 19 | [What are Angels?](#what-are-angels) | 11 | 9 | Catholic Faith & Practices |
-| 20 | [What is Prayer?](#what-is-prayer) | 11 |  | Catholic Faith & Practices |
-| 21 | [What is Lent? - Free Catholic Faith & Practices Course](#what-is-lent) | 12 | 6 | Catholic Faith & Practices |
-| 22 | [Ecclesiastical Art History](#ecclesiastical-art-history) | 13 |  | Catholic Art History |
+| 15 | [Ecclesiastical Art History](#ecclesiastical-art-history) | 8 | 5 | Catholic Art History |
+| 16 | [All About Angels](#all-about-angels) | 9 |  | Catholic Kids Courses |
+| 17 | [All About the Eucharist](#all-about-the-eucharist) | 9 |  | Catholic Faith & Practices |
+| 18 | [What is Lent for Kids](#what-is-lent-for-kids) | 10 |  | Catholic Kids Courses |
+| 19 | [The History and Parts of the Latin Mass](#the-history-and-parts-of-the-latin-mass) | 11 |  | Catholic Kids Courses |
+| 20 | [What are Angels?](#what-are-angels) | 11 | 9 | Catholic Faith & Practices |
+| 21 | [What is Prayer?](#what-is-prayer) | 11 |  | Catholic Faith & Practices |
+| 22 | [What is Lent? - Free Catholic Faith & Practices Course](#what-is-lent) | 12 | 6 | Catholic Faith & Practices |
 | 23 | [Augustine Class with Father Kluge](#augustine-class-with-father-kluge) | 14 |  | Catholic Saints |
 | 24 | [Catholic Confirmation Class 2023 with Father Kluge](#catholic-confirmation-class-2023-with-father-kluge) | 19 |  | Catholic Kids Courses |
 | 25 | [Jesse Tree](#jesse-tree) | 31 |  | — |
@@ -42,7 +42,7 @@ they don't count. Read from the live site on 2026-10-15.
 
 ## Lessons by course
 
-Tick a lesson when its new version is published. ✎ = draft on the site · (quiz) = old quiz post, folded into the lessons.
+Tick a lesson when its new version is published. ✎ = draft on the site · (quiz) = old quiz or review post, folded into the lessons.
 
 ### Byzantine Catholic Basics
 
@@ -63,11 +63,33 @@ Tick a lesson when its new version is published. ✎ = draft on the site · (qui
 
 ### Ivory in Art History
 
-<a id="ivory-in-art-history"></a>`ivory-in-art-history` · 5 lessons
+<a id="ivory-in-art-history"></a>`ivory-in-art-history` · 4 lessons
 
 - [ ] Course Introduction
 - [ ] The Use of Ivory in Art and Religion
-- [ ] Course Review
+- [ ] Course Review (quiz)
+- [ ] Congrats!
+- [ ] Sources
+
+### An Explanation of the Our Father Prayer
+
+<a id="an-explanation-of-the-our-father-prayer"></a>`an-explanation-of-the-our-father-prayer` · 5 lessons
+
+- [ ] Introduction to Course
+- [ ] The Lord's Prayer
+- [ ] Course Review (quiz)
+- [ ] Applying Course Concepts
+- [ ] Congrats!
+- [ ] Sources
+
+### Saint Dymphna
+
+<a id="saint-dymphna"></a>`saint-dymphna` · 5 lessons
+
+- [ ] Introduction
+- [ ] Saint Dymphna
+- [ ] Course Review (quiz)
+- [ ] Applying Course Concepts
 - [ ] Congrats!
 - [ ] Sources
 
@@ -81,6 +103,17 @@ Tick a lesson when its new version is published. ✎ = draft on the site · (qui
 - [ ] Chapter 5: Section I ✎
 - [ ] Chapter 5: Section II ✎
 
+### What are Litanies?
+
+<a id="what-are-litanies"></a>`what-are-litanies` · 5 lessons
+
+- [ ] Introduction to Course
+- [ ] The History and Significance of Catholic Litanies
+- [ ] Course Review (quiz)
+- [ ] Applying Course Concepts
+- [ ] Congrats!
+- [ ] Sources
+
 ### What is the Great Fast?
 
 <a id="what-is-the-great-fast"></a>`what-is-the-great-fast` · 5 lessons
@@ -90,28 +123,6 @@ Tick a lesson when its new version is published. ✎ = draft on the site · (qui
 - [ ] Weeks of the Great Fast
 - [ ] Services of the Great Fast
 - [ ] Keeping the Great Fast
-
-### An Explanation of the Our Father Prayer
-
-<a id="an-explanation-of-the-our-father-prayer"></a>`an-explanation-of-the-our-father-prayer` · 6 lessons
-
-- [ ] Introduction to Course
-- [ ] The Lord's Prayer
-- [ ] Course Review
-- [ ] Applying Course Concepts
-- [ ] Congrats!
-- [ ] Sources
-
-### Saint Dymphna
-
-<a id="saint-dymphna"></a>`saint-dymphna` · 6 lessons
-
-- [ ] Introduction
-- [ ] Saint Dymphna
-- [ ] Course Review
-- [ ] Applying Course Concepts
-- [ ] Congrats!
-- [ ] Sources
 
 ### Unveiling Easter
 
@@ -128,17 +139,6 @@ Tick a lesson when its new version is published. ✎ = draft on the site · (qui
 - [ ] 108: Quiz on Pascal Tide (quiz)
 - [ ] 109: Easter Controversy: How the Date of Easter was Determined
 - [ ] 110: Quiz on the Easter Controversy (quiz)
-
-### What are Litanies?
-
-<a id="what-are-litanies"></a>`what-are-litanies` · 6 lessons
-
-- [ ] Introduction to Course
-- [ ] The History and Significance of Catholic Litanies
-- [ ] Course Review
-- [ ] Applying Course Concepts
-- [ ] Congrats!
-- [ ] Sources
 
 ### All About Easter for Kids
 
@@ -205,6 +205,24 @@ Tick a lesson when its new version is published. ✎ = draft on the site · (qui
 - [ ] What is a Jesse Tree?
 - [ ] What is the History of the Christmas Tree?
 - [ ] What are Nativity Scenes?
+
+### Ecclesiastical Art History
+
+<a id="ecclesiastical-art-history"></a>`ecclesiastical-art-history` · 8 lessons
+
+- [ ] Course Introduction
+- [ ] Origin of Christian Art
+- [ ] Review (quiz)
+- [ ] Mosaics and other early Christian arts
+- [ ] Review (quiz)
+- [ ] Ecclesiastical art in the Middle Ages
+- [ ] Review (quiz)
+- [ ] Period of the Renaissance
+- [ ] Review (quiz)
+- [ ] Post-Renaissance Period
+- [ ] Review (quiz)
+- [ ] 112: Congrats!
+- [ ] Sources
 
 ### All About Angels
 
@@ -328,24 +346,6 @@ Tick a lesson when its new version is published. ✎ = draft on the site · (qui
 - [ ] Congrats!
 - [ ] What is Lent? - Free Catholic Faith & Practices Course
 - [ ] 110: Why Do We Veil Statues?
-
-### Ecclesiastical Art History
-
-<a id="ecclesiastical-art-history"></a>`ecclesiastical-art-history` · 13 lessons
-
-- [ ] Course Introduction
-- [ ] Origin of Christian Art
-- [ ] Review
-- [ ] Mosaics and other early Christian arts
-- [ ] Review
-- [ ] Ecclesiastical art in the Middle Ages
-- [ ] Review
-- [ ] Period of the Renaissance
-- [ ] Review
-- [ ] Post-Renaissance Period
-- [ ] Review
-- [ ] 112: Congrats!
-- [ ] Sources
 
 ### Augustine Class with Father Kluge
 
