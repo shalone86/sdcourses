@@ -1,4 +1,4 @@
-<article class="gh-card post-card {{post_class}}{{#if @custom.show_images_in_feed}}{{#if post.feature_image}} has-image{{/if}}{{else}} no-image{{/if}}">
+<article class="gh-card post-card{{#foreach post.tags visibility="internal"}}{{#match slug "=" "hash-cover"}} cc-cover-card{{/match}}{{/foreach}} {{post_class}}{{#if @custom.show_images_in_feed}}{{#if post.feature_image}} has-image{{/if}}{{else}} no-image{{/if}}">
     <a class="gh-card-link" href="{{post.url}}">
         {{#if post.feature_image}}
             <figure class="gh-card-image">
@@ -35,7 +35,7 @@
                 {{/if}}
             </div>
 
-            <h3 class="gh-card-title is-title">{{post.title}}</h3>
+            <h3 class="gh-card-title is-title{{#foreach post.tags visibility="internal"}}{{#match slug "=" "hash-cover"}} cc-sr-only{{/match}}{{/foreach}}">{{post.title}}</h3>
             {{#if post.custom_excerpt}}
                 <p class="gh-card-excerpt is-body">{{post.custom_excerpt}}</p>
             {{/if}}

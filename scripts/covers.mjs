@@ -51,6 +51,14 @@ for (const slug of slugs) {
   const url = await g.upload('images', path.join(out, `${slug}.jpg`), 'image/jpeg');
   const kind = covers[slug].post ? 'posts' : 'tags';
   const item = (await g.call('GET', `/${kind}/slug/${slug}/`))[kind][0];
-  await g.call('PUT', `/${kind}/${item.id}/`, {[kind]: [{feature_image: url, updated_at: item.updated_at}]});
+  if (kind === 'posts') {
+    // #cover (internal) tells the theme the picture carries the title. It goes
+    // last: the theme picks a card's type from the first internal tag.
+    const full = (await g.call('GET', `/posts/${item.id}/?include=tags`)).posts[0];
+    const tags = full.tags.filter((t) => t.slug !== 'hash-cover').map((t) => ({id: t.id}));
+    await g.call('PUT', `/posts/${item.id}/`, {posts: [{feature_image: url, tags: [...tags, {name: '#cover'}], updated_at: full.updated_at}]});
+  } else {
+    await g.call('PUT', `/${kind}/${item.id}/`, {[kind]: [{feature_image: url, updated_at: item.updated_at}]});
+  }
   console.log(`uploaded ${slug}`);
 }

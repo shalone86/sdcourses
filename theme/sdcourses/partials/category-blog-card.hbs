@@ -1,4 +1,4 @@
-<article class="category-card category-blog-card gh-card">
+<article class="category-card category-blog-card gh-card{{#has tag="#cover"}} cc-cover-card{{/has}}">
     <a class="category-card-link gh-card-link" href="{{url}}">
         {{#if feature_image}}
             <figure class="gh-card-image">
@@ -26,7 +26,7 @@
                     <div class="card-tag-featured">{{> "icons/fire"}} <span>Featured</span></div>
                 {{/if}}
             </div>
-            <h3 class="gh-card-title is-title">{{title}}</h3>
+            <h3 class="gh-card-title is-title{{#has tag="#cover"}} cc-sr-only{{/has}}">{{title}}</h3>
             {{#if custom_excerpt}}
                 <p class="gh-card-excerpt is-body">{{custom_excerpt}}</p>
             {{/if}}
