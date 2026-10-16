@@ -10,35 +10,37 @@ they don't count (old Review posts are quizzes too). Read from the live site on 
 | # | Course | Lessons | Old quiz/review posts | Category |
 |---|---|---|---|---|
 | 1 | [Byzantine Catholic Basics](#byzantine-catholic-basics) | 3 |  | Byzantine Catholic Courses, Catholic Faith & Practices |
-| 2 | [Catholic Chatbots](#catholic-chatbots) | 4 |  | — |
-| 3 | [Ivory in Art History](#ivory-in-art-history) | 4 | 1 | Catholic Art History |
-| 4 | [An Explanation of the Our Father Prayer](#an-explanation-of-the-our-father-prayer) | 5 | 1 | Catholic Faith & Practices |
-| 5 | [Saint Dymphna](#saint-dymphna) | 5 | 1 | Catholic Saints |
-| 6 | [The Catholic Christian Instructed](#the-catholic-christian-instructed) | 5 |  | — |
-| 7 | [What are Litanies?](#what-are-litanies) | 5 | 1 | Catholic Faith & Practices |
-| 8 | [What is the Great Fast?](#what-is-the-great-fast) | 5 |  | Byzantine Catholic Courses |
-| 9 | [Unveiling Easter](#unveiling-easter) | 6 | 5 | Catholic Faith & Practices |
-| 10 | [All About Easter for Kids](#all-about-easter-for-kids) | 7 |  | Catholic Kids Courses |
-| 11 | [Byzantine Catholic Fasting](#byzantine-catholic-fasting) | 7 |  | Byzantine Catholic Courses |
-| 12 | [Fasting and Abstinence](#fasting-and-abstinence) | 7 | 5 | Catholic Faith & Practices |
-| 13 | [What Are Holy Days of Obligation](#what-are-holy-days-of-obligation) | 7 |  | Catholic Faith & Practices |
-| 14 | [What is Advent?](#what-is-advent) | 7 |  | Catholic Faith & Practices |
-| 15 | [Ecclesiastical Art History](#ecclesiastical-art-history) | 8 | 5 | Catholic Art History |
-| 16 | [All About Angels](#all-about-angels) | 9 |  | Catholic Kids Courses |
-| 17 | [All About the Eucharist](#all-about-the-eucharist) | 9 |  | Catholic Faith & Practices |
-| 18 | [What is Lent for Kids](#what-is-lent-for-kids) | 10 |  | Catholic Kids Courses |
-| 19 | [The History and Parts of the Latin Mass](#the-history-and-parts-of-the-latin-mass) | 11 |  | Catholic Kids Courses |
-| 20 | [What are Angels?](#what-are-angels) | 11 | 9 | Catholic Faith & Practices |
-| 21 | [What is Prayer?](#what-is-prayer) | 11 |  | Catholic Faith & Practices |
-| 22 | [What is Lent? - Free Catholic Faith & Practices Course](#what-is-lent) | 12 | 6 | Catholic Faith & Practices |
-| 23 | [Augustine Class with Father Kluge](#augustine-class-with-father-kluge) | 14 |  | Catholic Saints |
-| 24 | [Catholic Confirmation Class 2023 with Father Kluge](#catholic-confirmation-class-2023-with-father-kluge) | 19 |  | Catholic Kids Courses |
-| 25 | [Jesse Tree](#jesse-tree) | 31 |  | — |
+| 2 | [Ivory in Art History](#ivory-in-art-history) | 4 | 1 | Catholic Art History |
+| 3 | [An Explanation of the Our Father Prayer](#an-explanation-of-the-our-father-prayer) | 5 | 1 | Catholic Faith & Practices |
+| 4 | [Saint Dymphna](#saint-dymphna) | 5 | 1 | Catholic Saints |
+| 5 | [The Catholic Christian Instructed](#the-catholic-christian-instructed) | 5 |  | — |
+| 6 | [What are Litanies?](#what-are-litanies) | 5 | 1 | Catholic Faith & Practices |
+| 7 | [What is the Great Fast?](#what-is-the-great-fast) | 5 |  | Byzantine Catholic Courses |
+| 8 | [Unveiling Easter](#unveiling-easter) | 6 | 5 | Catholic Faith & Practices |
+| 9 | [All About Easter for Kids](#all-about-easter-for-kids) | 7 |  | Catholic Kids Courses |
+| 10 | [Byzantine Catholic Fasting](#byzantine-catholic-fasting) | 7 |  | Byzantine Catholic Courses |
+| 11 | [Fasting and Abstinence](#fasting-and-abstinence) | 7 | 5 | Catholic Faith & Practices |
+| 12 | [What Are Holy Days of Obligation](#what-are-holy-days-of-obligation) | 7 |  | Catholic Faith & Practices |
+| 13 | [What is Advent?](#what-is-advent) | 7 |  | Catholic Faith & Practices |
+| 14 | [Ecclesiastical Art History](#ecclesiastical-art-history) | 8 | 5 | Catholic Art History |
+| 15 | [All About Angels](#all-about-angels) | 9 |  | Catholic Kids Courses |
+| 16 | [All About the Eucharist](#all-about-the-eucharist) | 9 |  | Catholic Faith & Practices |
+| 17 | [What is Lent for Kids](#what-is-lent-for-kids) | 10 |  | Catholic Kids Courses |
+| 18 | [The History and Parts of the Latin Mass](#the-history-and-parts-of-the-latin-mass) | 11 |  | Catholic Kids Courses |
+| 19 | [What are Angels?](#what-are-angels) | 11 | 9 | Catholic Faith & Practices |
+| 20 | [What is Prayer?](#what-is-prayer) | 11 |  | Catholic Faith & Practices |
+| 21 | [What is Lent? - Free Catholic Faith & Practices Course](#what-is-lent) | 12 | 6 | Catholic Faith & Practices |
+| 22 | [Jesse Tree](#jesse-tree) | 31 |  | — |
 
 **Back burner**
 
 - What Is the Pope?: pilot course: lesson 1 done; about 10 lessons planned, back burner for now
 - All About the Pope: replaced by What Is the Pope? (its drafts can be retired)
+
+**Kept as they are** (not redone)
+
+- Augustine Class with Father Kluge: donated by Father Kluge; kept as it is
+- Catholic Confirmation Class 2023 with Father Kluge: donated by Father Kluge; kept as it is
 
 ## Lessons by course
 
@@ -51,15 +53,6 @@ Tick a lesson when its new version is published. ✎ = draft on the site · (qui
 - [ ] Course Introduction
 - [ ] What is the Byzantine Catholic Church?
 - [ ] What does Byzantine Mean?
-
-### Catholic Chatbots
-
-<a id="catholic-chatbots"></a>`catholic-chatbots` · 4 lessons
-
-- [ ] Introduction to Chatbots
-- [ ] Aquinas Bot
-- [ ] Augustine Bot
-- [ ] Catechism Bot
 
 ### Ivory in Art History
 
@@ -346,49 +339,6 @@ Tick a lesson when its new version is published. ✎ = draft on the site · (qui
 - [ ] Congrats!
 - [ ] What is Lent? - Free Catholic Faith & Practices Course
 - [ ] 110: Why Do We Veil Statues?
-
-### Augustine Class with Father Kluge
-
-<a id="augustine-class-with-father-kluge"></a>`augustine-class-with-father-kluge` · 14 lessons
-
-- [ ] Class Introduction
-- [ ] Augustine's Confessions Class, Book 01, January 14th Class
-- [ ] Augustine's Confessions Class, Book 02, January 28th Class
-- [ ] Augustine's Confessions Class, Book 03, February 11th Class
-- [ ] Augustine's Confessions Class, Book 04, February 25th Class
-- [ ] Augustine's Confessions Class, Book 05, March 11th Class
-- [ ] Augustine's Confessions Class, Book 06, March 18th, 2023
-- [ ] Augustine's Confessions Class, Book 07, April 15th, 2023
-- [ ] Augustine's Confessions Class, Book 08, April 29th, 2023
-- [ ] Augustine's Confessions Class, Book 09, May 13th, 2023
-- [ ] Augustine's Confessions Class, Book 10, May 27, 2023
-- [ ] Augustine's Confessions Class, Book 11, June 10, 2023
-- [ ] Augustine's Confessions Class, Book 12, June 24, 2023
-- [ ] Augustine's Confessions Class, Book 13, July 8, 2023
-
-### Catholic Confirmation Class 2023 with Father Kluge
-
-<a id="catholic-confirmation-class-2023-with-father-kluge"></a>`catholic-confirmation-class-2023-with-father-kluge` · 19 lessons
-
-- [ ] Lesson 01, Confirmation Memorization List
-- [ ] Class Introduction
-- [ ] Lesson 02, October 1, 2022
-- [ ] Lesson 03, October 15, 2022
-- [ ] Lesson 04, October 22, 2022
-- [ ] Lesson 05, November 5, 2022
-- [ ] Lesson 06, November 19th, 2022
-- [ ] Lesson 07, December 3rd, 2022
-- [ ] Lesson 08, December 17th, 2022
-- [ ] Lesson 09, January 7th, 2023
-- [ ] Lesson 10, January 21st, 2023
-- [ ] Lesson 11, January 28th, 2023
-- [ ] Lesson 12, February 25th, 2023
-- [ ] Lesson 13, March 4th, 2023
-- [ ] Lesson 14, March 18th, 2023
-- [ ] Lesson 15, March 25th 2023
-- [ ] Lesson 16, April 15th, 2023
-- [ ] Lesson 17, April 22, 2023
-- [ ] Lesson 18, April 29th 2023
 
 ### Jesse Tree
 
