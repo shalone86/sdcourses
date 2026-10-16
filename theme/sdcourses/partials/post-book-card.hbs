@@ -11,7 +11,7 @@
                                 {{img_url post.primary_tag.feature_image size="xxl" format="webp"}} 2000w"
                        sizes="{{#if imageSizes}}{{imageSizes}}{{else}}320px{{/if}}"
                         src="{{img_url post.feature_image size="m"}}"
-                        alt="{{#if post.primary_tag}}{{concat post.primary_tag.name " cover"}}{{/if}}"
+                        alt="{{post.primary_tag.name}}"
                         {{#if lazyLoad}}loading="lazy"{{/if}}
                    >
                </figure>
@@ -34,7 +34,7 @@
 
                {{#if post.primary_tag}}
                    {{#if post.primary_tag.name}}
-                       <h3 class="gh-card-title is-title">{{post.primary_tag.name}}</h3>
+                       <h3 class="gh-card-title is-title{{#if @custom.show_images_in_feed}}{{#if post.primary_tag.feature_image}} cc-sr-only{{/if}}{{/if}}">{{post.primary_tag.name}}</h3>
                    {{/if}}
 
                    {{#if post.primary_tag.description}}

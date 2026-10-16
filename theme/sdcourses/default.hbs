@@ -8,14 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {{!-- Preload main styles and scripts for better performance --}}
-    <link rel="preload" as="style" href="{{asset "built/app.css"}}">
-    <link rel="preload" as="script" href="{{asset "built/app.js"}}">
+    {{> "cc-assets" type="preload"}}
 
     {{!-- Fonts are preloaded and defined in the default template to avoid layout shift --}}
     {{> "typography/fonts"}}
 
     {{!-- Theme assets - use the {{asset}} helper to reference styles & scripts, this will take care of caching and cache-busting automatically --}}
-    <link rel="stylesheet" type="text/css" href="{{asset "built/app.css"}}">
+    {{> "cc-assets" type="css"}}
 
     {{!-- Custom background color --}}
     <style>
@@ -75,7 +74,7 @@
 {{/is}}
 
 {{!-- Scripts - handle responsive videos, infinite scroll, and navigation dropdowns --}}
-<script src="{{asset "built/app.js"}}"></script>
+{{> "cc-assets" type="js"}}
 
 {{!-- Ghost outputs required functional scripts with this tag, it should always be the last thing before the closing body tag --}}
 {{ghost_foot}}

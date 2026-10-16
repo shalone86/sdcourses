@@ -14,8 +14,8 @@
     "dev": "rollup -c --environment BUILD:development -w",
     "test": "gscan .",
     "test:ci": "gscan --fatal --verbose .",
-    "build": "rollup -c --environment BUILD:production",
-    "zip": "mkdir -p dist && npm run build && bestzip ./dist/$npm_package_name.zip assets/* partials/* splashscreens/* *.hbs sw.js package.json README.md",
+    "build": "rollup -c --environment BUILD:production && node hash-assets.mjs",
+    "zip": "mkdir -p dist && npm run build && bestzip ./dist/$npm_package_name.zip assets/* partials/* splashscreens/* *.hbs sw.js hash-assets.mjs package.json README.md",
     "pretest": "npm run build"
   },
   "author": {

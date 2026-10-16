@@ -52,7 +52,8 @@ private local Ghost (`theme/.ghost-local`, test login in its
 npx -y -p node@22 -- node current/index.js`). **Live since 2026-10-15** (her go-ahead). Update it by
 uploading a new zip via the Admin API (`POST /themes/upload/`, same name keeps it
 active); her old Novel theme is still installed for rollback. This site's
-addresses are custom: lessons `/course/<slug>/`, courses `/topic/<slug>/`. Build: `cd theme/sdcourses && npm run zip`.
+addresses are custom: lessons `/course/<slug>/`, courses `/topic/<slug>/`. Build: `cd theme/sdcourses && npm run zip` (hash-assets.mjs gives the CSS/JS
+content-hashed names: Ghost keeps the same ?v= across uploads and caches a year).
 
 **Redo every course:** `courses/ROADMAP.md` lists all 27 courses and their
 posts from the live site. One course at a time: script together (/lesson),
@@ -66,6 +67,7 @@ she records, publish, tick it off. Course pictures: `npm run cover`, set
 2. Publish the Pope course picture (`npm run publish-course -- what-is-the-pope`)
    and resend lesson 1 so it gets #book and All Courses.
 3. Her rewrite of `pages/how-these-lessons-are-made.md` (needs a contact line).
-4. Start redoing courses from `courses/ROADMAP.md`, one at a time.
+4. Redo courses in the ROADMAP.md order (easiest first; All About the Pope is
+   being replaced by What Is the Pope?, which is on the back burner).
 
 Commit and push to `main` as you go.

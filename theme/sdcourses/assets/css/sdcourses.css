@@ -203,3 +203,36 @@ a.cc-done::after {
     color: var(--cc-ok);
     font-weight: 600;
 }
+
+/* Course cards: the cover already shows the title, so it is kept for screen
+   readers and search engines only. */
+.cc-sr-only {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Course covers are 16:9 (npm run covers); Novel's frames are square. */
+.category-book-card .gh-card-image,
+.book-card .gh-card-image {
+    aspect-ratio: 16 / 9;
+}
+/* Rounded corners on pictures: cards, course page header, slider, and
+   images inside lessons. */
+.category-book-card .gh-card-image img,
+.book-card .gh-card-image img {
+    object-fit: cover;
+}
+.gh-card-image,
+.gh-card-image img,
+.gh-article-image img,
+.slider-card-img img,
+.gh-content .kg-image-card img,
+.gh-content .kg-gallery-image img {
+    border-radius: 12px;
+}
+.gh-card-image { overflow: hidden; }

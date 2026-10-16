@@ -10,7 +10,7 @@
                             {{img_url primary_tag.feature_image size="xxl" format="webp"}} 2000w"
                      sizes="{{#if imageSizes}}{{imageSizes}}{{else}}320px{{/if}}"
                      src="{{img_url primary_tag.feature_image size="m"}}"
-                     alt="{{#if primary_tag}}{{concat primary_tag.name " cover"}}{{/if}}"
+                     alt="{{primary_tag.name}}"
                      {{#if lazyLoad}}loading="lazy"{{/if}}
                 >
             </figure>
@@ -23,7 +23,7 @@
             </div>
             {{#if primary_tag}}
                 {{#if primary_tag.name}}
-                    <h3 class="gh-card-title is-title">{{primary_tag.name}}</h3>
+                    <h3 class="gh-card-title is-title{{#if primary_tag.feature_image}} cc-sr-only{{/if}}">{{primary_tag.name}}</h3>
                 {{/if}}
 
                 {{#if primary_tag.description}}
