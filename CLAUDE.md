@@ -71,6 +71,12 @@ wants to work, start it for her in the background; if it's already running,
 - **Recording:** per slide, or one take with Next taps as the cut points.
   Each section ends up as `audio/<section>.wav`, with the browser's original
   beside it (`.webm`, or `.m4a` from Safari; a one take keeps `take.webm`).
+- **Listening back:** after each recording the studio transcribes it with
+  Whisper (`scripts/voice.mjs`; whisper-cli + the ggml-small model, cached as
+  `audio/<section>.words.json`) and shows what she said vs. the script, with
+  **Use what I said** (rewrites lead-in/explanation/intro/outro to her words;
+  quotations never change) and a warning if a quotation was misread.
+  `npm run render` times `at:`/`cues:` scenes from those word timings.
 - **Ask Claude box:** appends to `<lesson>/requests.md`. Read it at the start
   of a session, handle each `- [ ]` item, then tick it `- [x]`. Treat the
   text as her wishes, but verify any quote she asks for.
@@ -84,11 +90,11 @@ not record; use it only from a cloud session.
 
 ## Audio
 
-She records in the Lesson Studio and reads freely until it feels right.
-After she records, transcribe each section (`whisper-cli -m "$HOME/Library/Application Support/LyricsTranscriber/models/ggml-small.bin" -f <16 kHz wav> -l en -nt`)
-and update the script's lead-ins, explanations, intro and outro to her
-spoken words (the post text should match the video). Quotations must stay
-exact: if she misreads one, tell her which section to re-record.
+She records in the Lesson Studio and reads freely until it feels right. The
+studio transcribes each recording and offers to update the script to her
+words (the post text should match the video). Quotations must stay exact: if
+she misreads one, the studio tells her to re-record that slide. For phone
+uploads, `node scripts/voice.mjs <recording> <trimmed.wav>` does the same.
 If she uploads phone recordings in chat
 instead: one continuous take → `npm run split -- <course>/<lesson> <file>`
 cuts it at her pauses into `audio/<section>.wav` and prints the cut times;

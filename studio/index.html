@@ -99,6 +99,12 @@ details.notes ul{margin:6px 0 0;padding-left:1.2em}
 .savebar{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:12px}
 .savebar .msg{margin-right:auto;font-size:14px;color:var(--gold);font-weight:600}
 .check{font-size:15px;border-top:1px solid var(--rule);padding-top:12px}
+.heard{border-top:1px solid var(--rule);padding-top:12px;display:flex;flex-direction:column;gap:10px}
+.heard h3{font:600 12px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.said{font:19px/1.6 var(--serif)}
+.said .add{color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent);border-radius:3px;padding:0 2px}
+.said .del{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--accent)}
+.heard .warn{color:var(--accent);font-weight:600;font-size:15px}
 .check ul{margin:6px 0 0;padding-left:1.2em}
 
 /* Recording dock */
@@ -256,6 +262,7 @@ function render() {
   if (S.L) kids.push(S.tab === 'script' ? scriptView() : videoView());
   view.replaceChildren(...kids);
   for (const t of view.querySelectorAll('textarea.read')) grow(t);
+  watchListening();
 }
 
 function noticeEl(n) {
@@ -347,6 +354,7 @@ function slideEl(s) {
   kids.push(saveBar(s));
   const c = S.checks[s.key];
   if (c) kids.push(checkEl(c));
+  if (s.audio && s.heard && !S.rec && !S.busy) kids.push(heardEl(s));
   return el('article', {class: 'slide' + (yours ? ' yours' : '')}, kids);
 }
 
@@ -368,6 +376,50 @@ function checkEl(c) {
   else if (c.check) kids.push(el('span', {class: 'ok', text: 'Saved. '}), el('span', {class: 'muted', text: 'Some quotations couldn’t be re-checked because a source website didn’t answer. Claude will check them before the lesson goes to Ghost.'}));
   if (c.unapproved) kids.push(el('div', {class: 'small muted', text: 'The lesson was approved before; since the script changed, approve it again after making the new video.'}));
   return el('div', {class: 'check', role: 'status'}, kids);
+}
+
+// What she said vs. the script (Whisper, run by the studio after each recording).
+function heardEl(s) {
+  const h = s.heard;
+  if (h.pending) return el('div', {class: 'heard', role: 'status'}, [el('h3', {text: 'What you said'}), el('div', {class: 'small muted', text: 'Listening back to your recording…'})]);
+  const kids = [el('h3', {text: 'What you said'})];
+  if (h.quote && !h.quote.ok) {
+    const bits = [h.quote.missing.length ? 'missed “' + h.quote.missing.join(' ') + '”' : '', h.quote.added.length ? 'added “' + h.quote.added.join(' ') + '”' : ''].filter(Boolean).join(', ');
+    kids.push(el('div', {class: 'warn', role: 'alert', text: 'The quotation was read differently (' + bits + '). Quotations must be read exactly: re-record this slide.'}));
+  }
+  if (!h.changed) { kids.push(el('div', {class: 'small ok', text: 'Matches the script.'})); return el('div', {class: 'heard'}, kids); }
+  if (S.keepScript && S.keepScript[s.key] === s.audio.at) { kids.push(el('div', {class: 'small muted', text: 'Kept the script as written.'})); return el('div', {class: 'heard'}, kids); }
+  kids.push(el('div', {class: 'said'}, h.diff.flatMap((d) => [d.kind === 'same' ? d.t : el('span', {class: d.kind === 'added' ? 'add' : 'del', text: d.t}), ' '])));
+  kids.push(el('div', {class: 'small muted', text: 'Green: words you said that aren’t in the script. Struck through: script words you didn’t say. Using your words keeps the post matching the video; quotations stay exactly as written.'}));
+  kids.push(el('div', {class: 'row'}, [
+    el('span', {}),
+    el('span', {}, [
+      el('button', {class: 'btn', text: 'Keep the script', onclick: () => { (S.keepScript ||= {})[s.key] = s.audio.at; store.set('keep', S.keepScript); render(); }}),
+      ' ',
+      el('button', {class: 'btn primary', text: 'Use what I said', onclick: () => useSpoken(s)}),
+    ]),
+  ]));
+  return el('div', {class: 'heard'}, kids);
+}
+
+async function useSpoken(s) {
+  S.saving = s.key; render();
+  try {
+    const r = await post('/api/use-spoken?id=' + enc(S.id), {section: s.key});
+    S.L = r.lesson; S.checks[s.key] = r;
+  } catch (e) { S.checks[s.key] = {error: e.message}; }
+  S.saving = null;
+  render();
+}
+
+// While recordings are being listened to, check back every few seconds.
+function watchListening() {
+  clearTimeout(S.listenT);
+  if (!S.L || !S.L.sections.some((x) => x.heard && x.heard.pending)) return;
+  S.listenT = setTimeout(async () => {
+    const typing = document.activeElement && document.activeElement.tagName === 'TEXTAREA';
+    if (!S.rec && !S.busy && !typing && !hasDrafts()) { await refresh(); render(); } else watchListening();
+  }, 3000);
 }
 
 function setDraft(s, field, v) {
@@ -765,6 +817,7 @@ async function poll() {
 window.addEventListener('beforeunload', (e) => { if (hasDrafts() || S.rec || S.busy) { e.preventDefault(); e.returnValue = ''; } });
 
 S.mode = store.get('mode') === 'take' ? 'take' : 'each';
+S.keepScript = store.get('keep') || {};
 S.deviceId = store.get('mic') || '';
 boot();
 </script>

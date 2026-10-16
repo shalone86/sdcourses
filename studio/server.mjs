@@ -9,6 +9,7 @@ import {spawn, execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {ROOT, ffprobeDuration, loadLesson, words} from '../scripts/lib.mjs';
 import {applyEdits, setStatus} from '../scripts/studio.mjs';
+import {cachedWords, compare, whisperAvailable} from '../scripts/voice.mjs';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -54,7 +55,7 @@ function detail(id) {
   const sections = segments.map((s) => {
     const file = audioFile(dir, s.name);
     const audio = file ? {seconds: ffprobeDuration(file), at: mtime(file), ext: path.extname(file)} : null;
-    const base = {key: s.name, kind: s.kind, index: s.index, words: words(s.text), audio};
+    const base = {key: s.name, kind: s.kind, index: s.index, words: words(s.text), audio, heard: heard(id, s, file)};
     return s.kind === 'point'
       ? {...base, heading: s.heading, lead: s.quote.lead, quote: s.quote.text, cite: s.quote.cite, text: s.explanation}
       : {...base, text: s.text, notes: s.notes ?? []};
@@ -69,6 +70,33 @@ function detail(id) {
     id, course: course.title, number: lesson.number, title: lesson.title, status: lesson.status,
     sections, video, requests: openRequests(dir),
   };
+}
+
+// ---------- listening back (Whisper) ----------
+
+const WHISPER = whisperAvailable();
+const listening = new Set(); // "<id>|<section>" being transcribed
+let listenQueue = Promise.resolve();
+
+/** Transcribe a section's recording in the background (once; cached next to it). */
+function listen(id, section, src, hint) {
+  const k = `${id}|${section}`;
+  if (!WHISPER || listening.has(k)) return;
+  listening.add(k);
+  const trimmed = path.join(ROOT, 'video', 'public', id, `${section}.wav`);
+  listenQueue = listenQueue
+    .then(() => run(process.execPath, [path.join(ROOT, 'scripts/voice.mjs'), src, trimmed], {cwd: ROOT, env: {...process.env, VOICE_HINT: hint}}))
+    .catch((e) => console.error(`Couldn't transcribe ${k}: ${e.message}`))
+    .finally(() => listening.delete(k));
+}
+
+/** What she said vs. the script, for one section (or why it isn't known yet). */
+function heard(id, s, src) {
+  if (!src || !WHISPER) return null;
+  const words = cachedWords(src);
+  const parts = s.kind === 'point' ? {lead: s.quote.lead, quote: s.quote.text, text: s.explanation} : {text: s.text};
+  if (!words) { listen(id, s.name, src, s.text); return {pending: true}; }
+  return compare(parts, words);
 }
 
 // ---------- quote check ----------
@@ -279,6 +307,18 @@ async function handle(req, res) {
       if (typeof lead === 'string') edit.lead = lead;
       const changes = applyEdits(dir, [edit]);
       // Approval covers the script she approved; a changed script needs approving again.
+      const unapproved = changes.length > 0 && setStatus(dir, 'draft');
+      const check = changes.length ? await checkQuotes(id) : null;
+      return json(res, 200, {changes, unapproved, check, lesson: detail(id)});
+    }
+    if (p === '/api/use-spoken') {
+      // Her words replace the script's lead-in/explanation (quotations stay as written).
+      const dir = lessonPath(id);
+      const {section} = await readJson(req);
+      const s = loadLesson(dir).segments.find((x) => x.name === section);
+      const h = s && heard(id, s, audioFile(dir, section));
+      if (!h || h.pending) throw httpError(409, 'The recording hasn\'t been listened to yet');
+      const changes = applyEdits(dir, [{section, ...h.proposed}]);
       const unapproved = changes.length > 0 && setStatus(dir, 'draft');
       const check = changes.length ? await checkQuotes(id) : null;
       return json(res, 200, {changes, unapproved, check, lesson: detail(id)});

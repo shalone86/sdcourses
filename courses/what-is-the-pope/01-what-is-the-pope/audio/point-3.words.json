@@ -1,0 +1,550 @@
+{
+ "stamp": "1:3974478:1792102395888",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.25
+  },
+  {
+   "w": "Catechism",
+   "start": 0.25,
+   "end": 1
+  },
+  {
+   "w": "explains",
+   "start": 1,
+   "end": 1.67
+  },
+  {
+   "w": "why",
+   "start": 1.67,
+   "end": 1.91
+  },
+  {
+   "w": "the",
+   "start": 1.91,
+   "end": 2.17
+  },
+  {
+   "w": "Church",
+   "start": 2.17,
+   "end": 2.67
+  },
+  {
+   "w": "has",
+   "start": 2.67,
+   "end": 2.93
+  },
+  {
+   "w": "a",
+   "start": 2.93,
+   "end": 3
+  },
+  {
+   "w": "pope",
+   "start": 3,
+   "end": 3.28
+  },
+  {
+   "w": "at",
+   "start": 3.28,
+   "end": 3.46
+  },
+  {
+   "w": "all.",
+   "start": 3.46,
+   "end": 4.06
+  },
+  {
+   "w": "The",
+   "start": 4.06,
+   "end": 4.29
+  },
+  {
+   "w": "Pope,",
+   "start": 4.29,
+   "end": 4.69
+  },
+  {
+   "w": "Bishop",
+   "start": 4.69,
+   "end": 5.12
+  },
+  {
+   "w": "of",
+   "start": 5.12,
+   "end": 5.26
+  },
+  {
+   "w": "Rome",
+   "start": 5.26,
+   "end": 5.54
+  },
+  {
+   "w": "and",
+   "start": 5.54,
+   "end": 5.75
+  },
+  {
+   "w": "Peter's",
+   "start": 5.75,
+   "end": 6.24
+  },
+  {
+   "w": "successor,",
+   "start": 6.24,
+   "end": 7.08
+  },
+  {
+   "w": "\"is",
+   "start": 7.08,
+   "end": 7.31
+  },
+  {
+   "w": "the",
+   "start": 7.31,
+   "end": 8.19
+  },
+  {
+   "w": "perpetual",
+   "start": 8.19,
+   "end": 8.37
+  },
+  {
+   "w": "and",
+   "start": 8.37,
+   "end": 8.54
+  },
+  {
+   "w": "visible",
+   "start": 8.54,
+   "end": 9.16
+  },
+  {
+   "w": "source",
+   "start": 9.16,
+   "end": 9.6
+  },
+  {
+   "w": "and",
+   "start": 9.6,
+   "end": 9.85
+  },
+  {
+   "w": "foundation",
+   "start": 9.85,
+   "end": 10.79
+  },
+  {
+   "w": "of",
+   "start": 10.79,
+   "end": 10.87
+  },
+  {
+   "w": "the",
+   "start": 10.87,
+   "end": 11.23
+  },
+  {
+   "w": "unity",
+   "start": 11.23,
+   "end": 11.79
+  },
+  {
+   "w": "both",
+   "start": 11.79,
+   "end": 12.09
+  },
+  {
+   "w": "of",
+   "start": 12.09,
+   "end": 12.23
+  },
+  {
+   "w": "the",
+   "start": 12.23,
+   "end": 12.53
+  },
+  {
+   "w": "bishops",
+   "start": 12.53,
+   "end": 13.2
+  },
+  {
+   "w": "and",
+   "start": 13.2,
+   "end": 13.46
+  },
+  {
+   "w": "of",
+   "start": 13.46,
+   "end": 13.62
+  },
+  {
+   "w": "the",
+   "start": 13.62,
+   "end": 13.97
+  },
+  {
+   "w": "whole",
+   "start": 13.97,
+   "end": 14.32
+  },
+  {
+   "w": "company",
+   "start": 14.32,
+   "end": 14.93
+  },
+  {
+   "w": "of",
+   "start": 14.93,
+   "end": 15.09
+  },
+  {
+   "w": "the",
+   "start": 15.09,
+   "end": 15.35
+  },
+  {
+   "w": "faithful.\"",
+   "start": 15.35,
+   "end": 16.42
+  },
+  {
+   "w": "Just",
+   "start": 16.42,
+   "end": 16.69
+  },
+  {
+   "w": "as",
+   "start": 16.69,
+   "end": 16.88
+  },
+  {
+   "w": "Christ",
+   "start": 16.88,
+   "end": 17.38
+  },
+  {
+   "w": "placed",
+   "start": 17.38,
+   "end": 17.64
+  },
+  {
+   "w": "Peter",
+   "start": 17.64,
+   "end": 17.98
+  },
+  {
+   "w": "at",
+   "start": 17.98,
+   "end": 18.11
+  },
+  {
+   "w": "the",
+   "start": 18.11,
+   "end": 18.33
+  },
+  {
+   "w": "head",
+   "start": 18.33,
+   "end": 18.58
+  },
+  {
+   "w": "of",
+   "start": 18.58,
+   "end": 18.71
+  },
+  {
+   "w": "the",
+   "start": 18.71,
+   "end": 19.02
+  },
+  {
+   "w": "Twelve,",
+   "start": 19.02,
+   "end": 19.54
+  },
+  {
+   "w": "the",
+   "start": 19.54,
+   "end": 19.7
+  },
+  {
+   "w": "Pope",
+   "start": 19.7,
+   "end": 19.86
+  },
+  {
+   "w": "heads",
+   "start": 19.86,
+   "end": 20.45
+  },
+  {
+   "w": "the",
+   "start": 20.45,
+   "end": 20.55
+  },
+  {
+   "w": "college",
+   "start": 20.55,
+   "end": 20.88
+  },
+  {
+   "w": "of",
+   "start": 20.88,
+   "end": 21.33
+  },
+  {
+   "w": "bishops.",
+   "start": 21.33,
+   "end": 21.66
+  },
+  {
+   "w": "The",
+   "start": 21.66,
+   "end": 21.89
+  },
+  {
+   "w": "bishops",
+   "start": 21.89,
+   "end": 22.37
+  },
+  {
+   "w": "are",
+   "start": 22.37,
+   "end": 22.62
+  },
+  {
+   "w": "not",
+   "start": 22.62,
+   "end": 22.79
+  },
+  {
+   "w": "his",
+   "start": 22.79,
+   "end": 23.03
+  },
+  {
+   "w": "branch",
+   "start": 23.03,
+   "end": 23.43
+  },
+  {
+   "w": "managers.",
+   "start": 23.43,
+   "end": 24.26
+  },
+  {
+   "w": "Each",
+   "start": 24.26,
+   "end": 24.54
+  },
+  {
+   "w": "one",
+   "start": 24.54,
+   "end": 24.75
+  },
+  {
+   "w": "is",
+   "start": 24.75,
+   "end": 24.89
+  },
+  {
+   "w": "a",
+   "start": 24.89,
+   "end": 24.95
+  },
+  {
+   "w": "true",
+   "start": 24.95,
+   "end": 25.79
+  },
+  {
+   "w": "successor",
+   "start": 25.79,
+   "end": 25.97
+  },
+  {
+   "w": "of",
+   "start": 25.97,
+   "end": 26.01
+  },
+  {
+   "w": "the",
+   "start": 26.01,
+   "end": 26.57
+  },
+  {
+   "w": "apostles.",
+   "start": 26.57,
+   "end": 27.02
+  },
+  {
+   "w": "But",
+   "start": 27.11,
+   "end": 27.32
+  },
+  {
+   "w": "together",
+   "start": 27.32,
+   "end": 28.13
+  },
+  {
+   "w": "they",
+   "start": 28.13,
+   "end": 28.53
+  },
+  {
+   "w": "act",
+   "start": 28.53,
+   "end": 28.83
+  },
+  {
+   "w": "as",
+   "start": 28.83,
+   "end": 29.03
+  },
+  {
+   "w": "one",
+   "start": 29.03,
+   "end": 29.33
+  },
+  {
+   "w": "body",
+   "start": 29.33,
+   "end": 29.73
+  },
+  {
+   "w": "only",
+   "start": 29.73,
+   "end": 30.13
+  },
+  {
+   "w": "in",
+   "start": 30.13,
+   "end": 30.32
+  },
+  {
+   "w": "union",
+   "start": 30.32,
+   "end": 31.15
+  },
+  {
+   "w": "with",
+   "start": 31.15,
+   "end": 31.3
+  },
+  {
+   "w": "their",
+   "start": 31.3,
+   "end": 31.93
+  },
+  {
+   "w": "head.",
+   "start": 31.93,
+   "end": 32.54
+  },
+  {
+   "w": "More",
+   "start": 32.54,
+   "end": 32.83
+  },
+  {
+   "w": "than",
+   "start": 32.83,
+   "end": 33.12
+  },
+  {
+   "w": "a",
+   "start": 33.12,
+   "end": 33.19
+  },
+  {
+   "w": "billion",
+   "start": 33.19,
+   "end": 33.7
+  },
+  {
+   "w": "Catholics,",
+   "start": 33.7,
+   "end": 34.5
+  },
+  {
+   "w": "in",
+   "start": 34.5,
+   "end": 34.64
+  },
+  {
+   "w": "thousands",
+   "start": 34.64,
+   "end": 35.34
+  },
+  {
+   "w": "of",
+   "start": 35.34,
+   "end": 35.44
+  },
+  {
+   "w": "dioceses,",
+   "start": 35.44,
+   "end": 36.22
+  },
+  {
+   "w": "are",
+   "start": 36.22,
+   "end": 36.67
+  },
+  {
+   "w": "one",
+   "start": 36.67,
+   "end": 36.9
+  },
+  {
+   "w": "Church",
+   "start": 36.9,
+   "end": 37.58
+  },
+  {
+   "w": "because",
+   "start": 37.58,
+   "end": 38.13
+  },
+  {
+   "w": "they",
+   "start": 38.13,
+   "end": 38.48
+  },
+  {
+   "w": "are",
+   "start": 38.48,
+   "end": 38.67
+  },
+  {
+   "w": "in",
+   "start": 38.67,
+   "end": 38.81
+  },
+  {
+   "w": "communion",
+   "start": 38.81,
+   "end": 39.71
+  },
+  {
+   "w": "with",
+   "start": 39.71,
+   "end": 39.91
+  },
+  {
+   "w": "the",
+   "start": 39.91,
+   "end": 40.07
+  },
+  {
+   "w": "Pope.",
+   "start": 40.07,
+   "end": 40.66
+  }
+ ]
+}

@@ -1,0 +1,340 @@
+{
+ "stamp": "1:2292558:1792102246403",
+ "words": [
+  {
+   "w": "Why",
+   "start": 0.09,
+   "end": 0.21
+  },
+  {
+   "w": "is",
+   "start": 0.21,
+   "end": 0.35
+  },
+  {
+   "w": "the",
+   "start": 0.35,
+   "end": 0.6
+  },
+  {
+   "w": "Bishop",
+   "start": 0.6,
+   "end": 1.03
+  },
+  {
+   "w": "of",
+   "start": 1.03,
+   "end": 1.11
+  },
+  {
+   "w": "Rome",
+   "start": 1.11,
+   "end": 1.39
+  },
+  {
+   "w": "important?",
+   "start": 1.39,
+   "end": 2.31
+  },
+  {
+   "w": "What's",
+   "start": 2.31,
+   "end": 2.63
+  },
+  {
+   "w": "a",
+   "start": 2.63,
+   "end": 2.7
+  },
+  {
+   "w": "successor?",
+   "start": 2.7,
+   "end": 3.65
+  },
+  {
+   "w": "And",
+   "start": 3.65,
+   "end": 3.71
+  },
+  {
+   "w": "why",
+   "start": 3.71,
+   "end": 3.9
+  },
+  {
+   "w": "would",
+   "start": 3.9,
+   "end": 4.24
+  },
+  {
+   "w": "Christ",
+   "start": 4.24,
+   "end": 4.72
+  },
+  {
+   "w": "need",
+   "start": 4.72,
+   "end": 4.96
+  },
+  {
+   "w": "a",
+   "start": 4.96,
+   "end": 5.01
+  },
+  {
+   "w": "representative",
+   "start": 5.01,
+   "end": 5.76
+  },
+  {
+   "w": "on",
+   "start": 5.76,
+   "end": 5.92
+  },
+  {
+   "w": "earth?",
+   "start": 5.92,
+   "end": 6.57
+  },
+  {
+   "w": "Can't",
+   "start": 6.57,
+   "end": 6.97
+  },
+  {
+   "w": "He",
+   "start": 6.97,
+   "end": 7.13
+  },
+  {
+   "w": "do",
+   "start": 7.13,
+   "end": 7.28
+  },
+  {
+   "w": "the",
+   "start": 7.28,
+   "end": 7.62
+  },
+  {
+   "w": "job",
+   "start": 7.62,
+   "end": 8.07
+  },
+  {
+   "w": "Himself?",
+   "start": 8.07,
+   "end": 8.67
+  },
+  {
+   "w": "We",
+   "start": 8.67,
+   "end": 8.77
+  },
+  {
+   "w": "will",
+   "start": 8.77,
+   "end": 9.04
+  },
+  {
+   "w": "explore",
+   "start": 9.04,
+   "end": 9.52
+  },
+  {
+   "w": "exactly",
+   "start": 9.52,
+   "end": 10
+  },
+  {
+   "w": "what",
+   "start": 10,
+   "end": 10.26
+  },
+  {
+   "w": "the",
+   "start": 10.26,
+   "end": 10.55
+  },
+  {
+   "w": "Pope",
+   "start": 10.55,
+   "end": 10.8
+  },
+  {
+   "w": "claims",
+   "start": 10.8,
+   "end": 11.2
+  },
+  {
+   "w": "to",
+   "start": 11.2,
+   "end": 11.36
+  },
+  {
+   "w": "be",
+   "start": 11.36,
+   "end": 11.92
+  },
+  {
+   "w": "based",
+   "start": 11.92,
+   "end": 12.28
+  },
+  {
+   "w": "on",
+   "start": 12.28,
+   "end": 12.41
+  },
+  {
+   "w": "Catholic",
+   "start": 12.41,
+   "end": 13
+  },
+  {
+   "w": "doctrine",
+   "start": 13,
+   "end": 13.58
+  },
+  {
+   "w": "straight",
+   "start": 13.58,
+   "end": 14.23
+  },
+  {
+   "w": "from",
+   "start": 14.23,
+   "end": 14.45
+  },
+  {
+   "w": "Scripture",
+   "start": 14.45,
+   "end": 15.11
+  },
+  {
+   "w": "and",
+   "start": 15.11,
+   "end": 15.55
+  },
+  {
+   "w": "the",
+   "start": 15.55,
+   "end": 15.57
+  },
+  {
+   "w": "Catechism.",
+   "start": 15.57,
+   "end": 16.48
+  },
+  {
+   "w": "I'm",
+   "start": 16.48,
+   "end": 16.6
+  },
+  {
+   "w": "your",
+   "start": 16.6,
+   "end": 16.77
+  },
+  {
+   "w": "host,",
+   "start": 16.77,
+   "end": 17.04
+  },
+  {
+   "w": "Shalone",
+   "start": 17.04,
+   "end": 17.64
+  },
+  {
+   "w": "Cason.",
+   "start": 17.64,
+   "end": 18.22
+  },
+  {
+   "w": "Let's",
+   "start": 18.22,
+   "end": 18.56
+  },
+  {
+   "w": "begin",
+   "start": 18.56,
+   "end": 18.94
+  },
+  {
+   "w": "in",
+   "start": 18.94,
+   "end": 19.32
+  },
+  {
+   "w": "the",
+   "start": 19.32,
+   "end": 19.35
+  },
+  {
+   "w": "name",
+   "start": 19.35,
+   "end": 19.62
+  },
+  {
+   "w": "of",
+   "start": 19.62,
+   "end": 19.77
+  },
+  {
+   "w": "the",
+   "start": 19.77,
+   "end": 20
+  },
+  {
+   "w": "Father",
+   "start": 20,
+   "end": 20.69
+  },
+  {
+   "w": "and",
+   "start": 20.69,
+   "end": 20.69
+  },
+  {
+   "w": "of",
+   "start": 20.69,
+   "end": 20.84
+  },
+  {
+   "w": "the",
+   "start": 20.84,
+   "end": 21.07
+  },
+  {
+   "w": "Son",
+   "start": 21.07,
+   "end": 21.3
+  },
+  {
+   "w": "and",
+   "start": 21.3,
+   "end": 21.53
+  },
+  {
+   "w": "of",
+   "start": 21.53,
+   "end": 21.68
+  },
+  {
+   "w": "the",
+   "start": 21.68,
+   "end": 21.91
+  },
+  {
+   "w": "Holy",
+   "start": 21.91,
+   "end": 22.21
+  },
+  {
+   "w": "Spirit.",
+   "start": 22.21,
+   "end": 22.96
+  }
+ ]
+}

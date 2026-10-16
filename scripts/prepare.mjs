@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
+import {phraseTime, transcribe, trimVoice, whisperAvailable} from './voice.mjs';
 
 const FPS = 30;
 const HEADING_FRAMES = 66; // keep in sync with video/theme.ts
@@ -18,19 +19,22 @@ export function prepare(arg) {
   fs.mkdirSync(publicDir, {recursive: true});
 
   let recorded = 0;
+  const useWhisper = whisperAvailable();
   const out = segments.map((s) => {
     const src = AUDIO_EXT.map((e) => path.join(dir, 'audio', s.name + e)).find((f) => fs.existsSync(f));
     let audio = null;
     let seconds = words(s.text) / WPS;
+    let spoken = null;
     if (src) {
-      // Trim silence at both ends (gently: soft last syllables sit near -50 dB, so keep
-      // a little air after them), level to -16 LUFS, mono. Your raw file is untouched.
-      const dest = path.join(publicDir, `${s.name}.wav`);
-      execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', src, '-af',
-        'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.1,areverse,silenceremove=start_periods=1:start_threshold=-55dB:start_silence=0.35,areverse,loudnorm=I=-16:TP=-1.5:LRA=11',
-        '-ac', '1', '-ar', '48000', dest]);
+      // Trim silence at both ends (gently, keeping a little air after soft last
+      // syllables), level to -16 LUFS, mono. Your raw file is untouched.
+      const dest = trimVoice(src, path.join(publicDir, `${s.name}.wav`));
       audio = path.posix.join(id, `${s.name}.wav`);
       seconds = ffprobeDuration(dest);
+      // Word timings (Whisper, cached) so scenes start on the words actually spoken.
+      if (useWhisper) {
+        try { spoken = transcribe(src, dest, s.text); } catch (e) { console.warn(`  ! ${s.name}: couldn't transcribe (${e.message}); timing estimated`); }
+      }
       recorded++;
     }
     // Points open on their heading; narration starts while it is still on screen.
@@ -40,7 +44,7 @@ export function prepare(arg) {
     // the intro ~1.5s more so its last picture (the Sign of the Cross) can be seen.
     const tail = s.kind === 'outro' ? 30 + MUSIC_TAIL : s.kind === 'intro' ? 75 : 30;
     const durationInFrames = Math.max(minFrames, Math.ceil(offset + seconds * FPS + tail));
-    const scenes = timeScenes(s, offset, seconds, durationInFrames);
+    const scenes = timeScenes(s, offset, seconds, durationInFrames, spoken);
     return {kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes, audio, durationInFrames, audioOffsetInFrames: offset};
   });
 
@@ -94,15 +98,18 @@ export function prepare(arg) {
 
 /**
  * Scene start frames. A scene with `at: <phrase>` starts when that phrase is
- * spoken, estimated from where it sits in the text (speech pace is even
- * enough for this, and it survives re-recording). `cues: {name: <phrase>}`
+ * spoken: from the recording's word timings (Whisper) when there are any,
+ * else estimated from where it sits in the text. `cues: {name: <phrase>}`
  * become frames relative to the scene's start. Scenes without `at` share the
  * time between their neighbors. Without any `at`, the video splits evenly.
  */
-function timeScenes(s, offset, seconds, durationInFrames) {
-  if (!s.scenes.some((sc) => sc.at)) return s.scenes.map(smartScene);
+function timeScenes(s, offset, seconds, durationInFrames, spoken) {
+  if (!s.scenes.some((sc) => sc.at || sc.cues)) return s.scenes.map(smartScene);
   const text = s.text.toLowerCase();
   const frameOf = (phrase) => {
+    // When it was actually said (word timings), else where it sits in the script.
+    const t = spoken ? phraseTime(spoken, String(phrase)) : null;
+    if (t != null) return Math.round(offset + t * FPS);
     const i = text.indexOf(String(phrase).toLowerCase());
     if (i < 0) throw new Error(`${s.name}: the phrase "${phrase}" isn't in the text`);
     return Math.round(offset + (i / text.length) * seconds * FPS);

@@ -1,0 +1,595 @@
+{
+ "stamp": "1:4469838:1792102546062",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.33
+  },
+  {
+   "w": "pope",
+   "start": 0.33,
+   "end": 0.68
+  },
+  {
+   "w": "is",
+   "start": 0.68,
+   "end": 0.86
+  },
+  {
+   "w": "the",
+   "start": 0.86,
+   "end": 1.17
+  },
+  {
+   "w": "vicar",
+   "start": 1.17,
+   "end": 1.62
+  },
+  {
+   "w": "of",
+   "start": 1.62,
+   "end": 1.82
+  },
+  {
+   "w": "Christ",
+   "start": 1.82,
+   "end": 2.44
+  },
+  {
+   "w": "who",
+   "start": 2.44,
+   "end": 2.68
+  },
+  {
+   "w": "serves.",
+   "start": 2.68,
+   "end": 3.67
+  },
+  {
+   "w": "The",
+   "start": 3.67,
+   "end": 3.84
+  },
+  {
+   "w": "catechism",
+   "start": 3.84,
+   "end": 4.79
+  },
+  {
+   "w": "gives",
+   "start": 4.79,
+   "end": 5.18
+  },
+  {
+   "w": "the",
+   "start": 5.18,
+   "end": 5.47
+  },
+  {
+   "w": "pope",
+   "start": 5.47,
+   "end": 5.85
+  },
+  {
+   "w": "a",
+   "start": 5.85,
+   "end": 5.95
+  },
+  {
+   "w": "striking",
+   "start": 5.95,
+   "end": 6.71
+  },
+  {
+   "w": "title",
+   "start": 6.71,
+   "end": 7.28
+  },
+  {
+   "w": "for",
+   "start": 7.28,
+   "end": 7.59
+  },
+  {
+   "w": "the",
+   "start": 7.59,
+   "end": 7.76
+  },
+  {
+   "w": "Roman",
+   "start": 7.76,
+   "end": 8.22
+  },
+  {
+   "w": "Pontiff",
+   "start": 8.22,
+   "end": 8.72
+  },
+  {
+   "w": "by",
+   "start": 8.72,
+   "end": 8.88
+  },
+  {
+   "w": "reason",
+   "start": 8.88,
+   "end": 9.36
+  },
+  {
+   "w": "of",
+   "start": 9.36,
+   "end": 9.72
+  },
+  {
+   "w": "his",
+   "start": 9.72,
+   "end": 9.76
+  },
+  {
+   "w": "office",
+   "start": 9.76,
+   "end": 10.24
+  },
+  {
+   "w": "as",
+   "start": 10.24,
+   "end": 10.39
+  },
+  {
+   "w": "vicar",
+   "start": 10.39,
+   "end": 10.95
+  },
+  {
+   "w": "of",
+   "start": 10.95,
+   "end": 10.96
+  },
+  {
+   "w": "Christ",
+   "start": 10.96,
+   "end": 11.58
+  },
+  {
+   "w": "and",
+   "start": 11.58,
+   "end": 11.76
+  },
+  {
+   "w": "as",
+   "start": 11.76,
+   "end": 12.07
+  },
+  {
+   "w": "pastor",
+   "start": 12.07,
+   "end": 12.44
+  },
+  {
+   "w": "of",
+   "start": 12.44,
+   "end": 12.55
+  },
+  {
+   "w": "the",
+   "start": 12.55,
+   "end": 12.79
+  },
+  {
+   "w": "entire",
+   "start": 12.79,
+   "end": 13.28
+  },
+  {
+   "w": "church",
+   "start": 13.28,
+   "end": 13.84
+  },
+  {
+   "w": "has",
+   "start": 13.84,
+   "end": 14.17
+  },
+  {
+   "w": "full",
+   "start": 14.17,
+   "end": 14.52
+  },
+  {
+   "w": "supreme",
+   "start": 14.52,
+   "end": 15.11
+  },
+  {
+   "w": "and",
+   "start": 15.11,
+   "end": 15.37
+  },
+  {
+   "w": "universal",
+   "start": 15.37,
+   "end": 16.28
+  },
+  {
+   "w": "power",
+   "start": 16.28,
+   "end": 16.67
+  },
+  {
+   "w": "over",
+   "start": 16.67,
+   "end": 16.99
+  },
+  {
+   "w": "the",
+   "start": 16.99,
+   "end": 17.51
+  },
+  {
+   "w": "whole",
+   "start": 17.51,
+   "end": 17.76
+  },
+  {
+   "w": "church.",
+   "start": 17.76,
+   "end": 18.64
+  },
+  {
+   "w": "A",
+   "start": 18.64,
+   "end": 18.75
+  },
+  {
+   "w": "vicar",
+   "start": 18.75,
+   "end": 19.32
+  },
+  {
+   "w": "is",
+   "start": 19.32,
+   "end": 19.62
+  },
+  {
+   "w": "one",
+   "start": 19.62,
+   "end": 19.95
+  },
+  {
+   "w": "who",
+   "start": 19.95,
+   "end": 20.24
+  },
+  {
+   "w": "stands",
+   "start": 20.24,
+   "end": 20.94
+  },
+  {
+   "w": "in",
+   "start": 20.94,
+   "end": 21.33
+  },
+  {
+   "w": "another's",
+   "start": 21.33,
+   "end": 21.76
+  },
+  {
+   "w": "place.",
+   "start": 21.76,
+   "end": 22.44
+  },
+  {
+   "w": "It",
+   "start": 22.44,
+   "end": 22.5
+  },
+  {
+   "w": "is",
+   "start": 22.5,
+   "end": 22.69
+  },
+  {
+   "w": "an",
+   "start": 22.69,
+   "end": 22.8
+  },
+  {
+   "w": "immense",
+   "start": 22.8,
+   "end": 23.35
+  },
+  {
+   "w": "title",
+   "start": 23.35,
+   "end": 23.7
+  },
+  {
+   "w": "and",
+   "start": 23.7,
+   "end": 23.92
+  },
+  {
+   "w": "the",
+   "start": 23.92,
+   "end": 24.2
+  },
+  {
+   "w": "church",
+   "start": 24.2,
+   "end": 24.59
+  },
+  {
+   "w": "pairs",
+   "start": 24.59,
+   "end": 24.92
+  },
+  {
+   "w": "it",
+   "start": 24.92,
+   "end": 25.41
+  },
+  {
+   "w": "with",
+   "start": 25.41,
+   "end": 25.44
+  },
+  {
+   "w": "the",
+   "start": 25.44,
+   "end": 25.63
+  },
+  {
+   "w": "humble",
+   "start": 25.63,
+   "end": 26.08
+  },
+  {
+   "w": "one.",
+   "start": 26.08,
+   "end": 26.55
+  },
+  {
+   "w": "Pope",
+   "start": 26.55,
+   "end": 26.82
+  },
+  {
+   "w": "Saint",
+   "start": 26.82,
+   "end": 27.18
+  },
+  {
+   "w": "Gregory",
+   "start": 27.18,
+   "end": 27.87
+  },
+  {
+   "w": "the",
+   "start": 27.87,
+   "end": 28
+  },
+  {
+   "w": "great",
+   "start": 28.1,
+   "end": 28.46
+  },
+  {
+   "w": "called",
+   "start": 28.46,
+   "end": 29.02
+  },
+  {
+   "w": "himself",
+   "start": 29.02,
+   "end": 29.67
+  },
+  {
+   "w": "the",
+   "start": 29.67,
+   "end": 29.95
+  },
+  {
+   "w": "servant",
+   "start": 29.95,
+   "end": 30.76
+  },
+  {
+   "w": "of",
+   "start": 30.76,
+   "end": 30.78
+  },
+  {
+   "w": "the",
+   "start": 30.78,
+   "end": 31.05
+  },
+  {
+   "w": "servants",
+   "start": 31.05,
+   "end": 31.81
+  },
+  {
+   "w": "of",
+   "start": 31.81,
+   "end": 31.98
+  },
+  {
+   "w": "God",
+   "start": 31.98,
+   "end": 32.3
+  },
+  {
+   "w": "and",
+   "start": 32.3,
+   "end": 32.79
+  },
+  {
+   "w": "papal",
+   "start": 32.79,
+   "end": 33
+  },
+  {
+   "w": "bulls",
+   "start": 33,
+   "end": 33.46
+  },
+  {
+   "w": "still",
+   "start": 33.46,
+   "end": 34
+  },
+  {
+   "w": "open",
+   "start": 34,
+   "end": 34.4
+  },
+  {
+   "w": "with",
+   "start": 34.4,
+   "end": 34.68
+  },
+  {
+   "w": "that",
+   "start": 34.68,
+   "end": 34.8
+  },
+  {
+   "w": "title.",
+   "start": 34.8,
+   "end": 35.52
+  },
+  {
+   "w": "The",
+   "start": 35.52,
+   "end": 35.83
+  },
+  {
+   "w": "pope's",
+   "start": 35.83,
+   "end": 36.26
+  },
+  {
+   "w": "authority",
+   "start": 36.26,
+   "end": 37.02
+  },
+  {
+   "w": "exists",
+   "start": 37.02,
+   "end": 37.52
+  },
+  {
+   "w": "to",
+   "start": 37.52,
+   "end": 37.96
+  },
+  {
+   "w": "guard",
+   "start": 37.96,
+   "end": 38.28
+  },
+  {
+   "w": "the",
+   "start": 38.28,
+   "end": 38.36
+  },
+  {
+   "w": "faith",
+   "start": 38.36,
+   "end": 38.74
+  },
+  {
+   "w": "handed",
+   "start": 38.74,
+   "end": 39.33
+  },
+  {
+   "w": "down",
+   "start": 39.33,
+   "end": 39.68
+  },
+  {
+   "w": "from",
+   "start": 39.68,
+   "end": 40
+  },
+  {
+   "w": "the",
+   "start": 40,
+   "end": 40.31
+  },
+  {
+   "w": "apostles",
+   "start": 40.31,
+   "end": 40.94
+  },
+  {
+   "w": "not",
+   "start": 40.94,
+   "end": 41.12
+  },
+  {
+   "w": "to",
+   "start": 41.12,
+   "end": 41.3
+  },
+  {
+   "w": "invent",
+   "start": 41.3,
+   "end": 41.68
+  },
+  {
+   "w": "a",
+   "start": 41.68,
+   "end": 41.76
+  },
+  {
+   "w": "new",
+   "start": 41.76,
+   "end": 42.07
+  },
+  {
+   "w": "one.",
+   "start": 42.07,
+   "end": 42.7
+  },
+  {
+   "w": "He",
+   "start": 42.7,
+   "end": 42.93
+  },
+  {
+   "w": "is",
+   "start": 42.93,
+   "end": 43.17
+  },
+  {
+   "w": "a",
+   "start": 43.17,
+   "end": 43.21
+  },
+  {
+   "w": "steward",
+   "start": 43.21,
+   "end": 44.2
+  },
+  {
+   "w": "not",
+   "start": 44.2,
+   "end": 44.25
+  },
+  {
+   "w": "an",
+   "start": 44.25,
+   "end": 44.45
+  },
+  {
+   "w": "owner.",
+   "start": 44.45,
+   "end": 45.04
+  }
+ ]
+}

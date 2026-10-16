@@ -1,0 +1,270 @@
+{
+ "stamp": "1:1751118:1792102570242",
+ "words": [
+  {
+   "w": "And",
+   "start": 0.1,
+   "end": 0.28
+  },
+  {
+   "w": "that",
+   "start": 0.28,
+   "end": 0.66
+  },
+  {
+   "w": "was",
+   "start": 0.66,
+   "end": 0.94
+  },
+  {
+   "w": "an",
+   "start": 0.94,
+   "end": 1.13
+  },
+  {
+   "w": "intro",
+   "start": 1.13,
+   "end": 1.6
+  },
+  {
+   "w": "to",
+   "start": 1.6,
+   "end": 1.85
+  },
+  {
+   "w": "the",
+   "start": 1.85,
+   "end": 2.22
+  },
+  {
+   "w": "Pope",
+   "start": 2.22,
+   "end": 2.64
+  },
+  {
+   "w": "in",
+   "start": 2.64,
+   "end": 2.64
+  },
+  {
+   "w": "a",
+   "start": 2.64,
+   "end": 2.73
+  },
+  {
+   "w": "nutshell.",
+   "start": 2.73,
+   "end": 3.97
+  },
+  {
+   "w": "He's",
+   "start": 3.97,
+   "end": 4.1
+  },
+  {
+   "w": "the",
+   "start": 4.1,
+   "end": 4.3
+  },
+  {
+   "w": "Bishop",
+   "start": 4.3,
+   "end": 4.71
+  },
+  {
+   "w": "of",
+   "start": 4.71,
+   "end": 4.87
+  },
+  {
+   "w": "Rome,",
+   "start": 4.87,
+   "end": 5.44
+  },
+  {
+   "w": "he's",
+   "start": 5.44,
+   "end": 5.6
+  },
+  {
+   "w": "the",
+   "start": 5.6,
+   "end": 5.76
+  },
+  {
+   "w": "successor",
+   "start": 5.76,
+   "end": 6.4
+  },
+  {
+   "w": "of",
+   "start": 6.4,
+   "end": 6.54
+  },
+  {
+   "w": "Saint",
+   "start": 6.54,
+   "end": 6.89
+  },
+  {
+   "w": "Peter,",
+   "start": 6.89,
+   "end": 7.38
+  },
+  {
+   "w": "and",
+   "start": 7.38,
+   "end": 7.68
+  },
+  {
+   "w": "he",
+   "start": 7.68,
+   "end": 7.73
+  },
+  {
+   "w": "is",
+   "start": 7.73,
+   "end": 7.93
+  },
+  {
+   "w": "the",
+   "start": 7.93,
+   "end": 8.08
+  },
+  {
+   "w": "visible",
+   "start": 8.08,
+   "end": 8.62
+  },
+  {
+   "w": "source",
+   "start": 8.62,
+   "end": 9.04
+  },
+  {
+   "w": "of",
+   "start": 9.04,
+   "end": 9.13
+  },
+  {
+   "w": "unity",
+   "start": 9.13,
+   "end": 9.48
+  },
+  {
+   "w": "for",
+   "start": 9.48,
+   "end": 9.78
+  },
+  {
+   "w": "the",
+   "start": 9.78,
+   "end": 9.9
+  },
+  {
+   "w": "faithful.",
+   "start": 9.9,
+   "end": 10.72
+  },
+  {
+   "w": "I",
+   "start": 10.72,
+   "end": 10.8
+  },
+  {
+   "w": "hope",
+   "start": 10.8,
+   "end": 11.09
+  },
+  {
+   "w": "you",
+   "start": 11.09,
+   "end": 11.27
+  },
+  {
+   "w": "learned",
+   "start": 11.27,
+   "end": 11.68
+  },
+  {
+   "w": "something",
+   "start": 11.68,
+   "end": 12.2
+  },
+  {
+   "w": "new.",
+   "start": 12.2,
+   "end": 12.56
+  },
+  {
+   "w": "I've",
+   "start": 12.56,
+   "end": 12.74
+  },
+  {
+   "w": "been",
+   "start": 12.74,
+   "end": 12.96
+  },
+  {
+   "w": "your",
+   "start": 12.96,
+   "end": 13.12
+  },
+  {
+   "w": "host,",
+   "start": 13.12,
+   "end": 13.4
+  },
+  {
+   "w": "Shalone",
+   "start": 13.4,
+   "end": 13.72
+  },
+  {
+   "w": "Cason,",
+   "start": 13.72,
+   "end": 14.03
+  },
+  {
+   "w": "and",
+   "start": 14.03,
+   "end": 14.32
+  },
+  {
+   "w": "until",
+   "start": 14.32,
+   "end": 14.48
+  },
+  {
+   "w": "next",
+   "start": 14.48,
+   "end": 14.82
+  },
+  {
+   "w": "time,",
+   "start": 14.82,
+   "end": 15.37
+  },
+  {
+   "w": "stay",
+   "start": 15.37,
+   "end": 15.76
+  },
+  {
+   "w": "holy,",
+   "start": 15.76,
+   "end": 16.37
+  },
+  {
+   "w": "my",
+   "start": 16.37,
+   "end": 16.56
+  },
+  {
+   "w": "friends.",
+   "start": 16.56,
+   "end": 17.6
+  }
+ ]
+}
