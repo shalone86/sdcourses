@@ -4,11 +4,13 @@ status: draft
 course: byzantine-catholic-basics
 number: 1
 # New address; the old lesson (/course/what-is-the-byzantine-catholic-church/) is still live.
-slug: byzantine-catholic-church
-title: What Is the Byzantine Catholic Church?
+# Retitled 2026-10-17: there is no single Byzantine Catholic Church worldwide; about 14 Churches share the rite.
+slug: what-is-the-byzantine-rite
+title: What Is the Byzantine Rite?
 excerpt: >-
-  Born in Antioch, shaped by Greek-speaking Christians, and in full communion
-  with Rome: what it means to be a Byzantine Catholic.
+  Born in Antioch, shaped in Constantinople, and shared by about fourteen
+  Eastern Catholic Churches in full communion with Rome: what the Byzantine
+  Rite is.
 
 sources:
   - id: acts-11
@@ -35,11 +37,22 @@ intro:
     Cason and let's begin in the name of the Father and of the Son and of the
     Holy Spirit.
   notes:
+    - "REWRITE for the new title, \"What Is the Byzantine Rite?\": your intro below still asks \"What is the Byzantine Catholic Church?\" and calls it a family of Churches."
+    - "A rite is a Church's whole inheritance of worship, theology, spirituality and discipline (Code of Canons of the Eastern Churches, canon 28: background, not quoted)."
+    - About fourteen Eastern Catholic Churches share the Byzantine Rite (Ukrainian, Ruthenian, Melkite, Romanian, Slovak, Hungarian, Italo-Albanian, Greek and others), each self-governing and in communion with Rome.
+    - In America, "Byzantine Catholic Church" usually names the Ruthenian Church, the Byzantine Catholic Metropolitan Church of Pittsburgh.
     - "Your old intro asked: why screens in front of the altar, why Communion with a spoon, why the liturgy looks different (lesson 3 answers the first two)."
     - The Byzantine Catholic Church isn't one Church but a family of Eastern Catholic Churches sharing the Byzantine tradition (Ruthenian, Ukrainian, Melkite, and others).
     - This lesson answers the question in five points, from Antioch to Rome.
   scenes:
     - type: title
+    - type: union
+      center: Byzantine Catholic Church
+      items:
+        - Ruthenian
+        - Melkite
+        - Ukrainian
+        - Greek Catholic
     - type: host         # your photo and name, when you say "I'm your host"
       at: I'm your host
     - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
@@ -195,12 +208,14 @@ points:
       cite: Christ – Our Pascha 291
       highlight: successor of the apostle Peter
     text: >-
-      So the Byzantine Catholic Church is Eastern in its worship but also
-      fully Catholic because its faith is fully Catholic. It keeps the
-      prayers, icons, and customs of the Byzantine tradition, but it is in
-      full communion with the Pope, just like the Latin Church. Therefore, a
-      Byzantine Catholic can receive Communion at a Roman Catholic Mass, and a
-      Roman Catholic can receive at a Byzantine Divine Liturgy.
+      So what is the Byzantine Rite? It is the prayers, icons and customs
+      that grew in Antioch and took their shape in Constantinople. About
+      fourteen Eastern Catholic Churches share it, each in full communion
+      with the Pope, just like the Latin Church. In America, "Byzantine
+      Catholic Church" usually names one of them, the Ruthenian Church.
+      Because all of them are one Catholic Church, a Byzantine Catholic can
+      receive Communion at a Roman Catholic Mass, and a Roman Catholic can
+      receive at a Byzantine Divine Liturgy.
     visuals:
       - type: map
         region: mediterranean
@@ -226,7 +241,7 @@ points:
         right: { kicker: Western, title: Host and chalice, note: The Mass, icon: chalice-host }
     quiz:
       type: choice
-      question: What makes the Byzantine Catholic Church Catholic?
+      question: What makes the Churches of the Byzantine Rite Catholic?
       options:
         - It uses Latin in its liturgy
         - It is in full communion with the Pope, the successor of Peter
@@ -247,6 +262,7 @@ outro:
     please stay holy my friends.
   notes:
     - "Recap: began in Antioch · worship grew from Antioch's · one faith, more than one tradition · a family of self-governing Churches · in communion with Rome."
+    - "REWRITE for the new title: your outro still says \"your intro to the Byzantine Catholic Church\"."
     - "Next lesson: What Does \"Byzantine\" Mean?"
   scenes:
     - type: recap

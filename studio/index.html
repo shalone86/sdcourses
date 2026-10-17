@@ -165,7 +165,10 @@ a{color:var(--accent)}
 .tl-x:hover{background:var(--bg);color:var(--accent)}
 .tl-field{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted)}
 .tl-field input[type=text],.tl-field textarea,.tl-field input[type=number]{font:16px/1.4 var(--sans);color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:8px;padding:8px 10px}
-.tl-head{position:absolute;top:0;bottom:0;width:2px;background:var(--rec);pointer-events:none;left:20px}
+.tl-head{position:absolute;top:0;bottom:0;width:2px;background:var(--rec);left:20px;cursor:ew-resize;touch-action:none}
+.tl-head::before{content:"";position:absolute;top:0;bottom:0;left:-8px;width:18px}
+.tl-head i{position:absolute;top:0;left:-7px;width:16px;height:16px;border-radius:50%;background:var(--rec)}
+.tl-bar{width:100%;margin-top:8px;accent-color:var(--rec)}
 </style>
 </head>
 <body>

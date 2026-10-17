@@ -119,10 +119,20 @@
       const wrap = h('div', {class: 'tl', style: {width: W + 'px'}});
 
       // Ruler (click to jump)
-      const ruler = h('div', {class: 'tl-ruler', onpointerdown: (e) => {
-        const f = (e.clientX - ruler.getBoundingClientRect().left - 20) / px;
-        T.player.seek(segStart(T.seg) + f);
-      }});
+      // Ruler and playhead: press and drag to scrub (playback pauses so nothing snaps back).
+      const ruler = h('div', {class: 'tl-ruler'});
+      const scrubFrom = (node) => node.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        T.player.pause();
+        try { node.setPointerCapture(e.pointerId); } catch { /* fine */ }
+        const left = wrap.getBoundingClientRect().left;
+        const go = (ev) => T.player.seek(segStart(T.seg) + Math.max(0, Math.min(s.durationInFrames - 1, (ev.clientX - left - 20) / px)));
+        go(e);
+        const up = () => { node.removeEventListener('pointermove', go); node.removeEventListener('pointerup', up); };
+        node.addEventListener('pointermove', go);
+        node.addEventListener('pointerup', up);
+      });
+      scrubFrom(ruler);
       // Whole seconds of the recording (the voice starts a moment into the section).
       for (let t = 0; s.audioOffsetInFrames + t * FPS < s.durationInFrames; t++) {
         ruler.append(h('span', {class: 'tl-tick' + (t % 5 ? '' : ' major'), style: {left: x(s.audioOffsetInFrames + t * FPS) + 'px'}, text: t % 5 ? '' : fmt(t)}));
@@ -163,7 +173,9 @@
           cuesRow.append(m);
         }
       });
-      wrap.append(scenesRow, cuesRow, h('div', {class: 'tl-head', 'data-playhead': ''}));
+      const head = h('div', {class: 'tl-head', 'data-playhead': '', title: 'Drag to scrub'}, [h('i')]);
+      scrubFrom(head);
+      wrap.append(scenesRow, cuesRow, head);
       return wrap;
 
       // Drag horizontally; on release, apply and redraw.
@@ -292,12 +304,24 @@
     api('/api/timing?id=' + encodeURIComponent(id)).then((d) => {
       T.data = d; T.timing = clone(d.timing || {}); T.saved = JSON.stringify(T.timing);
       T.props = effective(d.props, d, T.timing);
-      const top = h('div', {class: 'tl-top'}, [h('div', {class: 'tl-player'})]);
+      const total = () => T.props.segments.reduce((n, x) => n + x.durationInFrames, 0);
+      const bar = h('input', {type: 'range', class: 'tl-bar', min: '0', step: '1', 'aria-label': 'Scrub through the whole lesson'});
+      const sectionOf = (f) => { let si = 0; while (si < T.props.segments.length - 1 && f >= segStart(si + 1)) si++; return si; };
+      bar.addEventListener('pointerdown', () => T.player.pause());
+      bar.addEventListener('input', () => {
+        const f = Number(bar.value);
+        T.player.seek(f);
+        const si = sectionOf(f);
+        if (si !== T.seg) { T.seg = si; draw(); }
+      });
+      T.bar = bar;
+      const top = h('div', {class: 'tl-top'}, [h('div', {class: 'tl-player'}), h('div', {class: 'tl-player'}, [bar])]);
       T.body = h('div', {class: 'stack', style: {gap: '12px'}});
       root.replaceChildren(top, T.body);
       if (!window.StudioPlayer) { top.replaceChildren(h('div', {class: 'notice error', text: 'The video preview didn’t load. Restart the studio.'})); return; }
       T.player = window.StudioPlayer.mount(top.firstChild, T.props);
       T.player.onFrame((f) => {
+        if (T.bar) { T.bar.max = String(total() - 1); if (document.activeElement !== T.bar) T.bar.value = String(f); }
         if (T.player.playing()) {
           let si = 0;
           while (si < T.props.segments.length - 1 && f >= segStart(si + 1)) si++;
