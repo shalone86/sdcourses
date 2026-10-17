@@ -136,7 +136,9 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
       case 'titles': return (sc.items ?? []).map((it, i) => [String(i), it.latin]);
       case 'timeline': return (sc.items ?? []).map((it, i) => [String(i), it.label]);
       case 'chain': return (sc.items ?? []).map((it, i) => [String(i), it]);
-      case 'compare': return [['decide', (sc.emphasis === 'left' ? sc.left : sc.right)?.title]];
+      case 'compare': return sc.emphasis === 'none' ? [] : [['decide', (sc.emphasis === 'left' ? sc.left : sc.right)?.title]];
+      case 'union': return (sc.items ?? []).map((it, i) => [String(i), it]);
+      case 'partners': return [...(sc.left?.items ?? []).map((it, i) => [`left-${i}`, it.label]), ...(sc.right?.items ?? []).map((it, i) => [`right-${i}`, it.label])];
       case 'recap': return (s.kind === 'outro' ? lessonHeadings : []).map((h, i) => [String(i), h]);
       default: return [];
     }

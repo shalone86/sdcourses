@@ -58,8 +58,10 @@ const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: 
 /** Point number + heading: large and centered, then settles into the top bar. */
 const PointHeading: React.FC<{seg: Segment; total: number; settleAt: number}> = ({seg, total, settleAt}) => {
   const frame = useCurrentFrame();
-  const {height} = useVideoConfig();
+  const {height, fps} = useVideoConfig();
   const settle = ramp(frame, settleAt - 22, settleAt);
+  // While it's the big centred heading, it floats gently like the scenes do.
+  const bob = (1 - settle) * Math.sin((frame / fps) * ((2 * Math.PI) / 6) + seg.index) * 8;
   const appear = ramp(frame, 0, 16);
   const y = (1 - settle) * (height / 2 - 140) + 64;
   const scale = 1 - settle * 0.45;
@@ -67,7 +69,7 @@ const PointHeading: React.FC<{seg: Segment; total: number; settleAt: number}> = 
     <div
       style={{
         position: 'absolute', left: 0, right: 0, top: y, opacity: appear,
-        transform: `scale(${scale})`, transformOrigin: 'center top', textAlign: 'center',
+        transform: `translateY(${bob.toFixed(2)}px) scale(${scale})`, transformOrigin: 'center top', textAlign: 'center',
       }}
     >
       <div style={{fontFamily: theme.sans, fontSize: 30, letterSpacing: 6, color: theme.accent, fontWeight: 600}}>

@@ -11,10 +11,15 @@ export const Recap: React.FC<SceneProps> = ({scene, lesson, duration}) => {
   const {fps} = useVideoConfig();
   const gap = Math.floor((duration * 0.5) / lesson.headings.length);
   const at = (i: number) => (scene as any).cues?.[i] ?? 8 + i * gap; // when each is said, else spaced
+  // Lines stack top to bottom in the order they're said.
+  const rows = lesson.headings.map((h, i) => ({h, i})).sort((a, b) => at(a.i) - at(b.i));
   return (
     <Center style={{alignItems: 'flex-start', paddingLeft: 420}}>
-      {lesson.headings.map((h, i) => (
-        <div key={i} style={{...enter(f, at(i), 0), display: 'flex', alignItems: 'center', gap: 36, margin: '22px 0'}}>
+      <div style={{...enter(f, 2), fontFamily: theme.sans, fontSize: 30, letterSpacing: 8, color: theme.accent, fontWeight: 600, marginBottom: 18}}>
+        LESSON SUMMARY
+      </div>
+      {rows.map(({h, i}) => (
+        <div key={i} style={{...enter(f, at(i), 0), display: 'flex', alignItems: 'center', gap: 36, margin: '18px 0'}}>
           <Check size={64} color={theme.card} bg={theme.accent} style={{transform: `scale(${pop(f, at(i), fps)})`, flexShrink: 0}} />
           <div style={{fontFamily: theme.serif, fontSize: 72}}>{h}</div>
         </div>

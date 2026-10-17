@@ -94,6 +94,12 @@ points:
       the fourth century, Saint Basil the Great and Saint John Chrysostom.
       Byzantine Catholics still pray these same liturgies today.
     visuals:
+      - type: map
+        region: east
+        places: [{name: Antioch, label: below}, {name: Constantinople, label: above}]
+        routes: [[Antioch, Constantinople]]
+        highlight: Constantinople
+        caption: From Antioch's liturgy to Constantinople's rite
       - type: titles
         items:
           - { latin: Divine Liturgy of St. John Chrysostom, english: Archbishop of Constantinople }
@@ -160,6 +166,10 @@ points:
       Melkite Churches. A Byzantine Catholic belongs to one of these, and so
       belongs fully to the one Catholic Church.
     visuals:
+      - type: union
+        center: The Catholic Church
+        items: [Latin, Ruthenian, Ukrainian, Melkite, Maronite, Syro-Malabar]
+        caption: A communion of Churches, Eastern and Western
       - type: titles
         items:
           - { latin: Ruthenian Catholic Church, english: Byzantine tradition }
@@ -198,6 +208,22 @@ points:
         routes: [[Antioch, Rome]]
         highlight: Rome
         caption: Eastern in worship, Catholic in communion
+      - type: partners
+        left:
+          title: Byzantine
+          items:
+            - { icon: book-open, label: Prayers }
+            - { icon: image, label: Icons }
+            - { icon: flame, label: Customs }
+        right:
+          title: Rome
+          items:
+            - { icon: key-round, label: The Pope }
+        link: In full communion
+      - type: compare
+        emphasis: none
+        left: { kicker: Eastern, title: Spoon and chalice, note: The Divine Liturgy, icon: chalice-spoon }
+        right: { kicker: Western, title: Host and chalice, note: The Mass, icon: chalice-host }
     quiz:
       type: choice
       question: What makes the Byzantine Catholic Church Catholic?

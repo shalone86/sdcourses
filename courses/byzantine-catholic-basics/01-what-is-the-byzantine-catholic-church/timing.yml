@@ -1,0 +1,14 @@
+# Hand-tuned timing from the studio's Timing tab, in seconds into each
+# section's recording. Scenes not listed keep their automatic timing.
+point-4:
+  scenes:
+    "1":
+      start: 20
+    "2":
+      start: 33
+point-5:
+  scenes:
+    "2":
+      start: 33
+    "3":
+      start: 40

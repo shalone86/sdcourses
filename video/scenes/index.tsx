@@ -5,6 +5,8 @@ import {Compare} from './Compare';
 import {Host} from './Host';
 import {Iconostasis} from './Iconostasis';
 import {Keys} from './Keys';
+import {Partners} from './Partners';
+import {Union} from './Union';
 import {MapView} from './Map';
 import {Quote} from './Quote';
 import {Recap} from './Recap';
@@ -29,6 +31,8 @@ const registry: Record<string, React.FC<SceneProps<any>>> = {
   recap: Recap,
   host: Host,
   map: MapView,
+  union: Union,
+  partners: Partners,
   iconostasis: Iconostasis,
   trinity: Trinity,
 };

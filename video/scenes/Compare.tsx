@@ -8,7 +8,8 @@ import type {SceneProps} from '.';
 
 // icon: 'dome' | 'facade' (line-drawn churches) or any https://lucide.dev icon name.
 type Side = {kicker: string; title: string; note: string; icon?: string};
-type CompareScene = {left: Side; right: Side; emphasis?: 'left' | 'right'};
+// emphasis 'none': two equals side by side (no check, no dimming).
+type CompareScene = {left: Side; right: Side; emphasis?: 'left' | 'right' | 'none'};
 
 /** Simple line-drawn church facades: a dome, and a columned front. */
 const Dome: React.FC<{p: number; color: string}> = ({p, color}) => (
@@ -26,7 +27,27 @@ const Facade: React.FC<{p: number; color: string}> = ({p, color}) => (
   </svg>
 );
 
+/** A chalice (cup, knop, foot), drawn in line. */
+const chalice = 'M80 40 H180 Q178 112 130 124 Q82 112 80 40 Z M130 124 V160 M116 140 H144 M96 190 Q130 168 164 190 Z';
+/** Eastern Eucharist: chalice and spoon. */
+const ChaliceSpoon: React.FC<{p: number; color: string}> = ({p, color}) => (
+  <svg width={260} height={200} viewBox="0 0 260 200" fill="none" stroke={color} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round">
+    <path pathLength={1} style={draw(p)} d={chalice} />
+    <path pathLength={1} style={draw(p)} d="M196 22 L226 182 M190 16 Q196 4 204 14 Q206 26 198 30 Q190 28 190 16 Z" />
+  </svg>
+);
+/** Western Eucharist: chalice and host (a circle with a cross). */
+const ChaliceHost: React.FC<{p: number; color: string}> = ({p, color}) => (
+  <svg width={260} height={200} viewBox="0 0 260 200" fill="none" stroke={color} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round">
+    <path pathLength={1} style={draw(p)} d={chalice} />
+    <circle pathLength={1} style={draw(p)} cx={130} cy={20} r={18} />
+    <path pathLength={1} style={draw(p)} d="M130 8 V32 M118 20 H142" />
+  </svg>
+);
+
 const SideIcon: React.FC<{name: string; p: number}> = ({name, p}) => {
+  if (name === 'chalice-spoon') return <ChaliceSpoon p={p} color={theme.ink} />;
+  if (name === 'chalice-host') return <ChaliceHost p={p} color={theme.ink} />;
   if (name === 'dome') return <Dome p={p} color={theme.ink} />;
   if (name === 'facade') return <Facade p={p} color={theme.ink} />;
   const Icon = (icons as Record<string, React.FC<any>>)[name.replace(/(^|-)([a-z0-9])/g, (_, __, c: string) => c.toUpperCase())] ?? icons.Circle;
@@ -43,8 +64,9 @@ export const Compare: React.FC<SceneProps<CompareScene>> = ({scene, duration}) =
   const decided = ramp(f, decideAt, decideAt + 16);
 
   const card = (side: Side, which: 'left' | 'right', start: number) => {
+    const equal = emph === 'none';
     const on = which === emph;
-    const dim = on ? 1 : 1 - decided * 0.55;
+    const dim = on || equal ? 1 : 1 - decided * 0.55;
     const border = on ? decided : 0;
     return (
       <div

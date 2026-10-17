@@ -126,6 +126,65 @@ function timingData(id) {
   return {props, segments, timing: fs.existsSync(f) ? YAML.parse(fs.readFileSync(f, 'utf8')) ?? {} : {}};
 }
 
+// ---------- adding and removing pictures (scenes) from the Timing tab ----------
+
+/** Where a section's scene list lives in lesson.yml; point scene 0 is the quotation (not in visuals). */
+const sceneList = (section) => {
+  const m = /^point-(\d+)$/.exec(section);
+  return m ? {path: ['points', Number(m[1]) - 1, 'visuals'], first: 1} : {path: [section, 'scenes'], first: 0};
+};
+
+/** Splice one scene into (or out of) lesson.yml as text, so comments and layout elsewhere stay as they are. */
+function editScenes(dir, section, op, sceneIndex, scene) {
+  const file = path.join(dir, 'lesson.yml');
+  let src = fs.readFileSync(file, 'utf8');
+  const {path: p, first} = sceneList(section);
+  const doc = YAML.parseDocument(src);
+  const seq = doc.getIn(p, true);
+  if (!seq || !Array.isArray(seq.items)) throw httpError(400, `No scene list for ${section}`);
+  const k = sceneIndex - first; // index within the YAML list
+  const lineStart = (i) => src.lastIndexOf('\n', i - 1) + 1;
+  if (op === 'add') {
+    if (seq.flow || !seq.items.length) {
+      // e.g. "visuals: []": write the list as a block under its key.
+      const keyLine = lineStart(seq.range[0]);
+      const indent = src.slice(keyLine).match(/^ */)[0].length + 2;
+      const text = YAML.stringify([scene], {lineWidth: 0}).trimEnd().split('\n').map((l) => ' '.repeat(indent) + l).join('\n');
+      src = src.slice(0, seq.range[0]).replace(/[ \t]*$/, '') + '\n' + text + '\n' + src.slice(seq.range[1]).replace(/^[ \t]*\n?/, '');
+    } else {
+      const at = Math.max(0, Math.min(k, seq.items.length));
+      const ref = seq.items[Math.min(at, seq.items.length - 1)];
+      const refLine = lineStart(ref.range[0]);
+      const indent = src.slice(refLine, ref.range[0]).length - 2; // the "- " column
+      const text = YAML.stringify([scene], {lineWidth: 0}).trimEnd().split('\n').map((l) => ' '.repeat(indent) + l).join('\n') + '\n';
+      const pos = at < seq.items.length ? refLine : (src.indexOf('\n', seq.items[seq.items.length - 1].range[1] - 1) + 1 || src.length);
+      src = src.slice(0, pos) + text + src.slice(pos);
+    }
+  } else {
+    const item = seq.items[k];
+    if (!item) throw httpError(400, 'No such scene');
+    const from = lineStart(item.range[0]);
+    const next = seq.items[k + 1];
+    const to = next ? lineStart(next.range[0]) : src.indexOf('\n', item.range[1] - 1) + 1 || src.length;
+    src = src.slice(0, from) + src.slice(to);
+    if (seq.items.length === 1) src = src.replace(new RegExp(`(\\n[ ]*${p[p.length - 1]}:)[ ]*\\n`), '$1 []\n');
+  }
+  YAML.parse(src); // must still be valid
+  fs.writeFileSync(file, src);
+  // Hand timing follows the scenes it belongs to.
+  const tf = path.join(dir, 'timing.yml');
+  const timing = fs.existsSync(tf) ? YAML.parse(fs.readFileSync(tf, 'utf8')) ?? {} : {};
+  const old = timing[section]?.scenes ?? {};
+  const moved = {};
+  for (const [i, v] of Object.entries(old)) {
+    const n = Number(i);
+    if (op === 'remove' && n === sceneIndex) continue;
+    moved[op === 'add' ? (n >= sceneIndex ? n + 1 : n) : (n > sceneIndex ? n - 1 : n)] = v;
+  }
+  (timing[section] ??= {}).scenes = moved;
+  return timing;
+}
+
 function saveTiming(id, timing) {
   const dir = lessonPath(id);
   const clean = {};
@@ -376,6 +435,27 @@ async function handle(req, res) {
     if (p === '/api/timing') {
       const {timing} = await readJson(req);
       saveTiming(id, timing);
+      return json(res, 200, timingData(id));
+    }
+    if (p === '/api/scene') {
+      // Add a picture at a time (seconds into the recording), or remove one.
+      const dir = lessonPath(id);
+      const {op, section, index, scene, start} = await readJson(req);
+      if (!/^(intro|outro|point-\d+)$/.test(section ?? '')) throw httpError(400, 'Bad section');
+      const {props} = prepare(id);
+      const seg = props.segments.find((s) => s.name === section);
+      if (!seg) throw httpError(400, 'No such section');
+      let at = index;
+      if (op === 'add') {
+        if (!scene || typeof scene.type !== 'string') throw httpError(400, 'Missing scene');
+        // After every scene that starts before it; never before a point's quotation.
+        const f = seg.audioOffsetInFrames + start * 30;
+        at = Math.max(sceneList(section).first, seg.scenes.filter((s) => (s.from ?? 0) <= f).length);
+      } else if (op !== 'remove' || !Number.isInteger(index) || index < sceneList(section).first) throw httpError(400, 'That picture can\'t be removed here');
+      const timing = editScenes(dir, section, op, at, scene);
+      if (op === 'add') ((timing[section] ??= {}).scenes ??= {})[at] = {start: Math.round(start * 100) / 100};
+      saveTiming(id, timing);
+      setStatus(dir, 'draft');
       return json(res, 200, timingData(id));
     }
     if (p === '/api/audio') {

@@ -6,7 +6,7 @@
 (function () {
   const FPS = 30;
   const LABELS = {quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
-    recap: 'Recap', title: 'Title card', host: 'Your photo', trinity: 'Trinity', term: 'Word', keys: 'Keys', college: 'College', iconostasis: 'Iconostasis'};
+    recap: 'Lesson summary', union: 'Union', partners: 'Partners', title: 'Title card', host: 'Your photo', trinity: 'Trinity', term: 'Word', keys: 'Keys', college: 'College', iconostasis: 'Iconostasis'};
 
   function h(tag, attrs, kids) {
     const e = document.createElement(tag);
@@ -23,6 +23,33 @@
   }
   const clone = (o) => JSON.parse(JSON.stringify(o));
   const fmt = (s) => { s = Math.max(0, s); return Math.floor(s / 60) + ':' + (s % 60).toFixed(1).padStart(4, '0'); };
+
+  // Pictures she can add from the editor: a type and a few plain fields.
+  // Lists are one item per line; "a | b" splits an item into two parts.
+  const lines = (v) => String(v || '').split('\n').map((x) => x.trim()).filter(Boolean);
+  const pair = (l) => l.split('|').map((x) => x.trim());
+  const ADD = {
+    map: {label: 'Map', fields: [['places', 'Places, one per line (e.g. Rome, Antioch, Constantinople, Kyiv, Jerusalem)', 'lines'], ['route', 'Draw a route through them in order', 'check'], ['caption', 'Caption', 'text']],
+      make: (v) => { const p = lines(v.places); return {type: 'map', region: 'mediterranean', places: p, ...(v.route && p.length > 1 ? {routes: p.slice(1).map((x, i) => [p[i], x])} : {}), highlight: p[p.length - 1], ...(v.caption ? {caption: v.caption} : {})}; }},
+    titles: {label: 'Titles', fields: [['items', 'One per line: Big text | small text under it', 'lines']],
+      make: (v) => ({type: 'titles', items: lines(v.items).map((l) => { const [a, b] = pair(l); return {latin: a, english: b || ''}; })})},
+    union: {label: 'Union (one and many)', fields: [['center', 'In the middle', 'text', 'The Catholic Church'], ['items', 'Around it, one per line', 'lines'], ['caption', 'Caption', 'text']],
+      make: (v) => ({type: 'union', center: v.center || 'The Catholic Church', items: lines(v.items), ...(v.caption ? {caption: v.caption} : {})})},
+    partners: {label: 'Partners (two sides together)', fields: [['ltitle', 'Left heading', 'text'], ['litems', 'Left items, one per line: icon | label (icons from lucide.dev)', 'lines'],
+      ['rtitle', 'Right heading', 'text'], ['ritems', 'Right items, one per line: icon | label', 'lines'], ['link', 'Words under the arrow', 'text']],
+      make: (v) => { const side = (t, l) => ({title: t, items: lines(l).map((x) => { const [a, b] = pair(x); return b ? {icon: a, label: b} : {label: a}; })});
+        return {type: 'partners', left: side(v.ltitle, v.litems), right: side(v.rtitle, v.ritems), ...(v.link ? {link: v.link} : {})}; }},
+    compare: {label: 'Compare (two cards)', fields: [['left', 'Left card: small | big | note | icon', 'text'], ['right', 'Right card: small | big | note | icon', 'text'], ['emphasis', 'Check mark on', 'select', ['right', 'left', 'none']]],
+      make: (v) => { const card = (t) => { const [kicker, title, note, icon] = pair(t || ''); return {kicker: kicker || '', title: title || '', note: note || '', ...(icon ? {icon} : {})}; };
+        return {type: 'compare', left: card(v.left), right: card(v.right), emphasis: v.emphasis || 'right'}; }},
+    chain: {label: 'Chain (handed on)', fields: [['items', 'Steps, one per line', 'lines'], ['caption', 'Caption', 'text']],
+      make: (v) => ({type: 'chain', items: lines(v.items), ...(v.caption ? {caption: v.caption} : {})})},
+    timeline: {label: 'Timeline', fields: [['items', 'One per line: year | what happened', 'lines']],
+      make: (v) => ({type: 'timeline', items: lines(v.items).map((l) => { const [a, b] = pair(l); return {year: a, label: b || ''}; })})},
+    term: {label: 'A word', fields: [['term', 'The word', 'text'], ['origin', 'From (e.g. Greek …)', 'text'], ['meaning', 'Meaning', 'text']],
+      make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning})},
+  };
+  const REMOVABLE = (s, i) => !(s.kind === 'point' && i === 0) && !['title', 'host', 'trinity', 'recap'].includes(s.scenes[i].type);
 
   /** Short name for an item cue ("Antioch", "Title 2", "Check"). */
   function cueLabel(scene, k) {
@@ -121,6 +148,10 @@
         const label = LABELS[sc.type] || sc.type;
         const block = h('div', {class: 'tl-scene' + (touched && touched.start != null ? ' moved' : ''), style: {left: x(sc.from) + 'px', width: Math.max(24, (end - sc.from) * px) + 'px'},
           title: 'Drag to change when it starts'}, [h('span', {text: label})]);
+        if (REMOVABLE(s, i)) {
+          block.append(h('button', {class: 'tl-x', title: 'Remove this picture', 'aria-label': 'Remove ' + label,
+            onpointerdown: (e) => e.stopPropagation(), onclick: (e) => { e.stopPropagation(); removeScene(i, label); }}, '×'));
+        }
         drag(block, sc.from, (f) => { setStart(i, f); }, () => T.player.seek(segStart(T.seg) + Math.max(0, sc.from - 10)));
         scenesRow.append(block);
         for (const [k, v] of Object.entries(sc.cues || {})) {
@@ -179,18 +210,75 @@
           h('button', {class: 'btn', text: '−', 'aria-label': 'Zoom out', onclick: () => { T.zoom = Math.max(30, T.zoom / 1.5); draw(); }}),
           h('button', {class: 'btn', text: '+', 'aria-label': 'Zoom in', onclick: () => { T.zoom = Math.min(300, T.zoom * 1.5); draw(); }}),
           touched ? h('button', {class: 'btn', text: 'Reset this section', onclick: () => { delete T.timing[s.name]; updatePlayer(); draw(); setDirty(); }}) : null,
+          h('button', {class: 'btn', text: '+ Add a picture here', onclick: () => { T.adding = !T.adding; draw(); }}),
           h('button', {class: 'btn primary', 'data-save': '', disabled: !T.dirty, text: T.dirty ? 'Save timing' : 'Saved', onclick: save}),
         ]),
       ]);
+      const adder = T.adding ? addForm() : null;
       const tl = timeline();
       const box = root.querySelector('.tl-scroll') || h('div', {class: 'tl-scroll'});
       const keep = box.scrollLeft;
       box.replaceChildren(tl);
-      const kids = [strip, controls, box,
+      const kids = [strip, controls, adder, box,
         h('div', {class: 'small muted', text: 'Drag a scene block to change when it starts, or a diamond to change when an item appears. Click a word or the ruler to jump there. Then Save timing, and Make the video on the Video & Ghost tab.'})];
-      const top = root.querySelector('.tl-top');
-      root.replaceChildren(top, ...kids);
+      // Only the part below the video is redrawn, so the page doesn't jump.
+      const y = window.scrollY;
+      T.body.replaceChildren(...kids.filter(Boolean));
       box.scrollLeft = keep;
+      window.scrollTo(0, y);
+    }
+
+    function addForm() {
+      const s = seg();
+      const now = Math.max(0, secOf(T.player.frame() - segStart(T.seg)));
+      const typeSel = h('select', {'aria-label': 'Kind of picture'}, Object.entries(ADD).map(([k, d]) => h('option', {value: k, text: d.label, selected: k === (T.addType || 'map')})));
+      const fields = h('div', {class: 'stack', style: {gap: '8px'}});
+      const vals = {};
+      const fill = () => {
+        T.addType = typeSel.value;
+        fields.replaceChildren(...ADD[T.addType].fields.map(([name, label, kind, extra]) => {
+          let input;
+          if (kind === 'lines') input = h('textarea', {rows: 3});
+          else if (kind === 'check') input = h('input', {type: 'checkbox', checked: true});
+          else if (kind === 'select') input = h('select', {}, extra.map((o) => h('option', {value: o, text: o})));
+          else input = h('input', {type: 'text', value: extra || ''});
+          vals[name] = input;
+          return h('label', {class: 'tl-field'}, [h('span', {text: label}), input]);
+        }));
+      };
+      typeSel.addEventListener('change', fill);
+      fill();
+      const at = h('input', {type: 'number', step: '0.1', min: '0', value: now.toFixed(1), style: {width: '6em'}});
+      const add = async () => {
+        const v = Object.fromEntries(Object.entries(vals).map(([k, el]) => [k, el.type === 'checkbox' ? el.checked : el.value]));
+        try {
+          await persist();
+          const d = await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'add', section: s.name, scene: ADD[T.addType].make(v), start: Number(at.value)});
+          T.adding = false; reload(d);
+        } catch (e) { alert('Couldn’t add it: ' + e.message); }
+      };
+      return h('div', {class: 'card', style: {gap: '10px'}}, [
+        h('div', {class: 'row'}, [h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Kind'}), typeSel]),
+          h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Starts at (seconds into the recording)'}), at])]),
+        fields,
+        h('div', {class: 'row'}, [h('span', {class: 'small muted', text: 'Items appear when you say them. You can drag it afterwards.'}),
+          h('span', {}, [h('button', {class: 'btn', text: 'Cancel', onclick: () => { T.adding = false; draw(); }}), ' ', h('button', {class: 'btn primary', text: 'Add it', onclick: add})])]),
+      ]);
+    }
+
+    async function removeScene(i, label) {
+      if (!confirm('Remove the ' + label + ' picture from this section?')) return;
+      try {
+        await persist();
+        reload(await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'remove', section: seg().name, index: i}));
+      } catch (e) { alert('Couldn’t remove it: ' + e.message); }
+    }
+
+    // Unsaved drags are saved first, so adding or removing a picture never loses them.
+    async function persist() { if (T.dirty) await post('/api/timing?id=' + encodeURIComponent(T.id), {timing: T.timing}); }
+    function reload(d) {
+      T.data = d; T.timing = clone(d.timing || {}); T.saved = JSON.stringify(T.timing);
+      updatePlayer(); draw(); setDirty();
     }
 
     async function save() {
@@ -205,10 +293,19 @@
       T.data = d; T.timing = clone(d.timing || {}); T.saved = JSON.stringify(T.timing);
       T.props = effective(d.props, d, T.timing);
       const top = h('div', {class: 'tl-top'}, [h('div', {class: 'tl-player'})]);
-      root.replaceChildren(top);
+      T.body = h('div', {class: 'stack', style: {gap: '12px'}});
+      root.replaceChildren(top, T.body);
       if (!window.StudioPlayer) { top.replaceChildren(h('div', {class: 'notice error', text: 'The video preview didn’t load. Restart the studio.'})); return; }
       T.player = window.StudioPlayer.mount(top.firstChild, T.props);
       T.player.onFrame((f) => {
+        if (T.player.playing()) {
+          let si = 0;
+          while (si < T.props.segments.length - 1 && f >= segStart(si + 1)) si++;
+          if (si !== T.seg) { T.seg = si; draw(); }
+          const box = root.querySelector('.tl-scroll');
+          const px = 20 + (f - segStart(T.seg)) * (T.zoom / FPS);
+          if (box && (px < box.scrollLeft + 40 || px > box.scrollLeft + box.clientWidth - 80)) box.scrollLeft = Math.max(0, px - 120);
+        }
         const s0 = segStart(T.seg);
         const head = root.querySelector('[data-playhead]');
         if (head) head.style.left = 20 + (f - s0) * (T.zoom / FPS) + 'px';
