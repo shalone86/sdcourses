@@ -70,4 +70,8 @@ she records, publish, tick it off. Course pictures: `npm run cover`, set
 4. Redo courses in the ROADMAP.md order (easiest first; All About the Pope is
    being replaced by What Is the Pope?, which is on the back burner).
 
+5. **Kids version (coming):** a kids edition of this pipeline with extra
+   features. She started it in another chat and will bring it here; plan
+   for it to reuse the studio, scenes and Timing tab.
+
 Commit and push to `main` as you go.
