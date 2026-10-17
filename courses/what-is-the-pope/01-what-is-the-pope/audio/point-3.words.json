@@ -1,550 +1,550 @@
 {
- "stamp": "1:3974478:1792102395888",
+ "stamp": "2:3974478:1792102395888",
  "words": [
   {
    "w": "The",
    "start": 0.09,
-   "end": 0.25
+   "end": 0.26
   },
   {
    "w": "Catechism",
-   "start": 0.25,
-   "end": 1
+   "start": 0.26,
+   "end": 1.01
   },
   {
    "w": "explains",
-   "start": 1,
-   "end": 1.67
+   "start": 1.01,
+   "end": 1.7
   },
   {
    "w": "why",
-   "start": 1.67,
-   "end": 1.91
+   "start": 1.7,
+   "end": 1.96
   },
   {
    "w": "the",
-   "start": 1.91,
-   "end": 2.17
+   "start": 1.96,
+   "end": 2.27
   },
   {
    "w": "Church",
-   "start": 2.17,
-   "end": 2.67
+   "start": 2.27,
+   "end": 2.8
   },
   {
    "w": "has",
-   "start": 2.67,
-   "end": 2.93
+   "start": 2.8,
+   "end": 2.99
   },
   {
    "w": "a",
-   "start": 2.93,
-   "end": 3
+   "start": 2.99,
+   "end": 3.07
   },
   {
-   "w": "pope",
-   "start": 3,
-   "end": 3.28
+   "w": "Pope",
+   "start": 3.07,
+   "end": 3.39
   },
   {
    "w": "at",
-   "start": 3.28,
-   "end": 3.46
+   "start": 3.39,
+   "end": 3.58
   },
   {
    "w": "all.",
-   "start": 3.46,
-   "end": 4.06
+   "start": 3.58,
+   "end": 4.16
   },
   {
    "w": "The",
-   "start": 4.06,
-   "end": 4.29
+   "start": 4.16,
+   "end": 4.39
   },
   {
    "w": "Pope,",
-   "start": 4.29,
-   "end": 4.69
+   "start": 4.39,
+   "end": 4.85
   },
   {
    "w": "Bishop",
-   "start": 4.69,
-   "end": 5.12
+   "start": 4.85,
+   "end": 5.31
   },
   {
    "w": "of",
-   "start": 5.12,
-   "end": 5.26
+   "start": 5.31,
+   "end": 5.53
   },
   {
    "w": "Rome",
-   "start": 5.26,
-   "end": 5.54
+   "start": 5.53,
+   "end": 5.77
   },
   {
    "w": "and",
-   "start": 5.54,
-   "end": 5.75
+   "start": 5.77,
+   "end": 6
   },
   {
    "w": "Peter's",
-   "start": 5.75,
-   "end": 6.24
+   "start": 6,
+   "end": 6.56
   },
   {
-   "w": "successor,",
-   "start": 6.24,
-   "end": 7.08
+   "w": "successor",
+   "start": 6.56,
+   "end": 7.22
   },
   {
-   "w": "\"is",
-   "start": 7.08,
-   "end": 7.31
+   "w": "is",
+   "start": 7.22,
+   "end": 7.37
   },
   {
    "w": "the",
-   "start": 7.31,
-   "end": 8.19
+   "start": 7.37,
+   "end": 7.86
   },
   {
    "w": "perpetual",
-   "start": 8.19,
-   "end": 8.37
+   "start": 7.86,
+   "end": 8.29
   },
   {
    "w": "and",
-   "start": 8.37,
-   "end": 8.54
+   "start": 8.29,
+   "end": 8.52
   },
   {
    "w": "visible",
-   "start": 8.54,
-   "end": 9.16
+   "start": 8.52,
+   "end": 9.12
   },
   {
    "w": "source",
-   "start": 9.16,
+   "start": 9.12,
    "end": 9.6
   },
   {
    "w": "and",
    "start": 9.6,
-   "end": 9.85
+   "end": 9.86
   },
   {
    "w": "foundation",
-   "start": 9.85,
-   "end": 10.79
+   "start": 9.86,
+   "end": 10.76
   },
   {
    "w": "of",
-   "start": 10.79,
-   "end": 10.87
+   "start": 10.76,
+   "end": 10.96
   },
   {
    "w": "the",
-   "start": 10.87,
-   "end": 11.23
+   "start": 10.96,
+   "end": 11.25
   },
   {
    "w": "unity",
-   "start": 11.23,
-   "end": 11.79
+   "start": 11.25,
+   "end": 11.72
   },
   {
    "w": "both",
-   "start": 11.79,
-   "end": 12.09
+   "start": 11.72,
+   "end": 12.13
   },
   {
    "w": "of",
-   "start": 12.09,
-   "end": 12.23
+   "start": 12.13,
+   "end": 12.28
   },
   {
    "w": "the",
-   "start": 12.23,
-   "end": 12.53
+   "start": 12.28,
+   "end": 12.55
   },
   {
    "w": "bishops",
-   "start": 12.53,
-   "end": 13.2
+   "start": 12.55,
+   "end": 13.22
   },
   {
    "w": "and",
-   "start": 13.2,
-   "end": 13.46
+   "start": 13.22,
+   "end": 13.56
   },
   {
    "w": "of",
-   "start": 13.46,
-   "end": 13.62
+   "start": 13.56,
+   "end": 13.69
   },
   {
    "w": "the",
-   "start": 13.62,
+   "start": 13.69,
    "end": 13.97
   },
   {
    "w": "whole",
    "start": 13.97,
-   "end": 14.32
+   "end": 14.89
   },
   {
    "w": "company",
-   "start": 14.32,
-   "end": 14.93
+   "start": 14.89,
+   "end": 15.12
   },
   {
    "w": "of",
-   "start": 14.93,
-   "end": 15.09
+   "start": 15.12,
+   "end": 15.59
   },
   {
    "w": "the",
-   "start": 15.09,
-   "end": 15.35
+   "start": 15.59,
+   "end": 15.67
   },
   {
-   "w": "faithful.\"",
-   "start": 15.35,
-   "end": 16.42
+   "w": "faithful.",
+   "start": 15.67,
+   "end": 16.72
   },
   {
    "w": "Just",
-   "start": 16.42,
-   "end": 16.69
+   "start": 16.72,
+   "end": 16.96
   },
   {
    "w": "as",
-   "start": 16.69,
-   "end": 16.88
+   "start": 16.96,
+   "end": 17.08
   },
   {
    "w": "Christ",
-   "start": 16.88,
-   "end": 17.38
+   "start": 17.08,
+   "end": 17.44
   },
   {
    "w": "placed",
-   "start": 17.38,
-   "end": 17.64
+   "start": 17.44,
+   "end": 17.8
   },
   {
    "w": "Peter",
-   "start": 17.64,
-   "end": 17.98
+   "start": 17.8,
+   "end": 18.09
   },
   {
    "w": "at",
-   "start": 17.98,
-   "end": 18.11
+   "start": 18.09,
+   "end": 18.22
   },
   {
    "w": "the",
-   "start": 18.11,
-   "end": 18.33
+   "start": 18.22,
+   "end": 18.4
   },
   {
    "w": "head",
-   "start": 18.33,
-   "end": 18.58
+   "start": 18.4,
+   "end": 18.64
   },
   {
    "w": "of",
-   "start": 18.58,
-   "end": 18.71
+   "start": 18.64,
+   "end": 18.76
   },
   {
    "w": "the",
-   "start": 18.71,
-   "end": 19.02
+   "start": 18.76,
+   "end": 18.99
   },
   {
    "w": "Twelve,",
-   "start": 19.02,
-   "end": 19.54
+   "start": 18.99,
+   "end": 19.42
   },
   {
    "w": "the",
-   "start": 19.54,
-   "end": 19.7
+   "start": 19.42,
+   "end": 19.6
   },
   {
    "w": "Pope",
-   "start": 19.7,
-   "end": 19.86
+   "start": 19.6,
+   "end": 19.84
   },
   {
    "w": "heads",
-   "start": 19.86,
-   "end": 20.45
+   "start": 19.84,
+   "end": 20.11
   },
   {
    "w": "the",
-   "start": 20.45,
-   "end": 20.55
+   "start": 20.11,
+   "end": 20.31
   },
   {
-   "w": "college",
-   "start": 20.55,
-   "end": 20.88
+   "w": "College",
+   "start": 20.31,
+   "end": 20.85
   },
   {
    "w": "of",
-   "start": 20.88,
-   "end": 21.33
+   "start": 20.85,
+   "end": 20.92
   },
   {
-   "w": "bishops.",
-   "start": 21.33,
-   "end": 21.66
+   "w": "Bishops.",
+   "start": 20.92,
+   "end": 21.92
   },
   {
    "w": "The",
-   "start": 21.66,
-   "end": 21.89
+   "start": 21.92,
+   "end": 22.15
   },
   {
    "w": "bishops",
-   "start": 21.89,
-   "end": 22.37
-  },
-  {
-   "w": "are",
-   "start": 22.37,
+   "start": 22.15,
    "end": 22.62
   },
   {
-   "w": "not",
+   "w": "are",
    "start": 22.62,
-   "end": 22.79
+   "end": 22.88
+  },
+  {
+   "w": "not",
+   "start": 22.88,
+   "end": 23.04
   },
   {
    "w": "his",
-   "start": 22.79,
-   "end": 23.03
+   "start": 23.04,
+   "end": 23.29
   },
   {
    "w": "branch",
-   "start": 23.03,
-   "end": 23.43
+   "start": 23.29,
+   "end": 23.66
   },
   {
    "w": "managers.",
-   "start": 23.43,
-   "end": 24.26
+   "start": 23.66,
+   "end": 24.48
   },
   {
    "w": "Each",
-   "start": 24.26,
-   "end": 24.54
+   "start": 24.57,
+   "end": 24.84
   },
   {
    "w": "one",
-   "start": 24.54,
-   "end": 24.75
+   "start": 24.84,
+   "end": 25.11
   },
   {
    "w": "is",
-   "start": 24.75,
-   "end": 24.89
+   "start": 25.11,
+   "end": 25.32
   },
   {
    "w": "a",
-   "start": 24.89,
-   "end": 24.95
+   "start": 25.32,
+   "end": 25.44
   },
   {
    "w": "true",
-   "start": 24.95,
-   "end": 25.79
+   "start": 25.44,
+   "end": 25.74
   },
   {
    "w": "successor",
-   "start": 25.79,
-   "end": 25.97
+   "start": 25.74,
+   "end": 26.55
   },
   {
    "w": "of",
-   "start": 25.97,
-   "end": 26.01
+   "start": 26.55,
+   "end": 26.74
   },
   {
    "w": "the",
-   "start": 26.01,
-   "end": 26.57
+   "start": 26.74,
+   "end": 27.08
   },
   {
-   "w": "apostles.",
-   "start": 26.57,
-   "end": 27.02
+   "w": "apostles,",
+   "start": 27.08,
+   "end": 27.87
   },
   {
-   "w": "But",
-   "start": 27.11,
-   "end": 27.32
+   "w": "but",
+   "start": 27.87,
+   "end": 28.61
   },
   {
    "w": "together",
-   "start": 27.32,
-   "end": 28.13
+   "start": 28.61,
+   "end": 28.88
   },
   {
    "w": "they",
-   "start": 28.13,
-   "end": 28.53
+   "start": 28.88,
+   "end": 29.39
   },
   {
    "w": "act",
-   "start": 28.53,
-   "end": 28.83
+   "start": 29.39,
+   "end": 29.51
   },
   {
    "w": "as",
-   "start": 28.83,
-   "end": 29.03
+   "start": 29.51,
+   "end": 29.69
   },
   {
    "w": "one",
-   "start": 29.03,
-   "end": 29.33
+   "start": 29.69,
+   "end": 29.96
   },
   {
    "w": "body",
-   "start": 29.33,
-   "end": 29.73
-  },
-  {
-   "w": "only",
-   "start": 29.73,
-   "end": 30.13
-  },
-  {
-   "w": "in",
-   "start": 30.13,
+   "start": 29.96,
    "end": 30.32
   },
   {
-   "w": "union",
+   "w": "only",
    "start": 30.32,
-   "end": 31.15
+   "end": 30.68
+  },
+  {
+   "w": "in",
+   "start": 30.68,
+   "end": 30.88
+  },
+  {
+   "w": "union",
+   "start": 30.88,
+   "end": 31.34
   },
   {
    "w": "with",
-   "start": 31.15,
-   "end": 31.3
+   "start": 31.34,
+   "end": 31.84
   },
   {
    "w": "their",
-   "start": 31.3,
-   "end": 31.93
+   "start": 31.84,
+   "end": 32.14
   },
   {
    "w": "head.",
-   "start": 31.93,
-   "end": 32.54
+   "start": 32.14,
+   "end": 32.8
   },
   {
    "w": "More",
-   "start": 32.54,
-   "end": 32.83
+   "start": 32.8,
+   "end": 33.11
   },
   {
    "w": "than",
-   "start": 32.83,
-   "end": 33.12
+   "start": 33.11,
+   "end": 33.42
   },
   {
    "w": "a",
-   "start": 33.12,
-   "end": 33.19
+   "start": 33.42,
+   "end": 33.49
   },
   {
    "w": "billion",
-   "start": 33.19,
-   "end": 33.7
+   "start": 33.49,
+   "end": 34.03
   },
   {
-   "w": "Catholics,",
-   "start": 33.7,
-   "end": 34.5
+   "w": "Catholics",
+   "start": 34.03,
+   "end": 34.73
   },
   {
    "w": "in",
-   "start": 34.5,
-   "end": 34.64
+   "start": 34.73,
+   "end": 34.88
   },
   {
    "w": "thousands",
-   "start": 34.64,
-   "end": 35.34
+   "start": 34.88,
+   "end": 35.6
   },
   {
    "w": "of",
-   "start": 35.34,
-   "end": 35.44
+   "start": 35.6,
+   "end": 35.73
   },
   {
-   "w": "dioceses,",
-   "start": 35.44,
-   "end": 36.22
+   "w": "dioceses",
+   "start": 35.73,
+   "end": 36.34
   },
   {
    "w": "are",
-   "start": 36.22,
-   "end": 36.67
+   "start": 36.34,
+   "end": 36.57
   },
   {
    "w": "one",
-   "start": 36.67,
-   "end": 36.9
+   "start": 36.57,
+   "end": 36.93
   },
   {
    "w": "Church",
-   "start": 36.9,
-   "end": 37.58
+   "start": 36.93,
+   "end": 37.26
   },
   {
    "w": "because",
-   "start": 37.58,
-   "end": 38.13
+   "start": 37.26,
+   "end": 37.8
   },
   {
    "w": "they",
-   "start": 38.13,
-   "end": 38.48
+   "start": 37.8,
+   "end": 38.1
   },
   {
    "w": "are",
-   "start": 38.48,
-   "end": 38.67
+   "start": 38.1,
+   "end": 38.44
   },
   {
    "w": "in",
-   "start": 38.67,
-   "end": 38.81
+   "start": 38.44,
+   "end": 38.64
   },
   {
    "w": "communion",
-   "start": 38.81,
-   "end": 39.71
+   "start": 38.64,
+   "end": 39.41
   },
   {
    "w": "with",
-   "start": 39.71,
-   "end": 39.91
+   "start": 39.41,
+   "end": 39.81
   },
   {
    "w": "the",
-   "start": 39.91,
-   "end": 40.07
+   "start": 39.81,
+   "end": 40.02
   },
   {
    "w": "Pope.",
-   "start": 40.07,
-   "end": 40.66
+   "start": 40.02,
+   "end": 40.44
   }
  ]
 }

@@ -1,5 +1,5 @@
 {
- "stamp": "1:4469838:1792102546062",
+ "stamp": "2:4469838:1792102546062",
  "words": [
   {
    "w": "The",
@@ -7,83 +7,83 @@
    "end": 0.33
   },
   {
-   "w": "pope",
+   "w": "Pope",
    "start": 0.33,
    "end": 0.68
   },
   {
    "w": "is",
    "start": 0.68,
-   "end": 0.86
+   "end": 0.87
   },
   {
    "w": "the",
-   "start": 0.86,
+   "start": 0.87,
    "end": 1.17
   },
   {
    "w": "vicar",
    "start": 1.17,
-   "end": 1.62
+   "end": 1.65
   },
   {
    "w": "of",
-   "start": 1.62,
-   "end": 1.82
+   "start": 1.65,
+   "end": 1.89
   },
   {
    "w": "Christ",
-   "start": 1.82,
+   "start": 1.89,
    "end": 2.44
   },
   {
    "w": "who",
    "start": 2.44,
-   "end": 2.68
+   "end": 2.72
   },
   {
    "w": "serves.",
-   "start": 2.68,
-   "end": 3.67
+   "start": 2.72,
+   "end": 3.68
   },
   {
    "w": "The",
-   "start": 3.67,
-   "end": 3.84
+   "start": 3.68,
+   "end": 3.94
   },
   {
    "w": "catechism",
-   "start": 3.84,
+   "start": 3.94,
    "end": 4.79
   },
   {
    "w": "gives",
    "start": 4.79,
-   "end": 5.18
+   "end": 5.06
   },
   {
    "w": "the",
-   "start": 5.18,
-   "end": 5.47
+   "start": 5.06,
+   "end": 5.28
   },
   {
-   "w": "pope",
-   "start": 5.47,
-   "end": 5.85
+   "w": "Pope",
+   "start": 5.28,
+   "end": 5.78
   },
   {
    "w": "a",
-   "start": 5.85,
-   "end": 5.95
+   "start": 5.78,
+   "end": 5.92
   },
   {
    "w": "striking",
-   "start": 5.95,
-   "end": 6.71
+   "start": 5.92,
+   "end": 6.75
   },
   {
    "w": "title",
-   "start": 6.71,
+   "start": 6.75,
    "end": 7.28
   },
   {
@@ -154,441 +154,441 @@
   {
    "w": "and",
    "start": 11.58,
-   "end": 11.76
+   "end": 11.78
   },
   {
    "w": "as",
-   "start": 11.76,
+   "start": 11.78,
    "end": 12.07
   },
   {
    "w": "pastor",
    "start": 12.07,
-   "end": 12.44
+   "end": 12.48
   },
   {
    "w": "of",
-   "start": 12.44,
-   "end": 12.55
+   "start": 12.48,
+   "end": 12.62
   },
   {
    "w": "the",
-   "start": 12.55,
-   "end": 12.79
+   "start": 12.62,
+   "end": 12.83
   },
   {
    "w": "entire",
-   "start": 12.79,
+   "start": 12.83,
    "end": 13.28
   },
   {
-   "w": "church",
+   "w": "Church",
    "start": 13.28,
    "end": 13.84
   },
   {
    "w": "has",
    "start": 13.84,
-   "end": 14.17
+   "end": 14.04
   },
   {
-   "w": "full",
-   "start": 14.17,
-   "end": 14.52
+   "w": "full,",
+   "start": 14.04,
+   "end": 14.55
   },
   {
-   "w": "supreme",
-   "start": 14.52,
-   "end": 15.11
+   "w": "supreme,",
+   "start": 14.55,
+   "end": 15.32
   },
   {
    "w": "and",
-   "start": 15.11,
-   "end": 15.37
+   "start": 15.32,
+   "end": 15.72
   },
   {
    "w": "universal",
-   "start": 15.37,
-   "end": 16.28
+   "start": 15.72,
+   "end": 16.34
   },
   {
    "w": "power",
-   "start": 16.28,
-   "end": 16.67
+   "start": 16.34,
+   "end": 16.95
   },
   {
    "w": "over",
-   "start": 16.67,
-   "end": 16.99
+   "start": 16.95,
+   "end": 17.11
   },
   {
    "w": "the",
-   "start": 16.99,
-   "end": 17.51
+   "start": 17.11,
+   "end": 17.39
   },
   {
    "w": "whole",
-   "start": 17.51,
-   "end": 17.76
+   "start": 17.39,
+   "end": 18.07
   },
   {
-   "w": "church.",
-   "start": 17.76,
-   "end": 18.64
+   "w": "Church.",
+   "start": 18.07,
+   "end": 18.7
   },
   {
    "w": "A",
-   "start": 18.64,
-   "end": 18.75
+   "start": 18.7,
+   "end": 18.85
   },
   {
    "w": "vicar",
-   "start": 18.75,
-   "end": 19.32
+   "start": 18.85,
+   "end": 19.93
   },
   {
    "w": "is",
-   "start": 19.32,
-   "end": 19.62
+   "start": 19.93,
+   "end": 20.1
   },
   {
    "w": "one",
-   "start": 19.62,
-   "end": 19.95
+   "start": 20.1,
+   "end": 20.38
   },
   {
    "w": "who",
-   "start": 19.95,
-   "end": 20.24
+   "start": 20.38,
+   "end": 20.77
   },
   {
    "w": "stands",
-   "start": 20.24,
-   "end": 20.94
+   "start": 20.77,
+   "end": 21.12
   },
   {
    "w": "in",
-   "start": 20.94,
-   "end": 21.33
+   "start": 21.12,
+   "end": 21.27
   },
   {
    "w": "another's",
-   "start": 21.33,
-   "end": 21.76
+   "start": 21.27,
+   "end": 21.97
   },
   {
    "w": "place.",
-   "start": 21.76,
-   "end": 22.44
+   "start": 21.97,
+   "end": 22.59
   },
   {
    "w": "It",
-   "start": 22.44,
-   "end": 22.5
+   "start": 22.59,
+   "end": 22.74
   },
   {
    "w": "is",
-   "start": 22.5,
-   "end": 22.69
+   "start": 22.74,
+   "end": 23.01
   },
   {
    "w": "an",
-   "start": 22.69,
-   "end": 22.8
+   "start": 23.01,
+   "end": 23.04
   },
   {
    "w": "immense",
-   "start": 22.8,
-   "end": 23.35
+   "start": 23.04,
+   "end": 23.59
   },
   {
    "w": "title",
-   "start": 23.35,
-   "end": 23.7
+   "start": 23.59,
+   "end": 23.98
   },
   {
    "w": "and",
-   "start": 23.7,
-   "end": 23.92
+   "start": 23.98,
+   "end": 24.21
   },
   {
    "w": "the",
-   "start": 23.92,
-   "end": 24.2
+   "start": 24.21,
+   "end": 24.79
   },
   {
-   "w": "church",
-   "start": 24.2,
-   "end": 24.59
+   "w": "Church",
+   "start": 24.79,
+   "end": 24.93
   },
   {
    "w": "pairs",
-   "start": 24.59,
-   "end": 24.92
+   "start": 24.93,
+   "end": 25.3
   },
   {
    "w": "it",
-   "start": 24.92,
-   "end": 25.41
+   "start": 25.3,
+   "end": 25.45
   },
   {
    "w": "with",
-   "start": 25.41,
-   "end": 25.44
+   "start": 25.45,
+   "end": 25.91
   },
   {
    "w": "the",
-   "start": 25.44,
-   "end": 25.63
+   "start": 25.91,
+   "end": 25.99
   },
   {
    "w": "humble",
-   "start": 25.63,
-   "end": 26.08
+   "start": 25.99,
+   "end": 26.45
   },
   {
    "w": "one.",
-   "start": 26.08,
-   "end": 26.55
+   "start": 26.45,
+   "end": 26.8
   },
   {
    "w": "Pope",
-   "start": 26.55,
-   "end": 26.82
+   "start": 26.91,
+   "end": 27.13
   },
   {
    "w": "Saint",
-   "start": 26.82,
-   "end": 27.18
+   "start": 27.13,
+   "end": 27.55
   },
   {
    "w": "Gregory",
-   "start": 27.18,
-   "end": 27.87
+   "start": 27.55,
+   "end": 28.21
   },
   {
    "w": "the",
-   "start": 27.87,
-   "end": 28
+   "start": 28.21,
+   "end": 28.39
   },
   {
-   "w": "great",
-   "start": 28.1,
-   "end": 28.46
+   "w": "Great",
+   "start": 28.39,
+   "end": 28.81
   },
   {
    "w": "called",
-   "start": 28.46,
-   "end": 29.02
+   "start": 28.81,
+   "end": 29.31
   },
   {
    "w": "himself",
-   "start": 29.02,
-   "end": 29.67
+   "start": 29.31,
+   "end": 29.89
   },
   {
    "w": "the",
-   "start": 29.67,
-   "end": 29.95
+   "start": 29.89,
+   "end": 30.47
   },
   {
    "w": "servant",
-   "start": 29.95,
-   "end": 30.76
+   "start": 30.47,
+   "end": 30.74
   },
   {
    "w": "of",
-   "start": 30.76,
-   "end": 30.78
+   "start": 30.74,
+   "end": 30.91
   },
   {
    "w": "the",
-   "start": 30.78,
-   "end": 31.05
+   "start": 30.91,
+   "end": 31.16
   },
   {
    "w": "servants",
-   "start": 31.05,
-   "end": 31.81
+   "start": 31.16,
+   "end": 31.83
   },
   {
    "w": "of",
-   "start": 31.81,
-   "end": 31.98
+   "start": 31.83,
+   "end": 32
   },
   {
    "w": "God",
-   "start": 31.98,
-   "end": 32.3
+   "start": 32,
+   "end": 32.32
   },
   {
    "w": "and",
-   "start": 32.3,
-   "end": 32.79
+   "start": 32.32,
+   "end": 32.59
   },
   {
    "w": "papal",
-   "start": 32.79,
-   "end": 33
+   "start": 32.59,
+   "end": 33.04
   },
   {
    "w": "bulls",
-   "start": 33,
-   "end": 33.46
+   "start": 33.04,
+   "end": 33.6
   },
   {
    "w": "still",
-   "start": 33.46,
-   "end": 34
+   "start": 33.6,
+   "end": 33.97
   },
   {
    "w": "open",
-   "start": 34,
-   "end": 34.4
+   "start": 33.97,
+   "end": 34.28
   },
   {
    "w": "with",
-   "start": 34.4,
-   "end": 34.68
+   "start": 34.28,
+   "end": 34.57
   },
   {
    "w": "that",
-   "start": 34.68,
-   "end": 34.8
+   "start": 34.57,
+   "end": 34.87
   },
   {
    "w": "title.",
-   "start": 34.8,
-   "end": 35.52
+   "start": 34.87,
+   "end": 35.49
   },
   {
    "w": "The",
-   "start": 35.52,
-   "end": 35.83
+   "start": 35.49,
+   "end": 35.68
   },
   {
-   "w": "pope's",
-   "start": 35.83,
-   "end": 36.26
+   "w": "Pope's",
+   "start": 35.68,
+   "end": 36.12
   },
   {
    "w": "authority",
-   "start": 36.26,
-   "end": 37.02
+   "start": 36.12,
+   "end": 36.76
   },
   {
    "w": "exists",
-   "start": 37.02,
-   "end": 37.52
+   "start": 36.76,
+   "end": 37.27
   },
   {
    "w": "to",
-   "start": 37.52,
-   "end": 37.96
+   "start": 37.27,
+   "end": 37.41
   },
   {
    "w": "guard",
-   "start": 37.96,
-   "end": 38.28
+   "start": 37.41,
+   "end": 37.75
   },
   {
    "w": "the",
-   "start": 38.28,
-   "end": 38.36
+   "start": 37.75,
+   "end": 37.97
   },
   {
    "w": "faith",
-   "start": 38.36,
-   "end": 38.74
+   "start": 37.97,
+   "end": 38.4
   },
   {
    "w": "handed",
-   "start": 38.74,
-   "end": 39.33
+   "start": 38.4,
+   "end": 39.06
   },
   {
    "w": "down",
-   "start": 39.33,
-   "end": 39.68
+   "start": 39.06,
+   "end": 39.71
   },
   {
    "w": "from",
-   "start": 39.68,
+   "start": 39.71,
    "end": 40
   },
   {
    "w": "the",
    "start": 40,
-   "end": 40.31
+   "end": 40.08
   },
   {
-   "w": "apostles",
-   "start": 40.31,
-   "end": 40.94
+   "w": "apostles,",
+   "start": 40.08,
+   "end": 41.02
   },
   {
    "w": "not",
-   "start": 40.94,
-   "end": 41.12
+   "start": 41.02,
+   "end": 41.25
   },
   {
    "w": "to",
-   "start": 41.12,
-   "end": 41.3
+   "start": 41.25,
+   "end": 41.49
   },
   {
    "w": "invent",
-   "start": 41.3,
-   "end": 41.68
+   "start": 41.49,
+   "end": 41.97
   },
   {
    "w": "a",
-   "start": 41.68,
-   "end": 41.76
+   "start": 41.97,
+   "end": 42.05
   },
   {
    "w": "new",
-   "start": 41.76,
-   "end": 42.07
+   "start": 42.05,
+   "end": 42.52
   },
   {
    "w": "one.",
-   "start": 42.07,
-   "end": 42.7
+   "start": 42.52,
+   "end": 42.85
   },
   {
    "w": "He",
-   "start": 42.7,
-   "end": 42.93
+   "start": 42.85,
+   "end": 43.03
   },
   {
    "w": "is",
-   "start": 42.93,
-   "end": 43.17
-  },
-  {
-   "w": "a",
-   "start": 43.17,
+   "start": 43.03,
    "end": 43.21
   },
   {
-   "w": "steward",
+   "w": "a",
    "start": 43.21,
-   "end": 44.2
+   "end": 43.3
+  },
+  {
+   "w": "steward,",
+   "start": 43.3,
+   "end": 44.19
   },
   {
    "w": "not",
-   "start": 44.2,
-   "end": 44.25
+   "start": 44.19,
+   "end": 44.38
   },
   {
    "w": "an",
-   "start": 44.25,
-   "end": 44.45
+   "start": 44.38,
+   "end": 44.54
   },
   {
    "w": "owner.",
-   "start": 44.45,
+   "start": 44.54,
    "end": 45.04
   }
  ]

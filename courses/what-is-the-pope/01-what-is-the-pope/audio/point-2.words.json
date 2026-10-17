@@ -1,94 +1,94 @@
 {
- "stamp": "1:3974478:1792102348198",
+ "stamp": "2:3974478:1792102348198",
  "words": [
   {
    "w": "In",
    "start": 0.09,
-   "end": 0.18
+   "end": 0.16
   },
   {
    "w": "Matthew's",
-   "start": 0.18,
-   "end": 1.08
+   "start": 0.16,
+   "end": 0.9
   },
   {
    "w": "Gospel,",
-   "start": 1.08,
-   "end": 1.78
+   "start": 0.9,
+   "end": 1.55
   },
   {
    "w": "Jesus",
-   "start": 1.78,
-   "end": 2.29
+   "start": 1.55,
+   "end": 2.07
   },
   {
    "w": "says",
-   "start": 2.29,
-   "end": 2.57
+   "start": 2.07,
+   "end": 2.29
   },
   {
    "w": "to",
-   "start": 2.57,
-   "end": 2.75
+   "start": 2.29,
+   "end": 2.45
   },
   {
    "w": "Simon,",
-   "start": 2.75,
-   "end": 3.39
+   "start": 2.45,
+   "end": 3.18
   },
   {
-   "w": "And",
-   "start": 3.39,
-   "end": 3.66
+   "w": "\"And",
+   "start": 3.18,
+   "end": 3.62
   },
   {
    "w": "so",
-   "start": 3.66,
+   "start": 3.62,
    "end": 3.84
   },
   {
    "w": "I",
    "start": 3.84,
-   "end": 3.93
+   "end": 4.09
   },
   {
    "w": "say",
-   "start": 3.93,
-   "end": 4.2
-  },
-  {
-   "w": "to",
-   "start": 4.2,
+   "start": 4.09,
    "end": 4.38
   },
   {
-   "w": "you,",
+   "w": "to",
    "start": 4.38,
-   "end": 4.83
+   "end": 4.6
   },
   {
-   "w": "you",
-   "start": 4.83,
+   "w": "you,",
+   "start": 4.6,
    "end": 5.35
   },
   {
-   "w": "are",
+   "w": "you",
    "start": 5.35,
-   "end": 5.37
+   "end": 5.52
+  },
+  {
+   "w": "are",
+   "start": 5.52,
+   "end": 5.76
   },
   {
    "w": "Peter,",
-   "start": 5.37,
-   "end": 6.01
-  },
-  {
-   "w": "and",
-   "start": 6.01,
+   "start": 5.76,
    "end": 6.37
   },
   {
-   "w": "upon",
+   "w": "and",
    "start": 6.37,
+   "end": 6.48
+  },
+  {
+   "w": "upon",
+   "start": 6.48,
    "end": 6.8
   },
   {
@@ -149,21 +149,21 @@
   {
    "w": "the",
    "start": 10.11,
-   "end": 10.37
+   "end": 10.42
   },
   {
    "w": "netherworld",
-   "start": 10.37,
-   "end": 11.24
+   "start": 10.42,
+   "end": 11.25
   },
   {
    "w": "shall",
-   "start": 11.24,
-   "end": 11.65
+   "start": 11.25,
+   "end": 11.66
   },
   {
    "w": "not",
-   "start": 11.65,
+   "start": 11.66,
    "end": 12.15
   },
   {
@@ -174,11 +174,11 @@
   {
    "w": "against",
    "start": 12.56,
-   "end": 13.1
+   "end": 13.09
   },
   {
-   "w": "it.",
-   "start": 13.1,
+   "w": "it.\"",
+   "start": 13.09,
    "end": 13.2
   },
   {
@@ -254,81 +254,81 @@
   {
    "w": "Peter",
    "start": 18.64,
-   "end": 18.99
+   "end": 19
   },
   {
    "w": "later",
-   "start": 18.99,
+   "start": 19,
    "end": 19.38
   },
   {
    "w": "led",
    "start": 19.38,
-   "end": 19.55
+   "end": 19.63
   },
   {
    "w": "the",
-   "start": 19.55,
-   "end": 19.76
+   "start": 19.63,
+   "end": 19.8
   },
   {
-   "w": "Church",
-   "start": 19.76,
-   "end": 20.18
+   "w": "church",
+   "start": 19.8,
+   "end": 20.24
   },
   {
    "w": "in",
-   "start": 20.18,
+   "start": 20.24,
    "end": 20.42
   },
   {
    "w": "Rome",
    "start": 20.42,
-   "end": 20.68
+   "end": 20.69
   },
   {
    "w": "and",
-   "start": 20.68,
+   "start": 20.69,
    "end": 20.93
   },
   {
    "w": "died",
    "start": 20.93,
-   "end": 21.09
+   "end": 21.18
   },
   {
    "w": "there",
-   "start": 21.09,
-   "end": 21.41
+   "start": 21.18,
+   "end": 21.55
   },
   {
    "w": "as",
-   "start": 21.41,
-   "end": 21.54
+   "start": 21.55,
+   "end": 21.68
   },
   {
    "w": "a",
-   "start": 21.54,
-   "end": 21.91
+   "start": 21.68,
+   "end": 21.94
   },
   {
    "w": "martyr,",
-   "start": 21.91,
-   "end": 22.26
+   "start": 21.94,
+   "end": 22.27
   },
   {
    "w": "and",
-   "start": 22.26,
-   "end": 22.36
+   "start": 22.27,
+   "end": 22.33
   },
   {
    "w": "the",
-   "start": 22.36,
-   "end": 22.48
+   "start": 22.33,
+   "end": 22.4
   },
   {
    "w": "bishops",
-   "start": 22.48,
+   "start": 22.4,
    "end": 23.02
   },
   {
@@ -369,51 +369,51 @@
   {
    "w": "The",
    "start": 25.57,
-   "end": 25.7
+   "end": 25.72
   },
   {
-   "w": "Catechism",
-   "start": 25.7,
+   "w": "catechism",
+   "start": 25.72,
    "end": 26.55
   },
   {
    "w": "teaches",
    "start": 26.55,
-   "end": 26.67
+   "end": 26.85
   },
   {
    "w": "that",
-   "start": 26.67,
-   "end": 26.92
+   "start": 26.85,
+   "end": 27.06
   },
   {
    "w": "his",
-   "start": 26.92,
-   "end": 27.1
+   "start": 27.06,
+   "end": 27.38
   },
   {
    "w": "office",
-   "start": 27.1,
-   "end": 27.55
+   "start": 27.38,
+   "end": 27.67
   },
   {
    "w": "belongs",
-   "start": 27.55,
-   "end": 27.98
+   "start": 27.67,
+   "end": 28.15
   },
   {
    "w": "to",
-   "start": 27.98,
-   "end": 28.11
+   "start": 28.15,
+   "end": 28.27
   },
   {
    "w": "the",
-   "start": 28.11,
-   "end": 28.31
+   "start": 28.27,
+   "end": 28.63
   },
   {
    "w": "Church's",
-   "start": 28.31,
+   "start": 28.63,
    "end": 29.12
   },
   {
@@ -454,26 +454,26 @@
   {
    "w": "Pope",
    "start": 33.21,
-   "end": 33.62
+   "end": 33.72
   },
   {
    "w": "Leo",
-   "start": 33.62,
-   "end": 34
+   "start": 33.72,
+   "end": 34.16
   },
   {
    "w": "XIV,",
-   "start": 34,
-   "end": 34.64
+   "start": 34.16,
+   "end": 34.83
   },
   {
    "w": "elected",
-   "start": 34.64,
-   "end": 35.09
+   "start": 34.83,
+   "end": 35.13
   },
   {
    "w": "in",
-   "start": 35.09,
+   "start": 35.13,
    "end": 35.44
   },
   {
@@ -484,42 +484,42 @@
   {
    "w": "of",
    "start": 35.49,
-   "end": 35.62
+   "end": 35.64
   },
   {
    "w": "2025,",
-   "start": 35.62,
+   "start": 35.64,
    "end": 36.88
   },
   {
    "w": "is",
    "start": 36.88,
-   "end": 37.11
+   "end": 37.12
   },
   {
    "w": "counted",
-   "start": 37.11,
+   "start": 37.12,
    "end": 37.96
   },
   {
    "w": "as",
    "start": 37.96,
-   "end": 38.21
+   "end": 38.2
   },
   {
    "w": "the",
-   "start": 38.21,
-   "end": 38.48
+   "start": 38.2,
+   "end": 38.66
   },
   {
    "w": "267th",
-   "start": 38.48,
+   "start": 38.66,
    "end": 40.15
   },
   {
    "w": "pope.",
    "start": 40.15,
-   "end": 40.56
+   "end": 40.72
   }
  ]
 }

@@ -1,270 +1,270 @@
 {
- "stamp": "1:1751118:1792102570242",
+ "stamp": "2:1751118:1792102570242",
  "words": [
   {
    "w": "And",
    "start": 0.1,
-   "end": 0.28
+   "end": 0.29
   },
   {
    "w": "that",
-   "start": 0.28,
-   "end": 0.66
+   "start": 0.29,
+   "end": 0.68
   },
   {
    "w": "was",
-   "start": 0.66,
-   "end": 0.94
+   "start": 0.68,
+   "end": 0.97
   },
   {
    "w": "an",
-   "start": 0.94,
-   "end": 1.13
+   "start": 0.97,
+   "end": 1.16
   },
   {
    "w": "intro",
-   "start": 1.13,
-   "end": 1.6
+   "start": 1.16,
+   "end": 1.64
   },
   {
    "w": "to",
-   "start": 1.6,
+   "start": 1.64,
    "end": 1.85
   },
   {
    "w": "the",
    "start": 1.85,
-   "end": 2.22
+   "end": 2.16
   },
   {
    "w": "Pope",
-   "start": 2.22,
+   "start": 2.16,
    "end": 2.64
   },
   {
    "w": "in",
    "start": 2.64,
-   "end": 2.64
+   "end": 2.7
   },
   {
    "w": "a",
-   "start": 2.64,
-   "end": 2.73
+   "start": 2.7,
+   "end": 2.79
   },
   {
    "w": "nutshell.",
-   "start": 2.73,
-   "end": 3.97
+   "start": 2.79,
+   "end": 3.92
   },
   {
    "w": "He's",
-   "start": 3.97,
-   "end": 4.1
+   "start": 3.92,
+   "end": 4.18
   },
   {
    "w": "the",
-   "start": 4.1,
-   "end": 4.3
+   "start": 4.18,
+   "end": 4.4
   },
   {
    "w": "Bishop",
-   "start": 4.3,
-   "end": 4.71
+   "start": 4.4,
+   "end": 4.79
   },
   {
    "w": "of",
-   "start": 4.71,
-   "end": 4.87
+   "start": 4.79,
+   "end": 4.94
   },
   {
    "w": "Rome,",
-   "start": 4.87,
-   "end": 5.44
+   "start": 4.94,
+   "end": 5.36
   },
   {
    "w": "he's",
-   "start": 5.44,
-   "end": 5.6
+   "start": 5.36,
+   "end": 5.61
   },
   {
    "w": "the",
-   "start": 5.6,
-   "end": 5.76
+   "start": 5.61,
+   "end": 5.79
   },
   {
    "w": "successor",
-   "start": 5.76,
-   "end": 6.4
+   "start": 5.79,
+   "end": 6.56
   },
   {
    "w": "of",
-   "start": 6.4,
-   "end": 6.54
+   "start": 6.56,
+   "end": 6.56
   },
   {
    "w": "Saint",
-   "start": 6.54,
-   "end": 6.89
+   "start": 6.56,
+   "end": 6.95
   },
   {
    "w": "Peter,",
-   "start": 6.89,
-   "end": 7.38
+   "start": 6.95,
+   "end": 7.42
   },
   {
    "w": "and",
-   "start": 7.38,
-   "end": 7.68
+   "start": 7.42,
+   "end": 7.52
   },
   {
    "w": "he",
-   "start": 7.68,
-   "end": 7.73
+   "start": 7.52,
+   "end": 7.62
   },
   {
    "w": "is",
-   "start": 7.73,
-   "end": 7.93
+   "start": 7.62,
+   "end": 7.92
   },
   {
    "w": "the",
-   "start": 7.93,
-   "end": 8.08
+   "start": 7.92,
+   "end": 7.96
   },
   {
    "w": "visible",
-   "start": 8.08,
-   "end": 8.62
+   "start": 7.96,
+   "end": 8.4
   },
   {
    "w": "source",
-   "start": 8.62,
-   "end": 9.04
+   "start": 8.4,
+   "end": 8.72
   },
   {
    "w": "of",
-   "start": 9.04,
-   "end": 9.13
+   "start": 8.72,
+   "end": 8.88
   },
   {
    "w": "unity",
-   "start": 9.13,
-   "end": 9.48
+   "start": 8.88,
+   "end": 9.26
   },
   {
    "w": "for",
-   "start": 9.48,
-   "end": 9.78
+   "start": 9.26,
+   "end": 9.57
   },
   {
    "w": "the",
-   "start": 9.78,
-   "end": 9.9
+   "start": 9.57,
+   "end": 9.75
   },
   {
    "w": "faithful.",
-   "start": 9.9,
-   "end": 10.72
+   "start": 9.75,
+   "end": 10.64
   },
   {
    "w": "I",
-   "start": 10.72,
-   "end": 10.8
+   "start": 10.64,
+   "end": 10.73
   },
   {
    "w": "hope",
-   "start": 10.8,
-   "end": 11.09
+   "start": 10.73,
+   "end": 10.95
   },
   {
    "w": "you",
-   "start": 11.09,
-   "end": 11.27
+   "start": 10.95,
+   "end": 11.14
   },
   {
    "w": "learned",
-   "start": 11.27,
-   "end": 11.68
+   "start": 11.14,
+   "end": 11.58
   },
   {
    "w": "something",
-   "start": 11.68,
-   "end": 12.2
+   "start": 11.58,
+   "end": 12.16
   },
   {
    "w": "new.",
-   "start": 12.2,
+   "start": 12.16,
    "end": 12.56
   },
   {
    "w": "I've",
    "start": 12.56,
-   "end": 12.74
+   "end": 12.77
   },
   {
    "w": "been",
-   "start": 12.74,
-   "end": 12.96
+   "start": 12.77,
+   "end": 13.05
   },
   {
    "w": "your",
-   "start": 12.96,
-   "end": 13.12
+   "start": 13.05,
+   "end": 13.21
   },
   {
    "w": "host,",
-   "start": 13.12,
-   "end": 13.4
+   "start": 13.21,
+   "end": 13.54
   },
   {
    "w": "Shalone",
-   "start": 13.4,
-   "end": 13.72
+   "start": 13.54,
+   "end": 13.91
   },
   {
    "w": "Cason,",
-   "start": 13.72,
-   "end": 14.03
+   "start": 13.91,
+   "end": 14.29
   },
   {
    "w": "and",
-   "start": 14.03,
-   "end": 14.32
+   "start": 14.29,
+   "end": 14.46
   },
   {
    "w": "until",
-   "start": 14.32,
-   "end": 14.48
+   "start": 14.46,
+   "end": 14.78
   },
   {
    "w": "next",
-   "start": 14.48,
-   "end": 14.82
+   "start": 14.78,
+   "end": 14.99
   },
   {
    "w": "time,",
-   "start": 14.82,
-   "end": 15.37
+   "start": 14.99,
+   "end": 15.36
   },
   {
    "w": "stay",
-   "start": 15.37,
-   "end": 15.76
+   "start": 15.36,
+   "end": 15.67
   },
   {
    "w": "holy,",
-   "start": 15.76,
-   "end": 16.37
+   "start": 15.67,
+   "end": 16.15
   },
   {
    "w": "my",
-   "start": 16.37,
+   "start": 16.15,
    "end": 16.56
   },
   {
    "w": "friends.",
    "start": 16.56,
-   "end": 17.6
+   "end": 17.12
   }
  ]
 }

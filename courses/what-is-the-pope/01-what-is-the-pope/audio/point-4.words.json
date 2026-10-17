@@ -1,614 +1,614 @@
 {
- "stamp": "1:5270478:1792102494255",
+ "stamp": "2:5270478:1792102494255",
  "words": [
   {
-   "w": "So",
+   "w": "So,",
    "start": 0.14,
-   "end": 0.19
+   "end": 0.43
   },
   {
    "w": "why",
-   "start": 0.19,
-   "end": 0.54
+   "start": 0.43,
+   "end": 0.63
   },
   {
    "w": "does",
-   "start": 0.54,
-   "end": 0.87
+   "start": 0.63,
+   "end": 1
   },
   {
    "w": "Christ",
-   "start": 0.87,
-   "end": 1.45
+   "start": 1,
+   "end": 1.55
   },
   {
    "w": "work",
-   "start": 1.45,
-   "end": 1.84
+   "start": 1.55,
+   "end": 1.92
   },
   {
    "w": "through",
-   "start": 1.84,
+   "start": 1.92,
    "end": 2.56
   },
   {
    "w": "the",
    "start": 2.56,
-   "end": 2.81
+   "end": 2.83
   },
   {
    "w": "Pope?",
-   "start": 2.81,
-   "end": 3.61
+   "start": 2.83,
+   "end": 3.52
   },
   {
    "w": "Jesus",
-   "start": 3.61,
-   "end": 3.89
+   "start": 3.52,
+   "end": 3.95
   },
   {
    "w": "answered",
-   "start": 3.89,
-   "end": 4.47
+   "start": 3.95,
+   "end": 4.44
   },
   {
    "w": "this",
-   "start": 4.47,
+   "start": 4.44,
    "end": 4.73
   },
   {
    "w": "himself",
    "start": 4.73,
-   "end": 5.23
+   "end": 5.2
   },
   {
    "w": "when",
-   "start": 5.23,
-   "end": 5.59
+   "start": 5.2,
+   "end": 5.65
   },
   {
    "w": "he",
-   "start": 5.59,
-   "end": 5.68
+   "start": 5.65,
+   "end": 5.8
   },
   {
    "w": "sends",
-   "start": 5.68,
-   "end": 6.2
+   "start": 5.8,
+   "end": 6.3
   },
   {
    "w": "out",
-   "start": 6.2,
-   "end": 6.41
+   "start": 6.3,
+   "end": 6.65
   },
   {
    "w": "his",
-   "start": 6.41,
-   "end": 6.74
+   "start": 6.65,
+   "end": 7.13
   },
   {
    "w": "disciples.",
-   "start": 6.74,
-   "end": 7.76
+   "start": 7.13,
+   "end": 7.84
   },
   {
    "w": "\"Whoever",
-   "start": 7.76,
-   "end": 8.4
+   "start": 7.84,
+   "end": 8.45
   },
   {
    "w": "listens",
-   "start": 8.4,
-   "end": 8.97
+   "start": 8.45,
+   "end": 9.05
   },
   {
    "w": "to",
-   "start": 8.97,
-   "end": 9.13
+   "start": 9.05,
+   "end": 9.14
   },
   {
-   "w": "you",
-   "start": 9.13,
-   "end": 9.44
+   "w": "you,",
+   "start": 9.14,
+   "end": 9.54
   },
   {
    "w": "listens",
-   "start": 9.44,
-   "end": 9.94
+   "start": 9.54,
+   "end": 10.06
   },
   {
    "w": "to",
-   "start": 9.94,
-   "end": 10.1
+   "start": 10.06,
+   "end": 10.21
   },
   {
    "w": "me.",
-   "start": 10.1,
-   "end": 10.56
+   "start": 10.21,
+   "end": 10.64
   },
   {
    "w": "Whoever",
-   "start": 10.56,
-   "end": 11.37
+   "start": 10.64,
+   "end": 11.21
   },
   {
    "w": "rejects",
-   "start": 11.37,
-   "end": 12.01
+   "start": 11.21,
+   "end": 11.85
   },
   {
-   "w": "you",
-   "start": 12.01,
-   "end": 12.27
+   "w": "you,",
+   "start": 11.85,
+   "end": 12.18
   },
   {
    "w": "rejects",
-   "start": 12.27,
-   "end": 12.97
+   "start": 12.18,
+   "end": 12.77
   },
   {
    "w": "me.",
-   "start": 12.97,
-   "end": 13.35
+   "start": 12.77,
+   "end": 13.2
   },
   {
    "w": "And",
-   "start": 13.35,
-   "end": 13.36
+   "start": 13.2,
+   "end": 13.46
   },
   {
    "w": "whoever",
-   "start": 13.36,
-   "end": 13.84
+   "start": 13.46,
+   "end": 14.07
   },
   {
    "w": "rejects",
-   "start": 13.84,
-   "end": 14.5
+   "start": 14.07,
+   "end": 14.67
   },
   {
-   "w": "me",
-   "start": 14.5,
-   "end": 14.96
+   "w": "me,",
+   "start": 14.67,
+   "end": 15.04
   },
   {
    "w": "rejects",
-   "start": 14.96,
-   "end": 15.68
+   "start": 15.04,
+   "end": 15.76
   },
   {
    "w": "the",
-   "start": 15.68,
-   "end": 15.7
+   "start": 15.76,
+   "end": 16.07
   },
   {
    "w": "one",
-   "start": 15.7,
-   "end": 16
+   "start": 16.07,
+   "end": 16.69
   },
   {
    "w": "who",
-   "start": 16,
-   "end": 16.28
+   "start": 16.69,
+   "end": 16.81
   },
   {
    "w": "sent",
-   "start": 16.28,
-   "end": 16.84
+   "start": 16.81,
+   "end": 17.1
   },
   {
    "w": "me.\"",
-   "start": 16.84,
+   "start": 17.1,
    "end": 17.76
   },
   {
-   "w": "So",
+   "w": "So,",
    "start": 17.76,
-   "end": 17.99
+   "end": 18.23
   },
   {
    "w": "Christ",
-   "start": 17.99,
-   "end": 18.7
+   "start": 18.23,
+   "end": 18.97
   },
   {
    "w": "chooses",
-   "start": 18.7,
-   "end": 19.52
-  },
-  {
-   "w": "to",
-   "start": 19.52,
+   "start": 18.97,
    "end": 19.89
   },
   {
-   "w": "lead",
+   "w": "to",
    "start": 19.89,
-   "end": 20.32
+   "end": 20.01
+  },
+  {
+   "w": "lead",
+   "start": 20.01,
+   "end": 20.49
   },
   {
    "w": "the",
-   "start": 20.32,
-   "end": 20.58
+   "start": 20.49,
+   "end": 21.35
   },
   {
    "w": "Church",
-   "start": 20.58,
-   "end": 21.37
+   "start": 21.35,
+   "end": 21.6
   },
   {
    "w": "through",
-   "start": 21.37,
+   "start": 21.6,
    "end": 22.15
   },
   {
    "w": "the",
    "start": 22.15,
-   "end": 22.47
+   "end": 22.45
   },
   {
    "w": "people",
-   "start": 22.47,
-   "end": 23.18
+   "start": 22.45,
+   "end": 22.97
   },
   {
    "w": "he",
-   "start": 23.18,
-   "end": 23.41
+   "start": 22.97,
+   "end": 23.04
   },
   {
    "w": "sends.",
-   "start": 23.41,
-   "end": 24.29
+   "start": 23.04,
+   "end": 24.08
   },
   {
    "w": "This",
-   "start": 24.29,
-   "end": 24.57
+   "start": 24.08,
+   "end": 24.51
   },
   {
    "w": "is",
-   "start": 24.57,
-   "end": 24.71
+   "start": 24.51,
+   "end": 24.62
   },
   {
    "w": "right",
-   "start": 24.71,
-   "end": 25.08
+   "start": 24.62,
+   "end": 25.05
   },
   {
    "w": "here",
-   "start": 25.08,
-   "end": 25.68
+   "start": 25.05,
+   "end": 25.4
   },
   {
    "w": "in",
-   "start": 25.68,
-   "end": 25.7
+   "start": 25.4,
+   "end": 25.58
   },
   {
    "w": "the",
-   "start": 25.7,
-   "end": 25.76
+   "start": 25.58,
+   "end": 25.85
   },
   {
    "w": "Gospel",
-   "start": 25.76,
-   "end": 26.24
+   "start": 25.85,
+   "end": 26.38
   },
   {
    "w": "of",
-   "start": 26.24,
-   "end": 26.32
+   "start": 26.38,
+   "end": 26.64
   },
   {
    "w": "Luke.",
-   "start": 26.32,
+   "start": 26.64,
    "end": 26.96
   },
   {
    "w": "And",
    "start": 27.1,
-   "end": 27.19
+   "end": 27.16
   },
   {
    "w": "after",
-   "start": 27.19,
-   "end": 27.57
+   "start": 27.16,
+   "end": 27.5
   },
   {
    "w": "the",
-   "start": 27.57,
-   "end": 27.8
+   "start": 27.5,
+   "end": 27.69
   },
   {
-   "w": "Resurrection",
-   "start": 27.8,
-   "end": 28.72
+   "w": "resurrection,",
+   "start": 27.69,
+   "end": 28.67
   },
   {
    "w": "he",
-   "start": 28.72,
-   "end": 28.87
+   "start": 28.67,
+   "end": 28.76
   },
   {
-   "w": "promises",
-   "start": 28.87,
+   "w": "promised",
+   "start": 28.76,
+   "end": 29.3
+  },
+  {
+   "w": "the",
+   "start": 29.3,
    "end": 29.52
   },
   {
-   "w": "the",
-   "start": 29.52,
-   "end": 29.71
-  },
-  {
    "w": "apostles,",
-   "start": 29.71,
-   "end": 30.54
+   "start": 29.52,
+   "end": 30.08
   },
   {
    "w": "\"I",
-   "start": 30.54,
-   "end": 30.61
+   "start": 30.08,
+   "end": 30.26
   },
   {
    "w": "am",
-   "start": 30.61,
-   "end": 30.76
+   "start": 30.26,
+   "end": 30.51
   },
   {
    "w": "with",
-   "start": 30.76,
-   "end": 31.06
+   "start": 30.51,
+   "end": 30.81
   },
   {
    "w": "you",
-   "start": 31.06,
-   "end": 31.29
+   "start": 30.81,
+   "end": 31.09
   },
   {
-   "w": "always,",
-   "start": 31.29,
-   "end": 31.91
+   "w": "always",
+   "start": 31.09,
+   "end": 31.67
   },
   {
    "w": "until",
-   "start": 31.91,
-   "end": 32.28
+   "start": 31.67,
+   "end": 32.21
   },
   {
    "w": "the",
-   "start": 32.28,
-   "end": 32.54
+   "start": 32.21,
+   "end": 32.39
   },
   {
    "w": "end",
-   "start": 32.54,
-   "end": 32.86
+   "start": 32.39,
+   "end": 32.68
   },
   {
    "w": "of",
-   "start": 32.86,
-   "end": 32.89
+   "start": 32.68,
+   "end": 32.85
   },
   {
    "w": "the",
-   "start": 32.89,
-   "end": 33.16
+   "start": 32.85,
+   "end": 33.21
   },
   {
    "w": "age.\"",
-   "start": 33.16,
-   "end": 33.76
+   "start": 33.21,
+   "end": 33.84
   },
   {
    "w": "The",
-   "start": 33.76,
-   "end": 34.02
+   "start": 33.84,
+   "end": 34.09
   },
   {
-   "w": "Catechism",
-   "start": 34.02,
-   "end": 34.79
+   "w": "Catachism",
+   "start": 34.09,
+   "end": 34.84
   },
   {
    "w": "says",
-   "start": 34.79,
-   "end": 35.15
+   "start": 34.84,
+   "end": 35.18
   },
   {
    "w": "that",
-   "start": 35.15,
-   "end": 35.5
+   "start": 35.18,
+   "end": 35.54
   },
   {
    "w": "in",
-   "start": 35.5,
-   "end": 35.67
+   "start": 35.54,
+   "end": 35.69
   },
   {
    "w": "the",
-   "start": 35.67,
-   "end": 35.93
+   "start": 35.69,
+   "end": 35.97
   },
   {
    "w": "ordained",
-   "start": 35.93,
-   "end": 36.63
+   "start": 35.97,
+   "end": 36.61
   },
   {
-   "w": "ministry",
-   "start": 36.63,
-   "end": 37.37
+   "w": "ministry,",
+   "start": 36.61,
+   "end": 37.36
   },
   {
-   "w": "\"it",
-   "start": 37.37,
-   "end": 37.6
+   "w": "it",
+   "start": 37.36,
+   "end": 37.51
   },
   {
    "w": "is",
-   "start": 37.6,
-   "end": 37.77
+   "start": 37.51,
+   "end": 37.66
   },
   {
    "w": "Christ",
-   "start": 37.77,
-   "end": 38.25
+   "start": 37.66,
+   "end": 38.12
   },
   {
    "w": "himself",
-   "start": 38.25,
-   "end": 38.82
+   "start": 38.12,
+   "end": 38.66
   },
   {
    "w": "who",
-   "start": 38.82,
-   "end": 39.06
+   "start": 38.66,
+   "end": 38.89
   },
   {
    "w": "is",
-   "start": 39.06,
-   "end": 39.22
+   "start": 38.89,
+   "end": 39.06
   },
   {
    "w": "present",
-   "start": 39.22,
-   "end": 39.79
+   "start": 39.06,
+   "end": 39.58
   },
   {
    "w": "to",
-   "start": 39.79,
-   "end": 39.96
+   "start": 39.58,
+   "end": 39.73
   },
   {
    "w": "his",
-   "start": 39.96,
-   "end": 40.28
+   "start": 39.73,
+   "end": 40
   },
   {
    "w": "Church",
-   "start": 40.28,
+   "start": 40,
    "end": 40.72
   },
   {
    "w": "as",
    "start": 40.72,
-   "end": 41.2
+   "end": 40.93
   },
   {
-   "w": "Head",
-   "start": 41.2,
-   "end": 41.68
+   "w": "head",
+   "start": 40.93,
+   "end": 41.35
   },
   {
    "w": "of",
-   "start": 41.68,
-   "end": 41.7
+   "start": 41.35,
+   "end": 41.56
   },
   {
    "w": "his",
-   "start": 41.7,
-   "end": 41.92
+   "start": 41.56,
+   "end": 41.93
   },
   {
-   "w": "Body.\"",
-   "start": 41.92,
-   "end": 42.56
+   "w": "body.",
+   "start": 41.93,
+   "end": 42.64
   },
   {
    "w": "The",
-   "start": 42.56,
-   "end": 42.81
+   "start": 42.64,
+   "end": 42.87
   },
   {
    "w": "Pope",
-   "start": 42.81,
-   "end": 43.14
+   "start": 42.87,
+   "end": 43.18
   },
   {
    "w": "doesn't",
-   "start": 43.14,
-   "end": 43.77
+   "start": 43.18,
+   "end": 43.72
   },
   {
    "w": "stand",
-   "start": 43.77,
-   "end": 44.24
+   "start": 43.72,
+   "end": 44.11
   },
   {
    "w": "in",
-   "start": 44.24,
-   "end": 44.3
+   "start": 44.11,
+   "end": 44.34
   },
   {
    "w": "for",
-   "start": 44.3,
-   "end": 44.69
+   "start": 44.34,
+   "end": 44.49
   },
   {
    "w": "an",
-   "start": 44.69,
-   "end": 44.71
+   "start": 44.49,
+   "end": 44.77
   },
   {
    "w": "absent",
-   "start": 44.71,
-   "end": 45.21
+   "start": 44.77,
+   "end": 45.2
   },
   {
    "w": "Christ.",
-   "start": 45.21,
-   "end": 46.05
+   "start": 45.2,
+   "end": 45.84
   },
   {
-   "w": "No.",
-   "start": 46.05,
-   "end": 46.24
+   "w": "No,",
+   "start": 45.84,
+   "end": 46.16
   },
   {
-   "w": "Like",
-   "start": 46.24,
-   "end": 46.57
+   "w": "like",
+   "start": 46.16,
+   "end": 46.49
   },
   {
    "w": "every",
-   "start": 46.57,
-   "end": 46.95
+   "start": 46.49,
+   "end": 46.92
   },
   {
    "w": "bishop",
-   "start": 46.95,
-   "end": 47.37
+   "start": 46.92,
+   "end": 47.39
   },
   {
    "w": "and",
-   "start": 47.37,
-   "end": 47.6
+   "start": 47.39,
+   "end": 47.63
   },
   {
    "w": "priest,",
-   "start": 47.6,
+   "start": 47.63,
    "end": 48.16
   },
   {
    "w": "he",
    "start": 48.16,
-   "end": 48.46
+   "end": 48.39
   },
   {
    "w": "is",
-   "start": 48.46,
+   "start": 48.39,
    "end": 48.62
   },
   {
    "w": "a",
    "start": 48.62,
-   "end": 48.76
+   "end": 48.73
   },
   {
    "w": "visible",
-   "start": 48.76,
+   "start": 48.73,
    "end": 49.53
   },
   {
@@ -619,47 +619,47 @@
   {
    "w": "of",
    "start": 50,
-   "end": 50.16
+   "end": 50.29
   },
   {
    "w": "the",
-   "start": 50.16,
-   "end": 50.5
+   "start": 50.29,
+   "end": 50.39
   },
   {
    "w": "one",
-   "start": 50.5,
-   "end": 50.56
+   "start": 50.39,
+   "end": 50.72
   },
   {
    "w": "who",
-   "start": 50.56,
-   "end": 50.91
+   "start": 50.72,
+   "end": 51.03
   },
   {
    "w": "is",
-   "start": 50.91,
-   "end": 51.14
+   "start": 51.03,
+   "end": 51.75
   },
   {
    "w": "still",
-   "start": 51.14,
-   "end": 51.73
+   "start": 51.75,
+   "end": 51.92
   },
   {
    "w": "the",
-   "start": 51.73,
-   "end": 52.06
+   "start": 51.92,
+   "end": 52.17
   },
   {
    "w": "Church's",
-   "start": 52.06,
-   "end": 53.25
+   "start": 52.17,
+   "end": 52.74
   },
   {
-   "w": "Head.",
-   "start": 53.25,
-   "end": 53.52
+   "w": "head.",
+   "start": 52.74,
+   "end": 53.28
   }
  ]
 }

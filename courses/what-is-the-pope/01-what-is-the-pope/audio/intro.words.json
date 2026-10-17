@@ -1,69 +1,69 @@
 {
- "stamp": "1:2292558:1792102246403",
+ "stamp": "2:2292558:1792102246403",
  "words": [
   {
    "w": "Why",
    "start": 0.09,
-   "end": 0.21
+   "end": 0.2
   },
   {
    "w": "is",
-   "start": 0.21,
-   "end": 0.35
+   "start": 0.2,
+   "end": 0.33
   },
   {
    "w": "the",
-   "start": 0.35,
+   "start": 0.33,
    "end": 0.6
   },
   {
    "w": "Bishop",
    "start": 0.6,
-   "end": 1.03
+   "end": 0.93
   },
   {
    "w": "of",
-   "start": 1.03,
-   "end": 1.11
+   "start": 0.93,
+   "end": 1.06
   },
   {
    "w": "Rome",
-   "start": 1.11,
-   "end": 1.39
+   "start": 1.06,
+   "end": 1.33
   },
   {
    "w": "important?",
-   "start": 1.39,
+   "start": 1.33,
    "end": 2.31
   },
   {
    "w": "What's",
    "start": 2.31,
-   "end": 2.63
+   "end": 2.55
   },
   {
    "w": "a",
-   "start": 2.63,
-   "end": 2.7
+   "start": 2.55,
+   "end": 2.61
   },
   {
    "w": "successor?",
-   "start": 2.7,
+   "start": 2.61,
    "end": 3.65
   },
   {
    "w": "And",
    "start": 3.65,
-   "end": 3.71
+   "end": 3.76
   },
   {
    "w": "why",
-   "start": 3.71,
-   "end": 3.9
+   "start": 3.76,
+   "end": 3.94
   },
   {
    "w": "would",
-   "start": 3.9,
+   "start": 3.94,
    "end": 4.24
   },
   {
@@ -89,31 +89,31 @@
   {
    "w": "on",
    "start": 5.76,
-   "end": 5.92
+   "end": 5.91
   },
   {
    "w": "earth?",
-   "start": 5.92,
-   "end": 6.57
+   "start": 5.91,
+   "end": 6.52
   },
   {
-   "w": "Can't",
-   "start": 6.57,
-   "end": 6.97
+   "w": "Can't,",
+   "start": 6.52,
+   "end": 7.05
   },
   {
-   "w": "He",
-   "start": 6.97,
-   "end": 7.13
+   "w": "he",
+   "start": 7.05,
+   "end": 7.2
   },
   {
    "w": "do",
-   "start": 7.13,
-   "end": 7.28
+   "start": 7.2,
+   "end": 7.4
   },
   {
    "w": "the",
-   "start": 7.28,
+   "start": 7.4,
    "end": 7.62
   },
   {
@@ -122,7 +122,7 @@
    "end": 8.07
   },
   {
-   "w": "Himself?",
+   "w": "himself?",
    "start": 8.07,
    "end": 8.67
   },
@@ -172,53 +172,53 @@
    "end": 11.36
   },
   {
-   "w": "be",
+   "w": "be,",
    "start": 11.36,
    "end": 11.92
   },
   {
    "w": "based",
    "start": 11.92,
-   "end": 12.28
+   "end": 12.27
   },
   {
    "w": "on",
-   "start": 12.28,
+   "start": 12.27,
    "end": 12.41
   },
   {
    "w": "Catholic",
    "start": 12.41,
-   "end": 13
+   "end": 12.97
   },
   {
-   "w": "doctrine",
-   "start": 13,
-   "end": 13.58
+   "w": "doctrine,",
+   "start": 12.97,
+   "end": 13.67
   },
   {
    "w": "straight",
-   "start": 13.58,
+   "start": 13.67,
    "end": 14.23
   },
   {
    "w": "from",
    "start": 14.23,
-   "end": 14.45
+   "end": 14.51
   },
   {
    "w": "Scripture",
-   "start": 14.45,
-   "end": 15.11
+   "start": 14.51,
+   "end": 15.14
   },
   {
    "w": "and",
-   "start": 15.11,
-   "end": 15.55
+   "start": 15.14,
+   "end": 15.57
   },
   {
    "w": "the",
-   "start": 15.55,
+   "start": 15.57,
    "end": 15.57
   },
   {
@@ -229,111 +229,111 @@
   {
    "w": "I'm",
    "start": 16.48,
-   "end": 16.6
+   "end": 16.64
   },
   {
    "w": "your",
-   "start": 16.6,
-   "end": 16.77
+   "start": 16.64,
+   "end": 16.8
   },
   {
    "w": "host,",
-   "start": 16.77,
+   "start": 16.8,
    "end": 17.04
   },
   {
    "w": "Shalone",
    "start": 17.04,
-   "end": 17.64
+   "end": 17.55
   },
   {
-   "w": "Cason.",
-   "start": 17.64,
-   "end": 18.22
+   "w": "Cason,",
+   "start": 17.55,
+   "end": 18.07
   },
   {
-   "w": "Let's",
-   "start": 18.22,
-   "end": 18.56
+   "w": "Let's,",
+   "start": 18.07,
+   "end": 18.55
   },
   {
-   "w": "begin",
-   "start": 18.56,
-   "end": 18.94
+   "w": "Begin,",
+   "start": 18.55,
+   "end": 19.08
   },
   {
-   "w": "in",
-   "start": 18.94,
-   "end": 19.32
-  },
-  {
-   "w": "the",
-   "start": 19.32,
+   "w": "In",
+   "start": 19.08,
    "end": 19.35
   },
   {
-   "w": "name",
+   "w": "the",
    "start": 19.35,
-   "end": 19.62
+   "end": 19.42
+  },
+  {
+   "w": "Name",
+   "start": 19.42,
+   "end": 19.7
   },
   {
    "w": "of",
-   "start": 19.62,
-   "end": 19.77
+   "start": 19.7,
+   "end": 19.95
   },
   {
    "w": "the",
-   "start": 19.77,
-   "end": 20
+   "start": 19.95,
+   "end": 20.06
   },
   {
    "w": "Father",
-   "start": 20,
+   "start": 20.06,
    "end": 20.69
   },
   {
    "w": "and",
    "start": 20.69,
-   "end": 20.69
+   "end": 20.73
   },
   {
    "w": "of",
-   "start": 20.69,
-   "end": 20.84
+   "start": 20.73,
+   "end": 20.87
   },
   {
    "w": "the",
-   "start": 20.84,
-   "end": 21.07
+   "start": 20.87,
+   "end": 21.09
   },
   {
    "w": "Son",
-   "start": 21.07,
-   "end": 21.3
+   "start": 21.09,
+   "end": 21.31
   },
   {
    "w": "and",
-   "start": 21.3,
+   "start": 21.31,
    "end": 21.53
   },
   {
    "w": "of",
    "start": 21.53,
-   "end": 21.68
+   "end": 21.67
   },
   {
    "w": "the",
-   "start": 21.68,
-   "end": 21.91
+   "start": 21.67,
+   "end": 21.89
   },
   {
    "w": "Holy",
-   "start": 21.91,
-   "end": 22.21
+   "start": 21.89,
+   "end": 22.18
   },
   {
    "w": "Spirit.",
-   "start": 22.21,
+   "start": 22.18,
    "end": 22.96
   }
  ]
