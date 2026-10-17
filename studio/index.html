@@ -139,6 +139,29 @@ a{color:var(--accent)}
   .dock{gap:6px}
   .btn.big{padding:13px 14px;font-size:16px}
 }
+/* Timing tab */
+.tl-top{position:sticky;top:0;z-index:4;background:var(--bg);padding-bottom:10px}
+.tl-player{max-width:600px;margin:0 auto}
+.tl-scene.fixed{background:var(--bg);border-style:dashed;cursor:default;color:var(--muted)}
+.tl-scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
+.tl{position:relative;height:250px;user-select:none;-webkit-user-select:none}
+.tl-ruler{position:absolute;left:0;right:0;top:0;height:26px;border-bottom:1px solid var(--rule);cursor:pointer}
+.tl-tick{position:absolute;top:14px;height:12px;border-left:1px solid var(--rule);font:500 11px/1 var(--sans);color:var(--muted);padding-left:3px}
+.tl-tick.major{top:4px;height:22px;border-left-color:var(--muted)}
+.tl-words{position:absolute;left:0;right:0;top:34px;height:40px}
+.tl-word{position:absolute;font:13px/1 var(--serif);color:var(--ink);white-space:nowrap;cursor:pointer;padding:2px 3px;border-left:1px solid var(--gold)}
+.tl-word:hover{background:var(--bg)}
+.tl-scenes{position:absolute;left:0;right:0;top:90px;height:50px}
+.tl-scene{position:absolute;top:0;height:46px;border-radius:8px;background:color-mix(in srgb,var(--gold) 22%,var(--paper));border:1px solid var(--gold);cursor:grab;overflow:hidden;font:600 13px/1.2 var(--sans);padding:6px 8px;color:var(--ink);touch-action:none}
+.tl-scene:not(.fixed):nth-child(even){background:color-mix(in srgb,var(--accent) 14%,var(--paper));border-color:var(--accent)}
+.tl-scene.moved{box-shadow:0 0 0 2px var(--ok) inset}
+.tl-cues{position:absolute;left:0;right:0;top:152px;height:90px}
+.tl-cue{position:absolute;top:0;transform:translateX(-7px);cursor:grab;touch-action:none;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.tl-cue i{width:14px;height:14px;background:var(--accent);transform:rotate(45deg);border-radius:2px}
+.tl-cue.moved i{background:var(--ok)}
+.tl-cue span{font:600 12px/1.1 var(--sans);color:var(--ink);white-space:nowrap;background:var(--paper);padding:1px 3px;border-radius:4px;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+.tl-cue:nth-child(even){top:44px}
+.tl-head{position:absolute;top:0;bottom:0;width:2px;background:var(--rec);pointer-events:none;left:20px}
 </style>
 </head>
 <body>
@@ -150,11 +173,14 @@ a{color:var(--accent)}
   </header>
   <div class="tabs" role="tablist">
     <button role="tab" id="tab-script" aria-selected="true">Script &amp; recording</button>
+    <button role="tab" id="tab-timing" aria-selected="false">Timing</button>
     <button role="tab" id="tab-video" aria-selected="false">Video &amp; Ghost</button>
   </div>
   <main id="view"></main>
 </div>
 
+<script src="/player.js"></script>
+<script src="/timing.js"></script>
 <script>
 'use strict';
 const S = {
@@ -248,7 +274,7 @@ function renderHeader() {
   pick.hidden = S.lessons.length < 2;
   pick.replaceChildren(...S.lessons.map((l) => el('option', {value: l.id, selected: l.id === S.id, text: l.course + ' ' + l.number + ': ' + l.title})));
   pick.disabled = !!(S.rec || S.busy);
-  for (const t of ['script', 'video']) {
+  for (const t of ['script', 'timing', 'video']) {
     const b = document.getElementById('tab-' + t);
     b.setAttribute('aria-selected', S.tab === t);
     b.disabled = !!(S.rec || S.busy);
@@ -259,7 +285,7 @@ function render() {
   renderHeader();
   const kids = [];
   if (S.notice) kids.push(noticeEl(S.notice));
-  if (S.L) kids.push(S.tab === 'script' ? scriptView() : videoView());
+  if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : videoView());
   view.replaceChildren(...kids);
   for (const t of view.querySelectorAll('textarea.read')) grow(t);
   watchListening();
@@ -273,15 +299,31 @@ function noticeEl(n) {
 
 document.getElementById('tab-script').addEventListener('click', () => switchTab('script'));
 document.getElementById('tab-video').addEventListener('click', () => switchTab('video'));
+document.getElementById('tab-timing').addEventListener('click', () => switchTab('timing'));
 document.getElementById('pick').addEventListener('change', async (e) => { await saveAll(); openLesson(e.target.value, 0); });
 
 async function switchTab(tab) {
   if (S.tab === tab) return;
   await saveAll();
+  if (S.timing && S.timing.dirty() && !confirm('You have timing changes that aren’t saved. Leave them?')) return;
+  if (S.timing) S.timing.pause();
   S.tab = tab; S.notice = null;
   stopPlayback();
+  if (tab === 'timing') { releaseMic(); S.timingRoot = null; }
   if (tab === 'video') { releaseMic(); await refresh(); }
   render();
+}
+
+// ---------- timing ----------
+
+// The Timing tab lives in studio/timing.js; its root is kept so the video player isn't rebuilt on every redraw.
+function timingView() {
+  if (!S.timingRoot || S.timingFor !== S.id) {
+    S.timingRoot = el('div', {class: 'stack'});
+    S.timingFor = S.id;
+    S.timing = window.TimingTab.open(S.timingRoot, S.id, api, post);
+  }
+  return S.timingRoot;
 }
 
 // ---------- script & recording ----------
@@ -814,7 +856,7 @@ async function poll() {
   if (panel && j) panel.replaceChildren(...jobPanel(j.kind));
 }
 
-window.addEventListener('beforeunload', (e) => { if (hasDrafts() || S.rec || S.busy) { e.preventDefault(); e.returnValue = ''; } });
+window.addEventListener('beforeunload', (e) => { if (hasDrafts() || S.rec || S.busy || (S.timing && S.timing.dirty())) { e.preventDefault(); e.returnValue = ''; } });
 
 S.mode = store.get('mode') === 'take' ? 'take' : 'each';
 S.keepScript = store.get('keep') || {};

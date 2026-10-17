@@ -37,8 +37,9 @@ export const Compare: React.FC<SceneProps<CompareScene>> = ({scene, duration}) =
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const emph = scene.emphasis ?? 'right';
-  const cues = (scene as any).cues as {left?: number; right?: number} | undefined;
-  const decideAt = cues?.right != null ? cues.right + 24 : Math.min(110, Math.floor(duration * 0.45));
+  // Both cards from the start; the check comes when the chosen one is named (cue), else partway.
+  const cues = (scene as any).cues as {decide?: number} | undefined;
+  const decideAt = cues?.decide != null ? Math.max(40, cues.decide + 12) : Math.min(110, Math.floor(duration * 0.45));
   const decided = ramp(f, decideAt, decideAt + 16);
 
   const card = (side: Side, which: 'left' | 'right', start: number) => {
@@ -69,8 +70,8 @@ export const Compare: React.FC<SceneProps<CompareScene>> = ({scene, duration}) =
 
   return (
     <Center style={{flexDirection: 'row', gap: 90}}>
-      {card(scene.left, 'left', cues?.left ?? 4)}
-      {card(scene.right, 'right', cues?.right ?? 22)}
+      {card(scene.left, 'left', 4)}
+      {card(scene.right, 'right', 22)}
     </Center>
   );
 };

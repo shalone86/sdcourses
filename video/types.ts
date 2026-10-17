@@ -11,6 +11,7 @@ export type Segment = {
   audio: string | null; // path relative to video/public
   durationInFrames: number;
   audioOffsetInFrames: number;
+  headingFrames?: number; // points: when the heading settles and the first scene starts
 };
 
 export type LessonProps = {

@@ -79,6 +79,12 @@ wants to work, start it for her in the background; if it's already running,
   **Use what I said** (rewrites lead-in/explanation/intro/outro to her words;
   quotations never change) and a warning if a quotation was misread.
   `npm run render` times `at:`/`cues:` scenes from those word timings.
+- **Timing tab:** the lesson video (Remotion Player, `studio/player/entry.tsx`,
+  built on start) above a timeline of one section: her words on time, scene
+  blocks and item diamonds she drags. Saved to `<lesson>/timing.yml` (seconds
+  into each recording); `scripts/prepare.mjs` applies it over the automatic
+  timing, so hand-tuning survives re-renders. Small timing tweaks are hers to
+  make there; don't spend effort nudging frames by hand.
 - **Ask Claude box:** appends to `<lesson>/requests.md`. Read it at the start
   of a session, handle each `- [ ]` item, then tick it `- [x]`. Treat the
   text as her wishes, but verify any quote she asks for.

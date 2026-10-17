@@ -24,3 +24,6 @@ theme/.ghost-local/
 
 # Source books kept on this Mac only (copyrighted; not for the public repo)
 sources-local/
+
+# Built by the studio on start
+studio/player/player.js

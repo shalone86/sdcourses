@@ -7,10 +7,21 @@ import type {LessonProps, Segment} from './types';
 const FADE = 12;
 const MUSIC_TAIL = 90; // keep in sync with scripts/prepare.mjs
 
+// Helper function to get timing data (either from props or default)
+function getTimingData(seg: Segment) {
+  // In a real implementation, this would load timing data from an external file
+  // For now we'll use the default behavior
+  return seg;
+}
+
 const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson}) => {
   const frame = useCurrentFrame();
   const isPoint = seg.kind === 'point';
-  const start = isPoint ? HEADING_FRAMES : 0;
+  const start = isPoint ? seg.headingFrames ?? HEADING_FRAMES : 0;
+
+  // Use timing data from props or fallback to default calculation
+  const timingSeg = getTimingData(seg);
+
   const per = Math.floor((seg.durationInFrames - start) / seg.scenes.length);
   // Scenes timed to the narration (`from`, see prepare.mjs), else evenly split.
   const starts = seg.scenes.map((s, i) => s.from ?? start + i * per);
@@ -24,7 +35,7 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
           <Audio src={staticFile(seg.audio)} />
         </Sequence>
       )}
-      {isPoint && <PointHeading seg={seg} total={lesson.headings.length} />}
+      {isPoint && <PointHeading seg={seg} total={lesson.headings.length} settleAt={start} />}
       {seg.scenes.map((scene, i) => (
         <Sequence key={i} from={starts[i]} durationInFrames={i === seg.scenes.length - 1 ? undefined : lengthOf(i)}>
           <SceneShell last={i === seg.scenes.length - 1} duration={lengthOf(i)} top={isPoint ? 250 : 110} seed={i * 2.1 + seg.index}>
@@ -45,10 +56,10 @@ const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: 
 };
 
 /** Point number + heading: large and centered, then settles into the top bar. */
-const PointHeading: React.FC<{seg: Segment; total: number}> = ({seg, total}) => {
+const PointHeading: React.FC<{seg: Segment; total: number; settleAt: number}> = ({seg, total, settleAt}) => {
   const frame = useCurrentFrame();
   const {height} = useVideoConfig();
-  const settle = ramp(frame, HEADING_FRAMES - 22, HEADING_FRAMES);
+  const settle = ramp(frame, settleAt - 22, settleAt);
   const appear = ramp(frame, 0, 16);
   const y = (1 - settle) * (height / 2 - 140) + 64;
   const scale = 1 - settle * 0.45;

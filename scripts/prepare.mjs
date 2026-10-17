@@ -1,6 +1,7 @@
 // Turns lesson.yml (+ your recordings in audio/) into the video's props, and
 // writes a recording script. Run: npm run prepare-lesson -- <course>/<lesson>
 import fs from 'node:fs';
+import YAML from 'yaml';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
@@ -48,7 +49,8 @@ export function prepare(arg) {
     const tail = s.kind === 'outro' ? 30 + MUSIC_TAIL : s.kind === 'intro' ? 75 : 30;
     const durationInFrames = Math.max(minFrames, Math.ceil(offset + seconds * FPS + tail));
     const scenes = timeScenes(s, offset, seconds, durationInFrames, spoken);
-    return {kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes, audio, durationInFrames, audioOffsetInFrames: offset};
+    return {name: s.name, kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes, audio, durationInFrames, audioOffsetInFrames: offset,
+      ...(s.kind === 'point' ? {headingFrames: scenes[0]?.from ?? HEADING_FRAMES} : {})};
   });
 
   // The host scene's photo (site.yml host_photo); without one it shows initials.
@@ -86,6 +88,9 @@ export function prepare(arg) {
     music,
     segments: out,
   };
+  // Hand-tuned timing from the studio's Timing tab wins over the automatic timing.
+  const auto = structuredClone(props);
+  applyTiming(props, loadTiming(dir));
   const dist = outDir(id);
   fs.writeFileSync(path.join(dist, 'props.json'), JSON.stringify(props, null, 2));
   fs.writeFileSync(path.join(dist, 'recording-script.md'), recordingScript(lesson, segments));
@@ -96,7 +101,7 @@ export function prepare(arg) {
   if (total > 650) console.warn(`  ! ${total} words; aim for ~600`);
   for (const s of segments) if ((s.kind === 'intro' || s.kind === 'outro') && !s.text) console.log(`  ${s.name}: not written yet (Shalone writes this)`);
   if (recorded < segments.length) console.log(`  missing audio: ${segments.filter((s, i) => !out[i].audio).map((s) => s.name).join(', ')} (timing estimated)`);
-  return {props, dist, id};
+  return {props, auto, dist, id};
 }
 
 /**
@@ -122,15 +127,16 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
     const i = text.indexOf(String(phrase).toLowerCase());
     return i < 0 ? null : Math.round(offset + (i / text.length) * seconds * FPS);
   };
-  const first = s.kind === 'point' ? HEADING_FRAMES : 0;
   const quoteSpan = s.kind === 'point' && spoken ? phraseSpan(spoken, s.quote.text) : null;
+  // The point's big heading stays while the lead-in is read; the quotation takes over when it begins.
+  const first = s.kind === 'point' ? Math.max(HEADING_FRAMES, quoteSpan ? sec(quoteSpan.start) - 12 : 0) : 0;
   const items = (sc) => {
     switch (sc.type) {
       case 'map': return (sc.places ?? []).map((p) => (typeof p === 'string' ? p : p.name)).map((n) => [n, n]);
       case 'titles': return (sc.items ?? []).map((it, i) => [String(i), it.latin]);
       case 'timeline': return (sc.items ?? []).map((it, i) => [String(i), it.label]);
       case 'chain': return (sc.items ?? []).map((it, i) => [String(i), it]);
-      case 'compare': return [['left', sc.left?.title], ['right', sc.right?.title]];
+      case 'compare': return [['decide', (sc.emphasis === 'left' ? sc.left : sc.right)?.title]];
       case 'recap': return (s.kind === 'outro' ? lessonHeadings : []).map((h, i) => [String(i), h]);
       default: return [];
     }
@@ -197,8 +203,48 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
     }
     const explicit = Object.fromEntries(Object.entries(cues ?? {}).map(([k, p]) => [k, rel(at(p))]).filter(([, v]) => v != null));
     const all = {...auto, ...explicit};
-    return {...smartScene(scene), from, ...(Object.keys(all).length ? {cues: all} : {})};
+    return {scene: {...smartScene(scene), from, ...(Object.keys(all).length ? {cues: all} : {})}, explicit: Object.keys(explicit).length > 0, at: !!_at};
+  }).map(({scene, explicit, at: fixed}, i, list) => {
+    // Nothing waits on an empty stage: if a visual's first item is said well after it would
+    // start, it starts just before that, and the scene before it stays up meanwhile.
+    const c = scene.cues;
+    if (i === 0 || fixed || explicit || !c || ['compare', 'quote', 'iconostasis', 'trinity'].includes(scene.type)) return scene;
+    const firstCue = Math.min(...Object.values(c));
+    const next = list[i + 1]?.scene.from ?? durationInFrames;
+    const shift = Math.min(firstCue - 20, next - scene.from - 60);
+    if (shift < 25) return scene;
+    return {...scene, from: scene.from + shift, cues: Object.fromEntries(Object.entries(c).map(([k, v]) => [k, Math.max(4, v - shift)]))};
   });
+}
+
+/** timing.yml next to lesson.yml: {<section>: {scenes: {<i>: {start, cues: {<key>: seconds}}}}}, in seconds into the recording. */
+export function loadTiming(dir) {
+  const f = path.join(dir, 'timing.yml');
+  return fs.existsSync(f) ? YAML.parse(fs.readFileSync(f, 'utf8')) ?? {} : {};
+}
+
+/** Apply hand-tuned timing (seconds into each section's voice) to the props, in place. */
+export function applyTiming(props, timing) {
+  for (const seg of props.segments) {
+    const t = timing?.[seg.name]?.scenes;
+    if (!t) continue;
+    const toFrame = (sec) => Math.round(seg.audioOffsetInFrames + sec * FPS);
+    seg.scenes.forEach((sc, i) => {
+      const o = t[i] ?? t[String(i)];
+      if (!o) return;
+      const oldFrom = sc.from ?? 0;
+      if (typeof o.start === 'number') sc.from = Math.max(0, toFrame(o.start));
+      // Cues are relative to the scene's start: keep automatic ones in place on the timeline.
+      const cues = {};
+      for (const [k, v] of Object.entries(sc.cues ?? {})) cues[k] = Math.max(4, oldFrom + v - sc.from);
+      for (const [k, v] of Object.entries(o.cues ?? {})) cues[k] = Math.max(4, toFrame(v) - sc.from);
+      if (Object.keys(cues).length) sc.cues = cues;
+    });
+    // Scenes stay in order and at least a third of a second long.
+    for (let i = 1; i < seg.scenes.length; i++) seg.scenes[i].from = Math.max(seg.scenes[i].from ?? 0, (seg.scenes[i - 1].from ?? 0) + 10);
+    if (seg.kind === 'point') seg.headingFrames = seg.scenes[0]?.from ?? seg.headingFrames;
+  }
+  return props;
 }
 
 function recordingScript(lesson, segments) {

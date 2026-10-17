@@ -10,6 +10,9 @@ import {promisify} from 'node:util';
 import {ROOT, ffprobeDuration, loadLesson, words} from '../scripts/lib.mjs';
 import {applyEdits, setStatus} from '../scripts/studio.mjs';
 import {cachedWords, compare, whisperAvailable} from '../scripts/voice.mjs';
+import {prepare} from '../scripts/prepare.mjs';
+import YAML from 'yaml';
+import * as esbuild from 'esbuild';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -97,6 +100,50 @@ function heard(id, s, src) {
   const parts = s.kind === 'point' ? {lead: s.quote.lead, quote: s.quote.text, text: s.explanation} : {text: s.text};
   if (!words) { listen(id, s.name, src, s.text); return {pending: true}; }
   return compare(parts, words);
+}
+
+// ---------- timing editor ----------
+
+// The Timing tab's video player (Remotion Player + the lesson composition), built on start.
+async function buildPlayer() {
+  await esbuild.build({
+    entryPoints: [path.join(ROOT, 'studio/player/entry.tsx')], bundle: true, format: 'iife', minify: true,
+    outfile: path.join(ROOT, 'studio/player/player.js'), jsx: 'automatic', loader: {'.json': 'json'},
+    define: {'process.env.NODE_ENV': '"production"'}, logLevel: 'warning',
+  });
+}
+
+/** Everything the Timing tab needs: the video's props (with her timing), the automatic timing, and her words. */
+function timingData(id) {
+  const dir = lessonPath(id);
+  const {props, auto} = prepare(id);
+  const segments = props.segments.map((seg, si) => {
+    const file = audioFile(dir, seg.name);
+    const words = file ? cachedWords(file) ?? [] : [];
+    return {name: seg.name, words: words.map((w) => ({w: w.w, t: w.start})), autoScenes: auto.segments[si].scenes.map((s) => ({from: s.from, cues: s.cues ?? {}}))};
+  });
+  const f = path.join(dir, 'timing.yml');
+  return {props, segments, timing: fs.existsSync(f) ? YAML.parse(fs.readFileSync(f, 'utf8')) ?? {} : {}};
+}
+
+function saveTiming(id, timing) {
+  const dir = lessonPath(id);
+  const clean = {};
+  for (const [sec, v] of Object.entries(timing ?? {})) {
+    if (!/^(intro|outro|point-\d+)$/.test(sec) || !v?.scenes) continue;
+    const scenes = {};
+    for (const [i, o] of Object.entries(v.scenes)) {
+      const out = {};
+      if (Number.isFinite(o.start)) out.start = Math.round(o.start * 100) / 100;
+      const cues = Object.fromEntries(Object.entries(o.cues ?? {}).filter(([, t]) => Number.isFinite(t)).map(([k, t]) => [k, Math.round(t * 100) / 100]));
+      if (Object.keys(cues).length) out.cues = cues;
+      if (Object.keys(out).length) scenes[i] = out;
+    }
+    if (Object.keys(scenes).length) clean[sec] = {scenes};
+  }
+  const f = path.join(dir, 'timing.yml');
+  if (!Object.keys(clean).length) { fs.rmSync(f, {force: true}); return; }
+  fs.writeFileSync(f, '# Hand-tuned timing from the studio\'s Timing tab, in seconds into each\n# section\'s recording. Scenes not listed keep their automatic timing.\n' + YAML.stringify(clean));
 }
 
 // ---------- quote check ----------
@@ -234,7 +281,7 @@ function errorMessage(log) {
 
 function httpError(status, message) { return Object.assign(new Error(message), {status}); }
 
-const TYPES = {'.html': 'text/html; charset=utf-8', '.wav': 'audio/wav', '.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml'};
+const TYPES = {'.js': 'text/javascript', '.mp3': 'audio/mpeg', '.png': 'image/png', '.html': 'text/html; charset=utf-8', '.wav': 'audio/wav', '.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml'};
 
 /** Serve a file with Range support (Safari needs it to play audio and video). */
 function sendFile(req, res, file) {
@@ -286,6 +333,9 @@ async function handle(req, res) {
     if (p === '/api/lessons') return json(res, 200, lessonIds().map(summary));
     if (p === '/api/lesson') return json(res, 200, detail(id));
     if (p === '/api/job') return json(res, 200, job);
+    if (p === '/api/timing') return json(res, 200, timingData(id));
+    if (p === '/player.js') return sendFile(req, res, path.join(ROOT, 'studio/player/player.js'));
+    if (p === '/timing.js') return sendFile(req, res, path.join(ROOT, 'studio/timing.js'));
     if (p === '/audio') {
       const section = url.searchParams.get('section');
       if (!/^(intro|outro|point-\d+)$/.test(section ?? '')) throw httpError(400, 'Bad section');
@@ -323,6 +373,11 @@ async function handle(req, res) {
       const check = changes.length ? await checkQuotes(id) : null;
       return json(res, 200, {changes, unapproved, check, lesson: detail(id)});
     }
+    if (p === '/api/timing') {
+      const {timing} = await readJson(req);
+      saveTiming(id, timing);
+      return json(res, 200, timingData(id));
+    }
     if (p === '/api/audio') {
       const body = await readBody(req, 300e6);
       const result = await saveSection(id, url.searchParams.get('section'), body, req.headers['content-type']);
@@ -354,6 +409,11 @@ async function handle(req, res) {
       return json(res, 200, startJob('publish', id, 'scripts/publish.mjs'));
     }
   }
+  // The player loads the video's files (staticFile) from the site root: video/public.
+  if (req.method === 'GET') {
+    const file = path.join(ROOT, 'video', 'public', path.normalize(decodeURIComponent(p)).replace(/^([/\\.])+/, ''));
+    if (file.startsWith(path.join(ROOT, 'video', 'public') + path.sep) && fs.existsSync(file) && fs.statSync(file).isFile()) return sendFile(req, res, file);
+  }
   throw httpError(404, 'Not found');
 }
 
@@ -372,6 +432,7 @@ server.on('error', (e) => {
   if (open) spawn('open', [URL_BASE], {stdio: 'ignore'});
   process.exit(0);
 });
+await buildPlayer().catch((e) => console.error('Timing preview unavailable:', e.message));
 server.listen(PORT, '127.0.0.1', () => {
   console.log(`Lesson Studio: ${URL_BASE}\nLeave this window open while you work. Press Control-C to stop.`);
   if (open) spawn('open', [URL_BASE], {stdio: 'ignore'});
