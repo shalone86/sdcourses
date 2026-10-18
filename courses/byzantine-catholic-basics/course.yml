@@ -1,9 +1,10 @@
 slug: byzantine-catholic-basics
-title: Byzantine Catholic Basics
+# Renamed 2026-10-17 (was Byzantine Catholic Basics); the slug and web address stay.
+title: The Byzantine Rite
 summary: >-
-  Who Byzantine Catholics are, where the name comes from, and why their
-  churches and Divine Liturgy look the way they do, from Scripture, the
-  Catechism, the Catholic Encyclopedia, and the Byzantine Catholic catechism.
+  What the Byzantine Rite is, where its name comes from, and why its churches
+  and Divine Liturgy look the way they do, from Scripture, the Catechism, the
+  Catholic Encyclopedia, and the Byzantine Catholic catechism.
 # The course's instrumental (Shalone's CC0 music, methodius.media).
 music: music/blessed-art-thou-ambient-instrumental.mp3
 # Cover picture: an icon from https://lucide.dev/icons (npm run cover)
