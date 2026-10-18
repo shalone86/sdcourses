@@ -1,345 +1,345 @@
 {
- "stamp": "2:2545998:1792113583452",
+ "stamp": "2:2453838:1792282939988",
  "words": [
   {
    "w": "And",
-   "start": 0.1,
-   "end": 0.19
+   "start": 0.09,
+   "end": 0.2
   },
   {
    "w": "that",
-   "start": 0.19,
-   "end": 0.51
+   "start": 0.2,
+   "end": 0.46
   },
   {
    "w": "is",
-   "start": 0.51,
-   "end": 0.58
+   "start": 0.46,
+   "end": 0.59
   },
   {
    "w": "your",
-   "start": 0.58,
-   "end": 0.84
+   "start": 0.59,
+   "end": 0.85
   },
   {
    "w": "intro",
-   "start": 0.84,
-   "end": 1.25
+   "start": 0.85,
+   "end": 1.18
   },
   {
    "w": "to",
-   "start": 1.25,
-   "end": 1.3
+   "start": 1.18,
+   "end": 1.36
   },
   {
    "w": "the",
-   "start": 1.3,
-   "end": 1.52
+   "start": 1.36,
+   "end": 1.51
   },
   {
    "w": "Byzantine",
-   "start": 1.52,
-   "end": 2.11
+   "start": 1.51,
+   "end": 2.15
   },
   {
    "w": "Catholic",
-   "start": 2.11,
-   "end": 2.59
+   "start": 2.15,
+   "end": 2.64
   },
   {
-   "w": "Church",
-   "start": 2.59,
-   "end": 3.06
+   "w": "Rite",
+   "start": 2.64,
+   "end": 3.03
   },
   {
    "w": "in",
-   "start": 3.06,
-   "end": 3.18
+   "start": 3.03,
+   "end": 3.13
   },
   {
    "w": "a",
-   "start": 3.18,
-   "end": 3.25
+   "start": 3.13,
+   "end": 3.21
   },
   {
    "w": "nutshell.",
-   "start": 3.25,
-   "end": 4.08
+   "start": 3.21,
+   "end": 4.2
   },
   {
    "w": "It",
-   "start": 4.08,
-   "end": 4.25
+   "start": 4.2,
+   "end": 4.34
   },
   {
    "w": "started",
-   "start": 4.25,
-   "end": 4.85
+   "start": 4.34,
+   "end": 4.84
   },
   {
    "w": "in",
-   "start": 4.85,
-   "end": 5.07
+   "start": 4.84,
+   "end": 4.98
   },
   {
    "w": "Antioch",
-   "start": 5.07,
-   "end": 5.62
+   "start": 4.98,
+   "end": 5.53
   },
   {
    "w": "and",
-   "start": 5.62,
-   "end": 5.88
+   "start": 5.53,
+   "end": 5.68
   },
   {
    "w": "grew",
-   "start": 5.88,
-   "end": 6.22
+   "start": 5.68,
+   "end": 5.97
   },
   {
    "w": "into",
-   "start": 6.22,
-   "end": 6.56
+   "start": 5.97,
+   "end": 6.26
   },
   {
    "w": "a",
-   "start": 6.56,
-   "end": 6.67
+   "start": 6.26,
+   "end": 6.35
   },
   {
    "w": "family",
-   "start": 6.67,
-   "end": 7.2
+   "start": 6.35,
+   "end": 6.76
   },
   {
    "w": "of",
-   "start": 7.2,
-   "end": 7.33
+   "start": 6.76,
+   "end": 6.9
   },
   {
    "w": "self-governing",
-   "start": 7.33,
-   "end": 8.28
+   "start": 6.9,
+   "end": 7.91
   },
   {
    "w": "churches",
-   "start": 8.28,
-   "end": 8.96
+   "start": 7.91,
+   "end": 8.56
   },
   {
    "w": "in",
-   "start": 8.96,
-   "end": 9.2
+   "start": 8.56,
+   "end": 8.73
   },
   {
    "w": "communion",
-   "start": 9.2,
-   "end": 9.75
+   "start": 8.73,
+   "end": 9.53
   },
   {
    "w": "with",
-   "start": 9.75,
-   "end": 10.02
+   "start": 9.53,
+   "end": 9.84
   },
   {
    "w": "Rome.",
-   "start": 10.02,
-   "end": 10.72
+   "start": 9.84,
+   "end": 10.84
   },
   {
    "w": "Even",
-   "start": 10.72,
-   "end": 10.97
+   "start": 10.84,
+   "end": 11.05
   },
   {
    "w": "though",
-   "start": 10.97,
-   "end": 11.35
+   "start": 11.05,
+   "end": 11.42
   },
   {
    "w": "their",
-   "start": 11.35,
-   "end": 11.71
+   "start": 11.42,
+   "end": 11.63
   },
   {
    "w": "worship",
-   "start": 11.71,
-   "end": 12.1
+   "start": 11.63,
+   "end": 12
   },
   {
    "w": "is",
-   "start": 12.1,
-   "end": 12.24
+   "start": 12,
+   "end": 12.17
   },
   {
    "w": "somewhat",
-   "start": 12.24,
-   "end": 12.72
+   "start": 12.17,
+   "end": 12.55
   },
   {
    "w": "different",
-   "start": 12.72,
-   "end": 13.31
+   "start": 12.55,
+   "end": 13
   },
   {
    "w": "than",
-   "start": 13.31,
-   "end": 13.54
+   "start": 13,
+   "end": 13.25
   },
   {
    "w": "Roman",
-   "start": 13.54,
-   "end": 13.86
+   "start": 13.25,
+   "end": 13.47
   },
   {
    "w": "Catholics,",
-   "start": 13.86,
-   "end": 14.48
+   "start": 13.47,
+   "end": 14.05
   },
   {
    "w": "we",
-   "start": 14.48,
-   "end": 14.64
+   "start": 14.05,
+   "end": 14.15
   },
   {
    "w": "share",
-   "start": 14.64,
-   "end": 15.05
+   "start": 14.15,
+   "end": 14.41
   },
   {
    "w": "the",
-   "start": 15.05,
-   "end": 15.29
+   "start": 14.41,
+   "end": 14.57
   },
   {
    "w": "same",
-   "start": 15.29,
-   "end": 15.61
+   "start": 14.57,
+   "end": 14.93
   },
   {
    "w": "faith",
-   "start": 15.61,
-   "end": 16.02
+   "start": 14.93,
+   "end": 15.12
   },
   {
    "w": "and",
-   "start": 16.02,
-   "end": 16.26
+   "start": 15.12,
+   "end": 15.41
   },
   {
    "w": "follow",
-   "start": 16.26,
-   "end": 16.75
+   "start": 15.41,
+   "end": 16
   },
   {
    "w": "the",
-   "start": 16.75,
-   "end": 16.99
+   "start": 16,
+   "end": 16.29
   },
   {
    "w": "Pope.",
-   "start": 16.99,
-   "end": 17.6
+   "start": 16.29,
+   "end": 17
   },
   {
    "w": "Thanks",
-   "start": 17.6,
-   "end": 17.9
+   "start": 17,
+   "end": 17.34
   },
   {
    "w": "for",
-   "start": 17.9,
-   "end": 18.11
+   "start": 17.34,
+   "end": 17.57
   },
   {
    "w": "learning",
-   "start": 18.11,
-   "end": 18.45
+   "start": 17.57,
+   "end": 18.05
   },
   {
    "w": "with",
-   "start": 18.45,
-   "end": 18.65
+   "start": 18.05,
+   "end": 18.2
   },
   {
    "w": "us,",
-   "start": 18.65,
-   "end": 18.88
+   "start": 18.2,
+   "end": 18.42
   },
   {
    "w": "and",
-   "start": 18.88,
-   "end": 19.14
+   "start": 18.42,
+   "end": 18.59
   },
   {
    "w": "until",
-   "start": 19.14,
-   "end": 19.38
+   "start": 18.59,
+   "end": 18.89
   },
   {
    "w": "next",
-   "start": 19.38,
-   "end": 19.59
+   "start": 18.89,
+   "end": 19.15
   },
   {
    "w": "time,",
-   "start": 19.59,
-   "end": 19.95
+   "start": 19.15,
+   "end": 19.44
   },
   {
    "w": "I've",
-   "start": 19.95,
-   "end": 20.19
+   "start": 19.44,
+   "end": 19.66
   },
   {
    "w": "been",
-   "start": 20.19,
-   "end": 20.4
+   "start": 19.66,
+   "end": 20.03
   },
   {
    "w": "your",
-   "start": 20.4,
-   "end": 20.54
+   "start": 20.03,
+   "end": 20.12
   },
   {
    "w": "host,",
-   "start": 20.54,
-   "end": 20.88
+   "start": 20.12,
+   "end": 20.45
   },
   {
    "w": "Shalone",
-   "start": 20.88,
-   "end": 21.39
+   "start": 20.45,
+   "end": 21.02
   },
   {
    "w": "Cason.",
-   "start": 21.39,
-   "end": 22
+   "start": 21.02,
+   "end": 21.4
   },
   {
    "w": "Please,",
-   "start": 22,
-   "end": 22.72
+   "start": 21.4,
+   "end": 22.04
   },
   {
    "w": "stay",
-   "start": 22.72,
-   "end": 23.02
+   "start": 22.04,
+   "end": 22.45
   },
   {
    "w": "holy,",
-   "start": 23.02,
-   "end": 23.54
+   "start": 22.45,
+   "end": 22.84
   },
   {
    "w": "my",
-   "start": 23.54,
-   "end": 23.7
+   "start": 22.84,
+   "end": 23
   },
   {
    "w": "friends.",
-   "start": 23.7,
-   "end": 24.56
+   "start": 23,
+   "end": 23.84
   }
  ]
 }

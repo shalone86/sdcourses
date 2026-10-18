@@ -9,3 +9,42 @@ point-4:
       start: 20
     "2":
       start: 33
+intro:
+  scenes:
+    "1":
+      start: 13.43
+      cues:
+        "2": 16.03
+        "3": 17.1
+point-1:
+  scenes:
+    "0":
+      cues:
+        end: 11.6
+point-2:
+  scenes:
+    "2":
+      start: 27.8
+      cues:
+        "1": 28.1
+point-3:
+  scenes:
+    "0":
+      cues:
+        end: 13.17
+    "1":
+      cues:
+        decide: 25.83
+point-5:
+  scenes:
+    "0":
+      cues:
+        end: 17
+    "1":
+      start: 25.3
+    "2":
+      start: 35.4
+      cues:
+        "1": 38.93
+    "3":
+      start: 44.17

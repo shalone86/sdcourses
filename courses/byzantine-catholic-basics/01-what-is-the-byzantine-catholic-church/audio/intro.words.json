@@ -1,460 +1,460 @@
 {
- "stamp": "2:3294798:1792113065584",
+ "stamp": "2:3173838:1792281977687",
  "words": [
   {
    "w": "What",
    "start": 0.09,
-   "end": 0.37
+   "end": 0.39
   },
   {
    "w": "is",
-   "start": 0.37,
-   "end": 0.4
+   "start": 0.39,
+   "end": 0.48
   },
   {
    "w": "the",
-   "start": 0.4,
-   "end": 0.67
+   "start": 0.48,
+   "end": 0.72
   },
   {
    "w": "Byzantine",
-   "start": 0.67,
-   "end": 1.21
+   "start": 0.72,
+   "end": 1.43
   },
   {
    "w": "Catholic",
-   "start": 1.21,
-   "end": 1.83
+   "start": 1.43,
+   "end": 2.06
   },
   {
-   "w": "Church?",
-   "start": 1.83,
-   "end": 2.58
+   "w": "Rite?",
+   "start": 2.06,
+   "end": 2.71
   },
   {
    "w": "Why",
-   "start": 2.58,
-   "end": 2.64
+   "start": 2.71,
+   "end": 2.82
   },
   {
    "w": "do",
-   "start": 2.64,
-   "end": 2.7
-  },
-  {
-   "w": "they",
-   "start": 2.7,
+   "start": 2.82,
    "end": 2.94
   },
   {
-   "w": "take",
+   "w": "they",
    "start": 2.94,
-   "end": 3.29
+   "end": 3.18
+  },
+  {
+   "w": "take",
+   "start": 3.18,
+   "end": 3.5
   },
   {
    "w": "communion",
-   "start": 3.29,
-   "end": 3.73
+   "start": 3.5,
+   "end": 4
   },
   {
    "w": "with",
-   "start": 3.73,
-   "end": 3.96
+   "start": 4,
+   "end": 4.32
   },
   {
    "w": "a",
-   "start": 3.96,
-   "end": 4.16
+   "start": 4.32,
+   "end": 4.4
   },
   {
-   "w": "spoon?",
-   "start": 4.16,
-   "end": 4.94
-  },
-  {
-   "w": "And",
-   "start": 4.94,
-   "end": 4.96
-  },
-  {
-   "w": "why",
-   "start": 4.96,
-   "end": 5.12
-  },
-  {
-   "w": "does",
-   "start": 5.12,
-   "end": 5.36
-  },
-  {
-   "w": "their",
-   "start": 5.36,
-   "end": 5.73
-  },
-  {
-   "w": "liturgy",
-   "start": 5.73,
-   "end": 6.16
-  },
-  {
-   "w": "look",
-   "start": 6.16,
-   "end": 6.5
-  },
-  {
-   "w": "so",
-   "start": 6.5,
-   "end": 6.57
-  },
-  {
-   "w": "different?",
-   "start": 6.57,
-   "end": 7.39
-  },
-  {
-   "w": "Well,",
-   "start": 7.39,
-   "end": 7.99
-  },
-  {
-   "w": "the",
-   "start": 7.99,
-   "end": 8.01
-  },
-  {
-   "w": "Byzantine",
-   "start": 8.01,
-   "end": 8.66
-  },
-  {
-   "w": "Catholic",
-   "start": 8.66,
-   "end": 9.15
-  },
-  {
-   "w": "Church",
-   "start": 9.15,
-   "end": 9.62
-  },
-  {
-   "w": "is",
-   "start": 9.62,
-   "end": 9.7
-  },
-  {
-   "w": "a",
-   "start": 9.7,
-   "end": 9.77
-  },
-  {
-   "w": "family",
-   "start": 9.77,
-   "end": 10.32
-  },
-  {
-   "w": "of",
-   "start": 10.32,
-   "end": 10.48
-  },
-  {
-   "w": "Eastern",
-   "start": 10.48,
-   "end": 10.88
-  },
-  {
-   "w": "Churches",
-   "start": 10.88,
-   "end": 11.37
-  },
-  {
-   "w": "that",
-   "start": 11.37,
-   "end": 11.62
-  },
-  {
-   "w": "share",
-   "start": 11.62,
-   "end": 11.93
-  },
-  {
-   "w": "the",
-   "start": 11.93,
-   "end": 12.11
-  },
-  {
-   "w": "Byzantine",
-   "start": 12.11,
-   "end": 12.7
-  },
-  {
-   "w": "tradition.",
-   "start": 12.7,
-   "end": 13.52
-  },
-  {
-   "w": "They",
-   "start": 13.52,
-   "end": 13.65
-  },
-  {
-   "w": "include",
-   "start": 13.65,
-   "end": 14.17
-  },
-  {
-   "w": "Ruthenians,",
-   "start": 14.17,
-   "end": 14.84
-  },
-  {
-   "w": "Melkites,",
-   "start": 14.84,
-   "end": 15.82
-  },
-  {
-   "w": "Ukrainian,",
-   "start": 15.82,
-   "end": 16.16
-  },
-  {
-   "w": "Catholics,",
-   "start": 16.16,
-   "end": 16.84
+   "w": "spoon",
+   "start": 4.4,
+   "end": 5.26
   },
   {
    "w": "and",
-   "start": 16.84,
-   "end": 17.02
+   "start": 5.26,
+   "end": 5.28
+  },
+  {
+   "w": "why",
+   "start": 5.28,
+   "end": 5.44
+  },
+  {
+   "w": "does",
+   "start": 5.44,
+   "end": 5.6
+  },
+  {
+   "w": "their",
+   "start": 5.6,
+   "end": 5.76
+  },
+  {
+   "w": "liturgy",
+   "start": 5.76,
+   "end": 6.23
+  },
+  {
+   "w": "look",
+   "start": 6.23,
+   "end": 6.56
+  },
+  {
+   "w": "so",
+   "start": 6.56,
+   "end": 6.64
+  },
+  {
+   "w": "different?",
+   "start": 6.64,
+   "end": 7.48
+  },
+  {
+   "w": "Well,",
+   "start": 7.48,
+   "end": 7.89
+  },
+  {
+   "w": "the",
+   "start": 7.89,
+   "end": 8.09
+  },
+  {
+   "w": "Byzantine",
+   "start": 8.09,
+   "end": 8.72
+  },
+  {
+   "w": "Catholic",
+   "start": 8.72,
+   "end": 9.28
+  },
+  {
+   "w": "Rite",
+   "start": 9.28,
+   "end": 9.55
+  },
+  {
+   "w": "is",
+   "start": 9.55,
+   "end": 9.69
+  },
+  {
+   "w": "a",
+   "start": 9.69,
+   "end": 9.76
+  },
+  {
+   "w": "family",
+   "start": 9.76,
+   "end": 10.3
+  },
+  {
+   "w": "of",
+   "start": 10.3,
+   "end": 10.38
+  },
+  {
+   "w": "Eastern",
+   "start": 10.38,
+   "end": 11.02
+  },
+  {
+   "w": "Churches",
+   "start": 11.02,
+   "end": 11.44
+  },
+  {
+   "w": "that",
+   "start": 11.44,
+   "end": 11.68
+  },
+  {
+   "w": "share",
+   "start": 11.68,
+   "end": 12.09
+  },
+  {
+   "w": "the",
+   "start": 12.09,
+   "end": 12.16
+  },
+  {
+   "w": "Byzantine",
+   "start": 12.16,
+   "end": 12.71
+  },
+  {
+   "w": "tradition.",
+   "start": 12.71,
+   "end": 13.44
+  },
+  {
+   "w": "They",
+   "start": 13.44,
+   "end": 14.11
+  },
+  {
+   "w": "include",
+   "start": 14.11,
+   "end": 14.15
+  },
+  {
+   "w": "Ruthenians,",
+   "start": 14.15,
+   "end": 14.94
+  },
+  {
+   "w": "Melkites,",
+   "start": 14.94,
+   "end": 15.52
+  },
+  {
+   "w": "Ukrainian,",
+   "start": 15.52,
+   "end": 16.08
+  },
+  {
+   "w": "Catholics,",
+   "start": 16.08,
+   "end": 16.86
+  },
+  {
+   "w": "and",
+   "start": 16.86,
+   "end": 16.96
   },
   {
    "w": "many",
-   "start": 17.02,
-   "end": 17.3
+   "start": 16.96,
+   "end": 17.21
   },
   {
    "w": "more.",
-   "start": 17.3,
-   "end": 17.69
+   "start": 17.21,
+   "end": 17.65
   },
   {
    "w": "But",
-   "start": 17.69,
-   "end": 17.88
+   "start": 17.65,
+   "end": 17.84
   },
   {
    "w": "before",
-   "start": 17.88,
-   "end": 18.3
+   "start": 17.84,
+   "end": 18.22
   },
   {
    "w": "we",
-   "start": 18.3,
-   "end": 18.33
+   "start": 18.22,
+   "end": 18.34
   },
   {
    "w": "get",
-   "start": 18.33,
-   "end": 18.8
+   "start": 18.34,
+   "end": 18.54
   },
   {
    "w": "ahead",
-   "start": 18.8,
+   "start": 18.54,
    "end": 18.86
   },
   {
    "w": "of",
    "start": 18.86,
-   "end": 18.98
+   "end": 18.99
   },
   {
    "w": "ourselves,",
-   "start": 18.98,
-   "end": 19.76
+   "start": 18.99,
+   "end": 19.69
   },
   {
    "w": "let's",
-   "start": 19.76,
-   "end": 20.42
+   "start": 19.69,
+   "end": 20
   },
   {
    "w": "get",
-   "start": 20.42,
-   "end": 20.53
+   "start": 20,
+   "end": 20.21
   },
   {
    "w": "a",
-   "start": 20.53,
-   "end": 20.63
+   "start": 20.21,
+   "end": 20.25
   },
   {
    "w": "basic",
-   "start": 20.63,
-   "end": 21.11
+   "start": 20.25,
+   "end": 20.57
   },
   {
    "w": "introduction",
-   "start": 21.11,
-   "end": 22.32
+   "start": 20.57,
+   "end": 21.5
   },
   {
    "w": "to",
-   "start": 22.32,
-   "end": 22.45
+   "start": 21.5,
+   "end": 21.58
   },
   {
    "w": "the",
-   "start": 22.45,
-   "end": 22.69
+   "start": 21.58,
+   "end": 21.8
   },
   {
    "w": "Byzantine",
-   "start": 22.69,
-   "end": 23.27
+   "start": 21.8,
+   "end": 22.48
   },
   {
    "w": "Catholic",
-   "start": 23.27,
-   "end": 23.8
+   "start": 22.48,
+   "end": 23.13
   },
   {
-   "w": "Church",
-   "start": 23.8,
-   "end": 24.22
+   "w": "Rite",
+   "start": 23.13,
+   "end": 23.35
   },
   {
    "w": "with",
-   "start": 24.22,
-   "end": 24.44
+   "start": 23.35,
+   "end": 23.64
   },
   {
    "w": "this",
-   "start": 24.44,
-   "end": 24.97
+   "start": 23.64,
+   "end": 23.92
   },
   {
    "w": "lesson.",
-   "start": 24.97,
-   "end": 25.44
+   "start": 23.92,
+   "end": 24.59
   },
   {
    "w": "I'm",
-   "start": 25.44,
-   "end": 25.62
+   "start": 24.59,
+   "end": 25.03
   },
   {
    "w": "your",
-   "start": 25.62,
-   "end": 25.86
+   "start": 25.03,
+   "end": 25.19
   },
   {
    "w": "host,",
-   "start": 25.86,
-   "end": 26.28
+   "start": 25.19,
+   "end": 25.52
   },
   {
    "w": "Shalone",
-   "start": 26.28,
-   "end": 26.64
+   "start": 25.52,
+   "end": 26.03
   },
   {
    "w": "Cason,",
-   "start": 26.64,
-   "end": 27.26
+   "start": 26.03,
+   "end": 26.53
   },
   {
    "w": "and",
-   "start": 27.26,
-   "end": 27.28
+   "start": 26.53,
+   "end": 26.8
   },
   {
    "w": "let's",
-   "start": 27.28,
-   "end": 27.52
+   "start": 26.8,
+   "end": 27.11
   },
   {
    "w": "begin",
-   "start": 27.52,
-   "end": 28.08
+   "start": 27.11,
+   "end": 27.69
   },
   {
    "w": "in",
-   "start": 28.08,
-   "end": 28.24
-  },
-  {
-   "w": "in",
-   "start": 28.33,
-   "end": 28.36
+   "start": 27.69,
+   "end": 27.74
   },
   {
    "w": "the",
-   "start": 28.36,
-   "end": 28.61
+   "start": 27.74,
+   "end": 27.84
   },
   {
    "w": "name",
-   "start": 28.61,
-   "end": 28.77
+   "start": 27.84,
+   "end": 28
   },
   {
    "w": "of",
-   "start": 28.77,
-   "end": 28.91
+   "start": 28,
+   "end": 28.22
   },
   {
    "w": "the",
-   "start": 28.91,
-   "end": 29.07
+   "start": 28.22,
+   "end": 28.32
   },
   {
-   "w": "Father",
-   "start": 29.07,
+   "w": "the",
+   "start": 28.41,
+   "end": 28.52
+  },
+  {
+   "w": "Father,",
+   "start": 28.52,
+   "end": 29.04
+  },
+  {
+   "w": "and",
+   "start": 29.04,
+   "end": 29.24
+  },
+  {
+   "w": "of",
+   "start": 29.24,
    "end": 29.44
   },
   {
-   "w": "and",
+   "w": "the",
    "start": 29.44,
-   "end": 29.75
+   "end": 29.57
   },
   {
-   "w": "of",
-   "start": 29.75,
-   "end": 29.95
-  },
-  {
-   "w": "the",
-   "start": 29.95,
-   "end": 30.26
-  },
-  {
-   "w": "Son",
-   "start": 30.26,
-   "end": 30.69
+   "w": "Son,",
+   "start": 29.57,
+   "end": 29.92
   },
   {
    "w": "and",
-   "start": 30.69,
-   "end": 30.86
+   "start": 29.92,
+   "end": 30.09
   },
   {
    "w": "of",
-   "start": 30.86,
-   "end": 30.89
+   "start": 30.09,
+   "end": 30.2
   },
   {
    "w": "the",
-   "start": 30.89,
-   "end": 31.03
+   "start": 30.2,
+   "end": 30.37
   },
   {
    "w": "Holy",
-   "start": 31.03,
-   "end": 31.32
+   "start": 30.37,
+   "end": 30.95
   },
   {
    "w": "Spirit.",
-   "start": 31.32,
-   "end": 31.82
+   "start": 30.95,
+   "end": 31.16
   }
  ]
 }

@@ -1,6 +1,6 @@
 # Quote-anchored lesson. See courses/what-is-the-pope/01-what-is-the-pope
 # for a complete example.
-status: draft
+status: reviewed
 course: byzantine-catholic-basics
 number: 1
 # New address; the old lesson (/course/what-is-the-byzantine-catholic-church/) is still live.
@@ -28,12 +28,12 @@ sources:
 
 intro:
   text: >-
-    What is the Byzantine Catholic Church? Why do they take communion with a
+    What is the Byzantine Catholic Rite? Why do they take communion with a
     spoon and why does their liturgy look so different? Well, the Byzantine
-    Catholic Church is a family of Eastern Churches that share the Byzantine
+    Catholic Rite is a family of Eastern Churches that share the Byzantine
     tradition. They include Ruthenians, Melkites, Ukrainian Catholics and many
     more. But before we get ahead of ourselves, let's get a basic introduction
-    to the Byzantine Catholic Church with this lesson. I'm your host Shalone
+    to the Byzantine Catholic Rite with this lesson. I'm your host Shalone
     Cason and let's begin in the name of the Father and of the Son and of the
     Holy Spirit.
   notes:
@@ -47,12 +47,12 @@ intro:
   scenes:
     - type: title
     - type: union
-      center: Byzantine Catholic Church
+      center: Byzantine Catholic Rite
       items:
         - Ruthenian
         - Melkite
         - Ukrainian
-        - Greek Catholic
+        - Many more...
     - type: host         # your photo and name, when you say "I'm your host"
       at: I'm your host
     - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
@@ -208,21 +208,15 @@ points:
       cite: Christ – Our Pascha 291
       highlight: successor of the apostle Peter
     text: >-
-      So what is the Byzantine Rite? It is the prayers, icons and customs
-      that grew in Antioch and took their shape in Constantinople. About
-      fourteen Eastern Catholic Churches share it, each in full communion
-      with the Pope, just like the Latin Church. In America, "Byzantine
-      Catholic Church" usually names one of them, the Ruthenian Church.
-      Because all of them are one Catholic Church, a Byzantine Catholic can
+      So what is the Byzantine Rite? It is the prayers, icons and customs that
+      grew in Antioch and took their shape in Constantinople. About fourteen
+      Eastern Catholic Churches share it, each in full communion with the
+      Pope, just like the Latin Church. In America, "Byzantine Catholic
+      Church" usually refers to the Ruthenian Church specifically. Because all
+      of these churches are one Catholic Church, a Byzantine Catholic can
       receive Communion at a Roman Catholic Mass, and a Roman Catholic can
       receive at a Byzantine Divine Liturgy.
     visuals:
-      - type: map
-        region: mediterranean
-        places: [Rome, Constantinople, Antioch, Jerusalem]
-        routes: [[Antioch, Rome]]
-        highlight: Rome
-        caption: Eastern in worship, Catholic in communion
       - type: partners
         left:
           title: Byzantine
@@ -235,6 +229,12 @@ points:
           items:
             - { icon: key-round, label: The Pope }
         link: In full communion
+      - type: titles
+        items:
+          - latin: Byzantine Catholic Church
+            english: ""
+          - latin: refers to Ruthenian Catholics in the US
+            english: ""
       - type: compare
         emphasis: none
         left: { kicker: Eastern, title: Spoon and chalice, note: The Divine Liturgy, icon: chalice-spoon }
@@ -254,7 +254,7 @@ points:
 
 outro:
   text: >-
-    And that is your intro to the Byzantine Catholic Church in a nutshell. It
+    And that is your intro to the Byzantine Catholic Rite in a nutshell. It
     started in Antioch and grew into a family of self-governing Churches in
     communion with Rome. Even though their worship is somewhat different than
     Roman Catholics, we share the same faith and follow the Pope. Thanks for
