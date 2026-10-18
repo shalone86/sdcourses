@@ -30,6 +30,11 @@ HANDOFF.md.**
 - Every intro opens the same way: `title`, then `host` (her photo) at "I'm your
   host", then `trinity` at "in the name of the Father" (templates/lesson.yml has it).
 - Don't state contested history more confidently than the sources do.
+- Kids style: `style: kids` in course.yml (or a lesson.yml) gives bright
+  colors, the rounded Fredoka font, bouncing shapes, and scenes and items
+  snapped to the music's beat (`scripts/beats.mjs`, cached as
+  `music/<track>.beats.json`). The Timing tab shows the beats as dots and
+  snaps drags to them.
 - Maps can highlight `areas:` (a country name, or an approximate empire from
   `video/data/empires.ts`; those show "Borders approximate"). Add empires there.
 

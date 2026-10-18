@@ -22,6 +22,7 @@ export type LessonProps = {
   credit?: string;
   author?: string;
   hostPhoto?: string | null; // path relative to video/public
-  music?: {src: string; underVoice: number; between: number; credit?: string} | null;
+  music?: {src: string; underVoice: number; between: number; credit?: string; bpm?: number; beats?: number[]} | null;
+  style?: 'classic' | 'kids'; // kids: bright colors, rounded font, motion on the music's beat (beats: frames)
   segments: Segment[];
 };

@@ -5,6 +5,7 @@ import YAML from 'yaml';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
+import {detectBeats} from './beats.mjs';
 import {phraseSpan, phraseTime, transcribe, trimVoice, whisperAvailable} from './voice.mjs';
 
 const FPS = 30;
@@ -85,6 +86,24 @@ export function prepare(arg) {
     music = {src: path.posix.join(id, path.basename(dest)), underVoice: musicCfg.under_voice ?? 0.05, between: musicCfg.between ?? 0.16, credit: musicCfg.credit ?? ''};
   }
 
+  // Kids style (course.yml or lesson.yml `style: kids`): bright look, and things
+  // land on the music's beat. The music loops from frame 0, so its beats repeat.
+  const style = lesson.style ?? course.style ?? 'classic';
+  if (style === 'kids' && music) {
+    const b = detectBeats(path.resolve(ROOT, musicCfg.file));
+    const total = out.reduce((n, sg) => n + sg.durationInFrames, 0);
+    const beats = [];
+    for (let loop = 0; loop * b.duration * FPS < total; loop++) {
+      for (const t of b.beats) {
+        const f = Math.round((loop * b.duration + t) * FPS);
+        if (f < total) beats.push(f);
+      }
+    }
+    music.bpm = b.bpm;
+    music.beats = beats;
+    snapToBeats(out, beats);
+  }
+
   const props = {
     courseTitle: course.title,
     number: lesson.number,
@@ -94,6 +113,7 @@ export function prepare(arg) {
     author: site.author,
     hostPhoto,
     music,
+    style,
     segments: out,
   };
   // Hand-tuned timing from the studio's Timing tab wins over the automatic timing.
@@ -227,6 +247,33 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
     if (shift < 25) return scene;
     return {...scene, from: scene.from + shift, cues: Object.fromEntries(Object.entries(c).map(([k, v]) => [k, Math.max(4, v - shift)]))};
   });
+}
+
+/**
+ * Kids style: move scene starts and item cues onto the nearest beat (at most
+ * a quarter second away), so pictures pop in time with the music. Hand-tuned
+ * timing from the studio is applied afterwards and is left where she put it.
+ */
+function snapToBeats(segments, beats) {
+  const near = (f) => {
+    let lo = 0, hi = beats.length - 1;
+    while (lo < hi) { const m = (lo + hi) >> 1; if (beats[m] < f) lo = m + 1; else hi = m; }
+    const cand = [beats[lo - 1], beats[lo]].filter((x) => x !== undefined);
+    const best = cand.reduce((a, c) => (Math.abs(c - f) < Math.abs(a - f) ? c : a), cand[0]);
+    return Math.abs(best - f) <= 8 ? best : f;
+  };
+  let at = 0;
+  for (const seg of segments) {
+    for (const sc of seg.scenes) {
+      const oldFrom = sc.from;
+      if (typeof sc.from === 'number' && sc.from > 0) sc.from = Math.max(0, near(at + sc.from) - at);
+      const from = sc.from ?? 0;
+      for (const [k, v] of Object.entries(sc.cues ?? {})) sc.cues[k] = Math.max(4, near(at + (oldFrom ?? 0) + v) - at - from);
+    }
+    for (let i = 1; i < seg.scenes.length; i++) if (typeof seg.scenes[i].from === 'number') seg.scenes[i].from = Math.max(seg.scenes[i].from, (seg.scenes[i - 1].from ?? 0) + 10);
+    if (seg.kind === 'point') seg.headingFrames = seg.scenes[0]?.from ?? seg.headingFrames;
+    at += seg.durationInFrames;
+  }
 }
 
 /** timing.yml next to lesson.yml: {<section>: {scenes: {<i>: {start, cues: {<key>: seconds}}}}}, in seconds into the recording. */

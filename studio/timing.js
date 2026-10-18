@@ -143,7 +143,14 @@
       for (let t = 0; s.audioOffsetInFrames + t * FPS < s.durationInFrames; t++) {
         ruler.append(h('span', {class: 'tl-tick' + (t % 5 ? '' : ' major'), style: {left: x(s.audioOffsetInFrames + t * FPS) + 'px'}, text: t % 5 ? '' : fmt(t)}));
       }
+      // Kids style: the music's beats as dots; dragged items snap to them.
+      const beats = (T.props.style === 'kids' && T.props.music?.beats || []).map((b) => b - segStart(T.seg)).filter((b) => b >= 0 && b < s.durationInFrames);
+      for (const b of beats) ruler.append(h('span', {class: 'tl-beat', style: {left: x(b) + 'px'}}));
       wrap.append(ruler);
+      const snap = (f) => {
+        const b = beats.reduce((a, c) => (a == null || Math.abs(c - f) < Math.abs(a - f) ? c : a), null);
+        return b != null && Math.abs(b - f) <= 5 ? b : f;
+      };
 
       // What she said, on time
       const wr = h('div', {class: 'tl-words'});
@@ -193,7 +200,7 @@
           const left0 = parseFloat(node.style.left);
           let f = startFrame;
           const move = (ev) => {
-            f = Math.max(0, Math.min(s.durationInFrames - 5, startFrame + (ev.clientX - x0) / px));
+            f = snap(Math.max(0, Math.min(s.durationInFrames - 5, startFrame + (ev.clientX - x0) / px)));
             node.style.left = left0 + (f - startFrame) * px + 'px';
             T.player.seek(segStart(T.seg) + f);
           };

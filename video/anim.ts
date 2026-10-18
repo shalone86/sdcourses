@@ -1,4 +1,5 @@
 import {Easing, interpolate, spring} from 'remotion';
+import {theme} from './theme';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 
@@ -8,12 +9,18 @@ export const ramp = (frame: number, start: number, end: number) =>
 
 /** Fade + rise for an element appearing at `start`. */
 export const enter = (frame: number, start: number, distance = 24) => {
+  if (theme.kids) {
+    // Kids style: a springy hop in, overshooting a little.
+    const p = spring({frame: frame - start, fps: 30, config: {damping: 9, stiffness: 160}});
+    return {opacity: Math.min(1, p * 1.6), transform: `translateY(${(1 - p) * distance * 2}px) scale(${0.6 + 0.4 * p})`,
+      transformBox: 'fill-box', transformOrigin: 'center'} as const;
+  }
   const p = ramp(frame, start, start + 18);
   return {opacity: p, transform: `translateY(${(1 - p) * distance}px)`};
 };
 
 export const pop = (frame: number, start: number, fps: number) =>
-  spring({frame: frame - start, fps, config: {damping: 14, stiffness: 120}});
+  spring({frame: frame - start, fps, config: theme.kids ? {damping: 8, stiffness: 170} : {damping: 14, stiffness: 120}});
 
 /** stroke-dashoffset style for SVG elements with pathLength={1}. */
 export const draw = (p: number) => ({strokeDasharray: 1, strokeDashoffset: 1 - p});

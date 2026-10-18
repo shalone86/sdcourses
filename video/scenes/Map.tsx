@@ -89,7 +89,7 @@ export const MapView: React.FC<SceneProps<MapScene>> = ({scene, duration}) => {
   return (
     <Center>
       <div style={{position: 'relative', width: W, height: H}}>
-        <svg width={W} height={H} style={{position: 'absolute', inset: 0, borderRadius: 18, overflow: 'hidden', background: SEA, opacity: ramp(f, 0, 12)}}>
+        <svg width={W} height={H} style={{position: 'absolute', inset: 0, borderRadius: 18, overflow: 'hidden', background: (theme.kids ? '#9FDFF0' : SEA), opacity: ramp(f, 0, 12)}}>
           <defs><clipPath id={clipId}><path d={pathD} /></clipPath></defs>
           <path d={pathD} fill={theme.card} stroke={theme.rule} strokeWidth={1.5} />
           {/* Highlighted areas, clipped to the land so coasts stay crisp */}
