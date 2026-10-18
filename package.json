@@ -19,7 +19,9 @@
     "new": "node scripts/new.mjs",
     "studio-export": "node scripts/studio.mjs export",
     "studio-import": "node scripts/studio.mjs import",
-    "split": "node scripts/split-audio.mjs"
+    "split": "node scripts/split-audio.mjs",
+    "studio-autostart": "cp studio/launchd/com.sdcourses.studio.plist ~/Library/LaunchAgents/ && (launchctl bootout gui/$(id -u)/com.sdcourses.studio 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.sdcourses.studio.plist)",
+    "studio-restart": "launchctl kickstart -k gui/$(id -u)/com.sdcourses.studio"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.530",

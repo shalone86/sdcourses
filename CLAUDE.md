@@ -64,9 +64,12 @@ into chat; she types it into the file herself.
 
 A local page on her Mac: `npm start` (or double-click `Lesson Studio.command`)
 runs `studio/server.mjs` and opens http://localhost:5178 (`studio/index.html`).
-It must be local: browsers only allow the microphone on localhost. When she
-wants to work, start it for her in the background; if it's already running,
-`npm start` just opens the page.
+It must be local: browsers only allow the microphone on localhost. It runs
+as a login background item (`studio/launchd/com.sdcourses.studio.plist`,
+installed with `npm run studio-autostart`): it starts at login and restarts
+if it stops; logs in `~/Library/Logs/sdcourses-studio.log`. After changing
+studio or script code, `npm run studio-restart` (don't start a second copy).
+If it's already running, `npm start` just opens the page.
 
 - **Script & recording:** one slide per section. Her edits are saved straight
   into lesson.yml (`applyEdits` in `scripts/studio.mjs` splices only the
