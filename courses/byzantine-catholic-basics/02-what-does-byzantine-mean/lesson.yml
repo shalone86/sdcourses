@@ -1,6 +1,6 @@
 # Quote-anchored lesson. See courses/what-is-the-pope/01-what-is-the-pope
 # for a complete example.
-status: draft
+status: reviewed
 course: byzantine-catholic-basics
 number: 2
 slug: what-does-byzantine-mean
@@ -25,13 +25,27 @@ sources:
     url: https://www.vatican.va/archive/ENG0015/__P29.HTM
 
 intro:
-  text: ""               # Shalone writes this
+  text: >-
+    What does Byzantine mean? Well, it was the name of a city, Byzantium, that
+    got renamed to Constantinople, and then it got renamed again to Istanbul!
+    But there's much more to the name Byzantine that where a city was located.
+    Let's find out more with this lesson! I'm your host Shalone Cason and
+    let's begin in the name of the Father and of the Son and of the Holy
+    Spirit.
   notes:
     - Byzantine Catholics today live across the world; many in America came from the Carpathian Mountains (Ruthenians) and from Ukraine.
     - "Background (Wikipedia, not quoted): the Ruthenian Church's own union with Rome was the Union of Uzhhorod, 1646."
     - This lesson answers the question in five points, from a Greek colony to today.
   scenes:
     - type: title
+    - type: timeline
+      items:
+        - year: Byzantium
+          label: ""
+        - year: Constantinople
+          label: ""
+        - year: Istanbul
+          label: ""
     - type: host         # your photo and name, when you say "I'm your host"
       at: I'm your host
     - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
@@ -204,6 +218,12 @@ points:
         left: { kicker: Orthodox, title: Same liturgy, note: Not in communion with Rome, icon: dome }
         right: { kicker: Byzantine Catholic, title: Same liturgy, note: In full communion with Rome, icon: dome }
         emphasis: right
+      - type: union
+        center: Byzantine
+        items:
+          - City
+          - Empire
+          - Worship
     quiz:
       type: truefalse
       question: Byzantine Catholics and Orthodox Christians pray the same Byzantine liturgies.
@@ -214,7 +234,14 @@ points:
         (CCC 838).
 
 outro:
-  text: ""               # Shalone writes this
+  text: >-
+    So, what does Byzantine mean in a nutshell? It was a city named for Byzas
+    and became Constantinople under the Emperor Constantine. It is also the
+    name for a Liturgical Rite that started near there and spread all across
+    the Eastern Christan Church. Many Byzantine Rite Christians are in
+    communion with Rome, but others, like Eastern Orthodox Christians aren't
+    in full communion. I've been your host, Shalone, and Thanks for learning
+    with us and until next time, stay holy my friends.
   notes:
     - "Recap: a city named for Byzas · Constantine's new capital · a rite that spread across the East · communion with Rome through the split · close to the Orthodox."
     - "Next lesson: Inside a Byzantine Church."

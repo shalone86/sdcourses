@@ -1,0 +1,560 @@
+{
+ "stamp": "2:4608078:1792288838545",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.13,
+   "end": 0.21
+  },
+  {
+   "w": "Byzantine",
+   "start": 0.21,
+   "end": 0.85
+  },
+  {
+   "w": "Catholic",
+   "start": 0.85,
+   "end": 1.37
+  },
+  {
+   "w": "Catechism",
+   "start": 1.37,
+   "end": 2.06
+  },
+  {
+   "w": "tells",
+   "start": 2.06,
+   "end": 2.29
+  },
+  {
+   "w": "how",
+   "start": 2.29,
+   "end": 2.49
+  },
+  {
+   "w": "the",
+   "start": 2.49,
+   "end": 2.7
+  },
+  {
+   "w": "Church",
+   "start": 2.7,
+   "end": 3.11
+  },
+  {
+   "w": "of",
+   "start": 3.11,
+   "end": 3.23
+  },
+  {
+   "w": "Kyiv",
+   "start": 3.23,
+   "end": 3.68
+  },
+  {
+   "w": "held",
+   "start": 3.68,
+   "end": 3.92
+  },
+  {
+   "w": "to",
+   "start": 3.92,
+   "end": 4.03
+  },
+  {
+   "w": "both",
+   "start": 4.03,
+   "end": 4.37
+  },
+  {
+   "w": "East",
+   "start": 4.37,
+   "end": 4.66
+  },
+  {
+   "w": "and",
+   "start": 4.66,
+   "end": 4.84
+  },
+  {
+   "w": "West.",
+   "start": 4.84,
+   "end": 5.76
+  },
+  {
+   "w": "Born",
+   "start": 5.76,
+   "end": 6.06
+  },
+  {
+   "w": "in",
+   "start": 6.06,
+   "end": 6.21
+  },
+  {
+   "w": "the",
+   "start": 6.21,
+   "end": 6.43
+  },
+  {
+   "w": "baptism",
+   "start": 6.43,
+   "end": 6.95
+  },
+  {
+   "w": "of",
+   "start": 6.95,
+   "end": 7.13
+  },
+  {
+   "w": "Saint",
+   "start": 7.13,
+   "end": 7.47
+  },
+  {
+   "w": "Volodymyr,",
+   "start": 7.47,
+   "end": 8.32
+  },
+  {
+   "w": "the",
+   "start": 8.32,
+   "end": 8.55
+  },
+  {
+   "w": "Metropolitanate",
+   "start": 8.55,
+   "end": 9.68
+  },
+  {
+   "w": "of",
+   "start": 9.68,
+   "end": 9.87
+  },
+  {
+   "w": "Kyiv",
+   "start": 9.87,
+   "end": 10.22
+  },
+  {
+   "w": "became",
+   "start": 10.22,
+   "end": 10.5
+  },
+  {
+   "w": "the",
+   "start": 10.5,
+   "end": 10.64
+  },
+  {
+   "w": "Daughter-Church",
+   "start": 10.64,
+   "end": 11.6
+  },
+  {
+   "w": "of",
+   "start": 11.6,
+   "end": 11.73
+  },
+  {
+   "w": "the",
+   "start": 11.73,
+   "end": 11.93
+  },
+  {
+   "w": "Church",
+   "start": 11.93,
+   "end": 12.34
+  },
+  {
+   "w": "of",
+   "start": 12.34,
+   "end": 12.47
+  },
+  {
+   "w": "Constantinople,",
+   "start": 12.47,
+   "end": 13.67
+  },
+  {
+   "w": "and",
+   "start": 13.67,
+   "end": 13.74
+  },
+  {
+   "w": "through",
+   "start": 13.74,
+   "end": 14.21
+  },
+  {
+   "w": "her",
+   "start": 14.21,
+   "end": 14.41
+  },
+  {
+   "w": "remained",
+   "start": 14.41,
+   "end": 14.95
+  },
+  {
+   "w": "in",
+   "start": 14.95,
+   "end": 15.28
+  },
+  {
+   "w": "communion",
+   "start": 15.28,
+   "end": 15.71
+  },
+  {
+   "w": "with",
+   "start": 15.71,
+   "end": 15.97
+  },
+  {
+   "w": "the",
+   "start": 15.97,
+   "end": 16.16
+  },
+  {
+   "w": "Church",
+   "start": 16.16,
+   "end": 16.57
+  },
+  {
+   "w": "of",
+   "start": 16.57,
+   "end": 16.73
+  },
+  {
+   "w": "Rome.",
+   "start": 16.73,
+   "end": 17.68
+  },
+  {
+   "w": "Over",
+   "start": 17.68,
+   "end": 17.97
+  },
+  {
+   "w": "the",
+   "start": 17.97,
+   "end": 18.18
+  },
+  {
+   "w": "centuries,",
+   "start": 18.18,
+   "end": 19
+  },
+  {
+   "w": "Rome",
+   "start": 19,
+   "end": 19.3
+  },
+  {
+   "w": "and",
+   "start": 19.3,
+   "end": 19.47
+  },
+  {
+   "w": "Constantinople",
+   "start": 19.47,
+   "end": 20.46
+  },
+  {
+   "w": "drifted",
+   "start": 20.46,
+   "end": 20.96
+  },
+  {
+   "w": "apart,",
+   "start": 20.96,
+   "end": 21.6
+  },
+  {
+   "w": "and",
+   "start": 21.6,
+   "end": 21.71
+  },
+  {
+   "w": "in",
+   "start": 21.71,
+   "end": 21.84
+  },
+  {
+   "w": "1054",
+   "start": 21.84,
+   "end": 22.64
+  },
+  {
+   "w": "their",
+   "start": 22.64,
+   "end": 22.99
+  },
+  {
+   "w": "break",
+   "start": 22.99,
+   "end": 23.53
+  },
+  {
+   "w": "became",
+   "start": 23.53,
+   "end": 23.84
+  },
+  {
+   "w": "open.",
+   "start": 23.84,
+   "end": 24.48
+  },
+  {
+   "w": "Most",
+   "start": 24.61,
+   "end": 24.75
+  },
+  {
+   "w": "of",
+   "start": 24.75,
+   "end": 24.88
+  },
+  {
+   "w": "the",
+   "start": 24.88,
+   "end": 25.08
+  },
+  {
+   "w": "Byzantine",
+   "start": 25.08,
+   "end": 25.69
+  },
+  {
+   "w": "Churches",
+   "start": 25.69,
+   "end": 26.25
+  },
+  {
+   "w": "went",
+   "start": 26.25,
+   "end": 26.54
+  },
+  {
+   "w": "with",
+   "start": 26.54,
+   "end": 26.77
+  },
+  {
+   "w": "Constantinople",
+   "start": 26.77,
+   "end": 27.71
+  },
+  {
+   "w": "and",
+   "start": 27.71,
+   "end": 28.11
+  },
+  {
+   "w": "are",
+   "start": 28.11,
+   "end": 28.16
+  },
+  {
+   "w": "today",
+   "start": 28.16,
+   "end": 28.45
+  },
+  {
+   "w": "the",
+   "start": 28.45,
+   "end": 28.65
+  },
+  {
+   "w": "Orthodox",
+   "start": 28.65,
+   "end": 29.28
+  },
+  {
+   "w": "Churches.",
+   "start": 29.28,
+   "end": 30
+  },
+  {
+   "w": "In",
+   "start": 30,
+   "end": 30.16
+  },
+  {
+   "w": "1596",
+   "start": 30.16,
+   "end": 31.13
+  },
+  {
+   "w": "at",
+   "start": 31.13,
+   "end": 31.32
+  },
+  {
+   "w": "the",
+   "start": 31.32,
+   "end": 31.5
+  },
+  {
+   "w": "Union",
+   "start": 31.5,
+   "end": 31.89
+  },
+  {
+   "w": "of",
+   "start": 31.89,
+   "end": 32.06
+  },
+  {
+   "w": "Brest,",
+   "start": 32.06,
+   "end": 32.7
+  },
+  {
+   "w": "the",
+   "start": 32.7,
+   "end": 32.89
+  },
+  {
+   "w": "Church",
+   "start": 32.89,
+   "end": 33.57
+  },
+  {
+   "w": "of",
+   "start": 33.57,
+   "end": 33.68
+  },
+  {
+   "w": "Kyiv",
+   "start": 33.68,
+   "end": 33.92
+  },
+  {
+   "w": "reconfirmed",
+   "start": 33.92,
+   "end": 34.77
+  },
+  {
+   "w": "its",
+   "start": 34.77,
+   "end": 35.05
+  },
+  {
+   "w": "communion",
+   "start": 35.05,
+   "end": 35.62
+  },
+  {
+   "w": "with",
+   "start": 35.62,
+   "end": 35.98
+  },
+  {
+   "w": "Rome,",
+   "start": 35.98,
+   "end": 36.37
+  },
+  {
+   "w": "while",
+   "start": 36.37,
+   "end": 36.74
+  },
+  {
+   "w": "keeping",
+   "start": 36.74,
+   "end": 37.26
+  },
+  {
+   "w": "its",
+   "start": 37.26,
+   "end": 37.6
+  },
+  {
+   "w": "Byzantine",
+   "start": 37.6,
+   "end": 38.15
+  },
+  {
+   "w": "tradition.",
+   "start": 38.15,
+   "end": 39.12
+  },
+  {
+   "w": "Other",
+   "start": 39.12,
+   "end": 39.41
+  },
+  {
+   "w": "Byzantine",
+   "start": 39.41,
+   "end": 39.97
+  },
+  {
+   "w": "communities,",
+   "start": 39.97,
+   "end": 40.74
+  },
+  {
+   "w": "including",
+   "start": 40.74,
+   "end": 41.22
+  },
+  {
+   "w": "the",
+   "start": 41.22,
+   "end": 41.39
+  },
+  {
+   "w": "Ruthenians,",
+   "start": 41.39,
+   "end": 42.23
+  },
+  {
+   "w": "did",
+   "start": 42.23,
+   "end": 42.4
+  },
+  {
+   "w": "the",
+   "start": 42.4,
+   "end": 42.8
+  },
+  {
+   "w": "same.",
+   "start": 42.8,
+   "end": 43.2
+  },
+  {
+   "w": "Their",
+   "start": 43.2,
+   "end": 43.58
+  },
+  {
+   "w": "descendants",
+   "start": 43.58,
+   "end": 44.52
+  },
+  {
+   "w": "are",
+   "start": 44.52,
+   "end": 44.67
+  },
+  {
+   "w": "the",
+   "start": 44.67,
+   "end": 44.9
+  },
+  {
+   "w": "Byzantine",
+   "start": 44.9,
+   "end": 45.59
+  },
+  {
+   "w": "Catholics.",
+   "start": 45.59,
+   "end": 46.64
+  }
+ ]
+}

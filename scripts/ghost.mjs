@@ -47,10 +47,12 @@ export function ghost() {
       return (res.media ?? res.images)[0].url;
     },
     /** Create or update a post/page by slug, always as a draft unless already live (then refuse). */
-    async saveDraft(resource, doc) {
+    async saveDraft(resource, doc, {updateLive = false} = {}) {
       const cur = await find(resource, doc.slug);
-      if (cur && cur.status !== 'draft') throw new Error(`"${doc.slug}" is already ${cur.status}; refusing to overwrite it. Edit it in Ghost or use a new slug.`);
-      const body = {[resource]: [{...doc, status: 'draft', ...(cur ? {updated_at: cur.updated_at} : {})}]};
+      const live = cur && cur.status !== 'draft';
+      if (live && !updateLive) throw new Error(`"${doc.slug}" is already ${cur.status}; refusing to overwrite it. Edit it in Ghost or use a new slug (or, when Shalone asks, npm run publish -- <lesson> --update-live).`);
+      // A live post being updated stays published; everything else is saved as a draft.
+      const body = {[resource]: [{...doc, ...(live ? {} : {status: 'draft'}), ...(cur ? {updated_at: cur.updated_at} : {})}]};
       const res = cur ? await call('PUT', `/${resource}/${cur.id}/?source=html`, body) : await call('POST', `/${resource}/?source=html`, body);
       const saved = res[resource][0];
       return {...saved, editorUrl: `${site}/ghost/#/editor/${resource === 'pages' ? 'page' : 'post'}/${saved.id}`};

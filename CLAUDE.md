@@ -30,6 +30,8 @@ HANDOFF.md.**
 - Every intro opens the same way: `title`, then `host` (her photo) at "I'm your
   host", then `trinity` at "in the name of the Father" (templates/lesson.yml has it).
 - Don't state contested history more confidently than the sources do.
+- Maps can highlight `areas:` (a country name, or an approximate empire from
+  `video/data/empires.ts`; those show "Borders approximate"). Add empires there.
 
 ## Commands (all take `<course>/<lesson-folder>`)
 
@@ -42,7 +44,7 @@ HANDOFF.md.**
 | `npm run prepare-lesson` | timing + `recording-script.md` |
 | `npm run render` | `lesson.mp4` + `poster.jpg` (several minutes; run in background) |
 | `npm run post` | `post.html` + `preview.html` |
-| `npm run publish` | upload video, save Ghost draft post (gated) |
+| `npm run publish` | upload video, save Ghost draft post (gated); `--update-live` replaces an already published lesson in place, only when she asks |
 | `npm run publish-course -- <course>` | create/update the course tag in Ghost |
 | `npm run publish-page -- <name>` | save `pages/<name>.md` as a Ghost draft page |
 | `npm run studio-export` / `studio-import` | sync a lesson with the Lesson Studio |

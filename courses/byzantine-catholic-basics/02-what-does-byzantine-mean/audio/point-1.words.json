@@ -1,0 +1,465 @@
+{
+ "stamp": "2:4262478:1792288509617",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.28
+  },
+  {
+   "w": "Catholic",
+   "start": 0.28,
+   "end": 0.98
+  },
+  {
+   "w": "Encyclopedia",
+   "start": 0.98,
+   "end": 1.94
+  },
+  {
+   "w": "tells",
+   "start": 1.94,
+   "end": 2.33
+  },
+  {
+   "w": "where",
+   "start": 2.33,
+   "end": 2.73
+  },
+  {
+   "w": "the",
+   "start": 2.73,
+   "end": 2.98
+  },
+  {
+   "w": "name",
+   "start": 2.98,
+   "end": 3.39
+  },
+  {
+   "w": "Byzantine",
+   "start": 3.39,
+   "end": 4.06
+  },
+  {
+   "w": "comes",
+   "start": 4.06,
+   "end": 4.46
+  },
+  {
+   "w": "from.",
+   "start": 4.46,
+   "end": 5.12
+  },
+  {
+   "w": "The",
+   "start": 5.12,
+   "end": 5.41
+  },
+  {
+   "w": "chief",
+   "start": 5.41,
+   "end": 5.88
+  },
+  {
+   "w": "of",
+   "start": 5.88,
+   "end": 6.1
+  },
+  {
+   "w": "the",
+   "start": 6.1,
+   "end": 6.38
+  },
+  {
+   "w": "Megarian",
+   "start": 6.38,
+   "end": 7.14
+  },
+  {
+   "w": "expedition",
+   "start": 7.14,
+   "end": 8.11
+  },
+  {
+   "w": "was",
+   "start": 8.11,
+   "end": 8.51
+  },
+  {
+   "w": "Byzas,",
+   "start": 8.51,
+   "end": 9.12
+  },
+  {
+   "w": "after",
+   "start": 9.12,
+   "end": 9.53
+  },
+  {
+   "w": "whom",
+   "start": 9.53,
+   "end": 9.81
+  },
+  {
+   "w": "the",
+   "start": 9.81,
+   "end": 10.22
+  },
+  {
+   "w": "city",
+   "start": 10.22,
+   "end": 10.44
+  },
+  {
+   "w": "was",
+   "start": 10.44,
+   "end": 10.68
+  },
+  {
+   "w": "naturally",
+   "start": 10.68,
+   "end": 11.44
+  },
+  {
+   "w": "called",
+   "start": 11.44,
+   "end": 11.88
+  },
+  {
+   "w": "Byzantion,",
+   "start": 11.88,
+   "end": 13.88
+  },
+  {
+   "w": "later",
+   "start": 13.88,
+   "end": 14.6
+  },
+  {
+   "w": "Byzantium.",
+   "start": 14.6,
+   "end": 16.32
+  },
+  {
+   "w": "Byzantium",
+   "start": 16.32,
+   "end": 16.99
+  },
+  {
+   "w": "began",
+   "start": 16.99,
+   "end": 17.38
+  },
+  {
+   "w": "as",
+   "start": 17.38,
+   "end": 17.57
+  },
+  {
+   "w": "a",
+   "start": 17.57,
+   "end": 17.59
+  },
+  {
+   "w": "Greek",
+   "start": 17.59,
+   "end": 17.97
+  },
+  {
+   "w": "colony",
+   "start": 17.97,
+   "end": 18.42
+  },
+  {
+   "w": "on",
+   "start": 18.42,
+   "end": 18.61
+  },
+  {
+   "w": "the",
+   "start": 18.61,
+   "end": 18.79
+  },
+  {
+   "w": "Bosphorus,",
+   "start": 18.79,
+   "end": 19.71
+  },
+  {
+   "w": "the",
+   "start": 19.71,
+   "end": 19.83
+  },
+  {
+   "w": "narrow",
+   "start": 19.83,
+   "end": 20.32
+  },
+  {
+   "w": "strait",
+   "start": 20.32,
+   "end": 20.73
+  },
+  {
+   "w": "where",
+   "start": 20.73,
+   "end": 21.42
+  },
+  {
+   "w": "Europe",
+   "start": 21.42,
+   "end": 21.66
+  },
+  {
+   "w": "meets",
+   "start": 21.66,
+   "end": 21.92
+  },
+  {
+   "w": "Asia,",
+   "start": 21.92,
+   "end": 22.54
+  },
+  {
+   "w": "about",
+   "start": 22.54,
+   "end": 23.06
+  },
+  {
+   "w": "650",
+   "start": 23.06,
+   "end": 24
+  },
+  {
+   "w": "years",
+   "start": 24,
+   "end": 24.52
+  },
+  {
+   "w": "before",
+   "start": 24.52,
+   "end": 25.32
+  },
+  {
+   "w": "Christ.",
+   "start": 25.32,
+   "end": 26.12
+  },
+  {
+   "w": "Its",
+   "start": 26.21,
+   "end": 26.4
+  },
+  {
+   "w": "position",
+   "start": 26.4,
+   "end": 27.1
+  },
+  {
+   "w": "made",
+   "start": 27.1,
+   "end": 27.41
+  },
+  {
+   "w": "it",
+   "start": 27.41,
+   "end": 27.58
+  },
+  {
+   "w": "a",
+   "start": 27.58,
+   "end": 27.66
+  },
+  {
+   "w": "natural",
+   "start": 27.66,
+   "end": 28.26
+  },
+  {
+   "w": "crossroads",
+   "start": 28.26,
+   "end": 29.12
+  },
+  {
+   "w": "for",
+   "start": 29.12,
+   "end": 29.51
+  },
+  {
+   "w": "trade",
+   "start": 29.51,
+   "end": 29.88
+  },
+  {
+   "w": "by",
+   "start": 29.88,
+   "end": 29.98
+  },
+  {
+   "w": "land",
+   "start": 29.98,
+   "end": 30.32
+  },
+  {
+   "w": "and",
+   "start": 30.32,
+   "end": 30.58
+  },
+  {
+   "w": "sea.",
+   "start": 30.58,
+   "end": 31.16
+  },
+  {
+   "w": "Centuries",
+   "start": 31.16,
+   "end": 31.93
+  },
+  {
+   "w": "later,",
+   "start": 31.93,
+   "end": 32.57
+  },
+  {
+   "w": "its",
+   "start": 32.57,
+   "end": 32.76
+  },
+  {
+   "w": "name",
+   "start": 32.76,
+   "end": 33.1
+  },
+  {
+   "w": "would",
+   "start": 33.1,
+   "end": 33.52
+  },
+  {
+   "w": "be",
+   "start": 33.52,
+   "end": 33.69
+  },
+  {
+   "w": "given",
+   "start": 33.69,
+   "end": 34.11
+  },
+  {
+   "w": "to",
+   "start": 34.11,
+   "end": 34.28
+  },
+  {
+   "w": "an",
+   "start": 34.28,
+   "end": 34.56
+  },
+  {
+   "w": "empire",
+   "start": 34.56,
+   "end": 34.96
+  },
+  {
+   "w": "and",
+   "start": 34.96,
+   "end": 35.21
+  },
+  {
+   "w": "art",
+   "start": 35.21,
+   "end": 35.52
+  },
+  {
+   "w": "and",
+   "start": 35.52,
+   "end": 35.69
+  },
+  {
+   "w": "a",
+   "start": 35.69,
+   "end": 36.21
+  },
+  {
+   "w": "whole",
+   "start": 36.21,
+   "end": 36.26
+  },
+  {
+   "w": "way",
+   "start": 36.26,
+   "end": 36.5
+  },
+  {
+   "w": "of",
+   "start": 36.5,
+   "end": 36.63
+  },
+  {
+   "w": "Christian",
+   "start": 36.63,
+   "end": 37.48
+  },
+  {
+   "w": "worship.",
+   "start": 37.48,
+   "end": 38.48
+  },
+  {
+   "w": "When",
+   "start": 38.48,
+   "end": 38.81
+  },
+  {
+   "w": "we",
+   "start": 38.81,
+   "end": 39.07
+  },
+  {
+   "w": "say",
+   "start": 39.07,
+   "end": 39.25
+  },
+  {
+   "w": "Byzantion,",
+   "start": 39.25,
+   "end": 40.13
+  },
+  {
+   "w": "we",
+   "start": 40.13,
+   "end": 40.3
+  },
+  {
+   "w": "are",
+   "start": 40.3,
+   "end": 40.55
+  },
+  {
+   "w": "pointing",
+   "start": 40.55,
+   "end": 41.22
+  },
+  {
+   "w": "back",
+   "start": 41.22,
+   "end": 41.55
+  },
+  {
+   "w": "to",
+   "start": 41.55,
+   "end": 41.87
+  },
+  {
+   "w": "this",
+   "start": 41.87,
+   "end": 42.05
+  },
+  {
+   "w": "city.",
+   "start": 42.05,
+   "end": 42.72
+  }
+ ]
+}

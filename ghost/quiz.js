@@ -118,7 +118,14 @@
       score.textContent = 'You got ' + right + ' of ' + data.questions.length + '.';
       var retry = el('button', 'cc-retry', 'Try again');
       retry.type = 'button';
-      retry.addEventListener('click', function () { render(root); });
+      retry.addEventListener('click', function () {
+        render(root);
+        // Back to the first question, not wherever the score was.
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        root.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'});
+        var first = root.querySelector('.cc-opt, .cc-input');
+        if (first) first.focus({preventScroll: true});
+      });
       score.appendChild(retry);
       var prev = store(key) || {};
       store(key, {best: Math.max(prev.best || 0, right), total: data.questions.length, at: Date.now()});

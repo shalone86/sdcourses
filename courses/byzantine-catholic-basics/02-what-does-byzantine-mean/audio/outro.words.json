@@ -1,0 +1,415 @@
+{
+ "stamp": "2:3047118:1792288928423",
+ "words": [
+  {
+   "w": "So,",
+   "start": 0.14,
+   "end": 0.32
+  },
+  {
+   "w": "what",
+   "start": 0.32,
+   "end": 0.65
+  },
+  {
+   "w": "does",
+   "start": 0.65,
+   "end": 0.98
+  },
+  {
+   "w": "Byzantine",
+   "start": 0.98,
+   "end": 1.73
+  },
+  {
+   "w": "mean",
+   "start": 1.73,
+   "end": 2.06
+  },
+  {
+   "w": "in",
+   "start": 2.06,
+   "end": 2.22
+  },
+  {
+   "w": "a",
+   "start": 2.22,
+   "end": 2.3
+  },
+  {
+   "w": "nut",
+   "start": 2.3,
+   "end": 2.54
+  },
+  {
+   "w": "shell?",
+   "start": 2.54,
+   "end": 3.28
+  },
+  {
+   "w": "It",
+   "start": 3.28,
+   "end": 3.42
+  },
+  {
+   "w": "was",
+   "start": 3.42,
+   "end": 3.64
+  },
+  {
+   "w": "a",
+   "start": 3.64,
+   "end": 3.73
+  },
+  {
+   "w": "city",
+   "start": 3.73,
+   "end": 4.04
+  },
+  {
+   "w": "named",
+   "start": 4.04,
+   "end": 4.37
+  },
+  {
+   "w": "for",
+   "start": 4.37,
+   "end": 4.67
+  },
+  {
+   "w": "Byzas",
+   "start": 4.67,
+   "end": 4.95
+  },
+  {
+   "w": "and",
+   "start": 4.95,
+   "end": 5.17
+  },
+  {
+   "w": "became",
+   "start": 5.17,
+   "end": 5.61
+  },
+  {
+   "w": "Constantinople",
+   "start": 5.61,
+   "end": 6.63
+  },
+  {
+   "w": "under",
+   "start": 6.63,
+   "end": 7
+  },
+  {
+   "w": "the",
+   "start": 7,
+   "end": 7.22
+  },
+  {
+   "w": "Emperor",
+   "start": 7.22,
+   "end": 7.84
+  },
+  {
+   "w": "Constantine.",
+   "start": 7.84,
+   "end": 9.08
+  },
+  {
+   "w": "It",
+   "start": 9.08,
+   "end": 9.25
+  },
+  {
+   "w": "is",
+   "start": 9.25,
+   "end": 9.36
+  },
+  {
+   "w": "also",
+   "start": 9.36,
+   "end": 9.64
+  },
+  {
+   "w": "the",
+   "start": 9.64,
+   "end": 9.85
+  },
+  {
+   "w": "name",
+   "start": 9.85,
+   "end": 10.13
+  },
+  {
+   "w": "for",
+   "start": 10.13,
+   "end": 10.34
+  },
+  {
+   "w": "a",
+   "start": 10.34,
+   "end": 10.46
+  },
+  {
+   "w": "Liturgical",
+   "start": 10.46,
+   "end": 11.14
+  },
+  {
+   "w": "Rite",
+   "start": 11.14,
+   "end": 11.39
+  },
+  {
+   "w": "that",
+   "start": 11.39,
+   "end": 11.67
+  },
+  {
+   "w": "started",
+   "start": 11.67,
+   "end": 12.32
+  },
+  {
+   "w": "near",
+   "start": 12.32,
+   "end": 12.44
+  },
+  {
+   "w": "there",
+   "start": 12.44,
+   "end": 12.79
+  },
+  {
+   "w": "and",
+   "start": 12.79,
+   "end": 13
+  },
+  {
+   "w": "spread",
+   "start": 13,
+   "end": 13.43
+  },
+  {
+   "w": "all",
+   "start": 13.43,
+   "end": 13.63
+  },
+  {
+   "w": "across",
+   "start": 13.63,
+   "end": 14.1
+  },
+  {
+   "w": "the",
+   "start": 14.1,
+   "end": 14.34
+  },
+  {
+   "w": "Eastern",
+   "start": 14.34,
+   "end": 14.9
+  },
+  {
+   "w": "Christian",
+   "start": 14.9,
+   "end": 15.61
+  },
+  {
+   "w": "Church.",
+   "start": 15.61,
+   "end": 16.34
+  },
+  {
+   "w": "Many",
+   "start": 16.34,
+   "end": 16.59
+  },
+  {
+   "w": "Byzantine",
+   "start": 16.59,
+   "end": 17.14
+  },
+  {
+   "w": "Rite",
+   "start": 17.14,
+   "end": 17.38
+  },
+  {
+   "w": "Christians",
+   "start": 17.38,
+   "end": 18
+  },
+  {
+   "w": "are",
+   "start": 18,
+   "end": 18.18
+  },
+  {
+   "w": "in",
+   "start": 18.18,
+   "end": 18.4
+  },
+  {
+   "w": "communion",
+   "start": 18.4,
+   "end": 18.85
+  },
+  {
+   "w": "with",
+   "start": 18.85,
+   "end": 19.1
+  },
+  {
+   "w": "Rome,",
+   "start": 19.1,
+   "end": 19.58
+  },
+  {
+   "w": "but",
+   "start": 19.58,
+   "end": 19.66
+  },
+  {
+   "w": "others,",
+   "start": 19.66,
+   "end": 20.15
+  },
+  {
+   "w": "like",
+   "start": 20.15,
+   "end": 20.4
+  },
+  {
+   "w": "Eastern",
+   "start": 20.4,
+   "end": 20.84
+  },
+  {
+   "w": "Orthodox",
+   "start": 20.84,
+   "end": 21.44
+  },
+  {
+   "w": "Christians,",
+   "start": 21.44,
+   "end": 22.38
+  },
+  {
+   "w": "aren't",
+   "start": 22.38,
+   "end": 22.85
+  },
+  {
+   "w": "in",
+   "start": 22.85,
+   "end": 23.01
+  },
+  {
+   "w": "full",
+   "start": 23.01,
+   "end": 23.33
+  },
+  {
+   "w": "communion.",
+   "start": 23.33,
+   "end": 24.32
+  },
+  {
+   "w": "I've",
+   "start": 24.32,
+   "end": 24.54
+  },
+  {
+   "w": "been",
+   "start": 24.54,
+   "end": 24.77
+  },
+  {
+   "w": "your",
+   "start": 24.77,
+   "end": 24.98
+  },
+  {
+   "w": "host,",
+   "start": 24.98,
+   "end": 25.31
+  },
+  {
+   "w": "Shalone,",
+   "start": 25.31,
+   "end": 25.81
+  },
+  {
+   "w": "and",
+   "start": 25.81,
+   "end": 25.98
+  },
+  {
+   "w": "thanks",
+   "start": 25.98,
+   "end": 26.38
+  },
+  {
+   "w": "for",
+   "start": 26.38,
+   "end": 26.49
+  },
+  {
+   "w": "learning",
+   "start": 26.49,
+   "end": 26.92
+  },
+  {
+   "w": "with",
+   "start": 26.92,
+   "end": 27.16
+  },
+  {
+   "w": "us,",
+   "start": 27.16,
+   "end": 27.55
+  },
+  {
+   "w": "and",
+   "start": 27.55,
+   "end": 27.56
+  },
+  {
+   "w": "until",
+   "start": 27.56,
+   "end": 27.83
+  },
+  {
+   "w": "next",
+   "start": 27.83,
+   "end": 28.05
+  },
+  {
+   "w": "time,",
+   "start": 28.05,
+   "end": 28.56
+  },
+  {
+   "w": "Stay",
+   "start": 28.73,
+   "end": 28.84
+  },
+  {
+   "w": "holy,",
+   "start": 28.84,
+   "end": 29.32
+  },
+  {
+   "w": "my",
+   "start": 29.32,
+   "end": 29.4
+  },
+  {
+   "w": "friends.",
+   "start": 29.4,
+   "end": 30.12
+  }
+ ]
+}

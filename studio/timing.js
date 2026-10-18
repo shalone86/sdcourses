@@ -29,8 +29,13 @@
   const lines = (v) => String(v || '').split('\n').map((x) => x.trim()).filter(Boolean);
   const pair = (l) => l.split('|').map((x) => x.trim());
   const ADD = {
-    map: {label: 'Map', fields: [['places', 'Places, one per line (e.g. Rome, Antioch, Constantinople, Kyiv, Jerusalem)', 'lines'], ['route', 'Draw a route through them in order', 'check'], ['caption', 'Caption', 'text']],
-      make: (v) => { const p = lines(v.places); return {type: 'map', region: 'mediterranean', places: p, ...(v.route && p.length > 1 ? {routes: p.slice(1).map((x, i) => [p[i], x])} : {}), highlight: p[p.length - 1], ...(v.caption ? {caption: v.caption} : {})}; }},
+    map: {label: 'Map', fields: [['region', 'Show', 'select', ['mediterranean', 'east', 'europe', 'holyland']],
+      ['places', 'Cities, one per line (e.g. Rome, Antioch, Constantinople, Kyiv, Jerusalem)', 'lines'], ['route', 'Draw a route through the cities in order', 'check'],
+      ['areas', 'Highlight countries or empires, one per line: a country name (Ukraine, Greece…) or roman-empire-117, byzantine-empire-555, byzantine-empire-1025, kyivan-rus-1050', 'lines'],
+      ['caption', 'Caption', 'text']],
+      make: (v) => { const p = lines(v.places); const a = lines(v.areas);
+        return {type: 'map', region: v.region || 'mediterranean', ...(p.length ? {places: p} : {}), ...(a.length ? {areas: a} : {}),
+          ...(v.route && p.length > 1 ? {routes: p.slice(1).map((x, i) => [p[i], x])} : {}), ...(p.length ? {highlight: p[p.length - 1]} : {}), ...(v.caption ? {caption: v.caption} : {})}; }},
     titles: {label: 'Titles', fields: [['items', 'One per line: Big text | small text under it', 'lines']],
       make: (v) => ({type: 'titles', items: lines(v.items).map((l) => { const [a, b] = pair(l); return {latin: a, english: b || ''}; })})},
     union: {label: 'Union (one and many)', fields: [['center', 'In the middle', 'text', 'The Catholic Church'], ['items', 'Around it, one per line', 'lines'], ['caption', 'Caption', 'text']],

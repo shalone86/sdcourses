@@ -9,6 +9,8 @@ import {ghost} from './ghost.mjs';
 import {ROOT, lessonDir, loadLesson, loadSite} from './lib.mjs';
 
 const arg = process.argv[2];
+// --update-live: replace an already published lesson in place (only when Shalone asks).
+const updateLive = process.argv.includes('--update-live');
 const {id, lesson, segments} = loadLesson(lessonDir(arg));
 
 // A person signs off on every lesson before it can reach the site.
@@ -33,5 +35,5 @@ const {html, meta} = buildPost(arg, {videoUrl, posterUrl});
 const saved = await g.saveDraft('posts', {
   title: meta.title, slug: meta.slug, custom_excerpt: meta.custom_excerpt, html,
   tags: meta.tags.map((name) => ({name})), feature_image: posterUrl,
-});
-console.log(`Draft saved: ${saved.editorUrl}`);
+}, {updateLive});
+console.log(saved.status === 'published' ? `Live post updated: ${saved.url}` : `Draft saved: ${saved.editorUrl}`);

@@ -1,0 +1,475 @@
+{
+ "stamp": "2:4037838:1792288745500",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.18
+  },
+  {
+   "w": "Church",
+   "start": 0.18,
+   "end": 0.53
+  },
+  {
+   "w": "of",
+   "start": 0.53,
+   "end": 0.68
+  },
+  {
+   "w": "Constantinople",
+   "start": 0.68,
+   "end": 1.51
+  },
+  {
+   "w": "developed",
+   "start": 1.51,
+   "end": 2.06
+  },
+  {
+   "w": "a",
+   "start": 2.06,
+   "end": 2.12
+  },
+  {
+   "w": "rite",
+   "start": 2.12,
+   "end": 2.4
+  },
+  {
+   "w": "that",
+   "start": 2.4,
+   "end": 2.78
+  },
+  {
+   "w": "traveled",
+   "start": 2.78,
+   "end": 3.58
+  },
+  {
+   "w": "far",
+   "start": 3.58,
+   "end": 3.83
+  },
+  {
+   "w": "beyond",
+   "start": 3.83,
+   "end": 4.41
+  },
+  {
+   "w": "the",
+   "start": 4.41,
+   "end": 4.64
+  },
+  {
+   "w": "city.",
+   "start": 4.64,
+   "end": 5.4
+  },
+  {
+   "w": "The",
+   "start": 5.4,
+   "end": 5.64
+  },
+  {
+   "w": "Church",
+   "start": 5.64,
+   "end": 6.1
+  },
+  {
+   "w": "of",
+   "start": 6.1,
+   "end": 6.36
+  },
+  {
+   "w": "Constantinople,",
+   "start": 6.36,
+   "end": 7.48
+  },
+  {
+   "w": "which",
+   "start": 7.48,
+   "end": 7.89
+  },
+  {
+   "w": "is",
+   "start": 7.89,
+   "end": 8.02
+  },
+  {
+   "w": "now,",
+   "start": 8.02,
+   "end": 8.4
+  },
+  {
+   "w": "after",
+   "start": 8.4,
+   "end": 8.97
+  },
+  {
+   "w": "the",
+   "start": 8.97,
+   "end": 9.02
+  },
+  {
+   "w": "Roman",
+   "start": 9.02,
+   "end": 9.4
+  },
+  {
+   "w": "rite,",
+   "start": 9.4,
+   "end": 9.86
+  },
+  {
+   "w": "by",
+   "start": 9.86,
+   "end": 10
+  },
+  {
+   "w": "far,",
+   "start": 10,
+   "end": 10.62
+  },
+  {
+   "w": "the",
+   "start": 10.62,
+   "end": 10.69
+  },
+  {
+   "w": "most",
+   "start": 10.69,
+   "end": 10.93
+  },
+  {
+   "w": "widely",
+   "start": 10.93,
+   "end": 11.52
+  },
+  {
+   "w": "spread",
+   "start": 11.52,
+   "end": 12.48
+  },
+  {
+   "w": "in",
+   "start": 12.48,
+   "end": 12.68
+  },
+  {
+   "w": "the",
+   "start": 12.68,
+   "end": 13.11
+  },
+  {
+   "w": "world.",
+   "start": 13.11,
+   "end": 14.28
+  },
+  {
+   "w": "From",
+   "start": 14.28,
+   "end": 14.56
+  },
+  {
+   "w": "Constantinople,",
+   "start": 14.56,
+   "end": 15.68
+  },
+  {
+   "w": "missionaries",
+   "start": 15.68,
+   "end": 16.52
+  },
+  {
+   "w": "carried",
+   "start": 16.52,
+   "end": 17.03
+  },
+  {
+   "w": "the",
+   "start": 17.03,
+   "end": 17.22
+  },
+  {
+   "w": "Gospel",
+   "start": 17.22,
+   "end": 17.78
+  },
+  {
+   "w": "to",
+   "start": 17.78,
+   "end": 17.86
+  },
+  {
+   "w": "the",
+   "start": 17.86,
+   "end": 17.99
+  },
+  {
+   "w": "Slavic",
+   "start": 17.99,
+   "end": 18.41
+  },
+  {
+   "w": "peoples.",
+   "start": 18.41,
+   "end": 19.16
+  },
+  {
+   "w": "Saints",
+   "start": 19.16,
+   "end": 19.57
+  },
+  {
+   "w": "Cyril",
+   "start": 19.57,
+   "end": 19.9
+  },
+  {
+   "w": "and",
+   "start": 19.9,
+   "end": 20.12
+  },
+  {
+   "w": "Methodius",
+   "start": 20.12,
+   "end": 20.74
+  },
+  {
+   "w": "brought",
+   "start": 20.74,
+   "end": 21.19
+  },
+  {
+   "w": "the",
+   "start": 21.19,
+   "end": 21.39
+  },
+  {
+   "w": "liturgy",
+   "start": 21.39,
+   "end": 21.91
+  },
+  {
+   "w": "to",
+   "start": 21.91,
+   "end": 22
+  },
+  {
+   "w": "the",
+   "start": 22,
+   "end": 22.18
+  },
+  {
+   "w": "Slavs",
+   "start": 22.18,
+   "end": 22.61
+  },
+  {
+   "w": "in",
+   "start": 22.61,
+   "end": 22.73
+  },
+  {
+   "w": "their",
+   "start": 22.73,
+   "end": 22.97
+  },
+  {
+   "w": "own",
+   "start": 22.97,
+   "end": 23.16
+  },
+  {
+   "w": "language,",
+   "start": 23.16,
+   "end": 23.85
+  },
+  {
+   "w": "and",
+   "start": 23.85,
+   "end": 24.36
+  },
+  {
+   "w": "in",
+   "start": 24.36,
+   "end": 24.36
+  },
+  {
+   "w": "1988,",
+   "start": 24.45,
+   "end": 25.51
+  },
+  {
+   "w": "Prince",
+   "start": 25.51,
+   "end": 25.94
+  },
+  {
+   "w": "Volodymyr",
+   "start": 25.94,
+   "end": 26.63
+  },
+  {
+   "w": "of",
+   "start": 26.63,
+   "end": 26.79
+  },
+  {
+   "w": "Kyiv",
+   "start": 26.79,
+   "end": 27.11
+  },
+  {
+   "w": "was",
+   "start": 27.11,
+   "end": 27.34
+  },
+  {
+   "w": "baptized",
+   "start": 27.34,
+   "end": 27.97
+  },
+  {
+   "w": "with",
+   "start": 27.97,
+   "end": 28.29
+  },
+  {
+   "w": "his",
+   "start": 28.29,
+   "end": 28.53
+  },
+  {
+   "w": "people.",
+   "start": 28.53,
+   "end": 29.32
+  },
+  {
+   "w": "Greeks,",
+   "start": 29.32,
+   "end": 29.99
+  },
+  {
+   "w": "Slavs,",
+   "start": 29.99,
+   "end": 30.54
+  },
+  {
+   "w": "Arabs,",
+   "start": 30.54,
+   "end": 31.11
+  },
+  {
+   "w": "and",
+   "start": 31.11,
+   "end": 31.35
+  },
+  {
+   "w": "others",
+   "start": 31.35,
+   "end": 31.86
+  },
+  {
+   "w": "came",
+   "start": 31.86,
+   "end": 32.2
+  },
+  {
+   "w": "to",
+   "start": 32.2,
+   "end": 32.35
+  },
+  {
+   "w": "pray",
+   "start": 32.35,
+   "end": 32.89
+  },
+  {
+   "w": "the",
+   "start": 32.89,
+   "end": 32.93
+  },
+  {
+   "w": "same",
+   "start": 32.93,
+   "end": 33.26
+  },
+  {
+   "w": "Byzantine",
+   "start": 33.26,
+   "end": 34
+  },
+  {
+   "w": "liturgy.",
+   "start": 34,
+   "end": 34.92
+  },
+  {
+   "w": "That",
+   "start": 34.92,
+   "end": 35.24
+  },
+  {
+   "w": "is",
+   "start": 35.24,
+   "end": 35.4
+  },
+  {
+   "w": "why",
+   "start": 35.4,
+   "end": 35.64
+  },
+  {
+   "w": "Byzantine",
+   "start": 35.64,
+   "end": 36.35
+  },
+  {
+   "w": "describes",
+   "start": 36.35,
+   "end": 37.06
+  },
+  {
+   "w": "a",
+   "start": 37.06,
+   "end": 37.14
+  },
+  {
+   "w": "tradition",
+   "start": 37.14,
+   "end": 37.85
+  },
+  {
+   "w": "of",
+   "start": 37.85,
+   "end": 38.01
+  },
+  {
+   "w": "worship,",
+   "start": 38.01,
+   "end": 38.71
+  },
+  {
+   "w": "not",
+   "start": 38.71,
+   "end": 38.95
+  },
+  {
+   "w": "one",
+   "start": 38.95,
+   "end": 39.19
+  },
+  {
+   "w": "of",
+   "start": 39.19,
+   "end": 39.28
+  },
+  {
+   "w": "nation.",
+   "start": 39.28,
+   "end": 40.12
+  }
+ ]
+}

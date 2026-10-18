@@ -132,7 +132,9 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
   const first = s.kind === 'point' ? Math.max(HEADING_FRAMES, quoteSpan ? sec(quoteSpan.start) - 12 : 0) : 0;
   const items = (sc) => {
     switch (sc.type) {
-      case 'map': return (sc.places ?? []).map((p) => (typeof p === 'string' ? p : p.name)).map((n) => [n, n]);
+      case 'map': return [...(sc.places ?? []).map((p) => (typeof p === 'string' ? p : p.name)).map((n) => [n, n]),
+        // Areas cue on their name ("Byzantine Empire", "Ukraine"); empire ids are spoken by name.
+        ...(sc.areas ?? []).map((a, i) => [`area-${i}`, a.includes('-') && /\d/.test(a) ? a.replace(/-\d+$/, '').replace(/-/g, ' ') : a])];
       case 'titles': return (sc.items ?? []).map((it, i) => [String(i), it.latin]);
       case 'timeline': return (sc.items ?? []).map((it, i) => [String(i), it.label]);
       case 'chain': return (sc.items ?? []).map((it, i) => [String(i), it]);
