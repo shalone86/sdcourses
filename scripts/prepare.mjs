@@ -6,7 +6,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
 import {detectBeats} from './beats.mjs';
-import {phraseSpan, phraseTime, transcribe, trimVoice, whisperAvailable} from './voice.mjs';
+import {phraseSpan, phraseTime, transcribe, trimLead, trimVoice, whisperAvailable} from './voice.mjs';
 
 const FPS = 30;
 const HEADING_FRAMES = 66; // keep in sync with video/theme.ts
@@ -30,6 +30,7 @@ export function prepare(arg) {
     let audio = null;
     let seconds = words(s.text) / WPS;
     let spoken = null;
+    let camera = null;
     if (src) {
       // Trim silence at both ends (gently, keeping a little air after soft last
       // syllables), level to -16 LUFS, mono. Your raw file is untouched.
@@ -41,6 +42,7 @@ export function prepare(arg) {
         try { spoken = transcribe(src, dest, s.text); } catch (e) { console.warn(`  ! ${s.name}: couldn't transcribe (${e.message}); timing estimated`); }
       }
       recorded++;
+      camera = cameraClip(dir, publicDir, id, s.name, src);
     }
     // Points open on their heading; narration starts while it is still on screen.
     const offset = s.kind === 'point' ? 20 : s.kind === 'intro' ? 45 : 15;
@@ -50,7 +52,7 @@ export function prepare(arg) {
     const tail = s.kind === 'outro' ? 30 + MUSIC_TAIL : s.kind === 'intro' ? 75 : 30;
     const durationInFrames = Math.max(minFrames, Math.ceil(offset + seconds * FPS + tail));
     const scenes = timeScenes(s, offset, seconds, durationInFrames, spoken);
-    return {name: s.name, kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes, audio, durationInFrames, audioOffsetInFrames: offset,
+    return {name: s.name, kind: s.kind, index: s.index, heading: s.heading, text: s.text, scenes, audio, camera, durationInFrames, audioOffsetInFrames: offset,
       ...(s.kind === 'point' ? {headingFrames: scenes[0]?.from ?? HEADING_FRAMES} : {})};
   });
 
@@ -250,6 +252,24 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
 }
 
 /**
+ * Her camera clip for a section (recorded in the studio with "Record my video
+ * too"): cut by exactly what the silence trim took off the voice, so her lips
+ * match. Shown as a bubble unless the Timing tab says otherwise (timing.yml `camera:`).
+ */
+function cameraClip(dir, publicDir, id, name, voice) {
+  const cam = path.join(dir, 'camera', `${name}.mp4`);
+  if (!fs.existsSync(cam)) return null;
+  const dest = path.join(publicDir, 'camera', `${name}.mp4`);
+  const newest = Math.max(fs.statSync(cam).mtimeMs, fs.statSync(voice).mtimeMs);
+  if (!fs.existsSync(dest) || fs.statSync(dest).mtimeMs < newest) {
+    fs.mkdirSync(path.dirname(dest), {recursive: true});
+    execFileSync('ffmpeg', ['-y', '-v', 'error', '-ss', trimLead(voice).toFixed(3), '-i', cam, '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '22',
+      '-pix_fmt', 'yuv420p', '-movflags', '+faststart', dest]);
+  }
+  return {src: path.posix.join(id, 'camera', `${name}.mp4`), frames: Math.floor(ffprobeDuration(dest) * FPS), layout: 'bubble'};
+}
+
+/**
  * Kids style: move scene starts and item cues onto the nearest beat (at most
  * a quarter second away), so pictures pop in time with the music. Hand-tuned
  * timing from the studio is applied afterwards and is left where she put it.
@@ -285,6 +305,8 @@ export function loadTiming(dir) {
 /** Apply hand-tuned timing (seconds into each section's voice) to the props, in place. */
 export function applyTiming(props, timing) {
   for (const seg of props.segments) {
+    const layout = timing?.[seg.name]?.camera;
+    if (seg.camera && ['off', 'bubble', 'full'].includes(layout)) seg.camera.layout = layout;
     const t = timing?.[seg.name]?.scenes;
     if (!t) continue;
     const toFrame = (sec) => Math.round(seg.audioOffsetInFrames + sec * FPS);

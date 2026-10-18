@@ -1,6 +1,7 @@
 import {AbsoluteFill, Audio, interpolate, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {float, ramp} from './anim';
 import {Backdrop} from './Backdrop';
+import {BUBBLE, CameraBubble, CameraFull} from './Camera';
 import {BeatContext, beatAt, sway, useBeat} from './beat';
 import {SceneView} from './scenes';
 import {HEADING_FRAMES, theme, useStyle} from './theme';
@@ -30,27 +31,33 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
   const lengthOf = (i: number) => (starts[i + 1] ?? seg.durationInFrames) - starts[i];
   const fadeOut = 1 - ramp(frame, seg.durationInFrames - FADE, seg.durationInFrames);
 
+  const layout = seg.camera?.layout ?? 'off';
   return (
     <AbsoluteFill style={{opacity: fadeOut}}>
+      {layout === 'full' && <CameraFull seg={seg} />}
       {seg.audio && (
         <Sequence from={seg.audioOffsetInFrames}>
           <Audio src={staticFile(seg.audio)} />
         </Sequence>
       )}
-      {isPoint && <PointHeading seg={seg} total={lesson.headings.length} settleAt={start} />}
+      {isPoint && <PointHeading seg={seg} total={lesson.headings.length} settleAt={start} onVideo={layout === 'full'} />}
       {seg.scenes.map((scene, i) => (
         <Sequence key={i} from={starts[i]} durationInFrames={i === seg.scenes.length - 1 ? undefined : lengthOf(i)}>
-          <SceneShell last={i === seg.scenes.length - 1} duration={lengthOf(i)} top={isPoint ? 250 : 110} seed={i * 2.1 + seg.index}>
+          <SceneShell last={i === seg.scenes.length - 1} duration={lengthOf(i)} top={isPoint ? 250 : 110} seed={i * 2.1 + seg.index} layout={layout}>
             <SceneView scene={scene} lesson={lesson} duration={lengthOf(i)} />
           </SceneShell>
         </Sequence>
       ))}
+      {layout === 'bubble' && <CameraBubble seg={seg} />}
     </AbsoluteFill>
   );
 };
 
 /** Crossfade between scenes inside a segment; the segment itself fades at its end. */
-const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: number; top: number; seed: number}> = ({children, last, duration, top, seed}) => {
+// Full-screen camera: each scene is drawn at CARD_W×CARD_H and shrunk into a floating card on the right.
+const CARD_W = 1600, CARD_H = 1000, CARD_SCALE = 0.52;
+
+const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: number; top: number; seed: number; layout?: string}> = ({children, last, duration, top, seed, layout}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const beat = useBeat();
@@ -62,17 +69,29 @@ const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: 
     const rot = sway(beat.t) * 0.35;
     transform += ` scale(${(0.88 + 0.12 * hop + beat.pulse * 0.008).toFixed(4)}) rotate(${rot.toFixed(3)}deg)`;
   }
-  return <AbsoluteFill style={{opacity, top, bottom: 110, height: 'auto', transform}}>{children}</AbsoluteFill>;
+  if (layout === 'full') {
+    return (
+      <div style={{position: 'absolute', right: 70, top: top - 30, width: CARD_W * CARD_SCALE, height: CARD_H * CARD_SCALE, opacity, transform,
+        borderRadius: 36, overflow: 'hidden', background: theme.bg, boxShadow: '0 18px 50px rgba(0,0,0,0.28)'}}>
+        <div style={{position: 'absolute', left: 0, top: 0, width: CARD_W, height: CARD_H, transform: `scale(${CARD_SCALE})`, transformOrigin: 'top left'}}>{children}</div>
+      </div>
+    );
+  }
+  // Bubble: the scenes keep clear of her circle at the bottom right.
+  const right = layout === 'bubble' ? BUBBLE + 60 : 0;
+  return <AbsoluteFill style={{opacity, top, bottom: 110, right, width: 'auto', height: 'auto', transform}}>{children}</AbsoluteFill>;
 };
 
 /** Point number + heading: large and centered, then settles into the top bar. */
-const PointHeading: React.FC<{seg: Segment; total: number; settleAt: number}> = ({seg, total, settleAt}) => {
+const PointHeading: React.FC<{seg: Segment; total: number; settleAt: number; onVideo?: boolean}> = ({seg, total, settleAt, onVideo}) => {
   const frame = useCurrentFrame();
   const {height, fps} = useVideoConfig();
   const beat = useBeat();
   const settle = ramp(frame, settleAt - 22, settleAt);
   // While it's the big centred heading, it floats gently like the scenes do (kids: bounces on the beat).
   const bob = (1 - settle) * (Math.sin((frame / fps) * ((2 * Math.PI) / 6) + seg.index) * 8 - beat.pulse * 8);
+  // Over her full-screen video the heading sits on a card so it stays readable.
+  const pill: React.CSSProperties = onVideo ? {background: theme.bg, borderRadius: 32, padding: '12px 44px 18px', boxShadow: '0 12px 36px rgba(0,0,0,0.25)'} : {};
   if (beat.kids) {
     const color = theme.palette[(seg.index - 1) % theme.palette.length];
     const appearK = spring({frame, fps, config: {damping: 9, stiffness: 150}});
@@ -83,7 +102,7 @@ const PointHeading: React.FC<{seg: Segment; total: number; settleAt: number}> = 
         <div style={{width: 92, height: 92, borderRadius: '50%', background: color, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: theme.sans, fontSize: 56, fontWeight: 700, boxShadow: `0 8px 0 rgba(43,35,80,0.15)`,
           transform: `rotate(${(sway(beat.t) * 5).toFixed(2)}deg) scale(${(1 + beat.pulse * 0.05).toFixed(3)})`}}>{seg.index}</div>
-        <div style={{fontFamily: theme.serif, fontSize: 100, fontWeight: 600, color: theme.ink, lineHeight: 1.1, marginTop: 14, textAlign: 'center'}}>
+        <div style={{fontFamily: theme.serif, fontSize: 100, fontWeight: 600, color: theme.ink, lineHeight: 1.1, marginTop: 14, textAlign: 'center', ...pill}}>
           {seg.heading}
         </div>
       </div>
@@ -99,11 +118,13 @@ const PointHeading: React.FC<{seg: Segment; total: number; settleAt: number}> = 
         transform: `translateY(${bob.toFixed(2)}px) scale(${scale})`, transformOrigin: 'center top', textAlign: 'center',
       }}
     >
-      <div style={{fontFamily: theme.sans, fontSize: 30, letterSpacing: 6, color: theme.accent, fontWeight: 600}}>
-        {seg.index} OF {total}
-      </div>
-      <div style={{fontFamily: theme.serif, fontSize: 96, color: theme.ink, lineHeight: 1.1, marginTop: 8}}>
-        {seg.heading}
+      <div style={{display: 'inline-block', ...pill}}>
+        <div style={{fontFamily: theme.sans, fontSize: 30, letterSpacing: 6, color: theme.accent, fontWeight: 600}}>
+          {seg.index} OF {total}
+        </div>
+        <div style={{fontFamily: theme.serif, fontSize: 96, color: theme.ink, lineHeight: 1.1, marginTop: 8}}>
+          {seg.heading}
+        </div>
       </div>
     </div>
   );

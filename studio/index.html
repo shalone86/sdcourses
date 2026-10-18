@@ -73,6 +73,8 @@ pre{white-space:pre-wrap;font:13px/1.45 ui-monospace,Menlo,monospace;background:
 details.mic{background:var(--paper);border:1px solid var(--rule);border-radius:9px;padding:8px 12px;font-size:14px;max-width:100%}
 details.mic summary{cursor:pointer;font-weight:600;color:var(--muted)}
 details.mic[open]{flex-basis:100%}
+.campreview{position:fixed;right:16px;bottom:96px;width:220px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;background:#000;box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:20;transform:scaleX(-1)}
+.campreview.rec{outline:3px solid #c0392b}
 .micbody{display:flex;flex-direction:column;gap:10px;padding:10px 0 4px}
 .meter{height:10px;border-radius:5px;background:var(--bg);border:1px solid var(--rule);overflow:hidden;min-width:120px;flex:1}
 .meter i{display:block;height:100%;width:0;background:var(--ok);transition:width .06s linear}
@@ -209,6 +211,7 @@ const S = {
   saving: null, checks: {}, // section key -> result of the last save
   mode: 'each',          // 'each' slide on its own, or one 'take'
   stream: null, deviceId: '', devices: [], level: 0, peak: 0, micError: null,
+  camera: false, camId: '', cams: [], // "Record my video too": the camera records with the voice
   rec: null, busy: null, failed: null, notice: null,
   job: null, pollT: null, wake: null, player: new Audio(), playing: null,
 };
@@ -354,6 +357,7 @@ function scriptView() {
   return el('div', {}, [
     strip(),
     el('div', {class: 'toolbar'}, [modeSwitch(), micPanel()]),
+    camPreview(),
     slideEl(s),
     dock(s),
     el('div', {style: 'height:16px'}),
@@ -378,15 +382,40 @@ function micPanel() {
   const select = el('select', {'aria-label': 'Microphone', disabled: !!S.rec, onchange: (e) => switchMic(e.target.value)},
     S.devices.length ? S.devices.map((d, i) => el('option', {value: d.deviceId, selected: d.deviceId === S.deviceId, text: d.label || 'Microphone ' + (i + 1)})) : [el('option', {text: 'Allow the microphone to see the list'})]);
   const d = el('details', {class: 'mic', open: store.get('micOpen') ? true : null, ontoggle: (e) => store.set('micOpen', e.target.open)}, [
-    el('summary', {text: S.stream ? 'Microphone: on' : 'Microphone'}),
+    el('summary', {text: (S.stream ? 'Microphone: on' : 'Microphone') + (S.camera ? ' · camera' : '')}),
     el('div', {class: 'micbody'}, [
       el('div', {class: 'row'}, [select, S.stream ? el('button', {class: 'btn', text: 'Turn off', disabled: !!S.rec, onclick: () => { releaseMic(); render(); }}) : el('button', {class: 'btn', text: 'Check microphone', onclick: () => ensureMic().then(render, micFailed)})]),
       S.stream ? el('div', {class: 'row'}, [el('div', {class: 'meter', 'data-meter': ''}, el('i')), el('span', {class: 'small muted', 'data-meterhint': '', text: 'Say a few words. The bar should move.'})]) : null,
       S.micError ? el('div', {class: 'small bad', text: S.micError}) : null,
+      camControls(),
       el('div', {class: 'small muted', text: 'Tip: sit close to the microphone, in a quiet room with soft things around (curtains, a sofa). Read naturally; small slips are fine to keep.'}),
     ]),
   ]);
   return d;
+}
+
+function camControls() {
+  const box = el('input', {type: 'checkbox', id: 'cam-on', checked: S.camera || null, disabled: !!S.rec, onchange: (e) => setCamera(e.target.checked)});
+  const row = [box, el('label', {for: 'cam-on', text: 'Record my video too (camera)'})];
+  if (S.camera && S.cams.length > 1) row.push(el('select', {'aria-label': 'Camera', disabled: !!S.rec, onchange: (e) => { S.camId = e.target.value; store.set('cam', S.camId); releaseMic(); ensureMic().then(render, micFailed); }},
+    S.cams.map((d, i) => el('option', {value: d.deviceId, selected: d.deviceId === S.camId, text: d.label || 'Camera ' + (i + 1)}))));
+  return el('div', {}, [el('div', {class: 'row'}, row),
+    S.camera ? el('div', {class: 'small muted', text: 'Your video goes with each slide you record. On the Timing tab you choose how it shows: a bubble in the corner, or full screen with the pictures floating beside you (sit a little to the left for that one). It stays on this Mac.'}) : null]);
+}
+
+async function setCamera(on) {
+  S.camera = on; store.set('camera', on);
+  releaseMic();
+  if (on) { try { await ensureMic(); } catch (e) { return micFailed(e); } }
+  render();
+}
+
+/** Small live picture of the camera while it's on, so she can check her framing as she reads. */
+function camPreview() {
+  if (!S.stream || !S.stream.getVideoTracks().length) return null;
+  const v = el('video', {class: 'campreview' + (S.rec ? ' rec' : ''), autoplay: true, playsinline: true, muted: true, 'aria-label': 'Camera preview'});
+  v.muted = true; v.srcObject = S.stream;
+  return v;
 }
 
 function slideEl(s) {
@@ -576,11 +605,18 @@ function dock(s) {
 // ---------- microphone ----------
 
 async function ensureMic() {
-  if (S.stream && S.stream.getAudioTracks().some((t) => t.readyState === 'live')) return S.stream;
+  if (S.stream && S.stream.getAudioTracks().some((t) => t.readyState === 'live') && (S.stream.getVideoTracks().length > 0) === S.camera) return S.stream;
+  if (S.stream) releaseMic();
   if (!navigator.mediaDevices || !window.MediaRecorder) throw new Error('This browser can’t record. Open the studio in Chrome or Safari.');
   const audio = {echoCancellation: false, noiseSuppression: true, autoGainControl: false, channelCount: 1};
   if (S.deviceId) audio.deviceId = {exact: S.deviceId};
-  S.stream = await navigator.mediaDevices.getUserMedia({audio});
+  const video = S.camera ? {width: {ideal: 1280}, height: {ideal: 720}, frameRate: {ideal: 30}, ...(S.camId ? {deviceId: {exact: S.camId}} : {facingMode: 'user'})} : false;
+  S.stream = await navigator.mediaDevices.getUserMedia({audio, video});
+  if (S.camera) {
+    S.camId = S.stream.getVideoTracks()[0]?.getSettings().deviceId || S.camId;
+    store.set('cam', S.camId);
+    S.cams = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === 'videoinput');
+  }
   S.micError = null;
   S.deviceId = S.stream.getAudioTracks()[0].getSettings().deviceId || S.deviceId;
   store.set('mic', S.deviceId);
@@ -591,7 +627,7 @@ async function ensureMic() {
 
 function micFailed(e) {
   S.micError = e && e.name === 'NotAllowedError'
-    ? 'The browser isn’t allowed to use the microphone. Click the icon at the left of the address bar, allow the microphone, then try again.'
+    ? 'The browser isn’t allowed to use the microphone' + (S.camera ? ' or camera' : '') + '. Click the icon at the left of the address bar, allow ' + (S.camera ? 'them' : 'the microphone') + ', then try again.'
     : 'Couldn’t start the microphone: ' + (e && e.message || e);
   render();
 }
@@ -637,7 +673,9 @@ function startMeter() {
 
 // ---------- recording ----------
 
-const recType = () => ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'].find((t) => MediaRecorder.isTypeSupported(t)) || '';
+const recType = () => (S.camera
+  ? ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm', 'video/mp4']
+  : ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4']).find((t) => MediaRecorder.isTypeSupported(t)) || '';
 
 async function startRecording(kind) {
   const s = sec();
@@ -651,8 +689,9 @@ async function startRecording(kind) {
   let stream;
   try { stream = await ensureMic(); } catch (e) { return micFailed(e); }
   const type = recType();
-  const recorder = new MediaRecorder(stream, type ? {mimeType: type, audioBitsPerSecond: 128000} : undefined);
-  const r = {recorder, kind, section: s.key, start: S.slide, marks: [], chunks: [], t0: performance.now(), type: recorder.mimeType || type || 'audio/webm', save: true};
+  const video = stream.getVideoTracks().length > 0;
+  const recorder = new MediaRecorder(stream, type ? {mimeType: type, audioBitsPerSecond: 128000, ...(video ? {videoBitsPerSecond: 4e6} : {})} : undefined);
+  const r = {recorder, kind, section: s.key, start: S.slide, marks: [], chunks: [], t0: performance.now(), type: recorder.mimeType || type || (video ? 'video/webm' : 'audio/webm'), save: true};
   recorder.ondataavailable = (e) => { if (e.data && e.data.size) r.chunks.push(e.data); };
   recorder.onstart = () => { r.t0 = performance.now(); };
   recorder.onstop = () => finishRecording(r);
@@ -692,7 +731,7 @@ function finishRecording(r) {
   releaseScreen();
   S.rec = null;
   const blob = new Blob(r.chunks, {type: r.type});
-  const ext = /mp4/.test(r.type) ? 'm4a' : 'webm';
+  const ext = /^video\/mp4/.test(r.type) ? 'mp4' : /mp4/.test(r.type) ? 'm4a' : 'webm';
   const url = r.kind === 'take'
     ? '/api/take?id=' + enc(S.id) + '&start=' + r.start + '&marks=' + enc(JSON.stringify(r.marks))
     : '/api/audio?id=' + enc(S.id) + '&section=' + enc(r.section);
@@ -882,6 +921,8 @@ window.addEventListener('beforeunload', (e) => { if (hasDrafts() || S.rec || S.b
 S.mode = store.get('mode') === 'take' ? 'take' : 'each';
 S.keepScript = store.get('keep') || {};
 S.deviceId = store.get('mic') || '';
+S.camera = !!store.get('camera');
+S.camId = store.get('cam') || '';
 boot();
 </script>
 </body>

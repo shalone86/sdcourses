@@ -9,6 +9,9 @@ export type Segment = {
   text: string;
   scenes: Scene[];
   audio: string | null; // path relative to video/public
+  // Her camera clip (starts with the voice): a bubble over the pictures, full screen with the
+  // pictures in a floating card, or off.
+  camera?: {src: string; frames: number; layout: 'off' | 'bubble' | 'full'} | null;
   durationInFrames: number;
   audioOffsetInFrames: number;
   headingFrames?: number; // points: when the heading settles and the first scene starts

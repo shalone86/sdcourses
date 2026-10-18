@@ -10,9 +10,10 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {ROOT, loadSite} from './lib.mjs';
+import {ROOT, ffprobeDuration, loadSite} from './lib.mjs';
 
-const TRIM = 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.1,areverse,silenceremove=start_periods=1:start_threshold=-55dB:start_silence=0.35,areverse,loudnorm=I=-16:TP=-1.5:LRA=11';
+const LEAD = 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.1';
+const TRIM = `${LEAD},areverse,silenceremove=start_periods=1:start_threshold=-55dB:start_silence=0.35,areverse,loudnorm=I=-16:TP=-1.5:LRA=11`;
 const VERSION = 2; // bump if TRIM or the hint changes, so cached word timings are redone
 
 /** Trim silence at both ends and level the voice (raw file untouched). Skips work if dest is current. */
@@ -21,6 +22,15 @@ export function trimVoice(src, dest) {
   fs.mkdirSync(path.dirname(dest), {recursive: true});
   execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', src, '-af', TRIM, '-ac', '1', '-ar', '48000', dest]);
   return dest;
+}
+
+/** Seconds the trim removes from the start of a recording (so a camera clip can be cut to match). */
+export function trimLead(src) {
+  const tmp = path.join(os.tmpdir(), `sdcourses-lead-${process.pid}.wav`);
+  try {
+    execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', src, '-af', LEAD, '-ac', '1', '-ar', '48000', tmp]);
+    return Math.max(0, ffprobeDuration(src) - ffprobeDuration(tmp));
+  } finally { fs.rmSync(tmp, {force: true}); }
 }
 
 const modelPath = () => process.env.WHISPER_MODEL

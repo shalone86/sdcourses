@@ -190,16 +190,19 @@ function saveTiming(id, timing) {
   const dir = lessonPath(id);
   const clean = {};
   for (const [sec, v] of Object.entries(timing ?? {})) {
-    if (!/^(intro|outro|point-\d+)$/.test(sec) || !v?.scenes) continue;
+    if (!/^(intro|outro|point-\d+)$/.test(sec) || !v) continue;
     const scenes = {};
-    for (const [i, o] of Object.entries(v.scenes)) {
+    for (const [i, o] of Object.entries(v.scenes ?? {})) {
       const out = {};
       if (Number.isFinite(o.start)) out.start = Math.round(o.start * 100) / 100;
       const cues = Object.fromEntries(Object.entries(o.cues ?? {}).filter(([, t]) => Number.isFinite(t)).map(([k, t]) => [k, Math.round(t * 100) / 100]));
       if (Object.keys(cues).length) out.cues = cues;
       if (Object.keys(out).length) scenes[i] = out;
     }
-    if (Object.keys(scenes).length) clean[sec] = {scenes};
+    const keep = {};
+    if (['off', 'bubble', 'full'].includes(v.camera)) keep.camera = v.camera;
+    if (Object.keys(scenes).length) keep.scenes = scenes;
+    if (Object.keys(keep).length) clean[sec] = keep;
   }
   const f = path.join(dir, 'timing.yml');
   if (!Object.keys(clean).length) { fs.rmSync(f, {force: true}); return; }
@@ -244,18 +247,34 @@ function addRequest(dir, text) {
 const toWav = (input, output, extra = []) =>
   run('ffmpeg', ['-y', '-v', 'error', '-i', input, ...extra, '-ac', '1', '-ar', '48000', output]);
 
-/** One section recorded on its own: keep the original, convert to WAV. */
+/**
+ * Camera clips (when she records with "Record my video too"): <lesson>/camera/<section>.mp4,
+ * H.264 without sound (the voice comes from the WAV). `extra` cuts a take.
+ */
+const toCamera = (input, output, extra = []) => {
+  fs.mkdirSync(path.dirname(output), {recursive: true});
+  return run('ffmpeg', ['-y', '-v', 'error', '-i', input, ...extra, '-an', '-vf', 'scale=1280:-2,fps=30', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '22', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', output], {maxBuffer: 1 << 26});
+};
+const cameraFile = (dir, section) => path.join(dir, 'camera', `${section}.mp4`);
+const isVideo = (type) => /^video\//.test(type ?? '');
+
+/** One section recorded on its own: keep the original, convert to WAV (and the camera clip, if any). */
 async function saveSection(id, section, body, type) {
   const dir = lessonPath(id);
   const {segments} = loadLesson(dir);
   if (!segments.some((s) => s.name === section)) throw httpError(400, `No section "${section}"`);
   const audioDir = path.join(dir, 'audio');
   fs.mkdirSync(audioDir, {recursive: true});
-  const original = path.join(audioDir, `${section}${recordingExt(type)}`);
+  // Camera recordings (video + voice) are kept in camera/, which stays on this Mac (gitignored).
+  const original = path.join(isVideo(type) ? path.join(dir, 'camera') : audioDir, `${section}${isVideo(type) ? '.source' : ''}${recordingExt(type)}`);
+  fs.mkdirSync(path.dirname(original), {recursive: true});
   fs.writeFileSync(original, body);
   const wav = path.join(audioDir, `${section}.wav`);
   await toWav(original, wav);
-  return {section, seconds: ffprobeDuration(wav)};
+  // A voice-only re-recording drops the old camera clip, which no longer matches.
+  if (isVideo(type)) await toCamera(original, cameraFile(dir, section));
+  else fs.rmSync(cameraFile(dir, section), {force: true});
+  return {section, seconds: ffprobeDuration(wav), camera: isVideo(type)};
 }
 
 /** One continuous take from section `start` on, cut at the moments she tapped Next. */
@@ -267,7 +286,8 @@ async function saveTake(id, start, marks, body, type) {
   const covered = segments.slice(start, start + marks.length + 1);
   const audioDir = path.join(dir, 'audio');
   fs.mkdirSync(audioDir, {recursive: true});
-  const original = path.join(audioDir, `take${recordingExt(type)}`);
+  const original = path.join(isVideo(type) ? path.join(dir, 'camera') : audioDir, `take${isVideo(type) ? '.source' : ''}${recordingExt(type)}`);
+  fs.mkdirSync(path.dirname(original), {recursive: true});
   fs.writeFileSync(original, body);
   // Decode once to WAV so the cuts are sample-exact.
   const full = path.join(audioDir, '.take-full.wav');
@@ -278,13 +298,15 @@ async function saveTake(id, start, marks, body, type) {
   for (const [i, s] of covered.entries()) {
     const wav = path.join(audioDir, `${s.name}.wav`);
     await toWav(full, wav, ['-ss', String(cuts[i]), '-to', String(cuts[i + 1])]);
+    if (isVideo(type)) await toCamera(original, cameraFile(dir, s.name), ['-ss', String(cuts[i]), '-to', String(cuts[i + 1])]);
+    else fs.rmSync(cameraFile(dir, s.name), {force: true});
     out.push({section: s.name, seconds: ffprobeDuration(wav)});
   }
   fs.rmSync(full);
   return {sections: out};
 }
 
-const recordingExt = (type) => (/mp4|m4a|aac/.test(type ?? '') ? '.m4a' : '.webm');
+const recordingExt = (type) => (isVideo(type) ? (/mp4/.test(type) ? '.mp4' : '.webm') : /mp4|m4a|aac/.test(type ?? '') ? '.m4a' : '.webm');
 
 // ---------- long jobs (render, publish): one at a time ----------
 

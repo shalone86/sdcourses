@@ -76,6 +76,8 @@
     props.segments.forEach((seg, si) => {
       const auto = data.segments[si].autoScenes;
       const t = (timing[seg.name] || {}).scenes || {};
+      const layout = (timing[seg.name] || {}).camera;
+      if (seg.camera && ['off', 'bubble', 'full'].includes(layout)) seg.camera.layout = layout;
       seg.scenes.forEach((sc, i) => {
         const a = auto[i] || {from: sc.from || 0, cues: {}};
         const o = t[i] || {};
@@ -234,17 +236,27 @@
         h('span', {class: 'row', style: {gap: '8px'}}, [
           h('button', {class: 'btn', text: '−', 'aria-label': 'Zoom out', onclick: () => { T.zoom = Math.max(30, T.zoom / 1.5); draw(); }}),
           h('button', {class: 'btn', text: '+', 'aria-label': 'Zoom in', onclick: () => { T.zoom = Math.min(300, T.zoom * 1.5); draw(); }}),
-          touched ? h('button', {class: 'btn', text: 'Reset this section', onclick: () => { delete T.timing[s.name]; updatePlayer(); draw(); setDirty(); }}) : null,
+          touched ? h('button', {class: 'btn', text: 'Reset this section', onclick: () => { delete T.timing[s.name].scenes; updatePlayer(); draw(); setDirty(); }}) : null,
           h('button', {class: 'btn', text: '+ Add a picture here', onclick: () => { T.adding = !T.adding; draw(); }}),
           h('button', {class: 'btn primary', 'data-save': '', disabled: !T.dirty, text: T.dirty ? 'Save timing' : 'Saved', onclick: save}),
         ]),
       ]);
+      // Her camera clip for this slide (recorded with "Record my video too"): how it shows.
+      const camRow = s.camera ? h('div', {class: 'row', style: {gap: '8px'}}, [
+        h('span', {class: 'small muted', text: 'Your video on this slide:'}),
+        h('span', {class: 'seg', role: 'group', 'aria-label': 'Your video on this slide'}, [['bubble', 'Bubble in the corner'], ['full', 'Full screen'], ['off', 'Off']].map(([v, label]) =>
+          h('button', {'aria-pressed': s.camera.layout === v ? 'true' : 'false', text: label, onclick: () => {
+            (T.timing[s.name] ||= {}).camera = v;
+            updatePlayer(); draw(); setDirty();
+            T.player.seek(Math.max(segStart(T.seg), T.player.frame()));
+          }}))),
+      ]) : null;
       const adder = T.adding ? addForm() : null;
       const tl = timeline();
       const box = root.querySelector('.tl-scroll') || h('div', {class: 'tl-scroll'});
       const keep = box.scrollLeft;
       box.replaceChildren(tl);
-      const kids = [strip, controls, adder, box,
+      const kids = [strip, controls, camRow, adder, box,
         h('div', {class: 'small muted', text: 'Drag a scene block to change when it starts, or a diamond to change when an item appears. Click a word or the ruler to jump there. Then Save timing, and Make the video on the Video & Ghost tab.'})];
       // Only the part below the video is redrawn, so the page doesn't jump.
       const y = window.scrollY;
