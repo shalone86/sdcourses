@@ -3,8 +3,18 @@
 # icon: any name from https://lucide.dev/icons · title: shorter than the tag
 # name if needed · eyebrow: the small line above the title.
 # Courses with their own course.yml use its `cover:` instead.
+# tints: cover colors by category (site category tags). The first that matches
+# wins, so put the more specific ones first. Every cover also gets a faint copy
+# of its icon in the corner (watermark).
 # posts: single posts outside a course get a cover as their feature image;
 # photo: a picture in video/public shown in the circle instead of an icon.
+tints:
+  - {category: Catholic Kids Courses, bg: "#E7EEE2", accent: "#3D6B3A", card: "#F7FAF4"}
+  - {category: Catholic Saints, bg: "#F3EAD3", accent: "#7A5A12", card: "#FBF7EC"}
+  - {category: Catholic Art History, bg: "#F2E5DF", accent: "#8A3B2E", card: "#FBF5F2"}
+  - {category: Byzantine Catholic Courses, bg: "#E4EBEF", accent: "#1F4A6E", card: "#F6F9FA"}
+  - {category: default, bg: "#F5F0E6", accent: "#7A1F2B", card: "#FBF8F2"}
+
 byzantine-catholic-fasting: {icon: utensils-crossed, eyebrow: Byzantine Catholic Course}
 what-is-the-great-fast: {icon: hourglass, eyebrow: Byzantine Catholic Course}
 byzantine-catholic-basics: {icon: church, eyebrow: Byzantine Catholic Course}
