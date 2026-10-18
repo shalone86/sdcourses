@@ -29,6 +29,7 @@
   const lines = (v) => String(v || '').split('\n').map((x) => x.trim()).filter(Boolean);
   const pair = (l) => l.split('|').map((x) => x.trim());
   const ADD = {
+    image: {label: 'Picture (search)', fields: [], search: true},
     map: {label: 'Map', fields: [['region', 'Show', 'select', ['mediterranean', 'east', 'europe', 'holyland']],
       ['places', 'Cities, one per line (e.g. Rome, Antioch, Constantinople, Kyiv, Jerusalem)', 'lines'], ['route', 'Draw a route through the cities in order', 'check'],
       ['areas', 'Highlight countries or empires, one per line: a country name (Ukraine, Greece…) or roman-empire-117, byzantine-empire-555, byzantine-empire-1025, kyivan-rus-1050', 'lines'],
@@ -263,14 +264,24 @@
           return h('label', {class: 'tl-field'}, [h('span', {text: label}), input]);
         }));
       };
-      typeSel.addEventListener('change', fill);
+      typeSel.addEventListener('change', () => { T.picked = null; fill(); draw(); });
       fill();
+      // Picture: search free sources, pick one, add a caption.
+      if (T.addType === 'image') fields.replaceChildren(imagePicker());
       const at = h('input', {type: 'number', step: '0.1', min: '0', value: now.toFixed(1), style: {width: '6em'}});
       const add = async () => {
         const v = Object.fromEntries(Object.entries(vals).map(([k, el]) => [k, el.type === 'checkbox' ? el.checked : el.value]));
         try {
           await persist();
-          const d = await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'add', section: s.name, scene: ADD[T.addType].make(v), start: Number(at.value)});
+          let scene;
+          if (T.addType === 'image') {
+            if (!T.picked) { alert('Pick a picture first.'); return; }
+            const credit = await post('/api/images/import?id=' + encodeURIComponent(T.id), {img: T.picked});
+            const line = [credit.creator && credit.creator !== 'Unknown' ? credit.creator : '', credit.source, credit.license].filter(Boolean).join(' · ');
+            scene = {type: 'image', src: credit.file, aspect: credit.aspect, credit: line, ...(T.caption ? {caption: T.caption} : {}), ...(T.fit === 'cover' ? {fit: 'cover'} : {})};
+            T.picked = null;
+          } else scene = ADD[T.addType].make(v);
+          const d = await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'add', section: s.name, scene, start: Number(at.value)});
           T.adding = false; reload(d);
         } catch (e) { alert('Couldn’t add it: ' + e.message); }
       };
@@ -280,6 +291,42 @@
         fields,
         h('div', {class: 'row'}, [h('span', {class: 'small muted', text: 'Items appear when you say them. You can drag it afterwards.'}),
           h('span', {}, [h('button', {class: 'btn', text: 'Cancel', onclick: () => { T.adding = false; draw(); }}), ' ', h('button', {class: 'btn primary', text: 'Add it', onclick: add})])]),
+      ]);
+    }
+
+    function imagePicker() {
+      const q = h('input', {type: 'search', placeholder: 'Search pictures, e.g. iconostasis, Hagia Sophia, St. Peter', value: T.imageQ || '', style: {flex: '1'}});
+      const src = h('select', {'aria-label': 'Where to search'});
+      const grid = h('div', {class: 'img-grid'});
+      const status = h('div', {class: 'small muted'});
+      api('/api/images/sources').then((list) => {
+        src.replaceChildren(h('option', {value: 'all', text: 'All sources'}), ...list.filter((x) => x.ready).map((x) => h('option', {value: x.id, text: x.label, selected: x.id === T.imageSrc})));
+      });
+      const show = () => {
+        grid.replaceChildren(...(T.imageResults || []).map((r) => h('button', {class: 'img-pick' + (T.picked && T.picked.source === r.source && T.picked.id === r.id ? ' on' : ''), type: 'button',
+          title: `${r.title} — ${r.creator} (${r.license})`, onclick: () => { T.picked = r; show(); }}, [
+          h('img', {src: r.thumb, alt: r.title, loading: 'lazy'}), h('span', {text: r.title}), h('small', {text: `${r.creator} · ${r.license}`})])));
+      };
+      const go = async () => {
+        if (!q.value.trim()) return;
+        T.imageQ = q.value; T.imageSrc = src.value;
+        status.textContent = 'Searching…'; grid.replaceChildren();
+        try {
+          const d = await api('/api/images/search?id=' + encodeURIComponent(T.id) + '&q=' + encodeURIComponent(q.value) + '&source=' + encodeURIComponent(src.value));
+          T.imageResults = d.results;
+          status.textContent = (d.results.length ? d.results.length + ' found. Pick one.' : 'Nothing found; try other words.') + (d.errors.length ? ' (' + d.errors.join('; ') + ')' : '');
+          show();
+        } catch (e) { status.textContent = 'Search failed: ' + e.message; }
+      };
+      q.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+      const caption = h('input', {type: 'text', placeholder: 'Caption (optional)', value: T.caption || '', oninput: (e) => { T.caption = e.target.value; }});
+      const fit = h('select', {onchange: (e) => { T.fit = e.target.value; }}, [h('option', {value: 'contain', text: 'Show the whole picture'}), h('option', {value: 'cover', text: 'Fill the frame (crops edges)', selected: T.fit === 'cover'})]);
+      show();
+      return h('div', {class: 'stack', style: {gap: '8px'}}, [
+        h('div', {class: 'row', style: {gap: '8px', flexWrap: 'nowrap'}}, [q, src, h('button', {class: 'btn', type: 'button', text: 'Search', onclick: go})]),
+        status, grid,
+        h('div', {class: 'row', style: {gap: '8px'}}, [h('label', {class: 'tl-field', style: {flex: '1'}}, [h('span', {text: 'Caption'}), caption]), h('label', {class: 'tl-field'}, [h('span', {text: 'Framing'}), fit])]),
+        h('div', {class: 'small muted', text: 'The picture is saved into the lesson with its credit; the credit shows small on the video and in the post’s Image credits.'}),
       ]);
     }
 

@@ -13,6 +13,7 @@ import {cachedWords, compare, whisperAvailable} from '../scripts/voice.mjs';
 import {prepare} from '../scripts/prepare.mjs';
 import YAML from 'yaml';
 import * as esbuild from 'esbuild';
+import {importImage, searchImages, sourceList} from './images.mjs';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -393,6 +394,12 @@ async function handle(req, res) {
     if (p === '/api/lesson') return json(res, 200, detail(id));
     if (p === '/api/job') return json(res, 200, job);
     if (p === '/api/timing') return json(res, 200, timingData(id));
+    if (p === '/api/images/sources') return json(res, 200, sourceList());
+    if (p === '/api/images/search') {
+      const q = (url.searchParams.get('q') ?? '').trim();
+      if (!q) throw httpError(400, 'Type something to search for');
+      return json(res, 200, await searchImages(q.slice(0, 120), url.searchParams.get('source') ?? 'all'));
+    }
     if (p === '/player.js') return sendFile(req, res, path.join(ROOT, 'studio/player/player.js'));
     if (p === '/timing.js') return sendFile(req, res, path.join(ROOT, 'studio/timing.js'));
     if (p === '/audio') {
@@ -436,6 +443,11 @@ async function handle(req, res) {
       const {timing} = await readJson(req);
       saveTiming(id, timing);
       return json(res, 200, timingData(id));
+    }
+    if (p === '/api/images/import') {
+      // Download a picked image into the lesson (with its credit); the page then adds the scene.
+      const {img} = await readJson(req);
+      return json(res, 200, await importImage(lessonPath(id), img));
     }
     if (p === '/api/scene') {
       // Add a picture at a time (seconds into the recording), or remove one.

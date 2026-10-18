@@ -53,6 +53,14 @@ export function prepare(arg) {
       ...(s.kind === 'point' ? {headingFrames: scenes[0]?.from ?? HEADING_FRAMES} : {})};
   });
 
+  // Pictures from the studio's image search: <lesson>/images → video/public/<id>/images.
+  const imagesDir = path.join(dir, 'images');
+  if (fs.existsSync(imagesDir)) {
+    fs.mkdirSync(path.join(publicDir, 'images'), {recursive: true});
+    for (const f of fs.readdirSync(imagesDir)) if (/\.(jpe?g|png|webp)$/i.test(f)) fs.copyFileSync(path.join(imagesDir, f), path.join(publicDir, 'images', f));
+  }
+  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'image' && sc.src && !sc.src.startsWith(id + '/')) sc.src = path.posix.join(id, sc.src);
+
   // The host scene's photo (site.yml host_photo); without one it shows initials.
   const site = loadSite();
   let hostPhoto = null;

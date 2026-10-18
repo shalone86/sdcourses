@@ -55,6 +55,7 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
     ].join('\n')),
     outro.text && `<p>${smart(outro.text)}</p>`,
     htmlCard(`<section class="cc-quiz" data-lesson="${esc(lesson.slug)}"><h2>Check your understanding</h2><p class="cc-quiz-intro">Your answers stay on your device.</p>${fallback}<script type="application/json">${json}</script></section>`),
+    imageCredits(dir, lesson),
     `<h3>Sources</h3>\n<ul>${lesson.sources.map((s) => `<li>${s.url ? `<a href="${esc(s.url)}">${esc(s.label)}</a>` : esc(s.label)}</li>`).join('')}</ul>`,
     `<p class="cc-credit"><em>${esc(loadSite().disclosure)}</em></p>`,
   ].filter(Boolean).join('\n\n');
@@ -76,6 +77,19 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
   fs.writeFileSync(path.join(dist, 'preview.html'), preview(meta, html.replace(VIDEO_PLACEHOLDER, 'lesson.mp4').replace(POSTER_PLACEHOLDER, 'poster.jpg')));
   writeCodeInjection();
   return {html, meta, dist};
+}
+
+/** "Image credits" for pictures used in the video (CC BY and similar licenses require it). */
+function imageCredits(dir, lesson) {
+  const f = path.join(dir, 'images', 'credits.json');
+  if (!fs.existsSync(f)) return '';
+  const credits = JSON.parse(fs.readFileSync(f, 'utf8'));
+  const used = new Set();
+  for (const sec of [lesson.intro, ...lesson.points.map((p) => ({scenes: p.visuals})), lesson.outro]) for (const sc of sec?.scenes ?? []) if (sc.type === 'image') used.add(sc.src);
+  const items = [...used].map((src) => credits[src]).filter(Boolean);
+  if (!items.length) return '';
+  const li = (c) => `<li>${c.page ? `<a href="${esc(c.page)}">${esc(c.title || 'Image')}</a>` : esc(c.title || 'Image')}${c.creator ? `, ${esc(c.creator)}` : ''} (${esc(c.source)}${c.license ? `, ${c.license_url ? `<a href="${esc(c.license_url)}">${esc(c.license)}</a>` : esc(c.license)}` : ''})</li>`;
+  return `<h3>Image credits</h3>\n<ul>${items.map(li).join('')}</ul>`;
 }
 
 /** Ready-to-paste Ghost code injection (only needed until the new theme ships). */

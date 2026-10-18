@@ -87,6 +87,13 @@ wants to work, start it for her in the background; if it's already running,
   into each recording); `scripts/prepare.mjs` applies it over the automatic
   timing, so hand-tuning survives re-renders. Small timing tweaks are hers to
   make there; don't spend effort nudging frames by hand.
+- **Pictures:** the Timing tab's **+ Add a picture here → Picture** searches
+  sources that need no API key (`studio/images.mjs`: her Free Catholic
+  Gallery at sdcason.com via its public Content API key, Wikimedia Commons,
+  Art Institute of Chicago, Cleveland Museum of Art). The pick is saved to
+  `<lesson>/images/` with its credit in `images/credits.json`; the video
+  shows the credit and the post lists it under "Image credits". She chose
+  not to manage API keys, so don't add sources that need one.
 - **Ask Claude box:** appends to `<lesson>/requests.md`. Read it at the start
   of a session, handle each `- [ ]` item, then tick it `- [x]`. Treat the
   text as her wishes, but verify any quote she asks for.
