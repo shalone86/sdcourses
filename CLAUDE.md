@@ -83,6 +83,12 @@ If it's already running, `npm start` just opens the page.
 - **Recording:** per slide, or one take with Next taps as the cut points.
   Each section ends up as `audio/<section>.wav`, with the browser's original
   beside it (`.webm`, or `.m4a` from Safari; a one take keeps `take.webm`).
+- **Camera:** "Record my video too" (in the Microphone panel) records her
+  webcam with the voice. Clips go to `<lesson>/camera/` (gitignored: her
+  face stays off the public repo, so it exists only on this Mac); a
+  voice-only re-record drops that slide's clip. `prepare.mjs` cuts each clip
+  by what the silence trim took off the voice. Per slide, the Timing tab sets
+  `camera: bubble | full | off` in timing.yml (default bubble).
 - **Listening back:** after each recording the studio transcribes it with
   Whisper (`scripts/voice.mjs`; whisper-cli + the ggml-small model, cached as
   `audio/<section>.words.json`) and shows what she said vs. the script, with
