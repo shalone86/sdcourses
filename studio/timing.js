@@ -317,6 +317,8 @@
       T.bar = bar;
       const top = h('div', {class: 'tl-top'}, [h('div', {class: 'tl-player'}), h('div', {class: 'tl-player'}, [bar])]);
       T.body = h('div', {class: 'stack', style: {gap: '12px'}});
+      // Video on the left (stays put), timeline on the right; stacked on narrow windows.
+      root.classList.add('tl-grid');
       root.replaceChildren(top, T.body);
       if (!window.StudioPlayer) { top.replaceChildren(h('div', {class: 'notice error', text: 'The video preview didn’t load. Restart the studio.'})); return; }
       T.player = window.StudioPlayer.mount(top.firstChild, T.props);

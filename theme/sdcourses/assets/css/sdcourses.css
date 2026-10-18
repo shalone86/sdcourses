@@ -185,6 +185,14 @@
 .cc-opt.is-right, .cc-blank.is-right .cc-input { border-color: var(--cc-ok); background: rgb(47 107 58 / 0.1); }
 .cc-opt.is-wrong, .cc-blank.is-wrong .cc-input { border-color: var(--cc-accent); background: rgb(122 31 43 / 0.08); }
 .cc-input { border-color: var(--cc-rule); background: var(--background-color); font-family: var(--font-sans); font-size: 0.85em; }
+/* Light mode: clearer right/wrong (dark mode's softer tints already read well). */
+.has-dark-text .cc-opt.is-right, .has-dark-text .cc-blank.is-right .cc-input {
+    border: 2px solid #2E8540; background: #DCF1E1; color: #17502A; font-weight: 600;
+}
+.has-dark-text .cc-opt.is-wrong, .has-dark-text .cc-blank.is-wrong .cc-input {
+    border: 2px solid #B3261E; background: #FBE1E1; color: #7A1F2B;
+}
+.has-dark-text .cc-score { color: #2E8540; }
 .cc-why { border-left-color: var(--cc-gold); font-size: 0.85em; opacity: 1; color: var(--color-secondary-text); }
 .cc-score { font-family: var(--font-sans); font-size: 0.85em; color: var(--cc-ok); }
 .cc-retry { color: var(--cc-accent); }

@@ -141,6 +141,12 @@ a{color:var(--accent)}
 }
 /* Timing tab */
 .tl-top{position:sticky;top:0;z-index:4;background:var(--bg);padding-bottom:10px}
+body.wide .wrap{max-width:1600px}
+@media (min-width:1000px){
+  .tl-grid{display:grid;grid-template-columns:minmax(380px,42%) minmax(0,1fr);gap:24px;align-items:start}
+  .tl-grid .tl-top{top:12px;padding-bottom:0}
+  .tl-grid .tl-player{max-width:none}
+}
 .tl-player{max-width:600px;margin:0 auto}
 .tl-scene.fixed{background:var(--bg);border-style:dashed;cursor:default;color:var(--muted)}
 .tl-scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
@@ -290,6 +296,7 @@ function renderHeader() {
 
 function render() {
   renderHeader();
+  document.body.classList.toggle('wide', S.tab === 'timing');
   const kids = [];
   if (S.notice) kids.push(noticeEl(S.notice));
   if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : videoView());
