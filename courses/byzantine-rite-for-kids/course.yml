@@ -1,0 +1,11 @@
+slug: byzantine-rite-for-kids
+title: The Byzantine Rite for Kids
+summary: >-
+  A kids' version of The Byzantine Rite: where Byzantine Catholics come from,
+  how they pray, and how they belong to the one Catholic Church.
+# Kids look: bright colors, rounded letters, pictures that bounce on the beat.
+style: kids
+music: music/blessed-art-thou-ambient-instrumental.mp3
+cover: {icon: church, eyebrow: Catholic Course for Kids}
+planned:
+  - What Is the Byzantine Rite?

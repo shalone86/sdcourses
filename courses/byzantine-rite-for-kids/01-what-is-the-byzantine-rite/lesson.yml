@@ -1,0 +1,195 @@
+# Kids version of byzantine-catholic-basics/01: the same quotations, simpler
+# words, about half as long (explanations ~35 words instead of 60–100).
+status: draft
+course: byzantine-rite-for-kids
+number: 1
+slug: what-is-the-byzantine-rite-for-kids
+title: What Is the Byzantine Rite?
+excerpt: >-
+  Where Byzantine Catholics come from, how they pray, and how they belong to
+  the one Catholic Church, for kids.
+
+sources:
+  - id: acts-11
+    label: Acts 11:19–26 (NABRE)
+    url: https://bible.usccb.org/bible/acts/11
+  - id: ce-byzantine-rite
+    label: "Catholic Encyclopedia (1908): The Rite of Constantinople"
+    url: https://www.newadvent.org/cathen/04312d.htm
+  - id: ccc-liturgy
+    label: Catechism of the Catholic Church, 1200–1206
+    url: https://www.vatican.va/archive/ENG0015/__P3C.HTM
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 285, 291"
+    file: sources-local/ugcc-catechism.txt
+
+intro:
+  text: ""               # Shalone writes this
+  notes:
+    - Kids version of lesson 1 of The Byzantine Rite. Aim for about 40–50 words.
+    - "A question to open with: some Catholics pray with lots of icons, sing the whole Liturgy, and receive Communion from a spoon. Who are they?"
+    - The Byzantine Rite is one way Catholics pray; about fourteen Eastern Catholic Churches share it (Ruthenian, Ukrainian, Melkite and others).
+    - "Keep the usual opening: \"I'm your host Shalone Cason\" (your photo) and \"in the name of the Father and of the Son and of the Holy Spirit\" (the Trinity picture)."
+  scenes:
+    - type: title
+    - type: host         # your photo and name, when you say "I'm your host"
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: It started in Antioch
+    quote:
+      lead: Long ago, Jesus's followers spread the Good News to a big city called Antioch.
+      text: >-
+        it was in Antioch that the disciples were first called Christians.
+      source: acts-11
+      cite: Acts 11:26
+      highlight: first called Christians
+    text: >-
+      That's where Christians got their name! Saint Peter and Saint Paul both
+      lived there for a while, and the way Antioch prayed is where our story
+      begins.
+    visuals:
+      - type: map
+        region: holyland
+        places: [Jerusalem, {name: Antioch, label: left}]
+        routes: [[Jerusalem, Antioch]]
+        highlight: Antioch
+        caption: From Jerusalem to Antioch
+    quiz:
+      type: blank
+      question: '"It was in ____ that the disciples were first called Christians."'
+      accept: [Antioch]
+      why: Acts 11:26. Christians got their name in the city of Antioch.
+
+  - heading: Its prayers came from Antioch
+    quote:
+      lead: An old Catholic encyclopedia tells us where Byzantine worship comes from.
+      text: >-
+        It is derived from that of Antioch.
+      source: ce-byzantine-rite
+      cite: Catholic Encyclopedia, "The Rite of Constantinople"
+      highlight: Antioch
+    text: >-
+      It grew from the way Antioch prayed, then grew up in a great city called
+      Constantinople. Its old name was Byzantium, and that's where the word
+      Byzantine comes from!
+    visuals:
+      - type: map
+        region: east
+        places: [{name: Antioch, label: below}, {name: Constantinople, label: above}]
+        routes: [[Antioch, Constantinople]]
+        highlight: Constantinople
+        caption: From Antioch to Constantinople
+    quiz:
+      type: truefalse
+      question: Byzantine worship grew from the way Christians prayed in Antioch.
+      answer: true
+      why: >-
+        True! The Catholic Encyclopedia says it "is derived from that of
+        Antioch."
+
+  - heading: One faith, many ways to pray
+    quote:
+      lead: The Catechism tells us why Catholics pray in different ways.
+      text: >-
+        Churches of the same geographical and cultural area came to celebrate
+        the mystery of Christ through particular expressions characterized by
+        the culture
+      source: ccc-liturgy
+      cite: Catechism 1202
+      highlight: particular expressions
+    text: >-
+      Byzantine and Roman Catholics believe the same things and share the same
+      seven sacraments. We just pray differently: Byzantine churches are full
+      of icons, and the whole Liturgy is sung!
+    visuals:
+      - type: compare
+        left: { kicker: Latin tradition, title: Roman Rite, note: Grew from the Church of Rome, icon: facade }
+        right: { kicker: Eastern tradition, title: Byzantine Rite, note: Grew from Antioch and Constantinople, icon: dome }
+        emphasis: right
+    quiz:
+      type: choice
+      question: What do Byzantine Catholics and Roman Catholics share?
+      options:
+        - The same church buildings
+        - The same faith and sacraments
+        - Nothing at all
+      answer: 1
+      why: >-
+        We share one faith and the same seven sacraments. We just pray in
+        different ways (CCC 1202).
+
+  - heading: A big Church family
+    quote:
+      lead: A Byzantine catechism tells us how the Catholic Church is put together.
+      text: >-
+        It is in these, and formed out of them, that the one and unique
+        Catholic Church exists.
+      source: ugcc
+      cite: Christ – Our Pascha 285
+      highlight: one and unique Catholic Church
+    text: >-
+      The Catholic Church is a big family of Churches, each with its own
+      bishops. The Latin Church is the biggest. The Ruthenian, Ukrainian and
+      Melkite Churches are Byzantine. Together, they're one Church!
+    visuals:
+      - type: union
+        center: The Catholic Church
+        items: [Latin, Ruthenian, Ukrainian, Melkite]
+        caption: One big family of Churches
+    quiz:
+      type: truefalse
+      question: The Catholic Church is only the Roman, or Latin, Church.
+      answer: false
+      why: >-
+        False! The Catholic Church is a family of Churches, Eastern and
+        Western (Christ – Our Pascha 285).
+
+  - heading: Together with the Pope
+    quote:
+      lead: What makes all these Churches Catholic? The same catechism tells us.
+      text: >-
+        The first among self-governing Churches is the Church of Rome, because
+        its presider is the Pope of Rome, the successor of the apostle Peter.
+      source: ugcc
+      cite: Christ – Our Pascha 291
+      highlight: successor of the apostle Peter
+    text: >-
+      The Pope takes Saint Peter's place, and all these Churches are united
+      with him. So Byzantine and Roman Catholics can receive Communion in each
+      other's churches!
+    visuals:
+      - type: partners
+        left:
+          title: Byzantine
+          items:
+            - { icon: book-open, label: Prayers }
+            - { icon: image, label: Icons }
+            - { icon: flame, label: Customs }
+        right:
+          title: Rome
+          items:
+            - { icon: key-round, label: The Pope }
+        link: Together
+    quiz:
+      type: choice
+      question: Who are all the Catholic Churches united with?
+      options:
+        - The Pope, who takes Saint Peter's place
+        - The king of Constantinople
+        - Nobody
+      answer: 0
+      why: >-
+        All the Catholic Churches are united with the Pope, "the successor of
+        the apostle Peter" (Christ – Our Pascha 291).
+
+outro:
+  text: ""               # Shalone writes this
+  notes:
+    - "Recap: it started in Antioch · its prayers came from Antioch · one faith, many ways to pray · a big Church family · together with the Pope."
+    - Aim for about 40–50 words, ending with your usual sign-off.
+  scenes:
+    - type: recap
