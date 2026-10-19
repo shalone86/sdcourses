@@ -100,6 +100,17 @@ If it's already running, `npm start` just opens the page.
   Pixel animation, a `sprite` scene (`move: stay | hop | across`, `size`);
   prepare.mjs copies the drawing into the props. With `motion: dance` it
   changes frame on the beat.
+- **New lessons and slides:** "+ New lesson" (studio header) picks a course
+  here, a course on the site (Ghost tags, numbering continues after its
+  published lessons), or a new one, and starts with one blank slide (the
+  intro). Each slide has "+ Add a slide after this" / "Remove this slide" /
+  "+ Add a closing slide" (`scripts/slides.mjs`: lesson.yml is edited as
+  text, recordings and timing move with renumbered slides, removed ones go to
+  `audio/removed/`). Her own slides (`quote.link` present) have boxes for the
+  section title, direct quote, source and link; the link becomes the source
+  the quote check uses. Slides without a quotation are allowed.
+- **Stacking:** in the Timing tab, a picture's ◫/⧉ button shows it beside or
+  over the picture before (`with: side | over` on the scene).
 - **Trimming:** in the Timing tab, a picture's right edge ends it sooner
   (`scenes.<i>.end`) and the End marker shortens the slide (`<section>.end`).
 - **Listening back:** after each recording the studio transcribes it with

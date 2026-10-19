@@ -15,8 +15,11 @@ point-1:
     "0":
       cues:
         end: 9.6
+    "1":
+      start: 10.03
+      end: 13.3
     "2":
-      start: 12.8
+      start: 13.37
     "3":
       start: 17.4
 point-2:
@@ -38,9 +41,10 @@ point-5:
       cues:
         end: 14.9
     "1":
-      start: 19
+      start: 17.63
 outro:
   camera: off
+  side: right
 point-4:
   camera: card
   side: right
