@@ -93,7 +93,8 @@ If it's already running, `npm start` just opens the page.
   `camera:` in timing.yml: bubble (default), card, side, lower, only, off
   (geometry in `video/Camera.tsx`).
 - **Pixel art tab** (`studio/pixels.js`): she draws 1–4 frame pixel
-  animations (16/24/32 px, pencil, eraser, fill, color picker, mirror, onion
+  animations (16/24/32 px; pencil, dither, eraser, fill, line, box, circle,
+  select & move, color picker; copy/cut/paste across drawings; flips; mirror, onion
   skin, speed). Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
   Pixel animation, a `sprite` scene (`move: stay | hop | across`, `size`);
