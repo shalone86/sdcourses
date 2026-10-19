@@ -10,11 +10,20 @@
 window.PixelTab = (() => {
   const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
   const MAX_FRAMES = 4;
-  // The kids palette first, then basics, skin and hair tones, nature.
-  const PALETTE = ['#FF4F6D', '#18B7A6', '#FFB300', '#7B5CFF', '#2F8CFF', '#FF8A3D',
-    '#000000', '#2B2350', '#6A6488', '#C9C3D9', '#FFFFFF',
-    '#FBE3CF', '#F2C6A0', '#D9A066', '#A86B3C', '#8D5524', '#5A3825', '#2E1B10',
-    '#FFD36B', '#B8860B', '#7ED957', '#2E7D32', '#9FDFF0', '#7A1F2B'];
+  // Small palettes on purpose (a handheld-game look); "Any color" is still there.
+  const PALETTES = {
+    video: {label: 'Video colors (12)', colors: ['#2B2350', '#FFFFFF', '#FFF6E0', '#FF4F6D', '#FF8A3D', '#FFB300', '#18B7A6', '#2F8CFF', '#7B5CFF', '#F2C6A0', '#A86B3C', '#5A3825']},
+    gbc: {label: 'Game Boy Color (16)', colors: ['#000000', '#FFFFFF', '#888888', '#F8E8C8', '#E0A070', '#A05030', '#503018', '#F83838',
+      '#F878B8', '#F8A800', '#F8F858', '#38B838', '#186818', '#58A8F8', '#2038A8', '#A858F8']},
+    gb: {label: 'Game Boy (4 greens)', colors: ['#0F380F', '#306230', '#8BAC0F', '#9BBC0F']},
+    all: {label: 'All colors (24)', colors: ['#FF4F6D', '#18B7A6', '#FFB300', '#7B5CFF', '#2F8CFF', '#FF8A3D',
+      '#000000', '#2B2350', '#6A6488', '#C9C3D9', '#FFFFFF',
+      '#FBE3CF', '#F2C6A0', '#D9A066', '#A86B3C', '#8D5524', '#5A3825', '#2E1B10',
+      '#FFD36B', '#B8860B', '#7ED957', '#2E7D32', '#9FDFF0', '#7A1F2B']},
+  };
+  const store = {get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* fine */ } }};
+  // Square sizes for characters; the wide one for a scene with several characters in it.
+  const SIZES = [[16, 16], [24, 24], [32, 32], [48, 48], [64, 64], [64, 36]];
   const TOOLS = [['pen', 'Pencil'], ['dither', 'Dither'], ['erase', 'Eraser'], ['fill', 'Fill'],
     ['line', 'Line'], ['box', 'Box'], ['circle', 'Circle'], ['select', 'Select & move'], ['pick', 'Pick a color']];
   const SHAPES = ['line', 'box', 'circle'];
@@ -35,7 +44,7 @@ window.PixelTab = (() => {
   }
 
   const blank = (w, hgt) => new Array(w * hgt).fill(null);
-  const fresh = (size) => ({name: '', width: size, height: size, fps: 4, frames: [blank(size, size), blank(size, size)]});
+  const fresh = (w, hgt = w) => ({name: '', width: w, height: hgt, fps: 4, frames: [blank(w, hgt), blank(w, hgt)]});
 
   /** Saved form (palette + one character per pixel) → editing form (a color or null per pixel). */
   function fromSaved(s) {
@@ -76,10 +85,11 @@ window.PixelTab = (() => {
   }
 
   function open(root, api, post) {
-    const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTE[7], mirror: false, onion: true, filled: false, allFrames: false,
+    const pal = PALETTES[store.get('studio.pixelPalette')] ? store.get('studio.pixelPalette') : 'video';
+    const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false,
       undo: [], saved: '', timer: null,
       sel: null,    // selected box {x, y, w, h}
-      float: null,  // lifted pixels being moved or pasted {x, y, w, h, px}
+      float: null,  // lifted pixels being moved or pasted {x, y, w, h, layers: [{frame, px}]} (one layer per frame)
       shape: null}; // a shape being dragged: its preview squares
     const snap = () => JSON.stringify({name: P.art.name, fps: P.art.fps, frames: P.art.frames});
     P.saved = snap();
@@ -125,10 +135,11 @@ window.PixelTab = (() => {
       // Onion skin: the frame before (on the first frame, the last one, since it loops).
       const prev = P.onion && a.frames.length > 1 ? a.frames[(P.frame + a.frames.length - 1) % a.frames.length] : null;
       const {g, c} = paint(canvas, px(), a.width, a.height, canvas.width, {grid: true, onion: prev});
-      if (P.float) {
+      const layer = P.float && P.float.layers.find((l) => l.frame === P.frame);
+      if (layer) {
         const f = P.float;
         for (let y = 0; y < f.h; y++) for (let x = 0; x < f.w; x++) {
-          const col = f.px[y * f.w + x];
+          const col = layer.px[y * f.w + x];
           if (col && inBounds(f.x + x, f.y + y)) { g.fillStyle = col; g.fillRect((f.x + x) * c, (f.y + y) * c, c, c); }
         }
       }
@@ -193,40 +204,54 @@ window.PixelTab = (() => {
     }
 
     // ---------- selection, copy and paste ----------
+    // Which frames an action works on: every frame (the switch), or the one showing.
+    const targets = () => (P.every ? P.art.frames.map((_, i) => i) : [P.frame]);
+
     /** Pick up the selected pixels so they can move (the spot they leave is see-through). */
     function lift() {
       if (P.float || !P.sel) return;
       remember();
-      const s = P.sel, p = px(), out = [];
-      for (let y = 0; y < s.h; y++) for (let x = 0; x < s.w; x++) { const i = (s.y + y) * W() + s.x + x; out.push(p[i]); p[i] = null; }
-      P.float = {...s, px: out};
+      const s = P.sel;
+      const layers = targets().map((frame) => {
+        const p = P.art.frames[frame], out = [];
+        for (let y = 0; y < s.h; y++) for (let x = 0; x < s.w; x++) { const i = (s.y + y) * W() + s.x + x; out.push(p[i]); p[i] = null; }
+        return {frame, px: out};
+      });
+      P.float = {...s, layers};
     }
-    /** Put the lifted pixels down where they are now. */
+    /** Put the lifted pixels down where they are now (adding frames if a pasted animation has more). */
     function commit() {
       const f = P.float;
       if (!f) return;
-      for (let y = 0; y < f.h; y++) for (let x = 0; x < f.w; x++) {
-        const col = f.px[y * f.w + x];
-        if (col && inBounds(f.x + x, f.y + y)) px()[(f.y + y) * W() + f.x + x] = col;
+      for (const l of f.layers) {
+        if (l.frame >= MAX_FRAMES) continue;
+        while (P.art.frames.length <= l.frame) P.art.frames.push(blank(W(), H()));
+        const p = P.art.frames[l.frame];
+        for (let y = 0; y < f.h; y++) for (let x = 0; x < f.w; x++) {
+          const col = l.px[y * f.w + x];
+          if (col && inBounds(f.x + x, f.y + y)) p[(f.y + y) * W() + f.x + x] = col;
+        }
       }
       P.sel = {x: Math.max(0, f.x), y: Math.max(0, f.y), w: Math.min(W(), f.x + f.w) - Math.max(0, f.x), h: Math.min(H(), f.y + f.h) - Math.max(0, f.y)};
       if (P.sel.w < 1 || P.sel.h < 1) P.sel = null;
       P.float = null;
     }
     function letGo() { commit(); P.sel = null; }
-    /** The selection (or the whole frame), as {w, h, px}. */
+    /** The selection (or the whole picture), from the frames it works on: {w, h, frames: [px, …]}. */
     function grab() {
-      if (P.float) return {w: P.float.w, h: P.float.h, px: [...P.float.px]};
+      if (P.float) return {w: P.float.w, h: P.float.h, frames: P.float.layers.map((l) => [...l.px])};
       const s = P.sel || {x: 0, y: 0, w: W(), h: H()};
-      const out = [];
-      for (let y = 0; y < s.h; y++) for (let x = 0; x < s.w; x++) out.push(px()[(s.y + y) * W() + s.x + x]);
-      return {w: s.w, h: s.h, px: out};
+      return {w: s.w, h: s.h, frames: targets().map((frame) => {
+        const out = [];
+        for (let y = 0; y < s.h; y++) for (let x = 0; x < s.w; x++) out.push(P.art.frames[frame][(s.y + y) * W() + s.x + x]);
+        return out;
+      })};
     }
     function copy() {
       const c = grab();
-      try { localStorage.setItem(CLIP_KEY, JSON.stringify(c)); } catch { /* still kept below */ }
+      store.set(CLIP_KEY, JSON.stringify(c));
       P.clip = c;
-      note(`Copied ${c.w} × ${c.h}. Paste it here or in another drawing.`);
+      note(`Copied ${c.w} × ${c.h}${c.frames.length > 1 ? `, ${c.frames.length} frames` : ''}. Paste it here or in another drawing.`);
     }
     function cut() {
       copy();
@@ -236,21 +261,30 @@ window.PixelTab = (() => {
     }
     function paste() {
       let c = P.clip;
-      try { c = JSON.parse(localStorage.getItem(CLIP_KEY)) || c; } catch { /* use the one in memory */ }
-      if (!c) { note('Nothing copied yet: select something (or nothing, for the whole frame) and press Copy.'); return; }
+      try { c = JSON.parse(store.get(CLIP_KEY)) || c; } catch { /* use the one in memory */ }
+      if (!c) { note('Nothing copied yet: select something (or nothing, for the whole picture) and press Copy.'); return; }
+      const frames = c.frames || [c.px];
       commit();
       remember();
-      // Paste where the selection is, else the top-left corner; then drag it into place.
+      // An animation goes in frame by frame from frame 1; one frame goes in the frame showing
+      // (or in every frame, with the switch on). Then drag it into place.
+      const layers = frames.length > 1 ? frames.slice(0, MAX_FRAMES).map((px, frame) => ({frame, px: [...px]}))
+        : targets().map((frame) => ({frame, px: [...frames[0]]}));
       const x = P.sel ? P.sel.x : 0, y = P.sel ? P.sel.y : 0;
-      P.float = {x, y, w: c.w, h: c.h, px: [...c.px]};
+      P.float = {x, y, w: c.w, h: c.h, layers};
+      if (frames.length > 1) P.frame = 0;
       P.sel = null;
       P.tool = 'select';
       draw(); markDirty();
+      if (frames.length > 1) note(`Pasted ${frames.length} frames. Drag it into place; it moves in every frame.`);
     }
     function clearArea() {
       const s = P.sel;
-      if (!s) { px().fill(null); return; }
-      for (let y = 0; y < s.h; y++) for (let x = 0; x < s.w; x++) px()[(s.y + y) * W() + s.x + x] = null;
+      for (const frame of targets()) {
+        const p = P.art.frames[frame];
+        if (!s) { p.fill(null); continue; }
+        for (let y = 0; y < s.h; y++) for (let x = 0; x < s.w; x++) p[(s.y + y) * W() + s.x + x] = null;
+      }
     }
     function nudge(dx, dy) {
       if (!P.sel && !P.float) return;
@@ -271,11 +305,10 @@ window.PixelTab = (() => {
     function flip(dir) {
       if (P.sel || P.float) {
         lift();
-        P.float.px = flipped(P.float.px, P.float.w, P.float.h, dir);
+        for (const l of P.float.layers) l.px = flipped(l.px, P.float.w, P.float.h, dir);
       } else {
         remember();
-        const which = P.allFrames ? P.art.frames.map((_, i) => i) : [P.frame];
-        for (const i of which) P.art.frames[i] = flipped(P.art.frames[i], W(), H(), dir);
+        for (const i of targets()) P.art.frames[i] = flipped(P.art.frames[i], W(), H(), dir);
       }
       draw(); markDirty();
     }
@@ -292,7 +325,8 @@ window.PixelTab = (() => {
         canvas.addEventListener('pointermove', move);
         canvas.addEventListener('pointerup', end);
       };
-      if (P.tool === 'pick') { const col = (P.float && inside(P.float, c) && P.float.px[(c.y - P.float.y) * P.float.w + c.x - P.float.x]) || px()[c.y * W() + c.x]; if (col) { P.color = col; P.tool = 'pen'; draw(); } return; }
+      if (P.tool === 'pick') { const layer = P.float && inside(P.float, c) && P.float.layers.find((l) => l.frame === P.frame);
+        const col = (layer && layer.px[(c.y - P.float.y) * P.float.w + c.x - P.float.x]) || px()[c.y * W() + c.x]; if (col) { P.color = col; P.tool = 'pen'; draw(); } return; }
 
       if (P.tool === 'select') {
         const box = P.float || P.sel;
@@ -377,14 +411,29 @@ window.PixelTab = (() => {
       const a = P.art;
       const btn = (text, onclick, attrs = {}) => h('button', {class: 'btn', text, onclick, ...attrs});
       const pick = h('select', {'aria-label': 'Open a saved animation', onchange: (e) => {
-        if (dirty() && !confirm('Leave this drawing without saving?')) { e.target.value = a.slug || ''; return; }
-        const s = P.list.find((x) => x.slug === e.target.value);
+        if (dirty() && !confirm('Leave this drawing without saving?')) { e.target.value = a.slug ? 'open:' + a.slug : ''; return; }
+        const [kind, slug] = e.target.value.split(':');
+        const s = P.list.find((x) => x.slug === slug);
         // The copied pixels stay, so they can be pasted into the drawing opened now.
-        P.art = s ? fromSaved(s) : fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); draw();
-      }}, [h('option', {value: '', text: 'New drawing'}), ...P.list.map((s) => h('option', {value: s.slug, text: s.name, selected: s.slug === a.slug}))]);
+        P.art = s ? fromSaved(s) : fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap();
+        // "Start from a copy": every frame of that one, as a new unsaved drawing.
+        if (s && kind === 'copy') { delete P.art.slug; P.art.name = s.name + ' copy'; P.saved = ''; }
+        draw();
+      }}, [h('option', {value: '', text: 'New drawing'}),
+        P.list.length ? h('optgroup', {label: 'Open'}, P.list.map((s) => h('option', {value: 'open:' + s.slug, text: s.name, selected: s.slug === a.slug}))) : null,
+        P.list.length ? h('optgroup', {label: 'Start a new one from a copy of'}, P.list.map((s) => h('option', {value: 'copy:' + s.slug, text: s.name + ' (all frames)'}))) : null]);
       const size = h('select', {'aria-label': 'Size', disabled: !!a.slug || a.frames.some((f) => f.some(Boolean)), onchange: (e) => {
-        const n = +e.target.value; P.art = {...fresh(n), name: a.name, fps: a.fps}; P.frame = 0; draw();
-      }}, [16, 24, 32].map((n) => h('option', {value: n, text: `${n} × ${n}`, selected: a.width === n})));
+        const [w, hgt] = e.target.value.split('x').map(Number); P.art = {...fresh(w, hgt), name: a.name, fps: a.fps}; P.frame = 0; draw();
+      }}, SIZES.map(([w, hgt]) => h('option', {value: `${w}x${hgt}`, text: `${w} × ${hgt}${w !== hgt ? ' (wide scene)' : ''}`, selected: a.width === w && a.height === hgt})));
+      const paletteSel = h('select', {'aria-label': 'Colors', onchange: (e) => { P.pal = e.target.value; store.set('studio.pixelPalette', P.pal); draw(); }},
+        Object.entries(PALETTES).map(([k, v]) => h('option', {value: k, text: v.label, selected: k === P.pal})));
+      const remove = async () => {
+        if (!confirm(`Delete "${a.name}"? It's kept in sprites/.deleted, so Claude can bring it back.`)) return;
+        try {
+          const d = await post('/api/sprite/delete', {slug: a.slug});
+          P.list = d.sprites; P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); draw();
+        } catch (e) { alert('Couldn’t delete it: ' + e.message); }
+      };
       const name = h('input', {type: 'text', value: a.name, placeholder: 'Name (e.g. Dancing Saint Nicholas)', 'aria-label': 'Name', oninput: (e) => { a.name = e.target.value; markDirty(); }});
 
       const tool = ([t, label]) => h('button', {'aria-pressed': P.tool === t ? 'true' : 'false', text: label, onclick: () => {
@@ -393,7 +442,8 @@ window.PixelTab = (() => {
       }});
       const swatch = (c) => h('button', {class: 'px-swatch' + (c.toUpperCase() === P.color.toUpperCase() ? ' on' : ''), style: {background: c}, title: c, 'aria-label': 'Color ' + c,
         onclick: () => { P.color = c; if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen'; draw(); }});
-      const used = [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].filter((c) => !PALETTE.includes(c));
+      const colors = PALETTES[P.pal].colors;
+      const used = [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].filter((c) => !colors.includes(c));
       const custom = h('input', {type: 'color', value: P.color, 'aria-label': 'Any color', onchange: (e) => { P.color = e.target.value.toUpperCase(); if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen'; draw(); }});
 
       const frames = a.frames.map((_, i) => h('button', {class: 'px-frame' + (i === P.frame ? ' on' : ''), 'aria-label': 'Frame ' + (i + 1), onclick: () => { letGo(); P.frame = i; draw(); }},
@@ -415,17 +465,22 @@ window.PixelTab = (() => {
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
         SHAPES.includes(P.tool) && P.tool !== 'line'
           ? h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
-        h('div', {class: 'px-palette'}, [...PALETTE.map(swatch), ...used.map(swatch), h('label', {class: 'px-any', title: 'Any color'}, [custom, h('span', {text: 'Any color'})])]),
+        h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
+        h('div', {class: 'px-palette'}, [...colors.map(swatch),
+          used.length ? h('span', {class: 'small muted', text: 'In this drawing:'}) : null, ...used.map(swatch),
+          h('label', {class: 'px-any', title: 'Any color'}, [custom, h('span', {text: 'Any color'})])]),
         h('div', {class: 'row', style: {gap: '8px', flexWrap: 'wrap'}}, [
           btn('Copy', copy, {title: selecting ? 'Copy the selection' : 'Copy the whole frame'}),
           btn('Cut', cut),
           btn('Paste', paste),
           btn('Flip ↔', () => flip('h'), {title: selecting ? 'Flip the selection left to right' : 'Flip left to right'}),
           btn('Flip ↕', () => flip('v'), {title: selecting ? 'Flip the selection upside down' : 'Flip upside down'}),
-          selecting ? null : h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.allFrames || null, onchange: (e) => { P.allFrames = e.target.checked; }}), ' Flip every frame']),
+          h('label', {class: 'small', title: 'Copy, cut, paste, move, flip and clear work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
+            onchange: (e) => { P.every = e.target.checked; }}), ' Every frame']),
           selecting ? btn('Done moving', () => { letGo(); draw(); markDirty(); }) : null,
         ]),
-        h('div', {class: 'small muted', 'data-note': '', text: selecting ? 'Drag inside the box to move it. Copy, Cut and Flip use the selection.' : 'Copy, Cut and Flip use the whole frame when nothing is selected.'}),
+        h('div', {class: 'small muted', 'data-note': '', text: (selecting ? 'Drag inside the box to move it. Copy, Cut and Flip use the selection.' : 'Copy, Cut and Flip use the whole picture when nothing is selected.')
+          + ' With Every frame on, they work on all the frames: copy a whole animation and paste it into another drawing.'}),
         h('div', {class: 'row', style: {gap: '14px'}}, [
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.mirror || null, onchange: (e) => { P.mirror = e.target.checked; drawCanvas(); }}), ' Mirror (draw both sides)']),
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.onion || null, onchange: (e) => { P.onion = e.target.checked; drawCanvas(); }}), ' Show the frame before, faintly']),
@@ -441,6 +496,7 @@ window.PixelTab = (() => {
           btn('Undo', undo),
           btn('Clear this frame', () => { letGo(); remember(); a.frames[P.frame] = blank(a.width, a.height); draw(); markDirty(); }),
           h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
+          a.slug ? btn('Delete this drawing', remove) : null,
         ]),
         h('div', {class: 'small muted', text: 'Saved drawings can go in any lesson: on the Timing tab, + Add a picture here → Pixel animation.'}),
       ].filter(Boolean));

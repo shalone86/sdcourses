@@ -30,3 +30,6 @@ studio/player/player.js
 
 # Her camera recordings (video of her face): kept on this Mac only, not in the public repo
 courses/*/*/camera/
+
+# Pixel animations she deleted in the studio (kept on this Mac in case she wants one back)
+sprites/.deleted/

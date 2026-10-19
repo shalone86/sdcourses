@@ -53,7 +53,7 @@
     timeline: {label: 'Timeline', fields: [['items', 'One per line: year | what happened', 'lines']],
       make: (v) => ({type: 'timeline', items: lines(v.items).map((l) => { const [a, b] = pair(l); return {year: a, label: b || ''}; })})},
     sprite: {label: 'Pixel animation (from the Pixel art tab)', fields: [['sprite', 'Which drawing', 'sprite'], ['move', 'How it moves', 'select', ['stay', 'hop', 'across']],
-      ['size', 'Size', 'select', ['medium', 'small', 'big']], ['caption', 'Caption', 'text']],
+      ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
       make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
         return {type: 'sprite', sprite: v.sprite, ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; }},
     term: {label: 'A word', fields: [['term', 'The word', 'text'], ['origin', 'From (e.g. Greek …)', 'text'], ['meaning', 'Meaning', 'text']],

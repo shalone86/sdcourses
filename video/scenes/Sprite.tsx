@@ -7,12 +7,12 @@ import type {SceneProps} from '.';
 
 // One of her pixel animations (studio Pixel art tab → sprites/<name>.json, put in `art` by prepare.mjs).
 //   move: stay (default) | hop (little jumps) | across (walks across the screen)
-//   size: small | medium (default) | big
+//   size: small | medium (default) | big | full (fills the slide, for a wide scene)
 type Art = {width: number; height: number; fps: number; palette: string[]; frames: string[][]};
-type SpriteScene = {sprite: string; art: Art; move?: 'stay' | 'hop' | 'across'; size?: 'small' | 'medium' | 'big'; caption?: string};
+type SpriteScene = {sprite: string; art: Art; move?: 'stay' | 'hop' | 'across'; size?: 'small' | 'medium' | 'big' | 'full'; caption?: string};
 
 const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
-const BOX = {small: 320, medium: 480, big: 620};
+const BOX = {small: [320, 320], medium: [480, 480], big: [640, 620], full: [1560, 660]};
 
 /** One frame as SVG squares (crisp edges), each row's runs of one color merged. */
 const Frame: React.FC<{art: Art; rows: string[]}> = ({art, rows}) => (
@@ -39,8 +39,8 @@ export const Sprite: React.FC<SceneProps<SpriteScene>> = ({scene, duration}) => 
   const n = art.frames.length;
   // Dance: one drawing per beat. Otherwise at the speed she set.
   const i = beat.dance ? Math.floor(beat.t) % n : Math.floor((f / fps) * art.fps) % n;
-  const box = BOX[scene.size ?? 'medium'] - (scene.caption ? 60 : 0);
-  const px = Math.max(1, Math.floor(box / Math.max(art.width, art.height)));
+  const [bw, bh] = BOX[scene.size ?? 'medium'] ?? BOX.medium;
+  const px = Math.max(1, Math.floor(Math.min(bw / art.width, (bh - (scene.caption ? 80 : 0)) / art.height)));
   const t = f / fps;
   let dx = 0, dy = 0;
   if (scene.move === 'hop') dy = -Math.abs(Math.sin(Math.PI * t * Math.max(1, art.fps / 2))) * px * 3;

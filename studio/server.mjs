@@ -14,7 +14,7 @@ import {prepare} from '../scripts/prepare.mjs';
 import YAML from 'yaml';
 import * as esbuild from 'esbuild';
 import {importImage, searchImages, sourceList} from './images.mjs';
-import {listSprites, saveSprite} from '../scripts/sprites.mjs';
+import {deleteSprite, listSprites, saveSprite} from '../scripts/sprites.mjs';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -466,6 +466,11 @@ async function handle(req, res) {
       const unapproved = changes.length > 0 && setStatus(dir, 'draft');
       const check = changes.length ? await checkQuotes(id) : null;
       return json(res, 200, {changes, unapproved, check, lesson: detail(id)});
+    }
+    if (p === '/api/sprite/delete') {
+      const {slug} = await readJson(req);
+      try { deleteSprite(slug); } catch (e) { throw httpError(409, e.message); }
+      return json(res, 200, {sprites: listSprites()});
     }
     if (p === '/api/sprite') {
       const slug = saveSprite(await readJson(req));

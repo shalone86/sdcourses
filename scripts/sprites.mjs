@@ -23,6 +23,32 @@ export function loadSprite(slug) {
   return JSON.parse(fs.readFileSync(f, 'utf8'));
 }
 
+/** Lessons that show this animation (a `sprite: <slug>` scene in lesson.yml). */
+export function spriteUsedBy(slug) {
+  const courses = path.join(ROOT, 'courses');
+  const out = [];
+  for (const c of fs.readdirSync(courses, {withFileTypes: true})) {
+    if (!c.isDirectory()) continue;
+    for (const l of fs.readdirSync(path.join(courses, c.name), {withFileTypes: true})) {
+      const f = path.join(courses, c.name, l.name, 'lesson.yml');
+      if (l.isDirectory() && fs.existsSync(f) && new RegExp(`^\\s*sprite:\\s*["']?${slug}["']?\\s*$`, 'm').test(fs.readFileSync(f, 'utf8'))) out.push(`${c.name}/${l.name}`);
+    }
+  }
+  return out;
+}
+
+/** Delete one: it moves to sprites/.deleted/ (kept on this Mac), unless a lesson still uses it. */
+export function deleteSprite(slug) {
+  const s = spriteSlug(slug);
+  const f = path.join(SPRITES, `${s}.json`);
+  if (!s || !fs.existsSync(f)) throw new Error('That drawing isn\'t saved');
+  const used = spriteUsedBy(s);
+  if (used.length) throw new Error(`It's still in ${used.join(', ')}. Remove it there first (Timing tab, ×).`);
+  const bin = path.join(SPRITES, '.deleted');
+  fs.mkdirSync(bin, {recursive: true});
+  fs.renameSync(f, path.join(bin, `${s}-${new Date().toISOString().replace(/[:.]/g, '-')}.json`));
+}
+
 /** Check and save one animation; returns its slug. */
 export function saveSprite(s) {
   const slug = spriteSlug(s?.name);
