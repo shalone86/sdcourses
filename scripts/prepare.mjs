@@ -323,6 +323,8 @@ export function applyTiming(props, timing) {
   for (const seg of props.segments) {
     const layout = LAYOUTS[timing?.[seg.name]?.camera];
     if (seg.camera && layout) seg.camera.layout = layout;
+    const side = timing?.[seg.name]?.side;
+    if (seg.camera && (side === 'left' || side === 'right')) seg.camera.side = side;
     const toFrame = (sec) => Math.round(seg.audioOffsetInFrames + sec * FPS);
     // A slide trimmed shorter in the Timing tab (`end`: seconds into its recording).
     const end = timing?.[seg.name]?.end;

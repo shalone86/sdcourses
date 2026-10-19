@@ -25,11 +25,11 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
   const fadeOut = 1 - ramp(frame, seg.durationInFrames - FADE, seg.durationInFrames);
 
   const layout: Layout = seg.camera ? seg.camera.layout ?? 'bubble' : 'off';
-  const geo = geometry(layout);
+  const geo = geometry(layout, seg.camera?.side);
   return (
     <LayoutContext.Provider value={layout}>
     <AbsoluteFill style={{opacity: fadeOut}}>
-      {layout !== 'off' && layout !== 'bubble' && <CameraBack seg={seg} layout={layout} />}
+      {geo.video && <CameraBack seg={seg} box={geo.video} />}
       {seg.audio && (
         <Sequence from={seg.audioOffsetInFrames}>
           <Audio src={staticFile(seg.audio)} />
@@ -43,7 +43,7 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
           </SceneShell>
         </Sequence>
       ))}
-      {layout === 'bubble' && <CameraBubble seg={seg} />}
+      {layout === 'bubble' && <CameraBubble seg={seg} left={geo.bubble?.left} />}
     </AbsoluteFill>
     </LayoutContext.Provider>
   );
@@ -74,7 +74,7 @@ const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: 
     );
   }
   // Bubble: the scenes keep clear of her circle at the bottom right.
-  return <AbsoluteFill style={{opacity, top, bottom: 110, right: geo.rightInset, width: 'auto', height: 'auto', transform}}>{children}</AbsoluteFill>;
+  return <AbsoluteFill style={{opacity, top, bottom: 110, left: geo.inset.left, right: geo.inset.right, width: 'auto', height: 'auto', transform}}>{children}</AbsoluteFill>;
 };
 
 /** Point number + heading: large in its area, then it settles small at the top. */

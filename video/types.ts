@@ -12,7 +12,7 @@ export type Segment = {
   audio: string | null; // path relative to video/public
   // Her camera clip (starts with the voice): a bubble over the pictures, full screen with the
   // pictures in a floating card, or off.
-  camera?: {src: string; from: number; frames: number; layout: 'off' | 'bubble' | 'card' | 'side' | 'lower' | 'only'} | null;
+  camera?: {src: string; from: number; frames: number; side?: 'left' | 'right'; layout: 'off' | 'bubble' | 'card' | 'side' | 'lower' | 'only'} | null;
   durationInFrames: number;
   audioOffsetInFrames: number;
   headingFrames?: number; // points: when the heading settles and the first scene starts

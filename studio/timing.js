@@ -71,7 +71,8 @@
   }
 
   // Her video's layouts on a slide (see video/Camera.tsx).
-  const LAYOUTS = [['bubble', 'Bubble'], ['card', 'Floating card'], ['side', 'Side by side'], ['lower', 'Lower third'], ['only', 'Just me'], ['off', 'Off']];
+  const LAYOUTS = [['bubble', 'Bubble'], ['card', 'Two cards'], ['side', 'Side by side'], ['lower', 'Lower third'], ['only', 'Just me'], ['off', 'Off']];
+  const SIDED = ['bubble', 'card', 'side']; // layouts where she picks which side her video is on
 
   /** The props with hand timing applied to the automatic timing (same rules as scripts/prepare.mjs applyTiming). */
   function effective(base, data, timing) {
@@ -81,6 +82,8 @@
       const t = (timing[seg.name] || {}).scenes || {};
       const layout = {full: 'card'}[(timing[seg.name] || {}).camera] || (timing[seg.name] || {}).camera;
       if (seg.camera && LAYOUTS.some(([v]) => v === layout)) seg.camera.layout = layout;
+      const side = (timing[seg.name] || {}).side;
+      if (seg.camera && (side === 'left' || side === 'right')) seg.camera.side = side;
       // Trimmed shorter: the slide ends at `end` (seconds into the recording).
       const end = (timing[seg.name] || {}).end;
       if (typeof end === 'number') seg.durationInFrames = Math.max(seg.audioOffsetInFrames + 30, Math.round(seg.audioOffsetInFrames + end * FPS));
@@ -280,6 +283,14 @@
             updatePlayer(); draw(); setDirty();
             T.player.seek(Math.max(segStart(T.seg), T.player.frame()));
           }}))),
+        SIDED.includes(s.camera.layout) ? h('span', {class: 'seg', role: 'group', 'aria-label': 'Which side your video is on'}, [['left', 'Left'], ['right', 'Right']].map(([v, label]) => {
+          const current = s.camera.side || (s.camera.layout === 'bubble' ? 'right' : 'left');
+          return h('button', {'aria-pressed': current === v ? 'true' : 'false', text: label, onclick: () => {
+            (T.timing[s.name] ||= {}).side = v;
+            updatePlayer(); draw(); setDirty();
+            T.player.seek(Math.max(segStart(T.seg), T.player.frame()));
+          }});
+        })) : null,
       ]) : null;
       const adder = T.adding ? addForm() : null;
       const tl = timeline();

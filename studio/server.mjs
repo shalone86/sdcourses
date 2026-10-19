@@ -203,6 +203,7 @@ function saveTiming(id, timing) {
     const keep = {};
     if (['off', 'bubble', 'card', 'full', 'side', 'lower', 'only'].includes(v.camera)) keep.camera = v.camera === 'full' ? 'card' : v.camera;
     if (Number.isFinite(v.end)) keep.end = Math.round(v.end * 100) / 100;
+    if (v.side === 'left' || v.side === 'right') keep.side = v.side;
     if (Object.keys(scenes).length) keep.scenes = scenes;
     if (Object.keys(keep).length) clean[sec] = keep;
   }
