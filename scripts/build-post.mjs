@@ -13,7 +13,7 @@ const smart = (s) => esc(s).replace(/(^|[\s(\[—-])&quot;/g, '$1“').replace(/
 const clean = (t) => String(t ?? '').trim().replace(/\s+/g, ' ');
 
 /** Question types: choice (default), truefalse, blank. Fails loudly on mistakes. */
-function normalizeQuestion(q, where) {
+export function normalizeQuestion(q, where) {
   const type = q.type ?? 'choice';
   const base = {type, question: clean(q.question), why: clean(q.why)};
   if (!base.question || !base.why) throw new Error(`Quiz in "${where}" needs a question and a why`);

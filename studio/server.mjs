@@ -8,7 +8,8 @@ import path from 'node:path';
 import {spawn, execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {ROOT, ffprobeDuration, loadLesson, words} from '../scripts/lib.mjs';
-import {applyEdits, setStatus} from '../scripts/studio.mjs';
+import {applyEdits, setStatus, setValue} from '../scripts/studio.mjs';
+import {normalizeQuestion} from '../scripts/build-post.mjs';
 import {cachedWords, compare, whisperAvailable} from '../scripts/voice.mjs';
 import {prepare} from '../scripts/prepare.mjs';
 import YAML from 'yaml';
@@ -85,7 +86,7 @@ function detail(id) {
     const audio = file ? {seconds: ffprobeDuration(file), at: mtime(file), ext: path.extname(file)} : null;
     const base = {key: s.name, kind: s.kind, index: s.index, words: words(s.text), audio, heard: heard(id, s, file)};
     return s.kind === 'point'
-      ? {...base, heading: s.heading, lead: s.quote.lead, quote: s.quote.text, cite: s.quote.cite, link: s.quote.link ?? '', own: !!s.own, text: s.explanation}
+      ? {...base, heading: s.heading, lead: s.quote.lead, quote: s.quote.text, cite: s.quote.cite, link: s.quote.link ?? '', highlight: s.quote.highlight ?? '', own: !!s.own, quiz: s.quiz, text: s.explanation}
       : {...base, text: s.text, notes: s.notes ?? []};
   });
   // The video is out of date if the script or any recording changed after it was made.
@@ -497,7 +498,7 @@ async function handle(req, res) {
       if (typeof body.lead === 'string') edit.lead = body.lead;
       // Her own slides: the title, quotation and source too (a lesson's checked quotations stay locked).
       const own = loadLesson(dir).segments.find((x) => x.name === body.section)?.own;
-      if (own) for (const k of ['heading', 'quote', 'cite', 'link']) if (typeof body[k] === 'string') edit[k] = body[k];
+      if (own) for (const k of ['heading', 'quote', 'cite', 'link', 'highlight']) if (typeof body[k] === 'string') edit[k] = body[k];
       const changes = applyEdits(dir, [edit]);
       // Approval covers the script she approved; a changed script needs approving again.
       const unapproved = changes.length > 0 && setStatus(dir, 'draft');
@@ -522,6 +523,25 @@ async function handle(req, res) {
       const published = course?.ghost ? Number(course.posts) || 0 : 0;
       try { return json(res, 200, {id: newLesson({course: course ?? {}, title, published}), lessons: lessonIds().map(summary)}); }
       catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/quiz') {
+      // A slide's quiz questions (her own slides), checked the same way the post checks them.
+      const dir = lessonPath(id);
+      const {section, quiz} = await readJson(req);
+      const point = loadLesson(dir).segments.find((x) => x.name === section);
+      if (!point || point.kind !== 'point' || !point.own) throw httpError(400, 'Quiz questions can be edited here on slides you made in the studio');
+      if (!Array.isArray(quiz)) throw httpError(400, 'Bad quiz');
+      const clean = quiz.map((q, i) => {
+        try { normalizeQuestion(q, String(i + 1)); } catch (e) { throw httpError(400, e.message.replace(/^Quiz in "(\d+)"[: ]*/, 'Question $1: ')); }
+        const type = q.type ?? 'choice';
+        return type === 'choice' ? {type, question: q.question.trim(), options: q.options.map((o) => o.trim()), answer: q.answer, why: q.why.trim()}
+          : type === 'truefalse' ? {type, question: q.question.trim(), answer: q.answer, why: q.why.trim()}
+          : {type, question: q.question.trim(), accept: q.accept.map((a) => a.trim()).filter(Boolean), why: q.why.trim()};
+      });
+      setValue(dir, ['points', point.index - 1, 'quiz'], clean);
+      setStatus(dir, 'draft');
+      const check = await checkQuotes(id);
+      return json(res, 200, {check, lesson: detail(id)});
     }
     if (p === '/api/slide') {
       // Add a blank slide after this one, add the closing slide, or remove a slide.

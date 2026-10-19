@@ -107,8 +107,10 @@ If it's already running, `npm start` just opens the page.
   "+ Add a closing slide" (`scripts/slides.mjs`: lesson.yml is edited as
   text, recordings and timing move with renumbered slides, removed ones go to
   `audio/removed/`). Her own slides (`quote.link` present) have boxes for the
-  section title, direct quote, source and link; the link becomes the source
-  the quote check uses. Slides without a quotation are allowed.
+  section title, direct quote, highlight, source and link (the link becomes
+  the source the quote check uses), and a quiz editor (choice, true/false,
+  fill in the blank; saved with `setValue`, checked like the post checks
+  them). Slides without a quotation are allowed.
 - **Stacking:** in the Timing tab, a picture's ◫/⧉ button shows it beside or
   over the picture before (`with: side | over` on the scene).
 - **Trimming:** in the Timing tab, a picture's right edge ends it sooner

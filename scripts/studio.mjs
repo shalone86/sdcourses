@@ -47,7 +47,9 @@ export function applyEdits(dir, edits) {
   const clean = (t) => String(t ?? '').trim().replace(/\s+/g, ' ');
   const changes = [];
   const apply = (keyPath, value, label) => {
-    const doc = YAML.parseDocument(src);
+    let doc = YAML.parseDocument(src);
+    // A box an older slide doesn't have yet (e.g. the highlight): add it, empty, first.
+    if (!doc.getIn(keyPath, true) && doc.getIn(keyPath.slice(0, -1), true)?.items) { src = addKey(src, keyPath); doc = YAML.parseDocument(src); }
     const node = doc.getIn(keyPath, true);
     if (!node || !node.range) throw new Error(`${keyPath.join('.')} isn't in ${file}; add it there first`);
     if (clean(node.value) === clean(value)) return;
@@ -82,11 +84,45 @@ export function applyEdits(dir, edits) {
       if ('quote' in e) apply(['points', i, 'quote', 'text'], e.quote, `point ${i + 1} quotation`);
       if ('cite' in e) apply(['points', i, 'quote', 'cite'], e.cite, `point ${i + 1} source`);
       if ('link' in e) apply(['points', i, 'quote', 'link'], e.link, `point ${i + 1} source link`);
+      if ('highlight' in e) apply(['points', i, 'quote', 'highlight'], e.highlight, `point ${i + 1} highlight`);
     } else throw new Error(`Unknown section "${e.section}"`);
   }
   YAML.parse(src); // must still be valid
   if (changes.length) fs.writeFileSync(file, src);
   return changes;
+}
+
+const lineStart = (src, i) => src.lastIndexOf('\n', i - 1) + 1;
+const lineAfter = (src, i) => { const n = src.indexOf('\n', Math.max(0, i - 1)); return n < 0 ? src.length : n + 1; };
+
+/** Add `key: ""` as the last line of the map at keyPath's parent, lined up with its other keys. */
+function addKey(src, keyPath) {
+  const map = YAML.parseDocument(src).getIn(keyPath.slice(0, -1), true);
+  const first = map.items[0].key.range[0], last = map.items[map.items.length - 1];
+  const col = first - lineStart(src, first); // (counts a list item's "- " too)
+  const pos = lineAfter(src, (last.value ?? last.key).range[1]);
+  return src.slice(0, pos) + `${' '.repeat(col)}${keyPath[keyPath.length - 1]}: ""\n` + src.slice(pos);
+}
+
+/**
+ * Replace one list or map in lesson.yml (e.g. a slide's quiz), written as a block under its key;
+ * every other line stays as it is.
+ */
+export function setValue(dir, keyPath, value) {
+  const file = path.join(dir, 'lesson.yml');
+  let src = fs.readFileSync(file, 'utf8');
+  if (!YAML.parseDocument(src).getIn(keyPath, true)) src = addKey(src, keyPath);
+  const doc = YAML.parseDocument(src);
+  const parent = doc.getIn(keyPath.slice(0, -1), true);
+  const pair = parent.items.find((p) => p.key?.value === keyPath[keyPath.length - 1]);
+  const keyLine = lineStart(src, pair.key.range[0]);
+  const col = src.slice(keyLine, pair.key.range[0]).length;
+  const empty = Array.isArray(value) ? !value.length : !Object.keys(value).length;
+  const body = empty ? ` ${Array.isArray(value) ? '[]' : '{}'}\n`
+    : '\n' + YAML.stringify(value, {lineWidth: 0}).trimEnd().split('\n').map((l) => ' '.repeat(col + 2) + l).join('\n') + '\n';
+  src = src.slice(0, pair.key.range[1]) + ':' + body + src.slice(lineAfter(src, (pair.value ?? pair.key).range[1]));
+  YAML.parse(src); // must still be valid
+  fs.writeFileSync(file, src);
 }
 
 /** Set `status:` in lesson.yml, keeping its comment and every other line. */

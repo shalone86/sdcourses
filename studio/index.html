@@ -188,6 +188,9 @@ body.wide .wrap{max-width:1600px}
 .read-line{width:100%;font:500 18px/1.4 var(--serif);padding:9px 12px;border:1px solid var(--rule);border-radius:9px;background:var(--paper);color:var(--ink)}
 .read-line.heading{font-size:24px;font-weight:600}
 textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
+.quiz-edit{margin-top:14px;padding:10px 14px;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
+.quiz-edit summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.quiz-q{display:flex;flex-direction:column;gap:6px;padding:12px 0;border-bottom:1px dashed var(--rule)}
 .slide-tools{gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed var(--rule)}
 #new-lesson{margin-left:8px;padding:6px 12px;font-size:14px}
 .tl-trim{position:absolute;top:0;right:0;bottom:0;width:14px;cursor:ew-resize;background:color-mix(in srgb,var(--ink) 18%,transparent);border-left:2px solid var(--ink);opacity:.35;touch-action:none}
@@ -304,7 +307,7 @@ async function boot() {
 async function openLesson(id, slide) {
   try {
     const L = await api('/api/lesson?id=' + enc(id));
-    S.id = id; S.L = L; S.slide = Math.min(slide || 0, L.sections.length - 1); S.drafts = {}; S.checks = {}; S.notice = null;
+    S.id = id; S.L = L; S.slide = Math.min(slide || 0, L.sections.length - 1); S.drafts = {}; S.checks = {}; S.quiz = {}; S.notice = null;
   } catch (e) {
     S.id = id; S.L = null; S.notice = {error: true, text: 'This lesson can’t be opened: ' + e.message};
   }
@@ -536,6 +539,7 @@ function slideEl(s) {
     line('heading', 'Section title (shown big when the slide starts)', 'e.g. It started in Antioch');
     area('lead', 'lead', 'What you say first');
     area('quote', 'quote-edit', 'Direct quote (read it exactly; leave empty if this slide has none)');
+    line('highlight', 'Words to highlight in the quote (copy them exactly from it)', 'e.g. first called Christians');
     line('cite', 'Where the quote is from (shown under it)', 'e.g. Acts 11:26');
     line('link', 'Link to where the words can be checked', 'e.g. https://bible.usccb.org/bible/acts/11', 'url');
     area('text', '', 'What you say after');
@@ -553,8 +557,74 @@ function slideEl(s) {
   const c = S.checks[s.key];
   if (c) kids.push(checkEl(c));
   if (s.audio && s.heard && !S.rec && !S.busy) kids.push(heardEl(s));
+  if (s.kind === 'point' && s.own) kids.push(quizEditor(s));
   kids.push(slideTools(s));
   return el('article', {class: 'slide' + (yours ? ' yours' : '')}, kids);
+}
+
+/**
+ * Quiz questions for one of her slides: multiple choice, true or false, fill in the blank.
+ * Edits stay in S.quiz until she presses Save quiz (the server checks each question).
+ */
+function quizEditor(s) {
+  S.quiz = S.quiz || {};
+  const saved = JSON.stringify(s.quiz || []);
+  const qs = S.quiz[s.key] || (S.quiz[s.key] = JSON.parse(saved));
+  const locked = !!(S.rec || S.busy);
+  const dirty = () => JSON.stringify(qs) !== saved;
+  const box = el('details', {class: 'quiz-edit', open: qs.length || store.get('quizOpen') ? true : null, ontoggle: (e) => store.set('quizOpen', e.target.open)});
+  const draw = () => {
+    const saveBtn = el('button', {class: 'btn primary', disabled: locked || !dirty(), text: dirty() ? 'Save quiz' : 'Quiz saved', onclick: async () => {
+      saveBtn.disabled = true;
+      try {
+        const r = await post('/api/quiz?id=' + enc(S.id), {section: s.key, quiz: qs});
+        S.L = r.lesson; delete S.quiz[s.key]; S.checks[s.key] = r; render();
+      } catch (e) { msg.textContent = e.message; msg.className = 'small bad'; saveBtn.disabled = false; }
+    }});
+    const msg = el('div', {class: 'small muted', text: 'Each question needs a “why”: it shows after they answer.'});
+    const mark = () => { saveBtn.disabled = locked || !dirty(); saveBtn.textContent = dirty() ? 'Save quiz' : 'Quiz saved'; };
+    const field = (q, k, label, rows, hint) => {
+      const t = el(rows ? 'textarea' : 'input', {class: rows ? 'read' : 'read-line', rows: rows || null, type: rows ? null : 'text', placeholder: hint || '', readonly: locked});
+      t.value = Array.isArray(q[k]) ? q[k].join(rows ? '\n' : ', ') : (q[k] ?? '');
+      t.addEventListener('input', () => {
+        q[k] = k === 'options' ? t.value.split('\n').map((x) => x.trim()).filter(Boolean) : k === 'accept' ? t.value.split(',').map((x) => x.trim()).filter(Boolean) : t.value;
+        if (k === 'options') { q.answer = Math.min(q.answer ?? 0, Math.max(0, q.options.length - 1)); draw(); return; }
+        mark();
+      });
+      return [el('label', {text: label}), t];
+    };
+    const card = (q, i) => {
+      const type = q.type || 'choice';
+      const typeSel = el('select', {'aria-label': 'Kind of question', disabled: locked, onchange: (e) => {
+        const t = e.target.value;
+        qs[i] = t === 'choice' ? {type: t, question: q.question || '', options: ['', ''], answer: 0, why: q.why || ''}
+          : t === 'truefalse' ? {type: t, question: q.question || '', answer: true, why: q.why || ''}
+          : {type: t, question: q.question || '', accept: [], why: q.why || ''};
+        draw();
+      }}, [['choice', 'Multiple choice'], ['truefalse', 'True or false'], ['blank', 'Fill in the blank']].map(([v, l]) => el('option', {value: v, text: l, selected: v === type})));
+      const parts = [el('div', {class: 'row'}, [el('b', {text: 'Question ' + (i + 1)}), typeSel,
+        el('button', {class: 'btn', disabled: locked, text: 'Remove', onclick: () => { qs.splice(i, 1); draw(); }})])];
+      parts.push(...field(q, 'question', type === 'blank' ? 'Question (put ____ where the missing word goes)' : 'Question', 2));
+      if (type === 'choice') {
+        parts.push(...field(q, 'options', 'Answers to choose from, one per line', 3));
+        parts.push(el('label', {text: 'The right answer'}), el('select', {disabled: locked, onchange: (e) => { q.answer = +e.target.value; mark(); }},
+          (q.options || []).map((o, k) => el('option', {value: k, text: o || '(answer ' + (k + 1) + ')', selected: k === q.answer}))));
+      } else if (type === 'truefalse') {
+        parts.push(el('label', {text: 'The right answer'}), el('select', {disabled: locked, onchange: (e) => { q.answer = e.target.value === 'true'; mark(); }},
+          [['true', 'True'], ['false', 'False']].map(([v, l]) => el('option', {value: v, text: l, selected: String(q.answer) === v}))));
+      } else {
+        parts.push(...field(q, 'accept', 'Answers that count as right, separated by commas', 0, 'e.g. Antioch'));
+      }
+      parts.push(...field(q, 'why', 'Why (shown after they answer)', 2));
+      return el('div', {class: 'quiz-q'}, parts);
+    };
+    box.replaceChildren(el('summary', {text: 'Quiz questions for this slide (' + qs.length + ')'}), ...qs.map(card),
+      el('div', {class: 'row'}, [el('button', {class: 'btn', disabled: locked, text: '+ Add a question', onclick: () => {
+        qs.push({type: 'choice', question: '', options: ['', ''], answer: 0, why: ''}); box.open = true; draw();
+      }}), saveBtn]), msg);
+  };
+  draw();
+  return box;
 }
 
 /** Add a slide after this one, add the closing slide, or remove this slide. */
@@ -567,7 +637,7 @@ function slideTools(s) {
     await saveAll();
     try {
       const r = await post('/api/slide?id=' + enc(S.id), {op, section});
-      S.L = r.lesson; S.drafts = {}; S.checks = {};
+      S.L = r.lesson; S.drafts = {}; S.checks = {}; S.quiz = {};
       const i = r.slide ? sections().findIndex((x) => x.key === r.slide) : Math.min(S.slide, sections().length - 1);
       S.slide = Math.max(0, i); remember();
       render(); scrollTo({top: 0});
