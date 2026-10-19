@@ -26,10 +26,10 @@ sources:
 intro:
   text: >-
     Some Catholics pray with icons and receive communion with a spoon, but why
-    do they do this and who are they. Well, let's get a quick introduction to
-    Byantine Rite Catholics with this lesson. I'm your host Shalone Cason and
-    as always, we'll begin in the name of the Father, and of the Son, and of
-    the Holy Spirit.
+    do they do this, and who are they? Well, let's get a quick introduction to
+    Byzantine Rite Catholics with this lesson. I'm your host, Shalone Cason,
+    and as always, we'll begin in the name of the Father, and of the Son, and
+    of the Holy Spirit.
   notes:
     - Kids version of lesson 1 of The Byzantine Rite. Aim for about 40–50 words.
     - "A question to open with: some Catholics pray with lots of icons, sing the whole Liturgy, and receive Communion from a spoon. Who are they?"
@@ -63,6 +63,10 @@ points:
         routes: [[Jerusalem, Antioch]]
         highlight: Antioch
         caption: From Jerusalem to Antioch
+      - type: sprite
+        sprite: saint-peter
+        move: hop
+        size: big
     quiz:
       type: blank
       question: '"It was in ____ that the disciples were first called Christians."'
@@ -193,10 +197,10 @@ points:
 
 outro:
   text: >-
-    And that's the Byzantine Rite in a nutshell. It's form of prayer started
-    in antioch and it is one of the many ways that Catholics can pray, while
+    And that's the Byzantine Rite in a nutshell. It's a form of prayer started
+    in Antioch, and it is one of the many ways that Catholics can pray while
     still being one church in communion with the Pope! Thanks for learning
-    with me and until next time, stay holy, my friend.
+    with me, and until next time, stay holy, my friend.
   notes:
     - "Recap: it started in Antioch · its prayers came from Antioch · one faith, many ways to pray · a big Church family · together with the Pope."
     - Aim for about 40–50 words, ending with your usual sign-off.

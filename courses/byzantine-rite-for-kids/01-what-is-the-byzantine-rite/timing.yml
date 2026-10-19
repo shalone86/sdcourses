@@ -2,24 +2,38 @@
 # section's recording. Scenes not listed keep their automatic timing.
 intro:
   camera: bubble
+  end: 21.23
+  side: left
+  scenes:
+    "2":
+      end: 21.2
 point-1:
-  camera: bubble
+  camera: side
+  end: 22.4
+  side: left
   scenes:
     "0":
       cues:
         end: 9.6
+    "2":
+      start: 13.3
 point-2:
   scenes:
     "0":
       cues:
         end: 9.4
 point-3:
+  camera: side
   scenes:
     "0":
       cues:
         end: 16.1
 point-5:
+  camera: side
+  end: 30.2
   scenes:
     "0":
       cues:
         end: 14.9
+outro:
+  camera: off
