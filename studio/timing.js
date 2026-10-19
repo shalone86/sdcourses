@@ -70,14 +70,21 @@
     return k;
   }
 
+  // Her video's layouts on a slide (see video/Camera.tsx).
+  const LAYOUTS = [['bubble', 'Bubble'], ['card', 'Floating card'], ['side', 'Side by side'], ['lower', 'Lower third'], ['only', 'Just me'], ['off', 'Off']];
+
   /** The props with hand timing applied to the automatic timing (same rules as scripts/prepare.mjs applyTiming). */
   function effective(base, data, timing) {
     const props = clone(base);
     props.segments.forEach((seg, si) => {
       const auto = data.segments[si].autoScenes;
       const t = (timing[seg.name] || {}).scenes || {};
-      const layout = (timing[seg.name] || {}).camera;
-      if (seg.camera && ['off', 'bubble', 'full'].includes(layout)) seg.camera.layout = layout;
+      const layout = {full: 'card'}[(timing[seg.name] || {}).camera] || (timing[seg.name] || {}).camera;
+      if (seg.camera && LAYOUTS.some(([v]) => v === layout)) seg.camera.layout = layout;
+      // Trimmed shorter: the slide ends at `end` (seconds into the recording).
+      const end = (timing[seg.name] || {}).end;
+      if (typeof end === 'number') seg.durationInFrames = Math.max(seg.audioOffsetInFrames + 30, Math.round(seg.audioOffsetInFrames + end * FPS));
+      else seg.durationInFrames = data.segments[si].autoDuration ?? seg.durationInFrames;
       seg.scenes.forEach((sc, i) => {
         const a = auto[i] || {from: sc.from || 0, cues: {}};
         const o = t[i] || {};
@@ -86,6 +93,7 @@
         for (const [k, v] of Object.entries(a.cues || {})) cues[k] = Math.max(4, a.from + v - from);
         for (const [k, v] of Object.entries(o.cues || {})) cues[k] = Math.max(4, Math.round(seg.audioOffsetInFrames + v * FPS) - from);
         sc.from = from;
+        if (typeof o.end === 'number') sc.until = Math.round(seg.audioOffsetInFrames + o.end * FPS); else delete sc.until;
         if (Object.keys(cues).length) sc.cues = cues; else delete sc.cues;
       });
       for (let i = 1; i < seg.scenes.length; i++) seg.scenes[i].from = Math.max(seg.scenes[i].from || 0, (seg.scenes[i - 1].from || 0) + 10);
@@ -112,6 +120,13 @@
     function setStart(i, frame) {
       const sc = ((T.timing[seg().name] ||= {}).scenes ||= {});
       (sc[i] ||= {}).start = Math.round(secOf(frame) * 100) / 100;
+    }
+    function setEnd(i, frame) {
+      const sc = ((T.timing[seg().name] ||= {}).scenes ||= {});
+      (sc[i] ||= {}).end = Math.round(secOf(frame) * 100) / 100;
+    }
+    function setSlideEnd(frame) {
+      (T.timing[seg().name] ||= {}).end = Math.round(secOf(frame) * 100) / 100;
     }
     function setCue(i, k, frame) {
       const sc = ((T.timing[seg().name] ||= {}).scenes ||= {});
@@ -145,8 +160,8 @@
       for (let t = 0; s.audioOffsetInFrames + t * FPS < s.durationInFrames; t++) {
         ruler.append(h('span', {class: 'tl-tick' + (t % 5 ? '' : ' major'), style: {left: x(s.audioOffsetInFrames + t * FPS) + 'px'}, text: t % 5 ? '' : fmt(t)}));
       }
-      // Kids style: the music's beats as dots; dragged items snap to them.
-      const beats = (T.props.style === 'kids' && T.props.music?.beats || []).map((b) => b - segStart(T.seg)).filter((b) => b >= 0 && b < s.durationInFrames);
+      // Kids style, dance motion: the music's beats as dots; dragged items snap to them.
+      const beats = (T.props.style === 'kids' && T.props.motion === 'dance' && T.props.music?.beats || []).map((b) => b - segStart(T.seg)).filter((b) => b >= 0 && b < s.durationInFrames);
       for (const b of beats) ruler.append(h('span', {class: 'tl-beat', style: {left: x(b) + 'px'}}));
       wrap.append(ruler);
       const snap = (f) => {
@@ -168,7 +183,7 @@
         scenesRow.append(h('div', {class: 'tl-scene fixed', style: {left: x(0) + 'px', width: s.scenes[0].from * px + 'px'}}, [h('span', {text: 'Heading'})]));
       }
       s.scenes.forEach((sc, i) => {
-        const end = i < s.scenes.length - 1 ? s.scenes[i + 1].from : s.durationInFrames;
+        const end = Math.min(i < s.scenes.length - 1 ? s.scenes[i + 1].from : s.durationInFrames, sc.until ?? Infinity);
         const touched = ((T.timing[s.name] || {}).scenes || {})[i];
         const label = LABELS[sc.type] || sc.type;
         const block = h('div', {class: 'tl-scene' + (touched && touched.start != null ? ' moved' : ''), style: {left: x(sc.from) + 'px', width: Math.max(24, (end - sc.from) * px) + 'px'},
@@ -178,6 +193,12 @@
             onpointerdown: (e) => e.stopPropagation(), onclick: (e) => { e.stopPropagation(); removeScene(i, label); }}, '×'));
         }
         drag(block, sc.from, (f) => { setStart(i, f); }, () => T.player.seek(segStart(T.seg) + Math.max(0, sc.from - 10)));
+        // Right edge: drag left to end this picture sooner (double-click to undo).
+        const trim = h('div', {class: 'tl-trim' + (touched && touched.end != null ? ' moved' : ''), title: 'Drag to end this picture sooner · double-click to undo',
+          onpointerdown: (e) => e.stopPropagation(),
+          ondblclick: (e) => { e.stopPropagation(); if (touched) { delete touched.end; updatePlayer(); draw(); setDirty(); } }});
+        drag(trim, end, (f) => setEnd(i, Math.max(sc.from + 10, f)), () => T.player.seek(segStart(T.seg) + Math.max(0, end - 15)), block);
+        block.append(trim);
         scenesRow.append(block);
         for (const [k, v] of Object.entries(sc.cues || {})) {
           const at = sc.from + v;
@@ -188,22 +209,31 @@
           cuesRow.append(m);
         }
       });
+      // The slide's end: drag left to make the whole slide shorter (double-click to undo).
+      const cut = (T.timing[s.name] || {}).end != null;
+      const endMark = h('div', {class: 'tl-end' + (cut ? ' moved' : ''), style: {left: x(s.durationInFrames) + 'px'}, title: 'End of this slide: drag to make it shorter · double-click to undo',
+        ondblclick: () => { if (cut) { delete T.timing[s.name].end; updatePlayer(); draw(); setDirty(); } }}, [h('span', {text: 'End'})]);
+      drag(endMark, s.durationInFrames, (f) => setSlideEnd(Math.max(s.audioOffsetInFrames + 30, f)), () => T.player.seek(segStart(T.seg) + Math.max(0, s.durationInFrames - 30)));
+      wrap.append(endMark);
       const head = h('div', {class: 'tl-head', 'data-playhead': '', title: 'Drag to scrub'}, [h('i')]);
       scrubFrom(head);
       wrap.append(scenesRow, cuesRow, head);
       return wrap;
 
       // Drag horizontally; on release, apply and redraw.
-      function drag(node, startFrame, set, after) {
+      // `resize`: dragging a block's right edge, so the block grows/shrinks instead of moving.
+      function drag(node, startFrame, set, after, resize) {
         node.addEventListener('pointerdown', (e) => {
           e.preventDefault();
           try { node.setPointerCapture(e.pointerId); } catch { /* still drags while the pointer stays on it */ }
           const x0 = e.clientX;
           const left0 = parseFloat(node.style.left);
+          const width0 = resize ? parseFloat(resize.style.width) : 0;
           let f = startFrame;
           const move = (ev) => {
             f = snap(Math.max(0, Math.min(s.durationInFrames - 5, startFrame + (ev.clientX - x0) / px)));
-            node.style.left = left0 + (f - startFrame) * px + 'px';
+            if (resize) resize.style.width = Math.max(24, width0 + (f - startFrame) * px) + 'px';
+            else node.style.left = left0 + (f - startFrame) * px + 'px';
             T.player.seek(segStart(T.seg) + f);
           };
           const up = () => {
@@ -244,7 +274,7 @@
       // Her camera clip for this slide (recorded with "Record my video too"): how it shows.
       const camRow = s.camera ? h('div', {class: 'row', style: {gap: '8px'}}, [
         h('span', {class: 'small muted', text: 'Your video on this slide:'}),
-        h('span', {class: 'seg', role: 'group', 'aria-label': 'Your video on this slide'}, [['bubble', 'Bubble in the corner'], ['full', 'Full screen'], ['off', 'Off']].map(([v, label]) =>
+        h('span', {class: 'seg', role: 'group', 'aria-label': 'Your video on this slide'}, LAYOUTS.map(([v, label]) =>
           h('button', {'aria-pressed': s.camera.layout === v ? 'true' : 'false', text: label, onclick: () => {
             (T.timing[s.name] ||= {}).camera = v;
             updatePlayer(); draw(); setDirty();

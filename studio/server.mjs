@@ -121,7 +121,7 @@ function timingData(id) {
   const segments = props.segments.map((seg, si) => {
     const file = audioFile(dir, seg.name);
     const words = file ? cachedWords(file) ?? [] : [];
-    return {name: seg.name, words: words.map((w) => ({w: w.w, t: w.start})), autoScenes: auto.segments[si].scenes.map((s) => ({from: s.from, cues: s.cues ?? {}}))};
+    return {name: seg.name, words: words.map((w) => ({w: w.w, t: w.start})), autoScenes: auto.segments[si].scenes.map((s) => ({from: s.from, cues: s.cues ?? {}})), autoDuration: auto.segments[si].durationInFrames};
   });
   const f = path.join(dir, 'timing.yml');
   return {props, segments, timing: fs.existsSync(f) ? YAML.parse(fs.readFileSync(f, 'utf8')) ?? {} : {}};
@@ -195,12 +195,14 @@ function saveTiming(id, timing) {
     for (const [i, o] of Object.entries(v.scenes ?? {})) {
       const out = {};
       if (Number.isFinite(o.start)) out.start = Math.round(o.start * 100) / 100;
+      if (Number.isFinite(o.end)) out.end = Math.round(o.end * 100) / 100;
       const cues = Object.fromEntries(Object.entries(o.cues ?? {}).filter(([, t]) => Number.isFinite(t)).map(([k, t]) => [k, Math.round(t * 100) / 100]));
       if (Object.keys(cues).length) out.cues = cues;
       if (Object.keys(out).length) scenes[i] = out;
     }
     const keep = {};
-    if (['off', 'bubble', 'full'].includes(v.camera)) keep.camera = v.camera;
+    if (['off', 'bubble', 'card', 'full', 'side', 'lower', 'only'].includes(v.camera)) keep.camera = v.camera === 'full' ? 'card' : v.camera;
+    if (Number.isFinite(v.end)) keep.end = Math.round(v.end * 100) / 100;
     if (Object.keys(scenes).length) keep.scenes = scenes;
     if (Object.keys(keep).length) clean[sec] = keep;
   }

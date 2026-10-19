@@ -1,6 +1,7 @@
 // Mirrors lesson.yml after scripts/prepare.mjs adds timing and audio paths.
 // `from`: start frame within the segment; `cues`: named frames within the scene.
-export type Scene = {type: string; from?: number; cues?: Record<string, number>; [key: string]: any};
+// `until`: a picture trimmed to end early (frame within the segment), else it lasts until the next.
+export type Scene = {type: string; from?: number; until?: number; cues?: Record<string, number>; [key: string]: any};
 
 export type Segment = {
   kind: 'intro' | 'point' | 'outro';
@@ -11,7 +12,7 @@ export type Segment = {
   audio: string | null; // path relative to video/public
   // Her camera clip (starts with the voice): a bubble over the pictures, full screen with the
   // pictures in a floating card, or off.
-  camera?: {src: string; frames: number; layout: 'off' | 'bubble' | 'full'} | null;
+  camera?: {src: string; from: number; frames: number; layout: 'off' | 'bubble' | 'card' | 'side' | 'lower' | 'only'} | null;
   durationInFrames: number;
   audioOffsetInFrames: number;
   headingFrames?: number; // points: when the heading settles and the first scene starts
@@ -26,6 +27,7 @@ export type LessonProps = {
   author?: string;
   hostPhoto?: string | null; // path relative to video/public
   music?: {src: string; underVoice: number; between: number; credit?: string; bpm?: number; beats?: number[]} | null;
+  motion?: 'calm' | 'dance'; // kids style: calm (explainers: only the background shapes dance) or dance (music videos)
   style?: 'classic' | 'kids'; // kids: bright colors, rounded font, motion on the music's beat (beats: frames)
   segments: Segment[];
 };

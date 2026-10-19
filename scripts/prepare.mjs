@@ -42,10 +42,10 @@ export function prepare(arg) {
         try { spoken = transcribe(src, dest, s.text); } catch (e) { console.warn(`  ! ${s.name}: couldn't transcribe (${e.message}); timing estimated`); }
       }
       recorded++;
-      camera = cameraClip(dir, publicDir, id, s.name, src);
     }
     // Points open on their heading; narration starts while it is still on screen.
     const offset = s.kind === 'point' ? 20 : s.kind === 'intro' ? 45 : 15;
+    if (src) camera = cameraClip(dir, publicDir, id, s.name, src, offset);
     const minFrames = s.kind === 'point' ? HEADING_FRAMES + s.scenes.length * 150 : s.scenes.length * 120;
     // The outro gets ~3s more so the music can close the video after the last word;
     // the intro ~1.5s more so its last picture (the Sign of the Cross) can be seen.
@@ -91,6 +91,8 @@ export function prepare(arg) {
   // Kids style (course.yml or lesson.yml `style: kids`): bright look, and things
   // land on the music's beat. The music loops from frame 0, so its beats repeat.
   const style = lesson.style ?? course.style ?? 'classic';
+  // Motion: calm (explainers; only the background shapes move to the beat) or dance (music videos).
+  const motion = lesson.motion ?? course.motion ?? 'calm';
   if (style === 'kids' && music) {
     const b = detectBeats(path.resolve(ROOT, musicCfg.file));
     const total = out.reduce((n, sg) => n + sg.durationInFrames, 0);
@@ -103,7 +105,7 @@ export function prepare(arg) {
     }
     music.bpm = b.bpm;
     music.beats = beats;
-    snapToBeats(out, beats);
+    if (motion === 'dance') snapToBeats(out, beats);
   }
 
   const props = {
@@ -116,6 +118,7 @@ export function prepare(arg) {
     hostPhoto,
     music,
     style,
+    motion,
     segments: out,
   };
   // Hand-tuned timing from the studio's Timing tab wins over the automatic timing.
@@ -253,20 +256,30 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
 
 /**
  * Her camera clip for a section (recorded in the studio with "Record my video
- * too"): cut by exactly what the silence trim took off the voice, so her lips
- * match. Shown as a bubble unless the Timing tab says otherwise (timing.yml `camera:`).
+ * too"), lined up with the trimmed voice so her lips match. The slide shows a
+ * moment before she speaks (`offset`), so the clip keeps that much of what the
+ * trim cut (she's moving, not a frozen frame); `from` is where it starts in the
+ * slide. Shown as a bubble unless the Timing tab says otherwise (timing.yml `camera:`).
  */
-function cameraClip(dir, publicDir, id, name, voice) {
+function cameraClip(dir, publicDir, id, name, voice, offset) {
   const cam = path.join(dir, 'camera', `${name}.mp4`);
   if (!fs.existsSync(cam)) return null;
   const dest = path.join(publicDir, 'camera', `${name}.mp4`);
+  const meta = dest.replace(/\.mp4$/, '.json');
   const newest = Math.max(fs.statSync(cam).mtimeMs, fs.statSync(voice).mtimeMs);
-  if (!fs.existsSync(dest) || fs.statSync(dest).mtimeMs < newest) {
+  let from;
+  if (fs.existsSync(dest) && fs.existsSync(meta) && fs.statSync(dest).mtimeMs >= newest && JSON.parse(fs.readFileSync(meta, 'utf8')).offset === offset) {
+    from = JSON.parse(fs.readFileSync(meta, 'utf8')).from;
+  } else {
+    const lead = trimLead(voice);
+    const cut = Math.max(0, lead - offset / FPS);
+    from = Math.max(0, Math.round(offset - (lead - cut) * FPS));
     fs.mkdirSync(path.dirname(dest), {recursive: true});
-    execFileSync('ffmpeg', ['-y', '-v', 'error', '-ss', trimLead(voice).toFixed(3), '-i', cam, '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '22',
+    execFileSync('ffmpeg', ['-y', '-v', 'error', '-ss', cut.toFixed(3), '-i', cam, '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '22',
       '-pix_fmt', 'yuv420p', '-movflags', '+faststart', dest]);
+    fs.writeFileSync(meta, JSON.stringify({offset, from}));
   }
-  return {src: path.posix.join(id, 'camera', `${name}.mp4`), frames: Math.floor(ffprobeDuration(dest) * FPS), layout: 'bubble'};
+  return {src: path.posix.join(id, 'camera', `${name}.mp4`), from, frames: Math.floor(ffprobeDuration(dest) * FPS), layout: 'bubble'};
 }
 
 /**
@@ -296,6 +309,9 @@ function snapToBeats(segments, beats) {
   }
 }
 
+// Her video's layouts on a slide; "full" was the first name for the floating card.
+export const LAYOUTS = {off: 'off', bubble: 'bubble', card: 'card', full: 'card', side: 'side', lower: 'lower', only: 'only'};
+
 /** timing.yml next to lesson.yml: {<section>: {scenes: {<i>: {start, cues: {<key>: seconds}}}}}, in seconds into the recording. */
 export function loadTiming(dir) {
   const f = path.join(dir, 'timing.yml');
@@ -305,16 +321,21 @@ export function loadTiming(dir) {
 /** Apply hand-tuned timing (seconds into each section's voice) to the props, in place. */
 export function applyTiming(props, timing) {
   for (const seg of props.segments) {
-    const layout = timing?.[seg.name]?.camera;
-    if (seg.camera && ['off', 'bubble', 'full'].includes(layout)) seg.camera.layout = layout;
+    const layout = LAYOUTS[timing?.[seg.name]?.camera];
+    if (seg.camera && layout) seg.camera.layout = layout;
+    const toFrame = (sec) => Math.round(seg.audioOffsetInFrames + sec * FPS);
+    // A slide trimmed shorter in the Timing tab (`end`: seconds into its recording).
+    const end = timing?.[seg.name]?.end;
+    if (typeof end === 'number') seg.durationInFrames = Math.max(seg.audioOffsetInFrames + 30, toFrame(end));
     const t = timing?.[seg.name]?.scenes;
     if (!t) continue;
-    const toFrame = (sec) => Math.round(seg.audioOffsetInFrames + sec * FPS);
     seg.scenes.forEach((sc, i) => {
       const o = t[i] ?? t[String(i)];
       if (!o) return;
       const oldFrom = sc.from ?? 0;
       if (typeof o.start === 'number') sc.from = Math.max(0, toFrame(o.start));
+      // A picture trimmed to end early (`end`), else it stays until the next one.
+      if (typeof o.end === 'number') sc.until = toFrame(o.end); else delete sc.until;
       // Cues are relative to the scene's start: keep automatic ones in place on the timeline.
       const cues = {};
       for (const [k, v] of Object.entries(sc.cues ?? {})) cues[k] = Math.max(4, oldFrom + v - sc.from);

@@ -14,7 +14,11 @@ export const Quote: React.FC<SceneProps<QuoteScene>> = ({scene, duration}) => {
   // Spoken pace when known (cues from the recording), else a steady reveal.
   const c = (scene as any).cues as {start?: number; end?: number} | undefined;
   const begin = c?.start ?? 6;
-  const perWord = c?.start != null && c?.end != null ? Math.max(1, (c.end - c.start) / words.length) : Math.max(2, Math.min(5, Math.floor((duration * 0.45) / words.length)));
+  // The words finish appearing well before she finishes reading (about two thirds of the way,
+  // and at least 1.5 s early), so the highlight and the source are on screen before the next picture.
+  const span = c?.start != null && c?.end != null ? c.end - c.start : null;
+  const reveal = span != null ? Math.max(span * 0.5, Math.min(span * 0.7, span - 45)) : null;
+  const perWord = reveal != null ? Math.max(1, reveal / words.length) : Math.max(2, Math.min(5, Math.floor((duration * 0.4) / words.length)));
   const doneAt = begin + words.length * perWord;
 
   // Find which words belong to the highlight phrase.
@@ -23,7 +27,7 @@ export const Quote: React.FC<SceneProps<QuoteScene>> = ({scene, duration}) => {
   for (let i = 0; hl.length && i <= words.length - hl.length; i++) {
     if (hl.every((w, j) => words[i + j].replace(/[^\w]/g, '') === w.replace(/[^\w]/g, ''))) { hlStart = i; break; }
   }
-  const swipe = ramp(f, doneAt + 10, doneAt + 40);
+  const swipe = ramp(f, doneAt + 4, doneAt + 30);
 
   return (
     <Center>

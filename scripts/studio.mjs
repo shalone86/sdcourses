@@ -62,7 +62,11 @@ export function applyEdits(dir, edits) {
     const rendered = !body ? '""' : plain ? body : foldedBlock(body, keyIndent + 2);
     // A block scalar's range includes its final line break; keep one.
     const old = src.slice(node.range[0], node.range[1]);
-    src = src.slice(0, node.range[0]) + rendered + (old.endsWith('\n') ? '\n' : '') + src.slice(node.range[1]);
+    let rest = src.slice(node.range[1]);
+    // A comment after a one-line value (`text: ""   # Shalone writes this`) would end up
+    // inside a block scalar as words of the text; drop it when the value becomes a block.
+    if (rendered.startsWith('>') && !old.endsWith('\n')) rest = rest.replace(/^[ \t]*#[^\n]*/, '');
+    src = src.slice(0, node.range[0]) + rendered + (old.endsWith('\n') ? '\n' : '') + rest;
     changes.push(label);
   };
   for (const e of [].concat(edits)) {

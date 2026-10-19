@@ -1,5 +1,6 @@
 import {Img, staticFile, useCurrentFrame} from 'remotion';
 import {draw, enter, ramp} from '../anim';
+import {useLayout} from '../layout';
 import {theme} from '../theme';
 import {Center} from './Center';
 import type {SceneProps} from '.';
@@ -12,6 +13,18 @@ export const Host: React.FC<SceneProps<HostScene>> = ({scene, lesson}) => {
   const name = lesson.author || 'Your host';
   const initials = name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2);
   const size = 420;
+  // On a slide with her video, she's already on screen: just her name.
+  const onCamera = useLayout() !== 'off';
+  if (onCamera) {
+    return (
+      <Center style={{flexDirection: 'column'}}>
+        <div style={{...enter(f, 6), fontFamily: theme.sans, fontSize: 30, letterSpacing: 8, color: theme.accent, fontWeight: 600}}>
+          {(scene.role ?? 'Your host').toUpperCase()}
+        </div>
+        <div style={{...enter(f, 14), fontFamily: theme.serif, fontSize: 120, lineHeight: 1.05, marginTop: 14, textAlign: 'center'}}>{name}</div>
+      </Center>
+    );
+  }
   return (
     <Center style={{flexDirection: 'row', gap: 110}}>
       <div style={{position: 'relative', width: size, height: size, opacity: ramp(f, 0, 14)}}>

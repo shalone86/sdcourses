@@ -20,6 +20,7 @@ export const theme = {
   serif: '"EB Garamond", Georgia, serif',
   sans: 'Inter, Helvetica, Arial, sans-serif',
   kids: false,
+  dance: false, // kids style with `motion: dance`: springy, bouncing pictures (music videos)
   // Bright colors that take turns (kids style); the classic look uses its own two.
   palette: ['#7A1F2B', '#A9842F'],
 };
@@ -38,6 +39,7 @@ export const KIDS: typeof theme = {
   serif: 'Fredoka, "Arial Rounded MT Bold", Helvetica, sans-serif',
   sans: 'Fredoka, "Arial Rounded MT Bold", Helvetica, sans-serif',
   kids: true,
+  dance: false,
   palette: ['#FF4F6D', '#18B7A6', '#FFB300', '#7B5CFF', '#2F8CFF', '#FF8A3D'],
 };
 
@@ -45,7 +47,8 @@ export const KIDS: typeof theme = {
  * Every scene reads `theme`, so the lesson swaps its values before drawing
  * (one style per video, set from its props).
  */
-export const useStyle = (style?: string) => Object.assign(theme, style === 'kids' ? KIDS : CLASSIC);
+export const useStyle = (style?: string, motion?: string) =>
+  Object.assign(theme, style === 'kids' ? KIDS : CLASSIC, {dance: style === 'kids' && motion === 'dance'});
 
 export const FPS = 30;
 // Frames a point spends on its heading before the scenes begin.

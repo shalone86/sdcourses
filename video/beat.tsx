@@ -4,7 +4,8 @@ import {createContext, useContext} from 'react';
 // the lesson (absolute frame) and read by anything that dances.
 //   t: beats so far, fractional (3.5 = halfway between beats 3 and 4);
 //   pulse: a smooth swell, 1 on each beat and 0 halfway between (no jumps).
-export type Beat = {kids: boolean; pulse: number; t: number};
+// dance: scenes, headings and her video bounce too (music videos); otherwise only the background shapes do.
+export type Beat = {kids: boolean; pulse: number; t: number; dance?: boolean};
 export const BeatContext = createContext<Beat>({kids: false, pulse: 0, t: 0});
 export const useBeat = () => useContext(BeatContext);
 
