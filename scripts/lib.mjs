@@ -24,9 +24,17 @@ export function loadLesson(dir) {
   const clean = (t) => (t ?? '').trim().replace(/\s+/g, ' ');
   // A slide she's still writing (made in the studio) may not have its quotation yet; the
   // quotation scene appears once it has one.
+  // Slides she writes in the studio name their source in the slide itself (`quote.cite`, and
+  // `quote.link` to where the words can be checked); those become entries in `sources`.
+  lesson.sources ??= [];
   const points = (lesson.points ?? []).map((p, i) => {
     const q = p.quote ?? {};
-    if (q.text && (!q.source || !q.cite)) throw new Error(`Point ${i + 1} ("${p.heading}") has a quotation but needs quote.source and quote.cite`);
+    if (!q.source && 'link' in q && (q.cite || q.link)) {
+      const id = `slide-${i + 1}`;
+      lesson.sources = lesson.sources.filter((s) => s.id !== id);
+      lesson.sources.push({id, label: q.cite || q.link, ...(q.link ? {url: q.link} : {})});
+      q.source = id;
+    }
     const quote = {...q, text: clean(q.text), lead: clean(q.lead), cite: q.cite ?? ''};
     const anchor = !quote.text ? null : q.scene === 'keys'
       ? {type: 'keys', quote: quote.text, cite: quote.cite}
@@ -39,6 +47,7 @@ export function loadLesson(dir) {
       text: [quote.lead, quote.text, explanation].filter(Boolean).join(' '),
       scenes: [anchor, ...(p.visuals ?? [])].filter(Boolean),
       hasQuote: !!anchor,
+      own: 'link' in q, // written in the studio: she can edit the heading, quotation and source
       quiz: [].concat(p.quiz ?? []),
     };
   });

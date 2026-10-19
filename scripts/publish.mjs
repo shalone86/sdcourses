@@ -18,6 +18,7 @@ const problems = [];
 if (lesson.status !== 'reviewed') problems.push(`lesson.yml says status: ${lesson.status} (Shalone reviews it, then it becomes status: reviewed)`);
 if (!loadSite().author) problems.push('site.yml has no author');
 for (const s of segments) if ((s.kind === 'intro' || s.kind === 'outro') && !s.text) problems.push(`the ${s.name} isn't written yet`);
+for (const s of segments) if (s.kind === 'point' && !s.heading) problems.push(`slide ${s.index + 1} needs a section title`);
 const dist = path.join(ROOT, 'dist', id);
 for (const f of ['lesson.mp4', 'poster.jpg']) if (!fs.existsSync(path.join(dist, f))) problems.push(`${f} is missing (npm run render -- ${arg})`);
 if (problems.length) throw new Error(`Not publishing yet:\n  - ${problems.join('\n  - ')}`);

@@ -15,6 +15,8 @@ import YAML from 'yaml';
 import * as esbuild from 'esbuild';
 import {importImage, searchImages, sourceList} from './images.mjs';
 import {deleteSprite, listSprites, saveSprite} from '../scripts/sprites.mjs';
+import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
+import {ghost} from '../scripts/ghost.mjs';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -45,6 +47,27 @@ const mtime = (f) => (fs.existsSync(f) ? fs.statSync(f).mtimeMs : 0);
 const audioFile = (dir, name) => AUDIO_EXT.map((e) => path.join(dir, 'audio', name + e)).find((f) => fs.existsSync(f));
 const distDir = (id) => path.join(ROOT, 'dist', id);
 
+/**
+ * Courses to start a lesson in: the ones here, and the courses on the site (Ghost tags)
+ * that aren't here yet. Category tags (like "All Courses") are left out.
+ */
+async function courseChoices() {
+  const local = fs.readdirSync(path.join(ROOT, 'courses'), {withFileTypes: true})
+    .filter((d) => d.isDirectory() && fs.existsSync(path.join(ROOT, 'courses', d.name, 'course.yml')))
+    .map((d) => YAML.parse(fs.readFileSync(path.join(ROOT, 'courses', d.name, 'course.yml'), 'utf8')) ?? {})
+    .filter((c) => c.slug);
+  const categories = new Set(local.flatMap((c) => c.categories ?? []).map((x) => x.toLowerCase()));
+  const titles = new Set(local.map((c) => String(c.title).toLowerCase()));
+  const slugs = new Set(local.map((c) => c.slug));
+  let site = [], error = null;
+  try {
+    const r = await ghost().call('GET', '/tags/?limit=all&include=count.posts&filter=visibility:public');
+    site = r.tags.filter((t) => !categories.has(t.name.toLowerCase()) && !titles.has(t.name.toLowerCase()) && !slugs.has(t.slug) && t.count?.posts > 0)
+      .map((t) => ({slug: t.slug, title: t.name, posts: t.count.posts})).sort((a, b) => a.title.localeCompare(b.title));
+  } catch (e) { error = `Couldn't get the courses from the site: ${e.message}`; }
+  return {local: local.map((c) => ({slug: c.slug, title: c.title, style: c.style ?? 'classic'})).sort((a, b) => a.title.localeCompare(b.title)), site, error};
+}
+
 function summary(id) {
   try {
     const {lesson, course} = loadLesson(lessonPath(id));
@@ -62,7 +85,7 @@ function detail(id) {
     const audio = file ? {seconds: ffprobeDuration(file), at: mtime(file), ext: path.extname(file)} : null;
     const base = {key: s.name, kind: s.kind, index: s.index, words: words(s.text), audio, heard: heard(id, s, file)};
     return s.kind === 'point'
-      ? {...base, heading: s.heading, lead: s.quote.lead, quote: s.quote.text, cite: s.quote.cite, text: s.explanation}
+      ? {...base, heading: s.heading, lead: s.quote.lead, quote: s.quote.text, cite: s.quote.cite, link: s.quote.link ?? '', own: !!s.own, text: s.explanation}
       : {...base, text: s.text, notes: s.notes ?? []};
   });
   // The video is out of date if the script or any recording changed after it was made.
@@ -444,6 +467,7 @@ async function handle(req, res) {
     if (p === '/api/timing') return json(res, 200, timingData(id));
     if (p === '/api/images/sources') return json(res, 200, sourceList());
     if (p === '/api/sprites') return json(res, 200, listSprites());
+    if (p === '/api/courses') return json(res, 200, await courseChoices());
     if (p === '/pixels.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
     if (p === '/api/images/search') {
       const q = (url.searchParams.get('q') ?? '').trim();
@@ -467,10 +491,13 @@ async function handle(req, res) {
   if (req.method === 'POST') {
     if (p === '/api/save') {
       const dir = lessonPath(id);
-      const {section, lead, text} = await readJson(req);
-      const edit = {section};
-      if (typeof text === 'string') edit.text = text;
-      if (typeof lead === 'string') edit.lead = lead;
+      const body = await readJson(req);
+      const edit = {section: body.section};
+      if (typeof body.text === 'string') edit.text = body.text;
+      if (typeof body.lead === 'string') edit.lead = body.lead;
+      // Her own slides: the title, quotation and source too (a lesson's checked quotations stay locked).
+      const own = loadLesson(dir).segments.find((x) => x.name === body.section)?.own;
+      if (own) for (const k of ['heading', 'quote', 'cite', 'link']) if (typeof body[k] === 'string') edit[k] = body[k];
       const changes = applyEdits(dir, [edit]);
       // Approval covers the script she approved; a changed script needs approving again.
       const unapproved = changes.length > 0 && setStatus(dir, 'draft');
@@ -488,6 +515,27 @@ async function handle(req, res) {
       const unapproved = changes.length > 0 && setStatus(dir, 'draft');
       const check = changes.length ? await checkQuotes(id) : null;
       return json(res, 200, {changes, unapproved, check, lesson: detail(id)});
+    }
+    if (p === '/api/new-lesson') {
+      const {course, title} = await readJson(req);
+      // A course on Ghost that isn't here yet: continue its numbering after its published lessons.
+      const published = course?.ghost ? Number(course.posts) || 0 : 0;
+      try { return json(res, 200, {id: newLesson({course: course ?? {}, title, published}), lessons: lessonIds().map(summary)}); }
+      catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/slide') {
+      // Add a blank slide after this one, add the closing slide, or remove a slide.
+      const dir = lessonPath(id);
+      const {op, section} = await readJson(req);
+      let slide;
+      try {
+        if (op === 'add') slide = addSlide(dir, section);
+        else if (op === 'add-closing') slide = addClosing(dir);
+        else if (op === 'remove') removeSlide(dir, section);
+        else throw new Error('Unknown change');
+      } catch (e) { throw httpError(400, e.message); }
+      setStatus(dir, 'draft');
+      return json(res, 200, {slide, lesson: detail(id)});
     }
     if (p === '/api/sprite/delete') {
       const {slug} = await readJson(req);

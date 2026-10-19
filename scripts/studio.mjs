@@ -53,12 +53,13 @@ export function applyEdits(dir, edits) {
     if (clean(node.value) === clean(value)) return;
     // Indent: the key's line indentation + 2.
     const lineStart = src.lastIndexOf('\n', node.range[0]) + 1;
-    const keyIndent = src.slice(lineStart).match(/^ */)[0].length;
+    // (on a list item's first line, "  - heading:", the key sits after the dash)
+    const keyIndent = src.slice(lineStart, node.range[0]).match(/^[ -]*/)[0].length;
     const body = clean(value);
     // A short value that was on one line stays on one line, if YAML reads it back the same.
     const keyLen = src.slice(lineStart, node.range[0]).length;
     const readsBack = (t) => { try { return YAML.parse(`k: ${t}`)?.k === t; } catch { return false; } };
-    const plain = node.type === 'PLAIN' && keyLen + body.length <= 78 && readsBack(body);
+    const plain = (node.type === 'PLAIN' || (node.type === 'QUOTE_DOUBLE' && !node.value)) && keyLen + body.length <= 78 && readsBack(body);
     const rendered = !body ? '""' : plain ? body : foldedBlock(body, keyIndent + 2);
     // A block scalar's range includes its final line break; keep one.
     const old = src.slice(node.range[0], node.range[1]);
@@ -76,6 +77,11 @@ export function applyEdits(dir, edits) {
       const i = Number(m[1]) - 1;
       if ('text' in e) apply(['points', i, 'text'], e.text, `point ${i + 1} explanation`);
       if ('lead' in e) apply(['points', i, 'quote', 'lead'], e.lead, `point ${i + 1} lead-in`);
+      // Her own slides (made in the studio) also edit the title, quotation and source.
+      if ('heading' in e) apply(['points', i, 'heading'], e.heading, `point ${i + 1} title`);
+      if ('quote' in e) apply(['points', i, 'quote', 'text'], e.quote, `point ${i + 1} quotation`);
+      if ('cite' in e) apply(['points', i, 'quote', 'cite'], e.cite, `point ${i + 1} source`);
+      if ('link' in e) apply(['points', i, 'quote', 'link'], e.link, `point ${i + 1} source link`);
     } else throw new Error(`Unknown section "${e.section}"`);
   }
   YAML.parse(src); // must still be valid

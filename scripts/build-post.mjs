@@ -60,7 +60,8 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
     htmlCard(`<figure class="cc-video"><video controls playsinline preload="none" poster="${posterUrl}" src="${videoUrl}"></video></figure>`),
     // Kids: just the video and the quiz; the words of the video stay on the page in a closed
     // toggle (for grown-ups and search engines).
-    ...(kids ? [quizCard, htmlCard(`<details class="cc-words"><summary>Read the words of the video</summary>\n${words.join('\n')}\n</details>`)] : [...words, quizCard]),
+    ...(kids ? [quiz.questions.length && quizCard, htmlCard(`<details class="cc-words"><summary>Read the words of the video</summary>\n${words.join('\n')}\n</details>`)]
+      : [...words, quiz.questions.length && quizCard]),
     imageCredits(dir, lesson),
     `<h3>Sources</h3>\n<ul>${lesson.sources.map((s) => `<li>${s.url ? `<a href="${esc(s.url)}">${esc(s.label)}</a>` : esc(s.label)}</li>`).join('')}</ul>`,
     pixelArt && `<p class="cc-credit"><em>Every pixel drawing in this video is drawn by hand by ${esc(site.author || 'the host')}.</em></p>`,

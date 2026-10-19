@@ -185,6 +185,11 @@ body.wide .wrap{max-width:1600px}
 .tl-with{position:absolute;top:2px;right:38px;width:22px;height:22px;border:0;border-radius:6px;background:transparent;color:var(--ink);font:600 15px/1 var(--sans);cursor:pointer}
 .tl-with:hover{background:var(--bg)}
 .tl-scene.joined{top:22px;height:26px;padding-top:3px;z-index:1;box-shadow:0 -2px 0 var(--ink) inset}
+.read-line{width:100%;font:500 18px/1.4 var(--serif);padding:9px 12px;border:1px solid var(--rule);border-radius:9px;background:var(--paper);color:var(--ink)}
+.read-line.heading{font-size:24px;font-weight:600}
+textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
+.slide-tools{gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed var(--rule)}
+#new-lesson{margin-left:8px;padding:6px 12px;font-size:14px}
 .tl-trim{position:absolute;top:0;right:0;bottom:0;width:14px;cursor:ew-resize;background:color-mix(in srgb,var(--ink) 18%,transparent);border-left:2px solid var(--ink);opacity:.35;touch-action:none}
 .tl-trim:hover,.tl-trim.moved{opacity:.9}
 .tl-trim.moved{border-left-color:var(--ok)}
@@ -219,7 +224,7 @@ body.wide .wrap{max-width:1600px}
   <header>
     <div class="eyebrow" id="eyebrow">Lesson Studio</div>
     <h1 id="title">Loading…</h1>
-    <div class="meta"><span id="status"></span><select id="pick" hidden aria-label="Choose a lesson"></select></div>
+    <div class="meta"><span id="status"></span><select id="pick" hidden aria-label="Choose a lesson"></select><button class="btn" id="new-lesson" type="button">+ New lesson</button></div>
   </header>
   <div class="tabs" role="tablist">
     <button role="tab" id="tab-script" aria-selected="true">Script &amp; recording</button>
@@ -277,7 +282,7 @@ const sectionName = (s) => s.kind === 'intro' ? 'Intro' : s.kind === 'outro' ? '
 const sections = () => (S.L ? S.L.sections : []);
 const sec = () => sections()[S.slide];
 const value = (s, field) => (S.drafts[s.key] && typeof S.drafts[s.key][field] === 'string') ? S.drafts[s.key][field] : (s[field] || '');
-const spokenWords = (s) => s.kind === 'point' ? wordCount(value(s, 'lead')) + wordCount(s.quote) + wordCount(value(s, 'text')) : wordCount(value(s, 'text'));
+const spokenWords = (s) => s.kind === 'point' ? wordCount(value(s, 'lead')) + wordCount(value(s, 'quote')) + wordCount(value(s, 'text')) : wordCount(value(s, 'text'));
 const hasDrafts = () => Object.keys(S.drafts).length > 0;
 
 // ---------- loading ----------
@@ -339,7 +344,8 @@ function render() {
   document.body.classList.toggle('wide', S.tab === 'timing' || S.tab === 'pixels');
   const kids = [];
   if (S.notice) kids.push(noticeEl(S.notice));
-  if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : S.tab === 'pixels' ? pixelsView() : videoView());
+  if (S.tab === 'new') kids.push(newLessonView());
+  else if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : S.tab === 'pixels' ? pixelsView() : videoView());
   view.replaceChildren(...kids);
   for (const t of view.querySelectorAll('textarea.read')) grow(t);
   watchListening();
@@ -355,7 +361,8 @@ document.getElementById('tab-script').addEventListener('click', () => switchTab(
 document.getElementById('tab-video').addEventListener('click', () => switchTab('video'));
 document.getElementById('tab-timing').addEventListener('click', () => switchTab('timing'));
 document.getElementById('tab-pixels').addEventListener('click', () => switchTab('pixels'));
-document.getElementById('pick').addEventListener('change', async (e) => { await saveAll(); openLesson(e.target.value, 0); });
+document.getElementById('new-lesson').addEventListener('click', async () => { await saveAll(); if (S.timing) S.timing.pause(); S.tab = 'new'; S.notice = null; stopPlayback(); releaseMic(); render(); });
+document.getElementById('pick').addEventListener('change', async (e) => { await saveAll(); if (S.tab === 'new') S.tab = 'script'; openLesson(e.target.value, 0); });
 
 async function switchTab(tab) {
   if (S.tab === tab) return;
@@ -381,6 +388,45 @@ function timingView() {
     S.timing = window.TimingTab.open(S.timingRoot, S.id, api, post);
   }
   return S.timingRoot;
+}
+
+// ---------- a new lesson ----------
+
+/** Pick the course (one here, one on the site, or a new one), name the lesson, and start with one blank slide. */
+function newLessonView() {
+  const box = el('div', {class: 'card stack'}, [el('h2', {text: 'Start a new lesson'}), el('div', {class: 'muted', text: 'Getting the courses…'})]);
+  api('/api/courses').then((c) => {
+    const course = el('select', {'aria-label': 'Course'}, [
+      el('optgroup', {label: 'Your courses here'}, c.local.map((x) => el('option', {value: 'local:' + x.slug, text: x.title + (x.style === 'kids' ? ' (kids)' : '')}))),
+      c.site.length ? el('optgroup', {label: 'Courses on the site (continue one)'}, c.site.map((x) => el('option', {value: 'site:' + x.slug, text: x.title + ' · ' + x.posts + (x.posts === 1 ? ' lesson' : ' lessons')}))) : null,
+      el('optgroup', {label: 'Something new'}, [el('option', {value: 'new', text: 'A new course…'})]),
+    ]);
+    const ctitle = el('input', {type: 'text', class: 'read-line', placeholder: 'Course title, e.g. What Is Advent?'});
+    const style = el('select', {'aria-label': 'Kind of course'}, [el('option', {value: 'classic', text: 'Explainer (grown-ups)'}), el('option', {value: 'kids', text: 'Kids (bright, bouncy)'})]);
+    const fresh = el('div', {class: 'stack', hidden: true}, [el('label', {text: 'New course title'}), ctitle, el('label', {text: 'Look'}), style]);
+    course.addEventListener('change', () => { fresh.hidden = course.value !== 'new'; });
+    const title = el('input', {type: 'text', class: 'read-line heading', placeholder: 'Lesson title, e.g. What Is the Jesse Tree?'});
+    const go = el('button', {class: 'btn primary', text: 'Start the lesson', onclick: async () => {
+      const [kind, slug] = course.value.split(':');
+      const site = c.site.find((x) => x.slug === slug);
+      const pick = kind === 'local' ? {slug} : kind === 'site' ? {slug, title: site.title, ghost: true, posts: site.posts} : {title: ctitle.value, style: style.value};
+      go.disabled = true;
+      try {
+        const r = await post('/api/new-lesson', {course: pick, title: title.value});
+        S.lessons = r.lessons; S.tab = 'script';
+        await openLesson(r.id, 0);
+      } catch (e) { go.disabled = false; alert('Couldn’t start it: ' + e.message); }
+    }});
+    box.replaceChildren(
+      el('h2', {text: 'Start a new lesson'}),
+      c.error ? el('div', {class: 'small bad', text: c.error + ' (your courses here still work)'}) : null,
+      el('label', {text: 'Course'}), course, fresh,
+      el('label', {text: 'Lesson title'}), title,
+      el('div', {class: 'small muted', text: 'It starts with one slide (your intro). Write and record it, then add slides with “+ Add a slide after this”. Each new slide has boxes for its title, the direct quote and where it’s from.'}),
+      el('div', {class: 'row'}, [el('button', {class: 'btn', text: 'Cancel', onclick: () => { S.tab = 'script'; render(); }}), go]),
+    );
+  }, (e) => box.replaceChildren(el('div', {class: 'notice error', text: 'Couldn’t get the courses: ' + e.message})));
+  return box;
 }
 
 // ---------- pixel art ----------
@@ -477,7 +523,23 @@ function slideEl(s) {
     t.addEventListener('input', () => { setDraft(s, field, t.value); grow(t); });
     kids.push(el('label', {for: id, text: label}), t);
   };
-  if (s.kind === 'point') {
+  // One line of text (a slide's title or source).
+  const line = (field, label, placeholder, type = 'text') => {
+    const id = 'f-' + s.key + '-' + field;
+    const t = el('input', {id, type, class: 'read-line' + (field === 'heading' ? ' heading' : ''), readonly: locked, placeholder, spellcheck: type === 'text' ? 'true' : 'false'});
+    t.value = value(s, field);
+    t.addEventListener('input', () => setDraft(s, field, t.value));
+    kids.push(el('label', {for: id, text: label}), t);
+  };
+  if (s.kind === 'point' && s.own) {
+    // A slide she wrote here: each part in its own box, so the video and the post know what it is.
+    line('heading', 'Section title (shown big when the slide starts)', 'e.g. It started in Antioch');
+    area('lead', 'lead', 'What you say first');
+    area('quote', 'quote-edit', 'Direct quote (read it exactly; leave empty if this slide has none)');
+    line('cite', 'Where the quote is from (shown under it)', 'e.g. Acts 11:26');
+    line('link', 'Link to where the words can be checked', 'e.g. https://bible.usccb.org/bible/acts/11', 'url');
+    area('text', '', 'What you say after');
+  } else if (s.kind === 'point') {
     kids.push(el('h2', {text: s.heading}));
     area('lead', 'lead', 'Lead-in');
     kids.push(el('blockquote', {class: 'quote', text: s.quote}), el('div', {class: 'cite'}, [s.cite + ' · ', el('b', {text: 'read exactly'})]));
@@ -491,7 +553,32 @@ function slideEl(s) {
   const c = S.checks[s.key];
   if (c) kids.push(checkEl(c));
   if (s.audio && s.heard && !S.rec && !S.busy) kids.push(heardEl(s));
+  kids.push(slideTools(s));
   return el('article', {class: 'slide' + (yours ? ' yours' : '')}, kids);
+}
+
+/** Add a slide after this one, add the closing slide, or remove this slide. */
+function slideTools(s) {
+  const locked = !!(S.rec || S.busy);
+  const last = S.slide === sections().length - 1;
+  const hasClosing = sections().some((x) => x.kind === 'outro');
+  const change = async (op, section, ask) => {
+    if (ask && !confirm(ask)) return;
+    await saveAll();
+    try {
+      const r = await post('/api/slide?id=' + enc(S.id), {op, section});
+      S.L = r.lesson; S.drafts = {}; S.checks = {};
+      const i = r.slide ? sections().findIndex((x) => x.key === r.slide) : Math.min(S.slide, sections().length - 1);
+      S.slide = Math.max(0, i); remember();
+      render(); scrollTo({top: 0});
+    } catch (e) { alert('Couldn’t change the slides: ' + e.message); }
+  };
+  return el('div', {class: 'row slide-tools'}, [
+    s.kind !== 'outro' ? el('button', {class: 'btn', disabled: locked, text: '+ Add a slide after this', onclick: () => change('add', s.key)}) : null,
+    last && !hasClosing ? el('button', {class: 'btn', disabled: locked, text: '+ Add a closing slide', onclick: () => change('add-closing')}) : null,
+    s.kind !== 'intro' ? el('button', {class: 'btn', disabled: locked, text: 'Remove this slide',
+      onclick: () => change('remove', s.key, 'Remove ' + sectionName(s) + '?' + (s.audio ? ' Its recording is kept (in the lesson\'s audio/removed folder).' : ''))}) : null,
+  ]);
 }
 
 function saveBar(s) {
