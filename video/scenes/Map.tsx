@@ -8,6 +8,7 @@ import {EMPIRES} from '../data/empires';
 import {draw, enter, pop, ramp} from '../anim';
 import {theme} from '../theme';
 import {Center} from './Center';
+import {useStage} from '../layout';
 import type {SceneProps} from '.';
 
 // Coastlines: Natural Earth 1:50m (public domain), via world-atlas.
@@ -86,9 +87,15 @@ export const MapView: React.FC<SceneProps<MapScene>> = ({scene, duration}) => {
   const appear = (name: string, i: number) => scene.cues?.[name] ?? 14 + i * step;
   const byName = Object.fromEntries(places.map((p, i) => [p.name, {...p, t: appear(p.name, i)}]));
 
+  // Map and caption together fit the room the slide has (the caption used to hang below it,
+  // onto the progress bar).
+  const stage = useStage();
+  const room = scene.caption ? 74 : 0;
+  const k = Math.min(1, (stage.h - 20 - room) / H, (stage.w - 120) / W);
   return (
     <Center>
-      <div style={{position: 'relative', width: W, height: H}}>
+      <div style={{position: 'relative', width: W * k, height: H * k + room}}>
+      <div style={{position: 'absolute', left: 0, top: 0, width: W, height: H, transform: `scale(${k})`, transformOrigin: 'top left'}}>
         <svg width={W} height={H} style={{position: 'absolute', inset: 0, borderRadius: 18, overflow: 'hidden', background: (theme.kids ? '#9FDFF0' : SEA), opacity: ramp(f, 0, 12)}}>
           <defs><clipPath id={clipId}><path d={pathD} /></clipPath></defs>
           <path d={pathD} fill={theme.card} stroke={theme.rule} strokeWidth={1.5} />
@@ -156,8 +163,9 @@ export const MapView: React.FC<SceneProps<MapScene>> = ({scene, duration}) => {
         {areas.some((a) => a.approx) && (
           <div style={{position: 'absolute', right: 18, bottom: 12, fontFamily: theme.sans, fontSize: 20, color: theme.muted, opacity: ramp(f, 20, 34)}}>Borders approximate</div>
         )}
+      </div>
         {scene.caption && (
-          <div style={{...enter(f, Math.max(30, ...Object.values(byName).map((p) => p.t)) + 20), position: 'absolute', left: 0, right: 0, bottom: -64,
+          <div style={{...enter(f, Math.max(30, ...Object.values(byName).map((p) => p.t)) + 20), position: 'absolute', left: 0, right: 0, bottom: 0,
             textAlign: 'center', fontFamily: theme.serif, fontStyle: 'italic', fontSize: 40, color: theme.muted}}>
             {scene.caption}
           </div>
