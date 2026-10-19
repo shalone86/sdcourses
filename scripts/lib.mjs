@@ -44,7 +44,10 @@ export function loadLesson(dir) {
     ...points,
     {kind: 'outro', index: 0, name: 'outro', ...lesson.outro, text: clean(lesson.outro?.text)},
   ];
-  return {lesson, course, segments, points, id: `${course.slug}/${path.basename(dir)}`};
+  // Kids lessons (style: kids) post differently; pixel art (sprite scenes) is credited to her.
+  const kids = (lesson.style ?? course.style) === 'kids';
+  const pixelArt = segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite'));
+  return {lesson, course, segments, points, kids, pixelArt, id: `${course.slug}/${path.basename(dir)}`};
 }
 
 export const words = (t) => (t ?? '').split(/\s+/).filter(Boolean).length;

@@ -116,7 +116,8 @@ export function prepare(arg) {
     number: lesson.number,
     title: lesson.title,
     headings: lesson.points.map((p) => p.heading),
-    credit: site.videoCredit,
+    // Pixel art in the video is hers, drawn by hand: say so in the end credits.
+    credit: [site.videoCredit, pixelArtCredit(segments, site)].filter(Boolean).join(' · '),
     author: site.author,
     hostPhoto,
     music,
@@ -311,6 +312,9 @@ function snapToBeats(segments, beats) {
     at += seg.durationInFrames;
   }
 }
+
+const pixelArtCredit = (segments, site) =>
+  segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite')) ? `Pixel art drawn by hand by ${site.author || 'the host'}` : '';
 
 // Her video's layouts on a slide; "full" was the first name for the floating card.
 export const LAYOUTS = {off: 'off', bubble: 'bubble', card: 'card', full: 'card', side: 'side', lower: 'lower', only: 'only'};

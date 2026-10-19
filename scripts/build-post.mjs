@@ -36,7 +36,8 @@ const htmlCard = (inner) => `<!--kg-card-begin: html-->\n${inner}\n<!--kg-card-e
 
 export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER_PLACEHOLDER} = {}) {
   const dir = lessonDir(arg);
-  const {lesson, course, segments, points, id} = loadLesson(dir);
+  const {lesson, course, segments, points, kids, pixelArt, id} = loadLesson(dir);
+  const site = loadSite();
   const intro = segments[0];
   const outro = segments[segments.length - 1];
 
@@ -45,8 +46,7 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
   const fallback = `<ol class="cc-quiz-fallback">${quiz.questions.map((q) => `<li>${esc(q.question)}</li>`).join('')}</ol>`;
   const json = JSON.stringify(quiz).replace(/</g, '\\u003c');
 
-  const html = [
-    htmlCard(`<figure class="cc-video"><video controls playsinline preload="none" poster="${posterUrl}" src="${videoUrl}"></video></figure>`),
+  const words = [
     intro.text && `<p>${smart(intro.text)}</p>`,
     ...points.map((p) => [
       `<h2>${smart(p.heading)}</h2>`,
@@ -54,10 +54,17 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
       `<p>${smart(p.explanation)}</p>`,
     ].join('\n')),
     outro.text && `<p>${smart(outro.text)}</p>`,
-    htmlCard(`<section class="cc-quiz" data-lesson="${esc(lesson.slug)}"><h2>Check your understanding</h2><p class="cc-quiz-intro">Your answers stay on your device.</p>${fallback}<script type="application/json">${json}</script></section>`),
+  ].filter(Boolean);
+  const quizCard = htmlCard(`<section class="cc-quiz" data-lesson="${esc(lesson.slug)}"><h2>Check your understanding</h2><p class="cc-quiz-intro">Your answers stay on your device.</p>${fallback}<script type="application/json">${json}</script></section>`);
+  const html = [
+    htmlCard(`<figure class="cc-video"><video controls playsinline preload="none" poster="${posterUrl}" src="${videoUrl}"></video></figure>`),
+    // Kids: just the video and the quiz; the words of the video stay on the page in a closed
+    // toggle (for grown-ups and search engines).
+    ...(kids ? [quizCard, htmlCard(`<details class="cc-words"><summary>Read the words of the video</summary>\n${words.join('\n')}\n</details>`)] : [...words, quizCard]),
     imageCredits(dir, lesson),
     `<h3>Sources</h3>\n<ul>${lesson.sources.map((s) => `<li>${s.url ? `<a href="${esc(s.url)}">${esc(s.label)}</a>` : esc(s.label)}</li>`).join('')}</ul>`,
-    `<p class="cc-credit"><em>${esc(loadSite().disclosure)}</em></p>`,
+    pixelArt && `<p class="cc-credit"><em>Every pixel drawing in this video is drawn by hand by ${esc(site.author || 'the host')}.</em></p>`,
+    `<p class="cc-credit"><em>${esc(site.disclosure)}</em></p>`,
   ].filter(Boolean).join('\n\n');
 
   const meta = {
