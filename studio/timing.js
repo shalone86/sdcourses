@@ -59,7 +59,9 @@
     term: {label: 'A word', fields: [['term', 'The word', 'text'], ['origin', 'From (e.g. Greek …)', 'text'], ['meaning', 'Meaning', 'text']],
       make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning})},
   };
-  const REMOVABLE = (s, i) => !(s.kind === 'point' && i === 0) && !['title', 'host', 'trinity', 'recap'].includes(s.scenes[i].type);
+  const REMOVABLE = (s, i) => !['quote', 'keys', 'title', 'host', 'trinity', 'recap'].includes(s.scenes[i].type);
+  // Sharing the space with the picture before: [value, button face, what it means].
+  const WITH = [[null, '▢', 'On its own'], ['side', '◫', 'Beside the picture before'], ['over', '⧉', 'Over the picture before']];
 
   /** Short name for an item cue ("Antioch", "Title 2", "Check"). */
   function cueLabel(scene, k) {
@@ -189,12 +191,26 @@
       if (s.kind === 'point' && s.scenes[0].from > 0) {
         scenesRow.append(h('div', {class: 'tl-scene fixed', style: {left: x(0) + 'px', width: s.scenes[0].from * px + 'px'}}, [h('span', {text: 'Heading'})]));
       }
+      // A picture shown with the one before stays up until the next picture that's on its own.
+      const groupEnd = (i) => { let j = i + 1; while (j < s.scenes.length && s.scenes[j].with) j++; return j < s.scenes.length ? s.scenes[j].from : s.durationInFrames; };
       s.scenes.forEach((sc, i) => {
-        const end = Math.min(i < s.scenes.length - 1 ? s.scenes[i + 1].from : s.durationInFrames, sc.until ?? Infinity);
+        const end = Math.min(groupEnd(i), sc.until ?? Infinity);
         const touched = ((T.timing[s.name] || {}).scenes || {})[i];
         const label = LABELS[sc.type] || sc.type;
-        const block = h('div', {class: 'tl-scene' + (touched && touched.start != null ? ' moved' : ''), style: {left: x(sc.from) + 'px', width: Math.max(24, (end - sc.from) * px) + 'px'},
+        const block = h('div', {class: 'tl-scene' + (touched && touched.start != null ? ' moved' : '') + (sc.with ? ' joined' : ''), style: {left: x(sc.from) + 'px', width: Math.max(24, (end - sc.from) * px) + 'px'},
           title: 'Drag to change when it starts'}, [h('span', {text: label})]);
+        // Share the space with the picture before (not for the first picture, or a quotation).
+        if (i > 0 && REMOVABLE(s, i)) {
+          const cur = WITH.findIndex(([v]) => v === (sc.with || null));
+          const [, face, label] = WITH[cur];
+          block.append(h('button', {class: 'tl-with', title: label + ' (click to change)', 'aria-label': label + ' (click to change)',
+            onpointerdown: (e) => e.stopPropagation(), onclick: async (e) => {
+              e.stopPropagation();
+              await persist();
+              try { reload(await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'with', section: s.name, index: i, value: WITH[(cur + 1) % WITH.length][0]})); }
+              catch (err) { alert('Couldn’t change it: ' + err.message); }
+            }}, face));
+        }
         if (REMOVABLE(s, i)) {
           block.append(h('button', {class: 'tl-x', title: 'Remove this picture', 'aria-label': 'Remove ' + label,
             onpointerdown: (e) => e.stopPropagation(), onclick: (e) => { e.stopPropagation(); removeScene(i, label); }}, '×'));

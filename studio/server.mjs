@@ -131,16 +131,19 @@ function timingData(id) {
 // ---------- adding and removing pictures (scenes) from the Timing tab ----------
 
 /** Where a section's scene list lives in lesson.yml; point scene 0 is the quotation (not in visuals). */
-const sceneList = (section) => {
+const sceneList = (section, dir) => {
   const m = /^point-(\d+)$/.exec(section);
-  return m ? {path: ['points', Number(m[1]) - 1, 'visuals'], first: 1} : {path: [section, 'scenes'], first: 0};
+  if (!m) return {path: [section, 'scenes'], first: 0};
+  // Scene 0 of a point is its quotation, when it has one.
+  const point = loadLesson(dir).segments.find((s) => s.name === section);
+  return {path: ['points', Number(m[1]) - 1, 'visuals'], first: point?.hasQuote ? 1 : 0};
 };
 
 /** Splice one scene into (or out of) lesson.yml as text, so comments and layout elsewhere stay as they are. */
-function editScenes(dir, section, op, sceneIndex, scene) {
+function editScenes(dir, section, op, sceneIndex, scene, key, value) {
   const file = path.join(dir, 'lesson.yml');
   let src = fs.readFileSync(file, 'utf8');
-  const {path: p, first} = sceneList(section);
+  const {path: p, first} = sceneList(section, dir);
   const doc = YAML.parseDocument(src);
   const seq = doc.getIn(p, true);
   if (!seq || !Array.isArray(seq.items)) throw httpError(400, `No scene list for ${section}`);
@@ -162,6 +165,25 @@ function editScenes(dir, section, op, sceneIndex, scene) {
       const pos = at < seq.items.length ? refLine : (src.indexOf('\n', seq.items[seq.items.length - 1].range[1] - 1) + 1 || src.length);
       src = src.slice(0, pos) + text + src.slice(pos);
     }
+  } else if (op === 'set') {
+    // One setting on a scene (e.g. `with: side`): drop its old line, then add the new one at the end of the scene.
+    const item = seq.items[k];
+    if (!item || !Array.isArray(item.items) || item.flow) throw httpError(400, 'No such scene');
+    const pair = item.items.find((pr) => pr.key?.value === key);
+    if (pair && pair !== item.items[0]) {
+      const from = lineStart(pair.key.range[0]);
+      src = src.slice(0, from) + src.slice(src.indexOf('\n', (pair.value?.range ?? pair.key.range)[1] - 1) + 1);
+    }
+    if (value != null) {
+      const again = YAML.parseDocument(src).getIn(p, true).items[k];
+      const col = again.items[0].key.range[0] - lineStart(again.items[0].key.range[0]);
+      const pos = src.indexOf('\n', again.range[1] - 1) + 1 || src.length;
+      src = src.slice(0, pos) + ' '.repeat(col) + `${key}: ${value}\n` + src.slice(pos);
+    }
+    YAML.parse(src);
+    fs.writeFileSync(file, src);
+    const tf = path.join(dir, 'timing.yml');
+    return fs.existsSync(tf) ? YAML.parse(fs.readFileSync(tf, 'utf8')) ?? {} : {};
   } else {
     const item = seq.items[k];
     if (!item) throw httpError(400, 'No such scene');
@@ -489,7 +511,7 @@ async function handle(req, res) {
     if (p === '/api/scene') {
       // Add a picture at a time (seconds into the recording), or remove one.
       const dir = lessonPath(id);
-      const {op, section, index, scene, start} = await readJson(req);
+      const {op, section, index, scene, start, value} = await readJson(req);
       if (!/^(intro|outro|point-\d+)$/.test(section ?? '')) throw httpError(400, 'Bad section');
       const {props} = prepare(id);
       const seg = props.segments.find((s) => s.name === section);
@@ -499,8 +521,15 @@ async function handle(req, res) {
         if (!scene || typeof scene.type !== 'string') throw httpError(400, 'Missing scene');
         // After every scene that starts before it; never before a point's quotation.
         const f = seg.audioOffsetInFrames + start * 30;
-        at = Math.max(sceneList(section).first, seg.scenes.filter((s) => (s.from ?? 0) <= f).length);
-      } else if (op !== 'remove' || !Number.isInteger(index) || index < sceneList(section).first) throw httpError(400, 'That picture can\'t be removed here');
+        at = Math.max(sceneList(section, dir).first, seg.scenes.filter((s) => (s.from ?? 0) <= f).length);
+      } else if (op === 'with') {
+        // Show this picture with the one before it: beside it, over it, or on its own (null).
+        if (!Number.isInteger(index) || index < 1 || index < sceneList(section, dir).first) throw httpError(400, 'Only a picture after another one can share its space');
+        if (![null, 'side', 'over'].includes(value)) throw httpError(400, 'Bad choice');
+        editScenes(dir, section, 'set', index, null, 'with', value);
+        setStatus(dir, 'draft');
+        return json(res, 200, timingData(id));
+      } else if (op !== 'remove' || !Number.isInteger(index) || index < sceneList(section, dir).first) throw httpError(400, 'That picture can\'t be removed here');
       const timing = editScenes(dir, section, op, at, scene);
       if (op === 'add') ((timing[section] ??= {}).scenes ??= {})[at] = {start: Math.round(start * 100) / 100};
       saveTiming(id, timing);

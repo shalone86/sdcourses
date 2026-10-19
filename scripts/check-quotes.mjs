@@ -67,7 +67,7 @@ function collectQuotes(segments) {
   for (const s of segments) {
     const where = s.heading ?? s.name;
     if (s.kind === 'point') {
-      add(s.quote.text, `${where} (anchor quote)`, s.quote.source);
+      if (s.quote.text) add(s.quote.text, `${where} (anchor quote)`, s.quote.source);
       inline(s.explanation, where);
       for (const q of s.quiz) inline(q.why, `${where} (quiz)`);
     } else {

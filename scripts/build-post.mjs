@@ -39,7 +39,7 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
   const {lesson, course, segments, points, kids, pixelArt, id} = loadLesson(dir);
   const site = loadSite();
   const intro = segments[0];
-  const outro = segments[segments.length - 1];
+  const outro = segments.find((s) => s.kind === 'outro') ?? {text: ''};
 
   const quiz = {questions: points.flatMap((p) => p.quiz.map((q) => normalizeQuestion(q, p.heading)))};
   // Readers without JavaScript (and search engines) still get the questions.
@@ -49,10 +49,10 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
   const words = [
     intro.text && `<p>${smart(intro.text)}</p>`,
     ...points.map((p) => [
-      `<h2>${smart(p.heading)}</h2>`,
-      `<blockquote><p>${smart(p.quote.text)}</p><p>— ${smart(p.quote.cite)}</p></blockquote>`,
-      `<p>${smart(p.explanation)}</p>`,
-    ].join('\n')),
+      p.heading && `<h2>${smart(p.heading)}</h2>`,
+      p.quote.text && `<blockquote><p>${smart(p.quote.text)}</p><p>— ${smart(p.quote.cite)}</p></blockquote>`,
+      p.explanation && `<p>${smart(p.explanation)}</p>`,
+    ].filter(Boolean).join('\n')),
     outro.text && `<p>${smart(outro.text)}</p>`,
   ].filter(Boolean);
   const quizCard = htmlCard(`<section class="cc-quiz" data-lesson="${esc(lesson.slug)}"><h2>Check your understanding</h2><p class="cc-quiz-intro">Your answers stay on your device.</p>${fallback}<script type="application/json">${json}</script></section>`);
@@ -92,7 +92,7 @@ function imageCredits(dir, lesson) {
   if (!fs.existsSync(f)) return '';
   const credits = JSON.parse(fs.readFileSync(f, 'utf8'));
   const used = new Set();
-  for (const sec of [lesson.intro, ...lesson.points.map((p) => ({scenes: p.visuals})), lesson.outro]) for (const sc of sec?.scenes ?? []) if (sc.type === 'image') used.add(sc.src);
+  for (const sec of [lesson.intro, ...(lesson.points ?? []).map((p) => ({scenes: p.visuals})), lesson.outro]) for (const sc of sec?.scenes ?? []) if (sc.type === 'image') used.add(sc.src);
   const items = [...used].map((src) => credits[src]).filter(Boolean);
   if (!items.length) return '';
   const li = (c) => `<li>${c.page ? `<a href="${esc(c.page)}">${esc(c.title || 'Image')}</a>` : esc(c.title || 'Image')}${c.creator ? `, ${esc(c.creator)}` : ''} (${esc(c.source)}${c.license ? `, ${c.license_url ? `<a href="${esc(c.license_url)}">${esc(c.license)}</a>` : esc(c.license)}` : ''})</li>`;

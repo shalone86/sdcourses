@@ -22,28 +22,33 @@ export function loadLesson(dir) {
   const lesson = YAML.parse(fs.readFileSync(path.join(dir, 'lesson.yml'), 'utf8'));
   const course = YAML.parse(fs.readFileSync(path.join(dir, '..', 'course.yml'), 'utf8'));
   const clean = (t) => (t ?? '').trim().replace(/\s+/g, ' ');
-  const points = lesson.points.map((p, i) => {
-    const q = p.quote;
-    if (!q?.text || !q.source || !q.cite) throw new Error(`Point ${i + 1} ("${p.heading}") needs quote.text, quote.source and quote.cite`);
-    const quote = {...q, text: clean(q.text), lead: clean(q.lead)};
-    const anchor = q.scene === 'keys'
+  // A slide she's still writing (made in the studio) may not have its quotation yet; the
+  // quotation scene appears once it has one.
+  const points = (lesson.points ?? []).map((p, i) => {
+    const q = p.quote ?? {};
+    if (q.text && (!q.source || !q.cite)) throw new Error(`Point ${i + 1} ("${p.heading}") has a quotation but needs quote.source and quote.cite`);
+    const quote = {...q, text: clean(q.text), lead: clean(q.lead), cite: q.cite ?? ''};
+    const anchor = !quote.text ? null : q.scene === 'keys'
       ? {type: 'keys', quote: quote.text, cite: quote.cite}
       : {type: 'quote', text: quote.text, cite: quote.cite, highlight: quote.highlight};
     const explanation = clean(p.text);
     return {
-      kind: 'point', index: i + 1, name: `point-${i + 1}`, heading: p.heading,
+      kind: 'point', index: i + 1, name: `point-${i + 1}`, heading: p.heading ?? '',
       quote, explanation,
       // Narration: lead-in, the quotation itself, then the explanation.
       text: [quote.lead, quote.text, explanation].filter(Boolean).join(' '),
-      scenes: [anchor, ...(p.visuals ?? [])],
+      scenes: [anchor, ...(p.visuals ?? [])].filter(Boolean),
+      hasQuote: !!anchor,
       quiz: [].concat(p.quiz ?? []),
     };
   });
   const segments = [
     {kind: 'intro', index: 0, name: 'intro', ...lesson.intro, text: clean(lesson.intro?.text)},
     ...points,
-    {kind: 'outro', index: 0, name: 'outro', ...lesson.outro, text: clean(lesson.outro?.text)},
+    // The closing slide is optional (a new lesson starts with just one slide).
+    ...(lesson.outro ? [{kind: 'outro', index: 0, name: 'outro', ...lesson.outro, text: clean(lesson.outro?.text)}] : []),
   ];
+  for (const s of segments) s.scenes ??= [];
   // Kids lessons (style: kids) post differently; pixel art (sprite scenes) is credited to her.
   const kids = (lesson.style ?? course.style) === 'kids';
   const pixelArt = segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite'));

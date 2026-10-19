@@ -24,7 +24,7 @@ export function prepare(arg) {
   fs.mkdirSync(publicDir, {recursive: true});
 
   let recorded = 0;
-  lessonHeadings = lesson.points.map((p) => p.heading);
+  lessonHeadings = (lesson.points ?? []).map((p) => p.heading ?? '');
   const useWhisper = whisperAvailable();
   const out = segments.map((s) => {
     const src = AUDIO_EXT.map((e) => path.join(dir, 'audio', s.name + e)).find((f) => fs.existsSync(f));
@@ -115,7 +115,7 @@ export function prepare(arg) {
     courseTitle: course.title,
     number: lesson.number,
     title: lesson.title,
-    headings: lesson.points.map((p) => p.heading),
+    headings: lessonHeadings,
     // Pixel art in the video is hers, drawn by hand: say so in the end credits.
     credit: [site.videoCredit, pixelArtCredit(segments, site)].filter(Boolean).join(' · '),
     author: site.author,
@@ -164,7 +164,7 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
     const i = text.indexOf(String(phrase).toLowerCase());
     return i < 0 ? null : Math.round(offset + (i / text.length) * seconds * FPS);
   };
-  const quoteSpan = s.kind === 'point' && spoken ? phraseSpan(spoken, s.quote.text) : null;
+  const quoteSpan = s.kind === 'point' && s.hasQuote && spoken ? phraseSpan(spoken, s.quote.text) : null;
   // The point's big heading stays while the lead-in is read; the quotation takes over when it begins.
   const first = s.kind === 'point' ? Math.max(HEADING_FRAMES, quoteSpan ? sec(quoteSpan.start) - 12 : 0) : 0;
   const items = (sc) => {
@@ -367,7 +367,8 @@ function recordingScript(lesson, segments) {
     lines.push(`## ${s.name}${s.heading ? ` (${s.heading})` : ''}`, '');
     if (s.kind === 'point') {
       if (s.quote.lead) lines.push(s.quote.lead, '');
-      lines.push(`**${s.quote.text}**`, '', `(${s.quote.cite})`, '', s.explanation, '');
+      if (s.quote.text) lines.push(`**${s.quote.text}**`, '', `(${s.quote.cite})`, '');
+      lines.push(s.explanation, '');
     } else {
       lines.push(s.text || '_Not written yet._', '');
     }

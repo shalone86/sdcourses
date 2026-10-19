@@ -2,7 +2,7 @@ import {AbsoluteFill, Audio, interpolate, Sequence, spring, staticFile, useCurre
 import {float, ramp} from './anim';
 import {Backdrop} from './Backdrop';
 import {CameraBack, CameraBubble, geometry, type Geometry} from './Camera';
-import {LayoutContext, StageContext, type Layout} from './layout';
+import {LayoutContext, StageContext, useStage, type Layout} from './layout';
 import {BeatContext, beatAt, sway, useBeat} from './beat';
 import {SceneView} from './scenes';
 import {HEADING_FRAMES, theme, useStyle} from './theme';
@@ -19,9 +19,24 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
   const per = Math.floor((seg.durationInFrames - start) / seg.scenes.length);
   // Scenes timed to the narration (`from`, see prepare.mjs), else evenly split; `until` ends one early.
   const starts = seg.scenes.map((s, i) => s.from ?? start + i * per);
-  const endOf = (i: number) => Math.min(starts[i + 1] ?? seg.durationInFrames, seg.scenes[i].until ?? Infinity);
-  const lengthOf = (i: number) => Math.max(1, endOf(i) - starts[i]);
-  const open = (i: number) => i === seg.scenes.length - 1 && seg.scenes[i].until == null; // runs to the slide's end
+  // Pictures joined to the one before (`with: side | over`) share its space as one group:
+  // side by side in columns, or layered on top. Each keeps its own start and end.
+  const groups: {members: number[]; mode: 'side' | 'over' | null}[] = [];
+  seg.scenes.forEach((sc, i) => {
+    const g = groups[groups.length - 1];
+    if (g && (sc.with === 'side' || sc.with === 'over')) { g.members.push(i); g.mode ??= sc.with; }
+    else groups.push({members: [i], mode: null});
+  });
+  const groupOf = (gi: number) => {
+    const g = groups[gi];
+    const start = starts[g.members[0]];
+    const next = groups[gi + 1] ? starts[groups[gi + 1].members[0]] : seg.durationInFrames;
+    const trimmed = g.members.every((m) => seg.scenes[m].until != null);
+    const end = trimmed ? Math.min(next, Math.max(...g.members.map((m) => seg.scenes[m].until!))) : next;
+    const open = gi === groups.length - 1 && !trimmed; // runs to the slide's end
+    const member = (m: number) => ({from: starts[m] - start, length: Math.max(1, Math.min(end, seg.scenes[m].until ?? end) - starts[m])});
+    return {...g, start, length: Math.max(1, end - start), open, member};
+  };
   const fadeOut = 1 - ramp(frame, seg.durationInFrames - FADE, seg.durationInFrames);
 
   const layout: Layout = seg.camera ? seg.camera.layout ?? 'bubble' : 'off';
@@ -36,13 +51,17 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
         </Sequence>
       )}
       {isPoint && geo.heading && <PointHeading seg={seg} total={lesson.headings.length} settleAt={start} area={geo.heading} />}
-      {layout !== 'only' && seg.scenes.map((scene, i) => (
-        <Sequence key={i} from={starts[i]} durationInFrames={open(i) ? undefined : lengthOf(i)}>
-          <SceneShell last={open(i)} duration={lengthOf(i)} top={isPoint ? 250 : 110} seed={i * 2.1 + seg.index} geo={geo}>
-            <SceneView scene={scene} lesson={lesson} duration={lengthOf(i)} />
-          </SceneShell>
-        </Sequence>
-      ))}
+      {layout !== 'only' && groups.map((_, gi) => {
+        const g = groupOf(gi);
+        return (
+          <Sequence key={gi} from={g.start} durationInFrames={g.open ? undefined : g.length}>
+            <SceneShell last={g.open} duration={g.length} top={isPoint ? 250 : 110} seed={g.members[0] * 2.1 + seg.index} geo={geo}>
+              {g.mode ? <Stack mode={g.mode} members={g.members.map((m) => ({scene: seg.scenes[m], ...g.member(m)}))} lesson={lesson} />
+                : <SceneView scene={seg.scenes[g.members[0]]} lesson={lesson} duration={g.length} />}
+            </SceneShell>
+          </Sequence>
+        );
+      })}
       {layout === 'bubble' && <CameraBubble seg={seg} left={geo.bubble?.left} />}
     </AbsoluteFill>
     </LayoutContext.Provider>
@@ -81,6 +100,40 @@ const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: 
       <StageContext.Provider value={{w: 1920 - geo.inset.left - geo.inset.right, h: 1080 - top - 110}}>{children}</StageContext.Provider>
     </AbsoluteFill>
   );
+};
+
+/**
+ * Pictures sharing one space. Side by side: equal columns, each drawn a bit larger and shrunk
+ * to fit (like the panel beside her video). Over: layered, later ones on top. Each fades in
+ * at its own start.
+ */
+const Stack: React.FC<{mode: 'side' | 'over'; members: {scene: Segment['scenes'][number]; from: number; length: number}[]; lesson: LessonProps}> = ({mode, members, lesson}) => {
+  const stage = useStage();
+  const n = members.length;
+  const item = (m: (typeof members)[number], i: number) => (
+    <Sequence key={i} from={m.from} durationInFrames={m.length} layout="none">
+      <FadeIn><SceneView scene={m.scene} lesson={lesson} duration={m.length} /></FadeIn>
+    </Sequence>
+  );
+  if (mode === 'over') return <AbsoluteFill>{members.map((m, i) => <AbsoluteFill key={i}>{item(m, i)}</AbsoluteFill>)}</AbsoluteFill>;
+  const colW = stage.w / n;
+  const vw = stage.w * 0.8, k = colW / vw, vh = stage.h / k;
+  return (
+    <AbsoluteFill>
+      {members.map((m, i) => (
+        <div key={i} style={{position: 'absolute', left: i * colW, top: 0, width: colW, height: stage.h, overflow: 'visible'}}>
+          <div style={{position: 'absolute', left: 0, top: 0, width: vw, height: vh, transform: `scale(${k})`, transformOrigin: 'top left'}}>
+            <StageContext.Provider value={{w: vw, h: vh}}>{item(m, i)}</StageContext.Provider>
+          </div>
+        </div>
+      ))}
+    </AbsoluteFill>
+  );
+};
+
+const FadeIn: React.FC<{children: React.ReactNode}> = ({children}) => {
+  const frame = useCurrentFrame();
+  return <AbsoluteFill style={{opacity: ramp(frame, 0, FADE)}}>{children}</AbsoluteFill>;
 };
 
 /** Point number + heading: large in its area, then it settles small at the top. */
