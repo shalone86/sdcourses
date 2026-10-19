@@ -14,6 +14,7 @@ import {prepare} from '../scripts/prepare.mjs';
 import YAML from 'yaml';
 import * as esbuild from 'esbuild';
 import {importImage, searchImages, sourceList} from './images.mjs';
+import {listSprites, saveSprite} from '../scripts/sprites.mjs';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -420,6 +421,8 @@ async function handle(req, res) {
     if (p === '/api/job') return json(res, 200, job);
     if (p === '/api/timing') return json(res, 200, timingData(id));
     if (p === '/api/images/sources') return json(res, 200, sourceList());
+    if (p === '/api/sprites') return json(res, 200, listSprites());
+    if (p === '/pixels.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
     if (p === '/api/images/search') {
       const q = (url.searchParams.get('q') ?? '').trim();
       if (!q) throw httpError(400, 'Type something to search for');
@@ -463,6 +466,10 @@ async function handle(req, res) {
       const unapproved = changes.length > 0 && setStatus(dir, 'draft');
       const check = changes.length ? await checkQuotes(id) : null;
       return json(res, 200, {changes, unapproved, check, lesson: detail(id)});
+    }
+    if (p === '/api/sprite') {
+      const slug = saveSprite(await readJson(req));
+      return json(res, 200, {slug, sprites: listSprites()});
     }
     if (p === '/api/timing') {
       const {timing} = await readJson(req);

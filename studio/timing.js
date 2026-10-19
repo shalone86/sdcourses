@@ -5,7 +5,7 @@
 'use strict';
 (function () {
   const FPS = 30;
-  const LABELS = {quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
+  const LABELS = {sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
     recap: 'Lesson summary', union: 'Union', partners: 'Partners', title: 'Title card', host: 'Your photo', trinity: 'Trinity', term: 'Word', keys: 'Keys', college: 'College', iconostasis: 'Iconostasis'};
 
   function h(tag, attrs, kids) {
@@ -52,6 +52,10 @@
       make: (v) => ({type: 'chain', items: lines(v.items), ...(v.caption ? {caption: v.caption} : {})})},
     timeline: {label: 'Timeline', fields: [['items', 'One per line: year | what happened', 'lines']],
       make: (v) => ({type: 'timeline', items: lines(v.items).map((l) => { const [a, b] = pair(l); return {year: a, label: b || ''}; })})},
+    sprite: {label: 'Pixel animation (from the Pixel art tab)', fields: [['sprite', 'Which drawing', 'sprite'], ['move', 'How it moves', 'select', ['stay', 'hop', 'across']],
+      ['size', 'Size', 'select', ['medium', 'small', 'big']], ['caption', 'Caption', 'text']],
+      make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
+        return {type: 'sprite', sprite: v.sprite, ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; }},
     term: {label: 'A word', fields: [['term', 'The word', 'text'], ['origin', 'From (e.g. Greek …)', 'text'], ['meaning', 'Meaning', 'text']],
       make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning})},
   };
@@ -319,6 +323,12 @@
           if (kind === 'lines') input = h('textarea', {rows: 3});
           else if (kind === 'check') input = h('input', {type: 'checkbox', checked: true});
           else if (kind === 'select') input = h('select', {}, extra.map((o) => h('option', {value: o, text: o})));
+          else if (kind === 'sprite') {
+            // Her saved pixel animations.
+            input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);
+            api('/api/sprites').then((list) => input.replaceChildren(...(list.length ? list.map((x) => h('option', {value: x.slug, text: x.name}))
+              : [h('option', {value: '', text: 'None yet: draw one on the Pixel art tab'})])));
+          }
           else input = h('input', {type: 'text', value: extra || ''});
           vals[name] = input;
           return h('label', {class: 'tl-field'}, [h('span', {text: label}), input]);

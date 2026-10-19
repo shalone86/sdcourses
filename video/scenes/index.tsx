@@ -11,6 +11,7 @@ import {Union} from './Union';
 import {MapView} from './Map';
 import {Quote} from './Quote';
 import {Recap} from './Recap';
+import {Sprite} from './Sprite';
 import {Timeline} from './Timeline';
 import {Term} from './Term';
 import {Title} from './Title';
@@ -37,6 +38,7 @@ const registry: Record<string, React.FC<SceneProps<any>>> = {
   partners: Partners,
   iconostasis: Iconostasis,
   trinity: Trinity,
+  sprite: Sprite,
 };
 
 export const sceneTypes = Object.keys(registry);

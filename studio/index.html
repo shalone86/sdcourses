@@ -164,6 +164,23 @@ body.wide .wrap{max-width:1600px}
 .tl-scene{position:absolute;top:0;height:46px;border-radius:8px;background:color-mix(in srgb,var(--gold) 22%,var(--paper));border:1px solid var(--gold);cursor:grab;overflow:hidden;font:600 13px/1.2 var(--sans);padding:6px 8px;color:var(--ink);touch-action:none}
 .tl-scene:not(.fixed):nth-child(even){background:color-mix(in srgb,var(--accent) 14%,var(--paper));border-color:var(--accent)}
 .tl-scene.moved{box-shadow:0 0 0 2px var(--ok) inset}
+.px-wrap{display:grid;grid-template-columns:minmax(0,520px) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:900px){.px-wrap{grid-template-columns:1fr}}
+.px-left{display:flex;flex-direction:column;gap:8px}
+.px-canvas{width:100%;max-width:512px;aspect-ratio:1;image-rendering:pixelated;border:1px solid var(--rule);border-radius:10px;cursor:crosshair;touch-action:none;background:#fff}
+.px-side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.px-side input[type=text]{font:500 16px/1.3 var(--sans);padding:9px 12px;border:1px solid var(--rule);border-radius:9px;background:var(--paper);color:var(--ink)}
+.px-palette{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.px-swatch{width:30px;height:30px;border-radius:8px;border:2px solid rgba(0,0,0,.12);cursor:pointer;padding:0}
+.px-swatch.on{outline:3px solid var(--ink);outline-offset:2px}
+.px-any{display:inline-flex;align-items:center;gap:6px;font:600 13px/1 var(--sans);color:var(--muted)}
+.px-any input{width:34px;height:30px;border:0;padding:0;background:none;cursor:pointer}
+.px-frames{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.px-frame{position:relative;padding:3px;border:2px solid var(--rule);border-radius:9px;background:var(--paper);cursor:pointer}
+.px-frame.on{border-color:var(--accent)}
+.px-frame canvas{display:block;width:64px;height:64px;image-rendering:pixelated}
+.px-frame span{position:absolute;top:2px;left:5px;font:700 11px/1 var(--sans);color:var(--muted)}
+.px-preview{width:192px;height:192px;image-rendering:pixelated;border:1px solid var(--rule);border-radius:10px}
 .tl-trim{position:absolute;top:0;right:0;bottom:0;width:14px;cursor:ew-resize;background:color-mix(in srgb,var(--ink) 18%,transparent);border-left:2px solid var(--ink);opacity:.35;touch-action:none}
 .tl-trim:hover,.tl-trim.moved{opacity:.9}
 .tl-trim.moved{border-left-color:var(--ok)}
@@ -203,6 +220,7 @@ body.wide .wrap{max-width:1600px}
   <div class="tabs" role="tablist">
     <button role="tab" id="tab-script" aria-selected="true">Script &amp; recording</button>
     <button role="tab" id="tab-timing" aria-selected="false">Timing</button>
+    <button role="tab" id="tab-pixels" aria-selected="false">Pixel art</button>
     <button role="tab" id="tab-video" aria-selected="false">Video &amp; Ghost</button>
   </div>
   <main id="view"></main>
@@ -210,6 +228,7 @@ body.wide .wrap{max-width:1600px}
 
 <script src="/player.js"></script>
 <script src="/timing.js"></script>
+<script src="/pixels.js"></script>
 <script>
 'use strict';
 const S = {
@@ -304,7 +323,7 @@ function renderHeader() {
   pick.hidden = S.lessons.length < 2;
   pick.replaceChildren(...S.lessons.map((l) => el('option', {value: l.id, selected: l.id === S.id, text: l.course + ' ' + l.number + ': ' + l.title})));
   pick.disabled = !!(S.rec || S.busy);
-  for (const t of ['script', 'timing', 'video']) {
+  for (const t of ['script', 'timing', 'pixels', 'video']) {
     const b = document.getElementById('tab-' + t);
     b.setAttribute('aria-selected', S.tab === t);
     b.disabled = !!(S.rec || S.busy);
@@ -313,10 +332,10 @@ function renderHeader() {
 
 function render() {
   renderHeader();
-  document.body.classList.toggle('wide', S.tab === 'timing');
+  document.body.classList.toggle('wide', S.tab === 'timing' || S.tab === 'pixels');
   const kids = [];
   if (S.notice) kids.push(noticeEl(S.notice));
-  if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : videoView());
+  if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : S.tab === 'pixels' ? pixelsView() : videoView());
   view.replaceChildren(...kids);
   for (const t of view.querySelectorAll('textarea.read')) grow(t);
   watchListening();
@@ -331,16 +350,19 @@ function noticeEl(n) {
 document.getElementById('tab-script').addEventListener('click', () => switchTab('script'));
 document.getElementById('tab-video').addEventListener('click', () => switchTab('video'));
 document.getElementById('tab-timing').addEventListener('click', () => switchTab('timing'));
+document.getElementById('tab-pixels').addEventListener('click', () => switchTab('pixels'));
 document.getElementById('pick').addEventListener('change', async (e) => { await saveAll(); openLesson(e.target.value, 0); });
 
 async function switchTab(tab) {
   if (S.tab === tab) return;
   await saveAll();
   if (S.timing && S.timing.dirty() && !confirm('You have timing changes that aren’t saved. Leave them?')) return;
+  if (S.tab === 'pixels' && S.pixels && S.pixels.dirty() && !confirm('Your drawing isn’t saved. Leave it?')) return;
   if (S.timing) S.timing.pause();
   S.tab = tab; S.notice = null;
   stopPlayback();
   if (tab === 'timing') { releaseMic(); S.timingRoot = null; }
+  if (tab === 'pixels') { releaseMic(); S.pixelsRoot = null; }
   if (tab === 'video') { releaseMic(); await refresh(); }
   render();
 }
@@ -355,6 +377,17 @@ function timingView() {
     S.timing = window.TimingTab.open(S.timingRoot, S.id, api, post);
   }
   return S.timingRoot;
+}
+
+// ---------- pixel art ----------
+
+// The Pixel art tab lives in studio/pixels.js (drawings are shared by every lesson).
+function pixelsView() {
+  if (!S.pixelsRoot) {
+    S.pixelsRoot = el('div', {class: 'stack'});
+    S.pixels = window.PixelTab.open(S.pixelsRoot, api, post);
+  }
+  return S.pixelsRoot;
 }
 
 // ---------- script & recording ----------
@@ -923,7 +956,7 @@ async function poll() {
   if (panel && j) panel.replaceChildren(...jobPanel(j.kind));
 }
 
-window.addEventListener('beforeunload', (e) => { if (hasDrafts() || S.rec || S.busy || (S.timing && S.timing.dirty())) { e.preventDefault(); e.returnValue = ''; } });
+window.addEventListener('beforeunload', (e) => { if (hasDrafts() || S.rec || S.busy || (S.timing && S.timing.dirty()) || (S.pixels && S.pixels.dirty())) { e.preventDefault(); e.returnValue = ''; } });
 
 S.mode = store.get('mode') === 'take' ? 'take' : 'each';
 S.keepScript = store.get('keep') || {};
