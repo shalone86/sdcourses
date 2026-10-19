@@ -64,9 +64,15 @@ points:
         highlight: Antioch
         caption: From Jerusalem to Antioch
       - type: sprite
-        sprite: saint-peter
-        move: hop
-        size: big
+        sprite: peter-and-paul
+        size: full
+      - type: map
+        region: mediterranean
+        places:
+          - Antioch
+        areas:
+          - byzantine-empire-555
+        highlight: Antioch
     quiz:
       type: blank
       question: '"It was in ____ that the disciples were first called Christians."'
@@ -171,18 +177,10 @@ points:
       with him. So Byzantine and Roman Catholics can receive Communion in each
       other's churches!
     visuals:
-      - type: partners
-        left:
-          title: Byzantine
-          items:
-            - { icon: book-open, label: Prayers }
-            - { icon: image, label: Icons }
-            - { icon: flame, label: Customs }
-        right:
-          title: Rome
-          items:
-            - { icon: key-round, label: The Pope }
-        link: Together
+      - type: image
+        src: images/sdcason-the-spiritual-testament-of-pope-emeritus-003da31a08.jpg
+        aspect: 1.191
+        credit: The Free Catholic Gallery · The Free Catholic Gallery (sdcason.com) · Public domain (per the gallery)
     quiz:
       type: choice
       question: Who are all the Catholic Churches united with?

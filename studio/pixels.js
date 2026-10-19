@@ -158,6 +158,11 @@ window.PixelTab = (() => {
         g.lineDashOffset = 5;
         g.strokeRect(box.x * c + 1, box.y * c + 1, box.w * c - 2, box.h * c - 2);
         g.restore();
+        // The resize handle in the bottom-right corner.
+        const hs = Math.max(8, c * 0.55);
+        g.fillStyle = '#FFFFFF'; g.strokeStyle = '#2B2350'; g.lineWidth = 2;
+        g.fillRect((box.x + box.w) * c - hs, (box.y + box.h) * c - hs, hs, hs);
+        g.strokeRect((box.x + box.w) * c - hs + 1, (box.y + box.h) * c - hs + 1, hs - 2, hs - 2);
       }
       body.querySelectorAll('canvas[data-thumb]').forEach((t) => paint(t, a.frames[+t.dataset.thumb], a.width, a.height, t.width));
     }
@@ -237,47 +242,77 @@ window.PixelTab = (() => {
       P.float = null;
     }
     function letGo() { commit(); P.sel = null; }
-    /** The selection (or the whole picture), from the frames it works on: {w, h, frames: [px, …]}. */
-    function grab() {
-      if (P.float) return {w: P.float.w, h: P.float.h, frames: P.float.layers.map((l) => [...l.px])};
+    /** The selection (or the whole picture) from this frame, or from all of them: {x, y, w, h, frames: [px, …]}. */
+    function grab(all) {
+      const f = P.float;
+      if (f) {
+        const here = f.layers.find((l) => l.frame === P.frame) || f.layers[0];
+        return {x: f.x, y: f.y, w: f.w, h: f.h, frames: all ? f.layers.map((l) => [...l.px]) : [[...here.px]]};
+      }
       const s = P.sel || {x: 0, y: 0, w: W(), h: H()};
-      return {w: s.w, h: s.h, frames: targets().map((frame) => {
+      const which = all ? P.art.frames.map((_, i) => i) : [P.frame];
+      return {x: s.x, y: s.y, w: s.w, h: s.h, frames: which.map((frame) => {
         const out = [];
         for (let y = 0; y < s.h; y++) for (let x = 0; x < s.w; x++) out.push(P.art.frames[frame][(s.y + y) * W() + s.x + x]);
         return out;
       })};
     }
-    function copy() {
-      const c = grab();
+    function copy(all) {
+      const c = grab(all);
       store.set(CLIP_KEY, JSON.stringify(c));
       P.clip = c;
-      note(`Copied ${c.w} × ${c.h}${c.frames.length > 1 ? `, ${c.frames.length} frames` : ''}. Paste it here or in another drawing.`);
+      note(c.frames.length > 1 ? `Copied ${c.w} × ${c.h}, all ${c.frames.length} frames. Paste puts them in this frame and the ones after it.`
+        : `Copied ${c.w} × ${c.h} from frame ${P.frame + 1}. Click another frame (or drawing) and Paste.`);
     }
     function cut() {
-      copy();
+      copy(P.every);
       if (P.float) { P.float = null; P.sel = null; }
       else { remember(); clearArea(); }
       draw(); markDirty();
     }
-    function paste() {
+    /**
+     * Paste into the frame showing, in the spot it was copied from (or the selected spot).
+     * A copy of all frames fills this frame and the ones after it; `everywhere` repeats one frame in every frame.
+     */
+    function paste(everywhere) {
       let c = P.clip;
       try { c = JSON.parse(store.get(CLIP_KEY)) || c; } catch { /* use the one in memory */ }
       if (!c) { note('Nothing copied yet: select something (or nothing, for the whole picture) and press Copy.'); return; }
       const frames = c.frames || [c.px];
       commit();
       remember();
-      // An animation goes in frame by frame from frame 1; one frame goes in the frame showing
-      // (or in every frame, with the switch on). Then drag it into place.
-      const layers = frames.length > 1 ? frames.slice(0, MAX_FRAMES).map((px, frame) => ({frame, px: [...px]}))
-        : targets().map((frame) => ({frame, px: [...frames[0]]}));
-      const x = P.sel ? P.sel.x : 0, y = P.sel ? P.sel.y : 0;
+      const layers = everywhere ? P.art.frames.map((_, frame) => ({frame, px: [...frames[0]]}))
+        : frames.map((px, i) => ({frame: P.frame + i, px: [...px]})).filter((l) => l.frame < MAX_FRAMES);
+      const x = P.sel ? P.sel.x : Math.min(c.x ?? 0, Math.max(0, W() - c.w)), y = P.sel ? P.sel.y : Math.min(c.y ?? 0, Math.max(0, H() - c.h));
       P.float = {x, y, w: c.w, h: c.h, layers};
-      if (frames.length > 1) P.frame = 0;
       P.sel = null;
       P.tool = 'select';
       draw(); markDirty();
-      if (frames.length > 1) note(`Pasted ${frames.length} frames. Drag it into place; it moves in every frame.`);
+      note(layers.length > 1 ? `Pasted into ${everywhere ? 'every frame' : `frames ${layers[0].frame + 1}–${layers[layers.length - 1].frame + 1}`}. Drag it into place; it moves in all of them.`
+        : `Pasted into frame ${P.frame + 1}. Drag it into place, or drag the corner square to make it bigger or smaller.`);
     }
+
+    // ---------- bigger and smaller ----------
+    /** Resize what's lifted to w×h (blocky, from how it was when lifted, so shrinking and growing again loses nothing). */
+    function scaleTo(w, hgt) {
+      lift();
+      const f = P.float;
+      if (!f.src) f.src = {w: f.w, h: f.h, layers: f.layers.map((l) => [...l.px])};
+      w = Math.max(1, Math.min(64, Math.round(w))); hgt = Math.max(1, Math.min(64, Math.round(hgt)));
+      f.layers.forEach((l, i) => {
+        const src = f.src.layers[i], out = new Array(w * hgt);
+        for (let y = 0; y < hgt; y++) for (let x = 0; x < w; x++) out[y * w + x] = src[Math.floor((y * f.src.h) / hgt) * f.src.w + Math.floor((x * f.src.w) / w)];
+        l.px = out;
+      });
+      f.w = w; f.h = hgt;
+    }
+    function scaleBy(k) {
+      if (!P.sel && !P.float) { note('Select something first (Select & move), then make it bigger or smaller.'); return; }
+      lift();
+      scaleTo(P.float.w * k, P.float.h * k);
+      drawCanvas(); markDirty();
+    }
+
     function clearArea() {
       const s = P.sel;
       for (const frame of targets()) {
@@ -330,6 +365,19 @@ window.PixelTab = (() => {
 
       if (P.tool === 'select') {
         const box = P.float || P.sel;
+        // The corner square: drag to make it bigger or smaller (Shift: keep its shape).
+        if (box && c.x === box.x + box.w - 1 && c.y === box.y + box.h - 1 && (box.w > 1 || box.h > 1) && nearCorner(e, box)) {
+          lift();
+          const f = P.float, x0 = f.x, y0 = f.y, ratio = f.h / f.w;
+          listen((ev) => {
+            const d = at(ev, true);
+            if (!d) return;
+            let w = d.x - x0 + 1, hgt = d.y - y0 + 1;
+            if (ev.shiftKey) hgt = Math.round(w * ratio);
+            scaleTo(w, hgt); drawCanvas();
+          }, () => { draw(); markDirty(); });
+          return;
+        }
         if (box && inside(box, c)) {
           // Drag the selection.
           lift();
@@ -380,6 +428,13 @@ window.PixelTab = (() => {
       }, () => { draw(); markDirty(); });
     });
     const inside = (b, c) => c.x >= b.x && c.y >= b.y && c.x < b.x + b.w && c.y < b.y + b.h;
+    /** Pointer in the bottom-right half of the corner square (where the handle is drawn). */
+    function nearCorner(e, b) {
+      const r = canvas.getBoundingClientRect();
+      const c = (canvas.width / Math.max(W(), H())) * (r.width / canvas.width);
+      const fx = (e.clientX - r.left) / c - (b.x + b.w - 1), fy = (e.clientY - r.top) / c - (b.y + b.h - 1);
+      return fx >= 0.35 && fy >= 0.35;
+    }
 
     const onKey = (e) => {
       if (!root.isConnected) return document.removeEventListener('keydown', onKey);
@@ -387,9 +442,9 @@ window.PixelTab = (() => {
       const cmd = e.metaKey || e.ctrlKey;
       const k = e.key.toLowerCase();
       if (cmd && k === 'z') { e.preventDefault(); undo(); }
-      else if (cmd && k === 'c') { e.preventDefault(); copy(); }
+      else if (cmd && k === 'c') { e.preventDefault(); copy(false); }
       else if (cmd && k === 'x') { e.preventDefault(); cut(); }
-      else if (cmd && k === 'v') { e.preventDefault(); paste(); }
+      else if (cmd && k === 'v') { e.preventDefault(); paste(false); }
       else if (cmd && k === 'a') { e.preventDefault(); commit(); P.sel = {x: 0, y: 0, w: W(), h: H()}; P.tool = 'select'; draw(); }
       else if ((k === 'delete' || k === 'backspace') && (P.sel || P.float)) { e.preventDefault(); if (P.float) P.float = null; else { remember(); clearArea(); } P.sel = null; draw(); markDirty(); }
       else if (k === 'escape' || k === 'enter') { letGo(); draw(); markDirty(); }
@@ -470,17 +525,21 @@ window.PixelTab = (() => {
           used.length ? h('span', {class: 'small muted', text: 'In this drawing:'}) : null, ...used.map(swatch),
           h('label', {class: 'px-any', title: 'Any color'}, [custom, h('span', {text: 'Any color'})])]),
         h('div', {class: 'row', style: {gap: '8px', flexWrap: 'wrap'}}, [
-          btn('Copy', copy, {title: selecting ? 'Copy the selection' : 'Copy the whole frame'}),
+          btn('Copy', () => copy(false), {title: 'From this frame: the selection, or the whole picture'}),
+          btn('Copy all frames', () => copy(true), {title: 'The whole animation (or the selected spot in every frame)'}),
           btn('Cut', cut),
-          btn('Paste', paste),
+          btn('Paste', () => paste(false), {title: 'Into the frame showing (a copy of all frames: this frame and the ones after)'}),
+          btn('Paste in every frame', () => paste(true)),
+          btn('Bigger ×2', () => scaleBy(2), {title: 'Make the selection twice as big'}),
+          btn('Smaller ÷2', () => scaleBy(0.5), {title: 'Make the selection half the size'}),
           btn('Flip ↔', () => flip('h'), {title: selecting ? 'Flip the selection left to right' : 'Flip left to right'}),
           btn('Flip ↕', () => flip('v'), {title: selecting ? 'Flip the selection upside down' : 'Flip upside down'}),
-          h('label', {class: 'small', title: 'Copy, cut, paste, move, flip and clear work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
-            onchange: (e) => { P.every = e.target.checked; }}), ' Every frame']),
+          h('label', {class: 'small', title: 'Moving, cutting, flipping and clearing work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
+            onchange: (e) => { P.every = e.target.checked; }}), ' Move, cut, flip and clear in every frame']),
           selecting ? btn('Done moving', () => { letGo(); draw(); markDirty(); }) : null,
         ]),
         h('div', {class: 'small muted', 'data-note': '', text: (selecting ? 'Drag inside the box to move it. Copy, Cut and Flip use the selection.' : 'Copy, Cut and Flip use the whole picture when nothing is selected.')
-          + ' With Every frame on, they work on all the frames: copy a whole animation and paste it into another drawing.'}),
+          + ' Copy all frames, then Paste in another drawing, brings a whole animation across.'}),
         h('div', {class: 'row', style: {gap: '14px'}}, [
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.mirror || null, onchange: (e) => { P.mirror = e.target.checked; drawCanvas(); }}), ' Mirror (draw both sides)']),
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.onion || null, onchange: (e) => { P.onion = e.target.checked; drawCanvas(); }}), ' Show the frame before, faintly']),

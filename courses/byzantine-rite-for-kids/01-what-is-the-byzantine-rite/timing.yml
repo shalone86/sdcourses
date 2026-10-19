@@ -16,7 +16,9 @@ point-1:
       cues:
         end: 9.6
     "2":
-      start: 13.3
+      start: 12.8
+    "3":
+      start: 17.4
 point-2:
   scenes:
     "0":
@@ -35,5 +37,10 @@ point-5:
     "0":
       cues:
         end: 14.9
+    "1":
+      start: 19
 outro:
   camera: off
+point-4:
+  camera: card
+  side: right

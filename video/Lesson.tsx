@@ -2,7 +2,7 @@ import {AbsoluteFill, Audio, interpolate, Sequence, spring, staticFile, useCurre
 import {float, ramp} from './anim';
 import {Backdrop} from './Backdrop';
 import {CameraBack, CameraBubble, geometry, type Geometry} from './Camera';
-import {LayoutContext, type Layout} from './layout';
+import {LayoutContext, StageContext, type Layout} from './layout';
 import {BeatContext, beatAt, sway, useBeat} from './beat';
 import {SceneView} from './scenes';
 import {HEADING_FRAMES, theme, useStyle} from './theme';
@@ -69,12 +69,18 @@ const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: 
     return (
       <div style={{position: 'absolute', left: p.x, top: p.y, width: p.w, height: p.h, opacity, transform,
         ...(p.card ? {borderRadius: 36, overflow: 'hidden', background: theme.bg, boxShadow: '0 18px 50px rgba(0,0,0,0.28)'} : {})}}>
-        <div style={{position: 'absolute', left: (p.w - p.vw * k) / 2, top: (p.h - p.vh * k) / 2, width: p.vw, height: p.vh, transform: `scale(${k})`, transformOrigin: 'top left'}}>{children}</div>
+        <div style={{position: 'absolute', left: (p.w - p.vw * k) / 2, top: (p.h - p.vh * k) / 2, width: p.vw, height: p.vh, transform: `scale(${k})`, transformOrigin: 'top left'}}>
+          <StageContext.Provider value={{w: p.vw, h: p.vh}}>{children}</StageContext.Provider>
+        </div>
       </div>
     );
   }
   // Bubble: the scenes keep clear of her circle at the bottom right.
-  return <AbsoluteFill style={{opacity, top, bottom: 110, left: geo.inset.left, right: geo.inset.right, width: 'auto', height: 'auto', transform}}>{children}</AbsoluteFill>;
+  return (
+    <AbsoluteFill style={{opacity, top, bottom: 110, left: geo.inset.left, right: geo.inset.right, width: 'auto', height: 'auto', transform}}>
+      <StageContext.Provider value={{w: 1920 - geo.inset.left - geo.inset.right, h: 1080 - top - 110}}>{children}</StageContext.Provider>
+    </AbsoluteFill>
+  );
 };
 
 /** Point number + heading: large in its area, then it settles small at the top. */
