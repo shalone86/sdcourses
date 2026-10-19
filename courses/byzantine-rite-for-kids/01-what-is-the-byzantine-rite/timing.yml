@@ -1,0 +1,25 @@
+# Hand-tuned timing from the studio's Timing tab, in seconds into each
+# section's recording. Scenes not listed keep their automatic timing.
+intro:
+  camera: bubble
+point-1:
+  camera: bubble
+  scenes:
+    "0":
+      cues:
+        end: 9.6
+point-2:
+  scenes:
+    "0":
+      cues:
+        end: 9.4
+point-3:
+  scenes:
+    "0":
+      cues:
+        end: 16.1
+point-5:
+  scenes:
+    "0":
+      cues:
+        end: 14.9

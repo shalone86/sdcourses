@@ -32,9 +32,11 @@ HANDOFF.md.**
 - Don't state contested history more confidently than the sources do.
 - Kids style: `style: kids` in course.yml (or a lesson.yml) gives bright
   colors, the rounded Fredoka font, bouncing shapes, and scenes and items
-  snapped to the music's beat (`scripts/beats.mjs`, cached as
-  `music/<track>.beats.json`). The Timing tab shows the beats as dots and
-  snaps drags to them.
+  background shapes moving to the music's beat (`scripts/beats.mjs`, cached
+  as `music/<track>.beats.json`). `motion: dance` (music videos) also makes
+  the pictures, headings and her video bounce, snaps them to the beat, and
+  shows the beats as dots in the Timing tab; the default `calm` is for
+  explainers.
 - Maps can highlight `areas:` (a country name, or an approximate empire from
   `video/data/empires.ts`; those show "Borders approximate"). Add empires there.
 
@@ -87,8 +89,11 @@ If it's already running, `npm start` just opens the page.
   webcam with the voice. Clips go to `<lesson>/camera/` (gitignored: her
   face stays off the public repo, so it exists only on this Mac); a
   voice-only re-record drops that slide's clip. `prepare.mjs` cuts each clip
-  by what the silence trim took off the voice. Per slide, the Timing tab sets
-  `camera: bubble | full | off` in timing.yml (default bubble).
+  so it lines up with the trimmed voice. Per slide, the Timing tab sets
+  `camera:` in timing.yml: bubble (default), card, side, lower, only, off
+  (geometry in `video/Camera.tsx`).
+- **Trimming:** in the Timing tab, a picture's right edge ends it sooner
+  (`scenes.<i>.end`) and the End marker shortens the slide (`<section>.end`).
 - **Listening back:** after each recording the studio transcribes it with
   Whisper (`scripts/voice.mjs`; whisper-cli + the ggml-small model, cached as
   `audio/<section>.words.json`) and shows what she said vs. the script, with

@@ -1,0 +1,365 @@
+{
+ "stamp": "2:3006798:1792436906388",
+ "words": [
+  {
+   "w": "And",
+   "start": 0.09,
+   "end": 0.3
+  },
+  {
+   "w": "we",
+   "start": 0.3,
+   "end": 0.43
+  },
+  {
+   "w": "all",
+   "start": 0.43,
+   "end": 0.69
+  },
+  {
+   "w": "connect",
+   "start": 0.69,
+   "end": 1.32
+  },
+  {
+   "w": "together",
+   "start": 1.32,
+   "end": 1.98
+  },
+  {
+   "w": "by",
+   "start": 1.98,
+   "end": 2.15
+  },
+  {
+   "w": "the",
+   "start": 2.15,
+   "end": 2.41
+  },
+  {
+   "w": "Pope.",
+   "start": 2.41,
+   "end": 3.04
+  },
+  {
+   "w": "What",
+   "start": 3.04,
+   "end": 3.34
+  },
+  {
+   "w": "makes",
+   "start": 3.34,
+   "end": 3.63
+  },
+  {
+   "w": "all",
+   "start": 3.63,
+   "end": 3.83
+  },
+  {
+   "w": "these",
+   "start": 3.83,
+   "end": 4.16
+  },
+  {
+   "w": "churches",
+   "start": 4.16,
+   "end": 4.69
+  },
+  {
+   "w": "Catholic?",
+   "start": 4.69,
+   "end": 5.44
+  },
+  {
+   "w": "The",
+   "start": 5.44,
+   "end": 5.74
+  },
+  {
+   "w": "same",
+   "start": 5.74,
+   "end": 6.14
+  },
+  {
+   "w": "catechism",
+   "start": 6.14,
+   "end": 7.04
+  },
+  {
+   "w": "tells",
+   "start": 7.04,
+   "end": 7.54
+  },
+  {
+   "w": "us",
+   "start": 7.54,
+   "end": 7.75
+  },
+  {
+   "w": "the",
+   "start": 7.75,
+   "end": 8.03
+  },
+  {
+   "w": "first",
+   "start": 8.03,
+   "end": 8.58
+  },
+  {
+   "w": "among",
+   "start": 8.58,
+   "end": 8.8
+  },
+  {
+   "w": "self-governing",
+   "start": 8.8,
+   "end": 9.6
+  },
+  {
+   "w": "churches",
+   "start": 9.6,
+   "end": 10.31
+  },
+  {
+   "w": "is",
+   "start": 10.31,
+   "end": 10.49
+  },
+  {
+   "w": "the",
+   "start": 10.49,
+   "end": 10.97
+  },
+  {
+   "w": "Church",
+   "start": 10.97,
+   "end": 11.04
+  },
+  {
+   "w": "of",
+   "start": 11.04,
+   "end": 11.17
+  },
+  {
+   "w": "Rome,",
+   "start": 11.17,
+   "end": 11.76
+  },
+  {
+   "w": "because",
+   "start": 11.76,
+   "end": 12.36
+  },
+  {
+   "w": "its",
+   "start": 12.36,
+   "end": 12.67
+  },
+  {
+   "w": "presider",
+   "start": 12.67,
+   "end": 13.3
+  },
+  {
+   "w": "is",
+   "start": 13.3,
+   "end": 13.47
+  },
+  {
+   "w": "the",
+   "start": 13.47,
+   "end": 13.73
+  },
+  {
+   "w": "Pope",
+   "start": 13.73,
+   "end": 14.06
+  },
+  {
+   "w": "of",
+   "start": 14.06,
+   "end": 14.23
+  },
+  {
+   "w": "Rome,",
+   "start": 14.23,
+   "end": 14.9
+  },
+  {
+   "w": "the",
+   "start": 14.9,
+   "end": 15.1
+  },
+  {
+   "w": "successor",
+   "start": 15.1,
+   "end": 15.81
+  },
+  {
+   "w": "of",
+   "start": 15.81,
+   "end": 15.94
+  },
+  {
+   "w": "the",
+   "start": 15.94,
+   "end": 16.26
+  },
+  {
+   "w": "Apostle",
+   "start": 16.26,
+   "end": 16.64
+  },
+  {
+   "w": "Peter.",
+   "start": 16.64,
+   "end": 17.44
+  },
+  {
+   "w": "The",
+   "start": 17.44,
+   "end": 17.65
+  },
+  {
+   "w": "Pope",
+   "start": 17.65,
+   "end": 17.93
+  },
+  {
+   "w": "takes",
+   "start": 17.93,
+   "end": 18.35
+  },
+  {
+   "w": "Saint",
+   "start": 18.35,
+   "end": 18.63
+  },
+  {
+   "w": "Peter's",
+   "start": 18.63,
+   "end": 19.12
+  },
+  {
+   "w": "place",
+   "start": 19.12,
+   "end": 19.52
+  },
+  {
+   "w": "and",
+   "start": 19.52,
+   "end": 19.79
+  },
+  {
+   "w": "all",
+   "start": 19.79,
+   "end": 20.06
+  },
+  {
+   "w": "these",
+   "start": 20.06,
+   "end": 20.58
+  },
+  {
+   "w": "churches",
+   "start": 20.58,
+   "end": 21.24
+  },
+  {
+   "w": "are",
+   "start": 21.24,
+   "end": 21.5
+  },
+  {
+   "w": "united",
+   "start": 21.5,
+   "end": 22.08
+  },
+  {
+   "w": "with",
+   "start": 22.08,
+   "end": 22.32
+  },
+  {
+   "w": "him.",
+   "start": 22.32,
+   "end": 22.8
+  },
+  {
+   "w": "So",
+   "start": 22.8,
+   "end": 22.97
+  },
+  {
+   "w": "Byzantine",
+   "start": 22.97,
+   "end": 23.75
+  },
+  {
+   "w": "and",
+   "start": 23.75,
+   "end": 24.14
+  },
+  {
+   "w": "Roman",
+   "start": 24.14,
+   "end": 24.46
+  },
+  {
+   "w": "Catholics",
+   "start": 24.46,
+   "end": 25.27
+  },
+  {
+   "w": "can",
+   "start": 25.27,
+   "end": 25.91
+  },
+  {
+   "w": "receive",
+   "start": 25.91,
+   "end": 26.14
+  },
+  {
+   "w": "communion",
+   "start": 26.14,
+   "end": 26.9
+  },
+  {
+   "w": "in",
+   "start": 26.9,
+   "end": 27.08
+  },
+  {
+   "w": "each",
+   "start": 27.08,
+   "end": 27.3
+  },
+  {
+   "w": "other's",
+   "start": 27.3,
+   "end": 27.74
+  },
+  {
+   "w": "churches.",
+   "start": 27.74,
+   "end": 28.48
+  },
+  {
+   "w": "Isn't",
+   "start": 28.57,
+   "end": 28.98
+  },
+  {
+   "w": "that",
+   "start": 28.98,
+   "end": 29.39
+  },
+  {
+   "w": "awesome?",
+   "start": 29.39,
+   "end": 30.4
+  }
+ ]
+}

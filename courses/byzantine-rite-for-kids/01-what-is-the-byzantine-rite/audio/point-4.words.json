@@ -1,0 +1,360 @@
+{
+ "stamp": "2:3081678:1792436868850",
+ "words": [
+  {
+   "w": "However,",
+   "start": 0.1,
+   "end": 0.66
+  },
+  {
+   "w": "we",
+   "start": 0.66,
+   "end": 0.79
+  },
+  {
+   "w": "are",
+   "start": 0.79,
+   "end": 1.01
+  },
+  {
+   "w": "all",
+   "start": 1.01,
+   "end": 1.23
+  },
+  {
+   "w": "a",
+   "start": 1.23,
+   "end": 1.35
+  },
+  {
+   "w": "big",
+   "start": 1.35,
+   "end": 1.57
+  },
+  {
+   "w": "Church",
+   "start": 1.57,
+   "end": 1.96
+  },
+  {
+   "w": "family.",
+   "start": 1.96,
+   "end": 2.66
+  },
+  {
+   "w": "The",
+   "start": 2.66,
+   "end": 2.87
+  },
+  {
+   "w": "Byzantine",
+   "start": 2.87,
+   "end": 3.51
+  },
+  {
+   "w": "Catechism",
+   "start": 3.51,
+   "end": 4.14
+  },
+  {
+   "w": "tells",
+   "start": 4.14,
+   "end": 4.5
+  },
+  {
+   "w": "us",
+   "start": 4.5,
+   "end": 4.64
+  },
+  {
+   "w": "how",
+   "start": 4.64,
+   "end": 4.91
+  },
+  {
+   "w": "the",
+   "start": 4.91,
+   "end": 5.25
+  },
+  {
+   "w": "Catholic",
+   "start": 5.25,
+   "end": 5.64
+  },
+  {
+   "w": "Church",
+   "start": 5.64,
+   "end": 6.07
+  },
+  {
+   "w": "is",
+   "start": 6.07,
+   "end": 6.21
+  },
+  {
+   "w": "put",
+   "start": 6.21,
+   "end": 6.42
+  },
+  {
+   "w": "together.",
+   "start": 6.42,
+   "end": 7.32
+  },
+  {
+   "w": "It",
+   "start": 7.32,
+   "end": 7.5
+  },
+  {
+   "w": "is",
+   "start": 7.5,
+   "end": 7.69
+  },
+  {
+   "w": "in",
+   "start": 7.69,
+   "end": 7.98
+  },
+  {
+   "w": "these,",
+   "start": 7.98,
+   "end": 8.5
+  },
+  {
+   "w": "and",
+   "start": 8.5,
+   "end": 8.77
+  },
+  {
+   "w": "formed",
+   "start": 8.77,
+   "end": 9.32
+  },
+  {
+   "w": "out",
+   "start": 9.32,
+   "end": 9.59
+  },
+  {
+   "w": "of",
+   "start": 9.59,
+   "end": 9.91
+  },
+  {
+   "w": "them,",
+   "start": 9.91,
+   "end": 10.32
+  },
+  {
+   "w": "that",
+   "start": 10.32,
+   "end": 10.73
+  },
+  {
+   "w": "the",
+   "start": 10.73,
+   "end": 11.01
+  },
+  {
+   "w": "one",
+   "start": 11.01,
+   "end": 11.23
+  },
+  {
+   "w": "and",
+   "start": 11.23,
+   "end": 11.67
+  },
+  {
+   "w": "unique",
+   "start": 11.67,
+   "end": 12.05
+  },
+  {
+   "w": "Catholic",
+   "start": 12.05,
+   "end": 12.79
+  },
+  {
+   "w": "Church",
+   "start": 12.79,
+   "end": 13.34
+  },
+  {
+   "w": "exists.",
+   "start": 13.34,
+   "end": 14.28
+  },
+  {
+   "w": "The",
+   "start": 14.28,
+   "end": 14.5
+  },
+  {
+   "w": "Catholic",
+   "start": 14.5,
+   "end": 15.1
+  },
+  {
+   "w": "Church",
+   "start": 15.1,
+   "end": 15.54
+  },
+  {
+   "w": "is",
+   "start": 15.54,
+   "end": 15.7
+  },
+  {
+   "w": "a",
+   "start": 15.7,
+   "end": 15.93
+  },
+  {
+   "w": "big",
+   "start": 15.93,
+   "end": 15.99
+  },
+  {
+   "w": "family",
+   "start": 15.99,
+   "end": 16.43
+  },
+  {
+   "w": "of",
+   "start": 16.43,
+   "end": 16.87
+  },
+  {
+   "w": "Churches,",
+   "start": 16.87,
+   "end": 17.31
+  },
+  {
+   "w": "each",
+   "start": 17.31,
+   "end": 17.69
+  },
+  {
+   "w": "with",
+   "start": 17.69,
+   "end": 17.97
+  },
+  {
+   "w": "its",
+   "start": 17.97,
+   "end": 18.16
+  },
+  {
+   "w": "own",
+   "start": 18.16,
+   "end": 18.43
+  },
+  {
+   "w": "bishops.",
+   "start": 18.43,
+   "end": 19.16
+  },
+  {
+   "w": "The",
+   "start": 19.16,
+   "end": 19.37
+  },
+  {
+   "w": "Latin",
+   "start": 19.37,
+   "end": 19.82
+  },
+  {
+   "w": "Church",
+   "start": 19.82,
+   "end": 20.16
+  },
+  {
+   "w": "is",
+   "start": 20.16,
+   "end": 20.3
+  },
+  {
+   "w": "the",
+   "start": 20.3,
+   "end": 20.51
+  },
+  {
+   "w": "biggest.",
+   "start": 20.51,
+   "end": 21.28
+  },
+  {
+   "w": "The",
+   "start": 21.28,
+   "end": 21.5
+  },
+  {
+   "w": "Ruthenian,",
+   "start": 21.5,
+   "end": 22.29
+  },
+  {
+   "w": "Ukrainian,",
+   "start": 22.29,
+   "end": 23.1
+  },
+  {
+   "w": "and",
+   "start": 23.1,
+   "end": 23.31
+  },
+  {
+   "w": "Melkitet",
+   "start": 23.31,
+   "end": 23.89
+  },
+  {
+   "w": "Churches",
+   "start": 23.89,
+   "end": 24.47
+  },
+  {
+   "w": "are",
+   "start": 24.47,
+   "end": 24.68
+  },
+  {
+   "w": "considered",
+   "start": 24.68,
+   "end": 25.63
+  },
+  {
+   "w": "Byzantine.",
+   "start": 25.63,
+   "end": 26.38
+  },
+  {
+   "w": "Together,",
+   "start": 26.48,
+   "end": 27.38
+  },
+  {
+   "w": "we're",
+   "start": 27.38,
+   "end": 27.88
+  },
+  {
+   "w": "all",
+   "start": 27.88,
+   "end": 28.17
+  },
+  {
+   "w": "one",
+   "start": 28.17,
+   "end": 28.48
+  },
+  {
+   "w": "church.",
+   "start": 28.48,
+   "end": 29.26
+  }
+ ]
+}
