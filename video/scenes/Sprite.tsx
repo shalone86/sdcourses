@@ -9,7 +9,7 @@ import type {SceneProps} from '.';
 // One of her pixel animations (studio Pixel art tab → sprites/<name>.json, put in `art` by prepare.mjs).
 //   move: stay (default) | hop (little jumps) | across (walks across the screen)
 //   size: small | medium (default) | big | full (fills the slide, for a wide scene)
-type Art = {width: number; height: number; fps: number; palette: string[]; frames: string[][]};
+export type Art = {width: number; height: number; fps: number; palette: string[]; frames: string[][]};
 type SpriteScene = {sprite: string; art: Art; move?: 'stay' | 'hop' | 'across'; size?: 'small' | 'medium' | 'big' | 'full'; caption?: string};
 
 const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -17,7 +17,7 @@ const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
 const SHARE = {small: 0.4, medium: 0.65, big: 0.85, full: 1};
 
 /** The part of the drawing that has something in it (in any frame), so empty margins don't make it small. */
-function bounds(art: Art) {
+export function bounds(art: Art) {
   let x0 = art.width, y0 = art.height, x1 = -1, y1 = -1;
   for (const rows of art.frames) rows.forEach((row, y) => {
     for (let x = 0; x < row.length; x++) if (row[x] !== '.') { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
@@ -26,7 +26,7 @@ function bounds(art: Art) {
 }
 
 /** One frame as SVG squares (crisp edges), each row's runs of one color merged. */
-const Frame: React.FC<{art: Art; rows: string[]}> = ({art, rows}) => (
+export const Frame: React.FC<{art: Art; rows: string[]}> = ({art, rows}) => (
   <>
     {rows.flatMap((row, y) => {
       const out: React.ReactNode[] = [];

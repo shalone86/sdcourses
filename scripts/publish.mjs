@@ -6,6 +6,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {buildKidsSitePost, buildPost} from './build-post.mjs';
 import {ghost, ghostReady} from './ghost.mjs';
+import {renderKidsThumb} from './kids-thumb.mjs';
 import {ROOT, lessonDir, loadLesson, loadSite} from './lib.mjs';
 
 const arg = process.argv[2];
@@ -41,9 +42,11 @@ for (const which of sites) {
   const videoUrl = await g.upload('media', path.join(dist, 'lesson.mp4'), 'video/mp4');
   const posterUrl = await g.upload('images', path.join(dist, 'poster.jpg'), 'image/jpeg');
   const {html, meta} = which === 'kids' ? buildKidsSitePost(arg, {videoUrl, posterUrl}) : buildPost(arg, {videoUrl, posterUrl});
+  // The kids site's thumbnails have their own look (turquoise, big letters, her pixel art).
+  const feature = which === 'kids' ? await g.upload('images', renderKidsThumb(arg), 'image/png') : posterUrl;
   const saved = await g.saveDraft('posts', {
     title: meta.title, slug: meta.slug, custom_excerpt: meta.custom_excerpt, html,
-    tags: meta.tags.map((name) => ({name})), feature_image: posterUrl,
+    tags: meta.tags.map((name) => ({name})), feature_image: feature,
   }, {updateLive});
   console.log(saved.status === 'published' ? `Live post updated${label}: ${saved.url}` : `Draft saved${label}: ${saved.editorUrl}`);
 }
