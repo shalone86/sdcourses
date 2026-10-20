@@ -20,7 +20,7 @@ export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, fit = 'fr
   // A drawing that fills its canvas (a scene, like a church) touches the edges and would look
   // cut off: it goes in a white-bordered card instead, like a framed picture.
   const edges = b && art ? [b.x === 0, b.y === 0, b.x + b.w === art.width, b.y + b.h === art.height].filter(Boolean).length : 0;
-  const framed = !!art && edges >= 2;
+  const framed = !!art && edges >= 3;
   const px = framed && art ? Math.floor(Math.min(500 / art.width, 520 / art.height)) : b ? Math.floor(Math.min(560 / b.w, 600 / b.h)) : 0;
   const big = title.length > 22 ? 96 : title.length > 14 ? 112 : 150;
   const text = (size: number): React.CSSProperties => ({fontFamily: 'Fredoka, sans-serif', fontWeight: 700, fontSize: size, lineHeight: 0.98, color: INK,

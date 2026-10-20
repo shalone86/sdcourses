@@ -10,7 +10,7 @@ style: kids
 tradition: byzantine
 series: Intro to Byzantine Rite
 # The drawing on its kids-site thumbnails (a lesson.yml `thumb:` can choose another).
-thumb: {sprite: hagia-sophia, fit: bleed}
+thumb: {sprite: hagia-sophia-full}
 music: music/blessed-art-thou-ambient-instrumental.mp3
 cover: {icon: church, eyebrow: Catholic Course for Kids}
 planned:
