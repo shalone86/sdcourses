@@ -21,8 +21,11 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
   const starts = seg.scenes.map((s, i) => s.from ?? start + i * per);
   // Pictures joined to the one before (`with: side | over`) share its space as one group:
   // side by side in columns, or layered on top. Each keeps its own start and end.
+  // Shown in the order they start (she can drag one past another in the Timing tab).
+  const order = seg.scenes.map((_, i) => i).sort((a, b) => starts[a] - starts[b] || a - b);
   const groups: {members: number[]; mode: 'side' | 'over' | null}[] = [];
-  seg.scenes.forEach((sc, i) => {
+  order.forEach((i) => {
+    const sc = seg.scenes[i];
     const g = groups[groups.length - 1];
     if (g && (sc.with === 'side' || sc.with === 'over')) { g.members.push(i); g.mode ??= sc.with; }
     else groups.push({members: [i], mode: null});
@@ -50,7 +53,6 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
           <Audio src={staticFile(seg.audio)} />
         </Sequence>
       )}
-      {isPoint && geo.heading && <PointHeading seg={seg} total={lesson.headings.length} settleAt={start} area={geo.heading} />}
       {layout !== 'only' && groups.map((_, gi) => {
         const g = groupOf(gi);
         return (
@@ -62,6 +64,8 @@ const SegmentView: React.FC<{seg: Segment; lesson: LessonProps}> = ({seg, lesson
           </Sequence>
         );
       })}
+      {/* The heading goes over the pictures, so a picture that fills the screen sits behind it. */}
+      {isPoint && geo.heading && <PointHeading seg={seg} total={lesson.headings.length} settleAt={start} area={geo.heading} />}
       {layout === 'bubble' && <CameraBubble seg={seg} left={geo.bubble?.left} />}
     </AbsoluteFill>
     </LayoutContext.Provider>
@@ -97,7 +101,7 @@ const SceneShell: React.FC<{children: React.ReactNode; last: boolean; duration: 
   // Bubble: the scenes keep clear of her circle at the bottom right.
   return (
     <AbsoluteFill style={{opacity, top, bottom: 110, left: geo.inset.left, right: geo.inset.right, width: 'auto', height: 'auto', transform}}>
-      <StageContext.Provider value={{w: 1920 - geo.inset.left - geo.inset.right, h: 1080 - top - 110}}>{children}</StageContext.Provider>
+      <StageContext.Provider value={{w: 1920 - geo.inset.left - geo.inset.right, h: 1080 - top - 110, bleed: {left: geo.inset.left, top, right: geo.inset.right, bottom: 110}}}>{children}</StageContext.Provider>
     </AbsoluteFill>
   );
 };

@@ -579,7 +579,8 @@ async function handle(req, res) {
     if (p === '/api/scene') {
       // Add a picture at a time (seconds into the recording), or remove one.
       const dir = lessonPath(id);
-      const {op, section, index, scene, start, value} = await readJson(req);
+      const lastBody = await readJson(req);
+      const {op, section, index, scene, start, value} = lastBody;
       if (!/^(intro|outro|point-\d+)$/.test(section ?? '')) throw httpError(400, 'Bad section');
       const {props} = prepare(id);
       const seg = props.segments.find((s) => s.name === section);
@@ -595,6 +596,17 @@ async function handle(req, res) {
         if (!Number.isInteger(index) || index < 1 || index < sceneList(section, dir).first) throw httpError(400, 'Only a picture after another one can share its space');
         if (![null, 'side', 'over'].includes(value)) throw httpError(400, 'Bad choice');
         editScenes(dir, section, 'set', index, null, 'with', value);
+        setStatus(dir, 'draft');
+        return json(res, 200, timingData(id));
+      } else if (op === 'set') {
+        // A picture's framing, crop focus or caption (null removes it).
+        const {key} = lastBody;
+        const ok = {fit: ['cover', 'screen'], focus: ['top', 'bottom']};
+        if (!Number.isInteger(index) || index < sceneList(section, dir).first) throw httpError(400, 'No such picture');
+        if (!['fit', 'focus', 'caption'].includes(key)) throw httpError(400, 'That can\'t be changed here');
+        if (seg.scenes[index]?.type !== 'image') throw httpError(400, 'Only a picture has these options');
+        if (value != null && (key === 'caption' ? typeof value !== 'string' || value.length > 200 : !ok[key].includes(value))) throw httpError(400, 'Bad choice');
+        editScenes(dir, section, 'set', index, null, key, value == null ? null : key === 'caption' ? JSON.stringify(value) : value);
         setStatus(dir, 'draft');
         return json(res, 200, timingData(id));
       } else if (op !== 'remove' || !Number.isInteger(index) || index < sceneList(section, dir).first) throw httpError(400, 'That picture can\'t be removed here');

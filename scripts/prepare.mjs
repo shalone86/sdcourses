@@ -351,9 +351,9 @@ export function applyTiming(props, timing) {
       for (const [k, v] of Object.entries(o.cues ?? {})) cues[k] = Math.max(4, toFrame(v) - sc.from);
       if (Object.keys(cues).length) sc.cues = cues;
     });
-    // Scenes stay in order and at least a third of a second long.
-    for (let i = 1; i < seg.scenes.length; i++) seg.scenes[i].from = Math.max(seg.scenes[i].from ?? 0, (seg.scenes[i - 1].from ?? 0) + 10);
-    if (seg.kind === 'point') seg.headingFrames = seg.scenes[0]?.from ?? seg.headingFrames;
+    // Pictures may be dragged past each other: the video shows them in the order they start.
+    // The heading settles when the first one (by time) begins.
+    if (seg.kind === 'point' && seg.scenes.length) seg.headingFrames = Math.min(...seg.scenes.map((sc) => sc.from ?? 0));
   }
   return props;
 }

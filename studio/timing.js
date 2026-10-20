@@ -5,7 +5,7 @@
 'use strict';
 (function () {
   const FPS = 30;
-  const LABELS = {sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
+  const LABELS = {image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
     recap: 'Lesson summary', union: 'Union', partners: 'Partners', title: 'Title card', host: 'Your photo', trinity: 'Trinity', term: 'Word', keys: 'Keys', college: 'College', iconostasis: 'Iconostasis'};
 
   function h(tag, attrs, kids) {
@@ -60,6 +60,9 @@
       make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning})},
   };
   const REMOVABLE = (s, i) => !['quote', 'keys', 'title', 'host', 'trinity', 'recap'].includes(s.scenes[i].type);
+  // A picture's framing and, when cropped, which part stays.
+  const FITS = [['contain', 'Show the whole picture'], ['cover', 'Fill the picture area (crops edges)'], ['screen', 'Fill the screen (a tall picture shows whole, over a soft blur)']];
+  const FOCI = [['top', 'the top'], ['center', 'the middle'], ['bottom', 'the bottom']];
   // Sharing the space with the picture before: [value, button face, what it means].
   const WITH = [[null, '▢', 'On its own'], ['side', '◫', 'Beside the picture before'], ['over', '⧉', 'Over the picture before']];
 
@@ -105,8 +108,8 @@
         if (typeof o.end === 'number') sc.until = Math.round(seg.audioOffsetInFrames + o.end * FPS); else delete sc.until;
         if (Object.keys(cues).length) sc.cues = cues; else delete sc.cues;
       });
-      for (let i = 1; i < seg.scenes.length; i++) seg.scenes[i].from = Math.max(seg.scenes[i].from || 0, (seg.scenes[i - 1].from || 0) + 10);
-      if (seg.kind === 'point') seg.headingFrames = seg.scenes[0].from;
+      // Pictures can pass each other; the heading settles when the first one (by time) begins.
+      if (seg.kind === 'point' && seg.scenes.length) seg.headingFrames = Math.min(...seg.scenes.map((sc) => sc.from || 0));
     });
     return props;
   }
@@ -188,11 +191,13 @@
       const scenesRow = h('div', {class: 'tl-scenes'});
       const cuesRow = h('div', {class: 'tl-cues'});
       // A point opens on its big heading; it settles when the first scene (the quotation) starts.
-      if (s.kind === 'point' && s.scenes[0].from > 0) {
-        scenesRow.append(h('div', {class: 'tl-scene fixed', style: {left: x(0) + 'px', width: s.scenes[0].from * px + 'px'}}, [h('span', {text: 'Heading'})]));
+      if (s.kind === 'point' && s.headingFrames > 0) {
+        scenesRow.append(h('div', {class: 'tl-scene fixed', style: {left: x(0) + 'px', width: s.headingFrames * px + 'px'}}, [h('span', {text: 'Heading'})]));
       }
       // A picture shown with the one before stays up until the next picture that's on its own.
-      const groupEnd = (i) => { let j = i + 1; while (j < s.scenes.length && s.scenes[j].with) j++; return j < s.scenes.length ? s.scenes[j].from : s.durationInFrames; };
+      // (in the order they start, which can differ from the order they were added)
+      const order = s.scenes.map((_, i) => i).sort((a, b) => (s.scenes[a].from || 0) - (s.scenes[b].from || 0) || a - b);
+      const groupEnd = (i) => { let j = order.indexOf(i) + 1; while (j < order.length && s.scenes[order[j]].with) j++; return j < order.length ? s.scenes[order[j]].from : s.durationInFrames; };
       s.scenes.forEach((sc, i) => {
         const end = Math.min(groupEnd(i), sc.until ?? Infinity);
         const touched = ((T.timing[s.name] || {}).scenes || {})[i];
@@ -215,7 +220,11 @@
           block.append(h('button', {class: 'tl-x', title: 'Remove this picture', 'aria-label': 'Remove ' + label,
             onpointerdown: (e) => e.stopPropagation(), onclick: (e) => { e.stopPropagation(); removeScene(i, label); }}, '×'));
         }
-        drag(block, sc.from, (f) => { setStart(i, f); }, () => T.player.seek(segStart(T.seg) + Math.max(0, sc.from - 10)));
+        // A click (no drag) jumps there; on a picture it also opens its options.
+        drag(block, sc.from, (f) => { setStart(i, f); }, () => {
+          T.player.seek(segStart(T.seg) + Math.max(0, sc.from - 10));
+          if (sc.type === 'image') { T.editPic = {seg: T.seg, i}; draw(); }
+        });
         // Right edge: drag left to end this picture sooner (double-click to undo).
         const trim = h('div', {class: 'tl-trim' + (touched && touched.end != null ? ' moved' : ''), title: 'Drag to end this picture sooner · double-click to undo',
           onpointerdown: (e) => e.stopPropagation(),
@@ -313,17 +322,44 @@
         })) : null,
       ]) : null;
       const adder = T.adding ? addForm() : null;
+      const picOpts = T.editPic && T.editPic.seg === T.seg && s.scenes[T.editPic.i]?.type === 'image' ? pictureOptions(T.editPic.i) : null;
       const tl = timeline();
       const box = root.querySelector('.tl-scroll') || h('div', {class: 'tl-scroll'});
       const keep = box.scrollLeft;
       box.replaceChildren(tl);
-      const kids = [strip, controls, camRow, adder, box,
+      const kids = [strip, controls, camRow, adder, picOpts, box,
         h('div', {class: 'small muted', text: 'Drag a scene block to change when it starts, or a diamond to change when an item appears. Click a word or the ruler to jump there. Then Save timing, and Make the video on the Video & Ghost tab.'})];
       // Only the part below the video is redrawn, so the page doesn't jump.
       const y = window.scrollY;
       T.body.replaceChildren(...kids.filter(Boolean));
       box.scrollLeft = keep;
       window.scrollTo(0, y);
+    }
+
+    /** Options for a picture already in the lesson: framing, which part stays when cropped, caption. */
+    function pictureOptions(i) {
+      const s = seg(), sc = s.scenes[i];
+      const fit = h('select', {}, FITS.map(([v, l]) => h('option', {value: v, text: l, selected: (sc.fit || 'contain') === v})));
+      const focus = h('select', {}, FOCI.map(([v, l]) => h('option', {value: v, text: l, selected: (sc.focus || 'center') === v})));
+      const caption = h('input', {type: 'text', value: sc.caption || '', placeholder: 'Caption (optional)', style: {minWidth: '16em'}});
+      const save = async () => {
+        await persist();
+        const want = {fit: fit.value === 'contain' ? null : fit.value, focus: focus.value === 'center' ? null : focus.value, caption: caption.value.trim() || null};
+        try {
+          let d;
+          for (const [key, value] of Object.entries(want)) if ((sc[key] ?? null) !== value) d = await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'set', section: s.name, index: i, key, value});
+          T.editPic = null;
+          if (d) reload(d); else draw();
+        } catch (e) { alert('Couldn’t change it: ' + e.message); }
+      };
+      return h('div', {class: 'pic-opts'}, [
+        h('b', {text: 'This picture'}),
+        h('label', {class: 'tl-field'}, [h('span', {text: 'Framing'}), fit]),
+        h('label', {class: 'tl-field'}, [h('span', {text: 'If it’s cropped, keep'}), focus]),
+        h('label', {class: 'tl-field'}, [h('span', {text: 'Caption'}), caption]),
+        h('button', {class: 'btn primary', text: 'Apply', onclick: save}),
+        h('button', {class: 'btn', text: 'Close', onclick: () => { T.editPic = null; draw(); }}),
+      ]);
     }
 
     function addForm() {
@@ -364,7 +400,7 @@
             if (!T.picked) { alert('Pick a picture first.'); return; }
             const credit = await post('/api/images/import?id=' + encodeURIComponent(T.id), {img: T.picked});
             const line = [credit.creator && credit.creator !== 'Unknown' ? credit.creator : '', credit.source, credit.license].filter(Boolean).join(' · ');
-            scene = {type: 'image', src: credit.file, aspect: credit.aspect, credit: line, ...(T.caption ? {caption: T.caption} : {}), ...(T.fit === 'cover' ? {fit: 'cover'} : {})};
+            scene = {type: 'image', src: credit.file, aspect: credit.aspect, credit: line, ...(T.caption ? {caption: T.caption} : {}), ...(T.fit && T.fit !== 'contain' ? {fit: T.fit} : {}), ...(T.focus && T.focus !== 'center' ? {focus: T.focus} : {})};
             T.picked = null;
           } else scene = ADD[T.addType].make(v);
           const d = await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'add', section: s.name, scene, start: Number(at.value)});
@@ -388,7 +424,15 @@
       api('/api/images/sources').then((list) => {
         src.replaceChildren(h('option', {value: 'all', text: 'All sources'}), ...list.filter((x) => x.ready).map((x) => h('option', {value: x.id, text: x.label, selected: x.id === T.imageSrc})));
       });
+      const preview = h('div', {class: 'img-preview', hidden: true});
       const show = () => {
+        // The picked one, big enough to judge (the grid shows each whole, at its own shape).
+        const p = T.picked;
+        preview.hidden = !p;
+        if (p) preview.replaceChildren(h('img', {src: p.thumb, alt: p.title}),
+          h('div', {class: 'stack', style: {gap: '4px'}}, [h('b', {text: p.title}), h('div', {class: 'small muted', text: `${p.creator} · ${p.source} · ${p.license}`}),
+            p.width && p.height ? h('div', {class: 'small muted', text: `${p.width} × ${p.height} pixels · ${p.width >= p.height ? 'wide' : 'tall'}`}) : null,
+            p.page ? h('a', {href: p.page, target: '_blank', rel: 'noopener', class: 'small', text: 'Open its page'}) : null]));
         grid.replaceChildren(...(T.imageResults || []).map((r) => h('button', {class: 'img-pick' + (T.picked && T.picked.source === r.source && T.picked.id === r.id ? ' on' : ''), type: 'button',
           title: `${r.title} — ${r.creator} (${r.license})`, onclick: () => { T.picked = r; show(); }}, [
           h('img', {src: r.thumb, alt: r.title, loading: 'lazy'}), h('span', {text: r.title}), h('small', {text: `${r.creator} · ${r.license}`})])));
@@ -406,12 +450,14 @@
       };
       q.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
       const caption = h('input', {type: 'text', placeholder: 'Caption (optional)', value: T.caption || '', oninput: (e) => { T.caption = e.target.value; }});
-      const fit = h('select', {onchange: (e) => { T.fit = e.target.value; }}, [h('option', {value: 'contain', text: 'Show the whole picture'}), h('option', {value: 'cover', text: 'Fill the frame (crops edges)', selected: T.fit === 'cover'})]);
+      const fit = h('select', {onchange: (e) => { T.fit = e.target.value; }}, FITS.map(([v, l]) => h('option', {value: v, text: l, selected: (T.fit || 'contain') === v})));
+      const focus = h('select', {onchange: (e) => { T.focus = e.target.value; }}, FOCI.map(([v, l]) => h('option', {value: v, text: l, selected: (T.focus || 'center') === v})));
       show();
       return h('div', {class: 'stack', style: {gap: '8px'}}, [
         h('div', {class: 'row', style: {gap: '8px', flexWrap: 'nowrap'}}, [q, src, h('button', {class: 'btn', type: 'button', text: 'Search', onclick: go})]),
-        status, grid,
-        h('div', {class: 'row', style: {gap: '8px'}}, [h('label', {class: 'tl-field', style: {flex: '1'}}, [h('span', {text: 'Caption'}), caption]), h('label', {class: 'tl-field'}, [h('span', {text: 'Framing'}), fit])]),
+        status, grid, preview,
+        h('div', {class: 'row', style: {gap: '8px'}}, [h('label', {class: 'tl-field', style: {flex: '1'}}, [h('span', {text: 'Caption'}), caption]),
+          h('label', {class: 'tl-field'}, [h('span', {text: 'Framing'}), fit]), h('label', {class: 'tl-field'}, [h('span', {text: 'If it’s cropped, keep'}), focus])]),
         h('div', {class: 'small muted', text: 'The picture is saved into the lesson with its credit; the credit shows small on the video and in the post’s Image credits.'}),
       ]);
     }
