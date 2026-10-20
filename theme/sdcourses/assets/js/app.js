@@ -10,6 +10,7 @@ import {initIndexOfContents, handleScroll, stopScroll} from './index-of-contents
 import {initLessons} from './lessons.js';
 import {initThemeToggle} from './theme-toggle.js';
 // The lesson quiz lives in the course repo (ghost/quiz.js) so posts, previews and theme share it.
+import '../../../../ghost/confetti.js';
 import '../../../../ghost/quiz.js';
 
 import '../css/app.css';

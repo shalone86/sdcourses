@@ -115,8 +115,12 @@
       var done = results.filter(function (r) { return r != null; }).length;
       if (done < data.questions.length) { score.textContent = ''; return; }
       var right = results.filter(Boolean).length;
-      score.textContent = 'You got ' + right + ' of ' + data.questions.length + '.';
-      var retry = el('button', 'cc-retry', 'Try again');
+      var perfect = right === data.questions.length;
+      // All right: congratulations and confetti, and the button only resets the quiz.
+      score.textContent = perfect ? 'Congratulations! You got all ' + right + ' right! 🎉 ' : 'You got ' + right + ' of ' + data.questions.length + '.';
+      score.classList.toggle('cc-perfect', perfect);
+      if (perfect && window.ccConfetti) window.ccConfetti();
+      var retry = el('button', 'cc-retry', perfect ? 'Reset quiz?' : 'Try again');
       retry.type = 'button';
       retry.addEventListener('click', function () {
         render(root);

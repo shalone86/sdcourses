@@ -13,6 +13,7 @@
 .cc-why { margin: .6em 0 0; padding: .7em 1em; border-left: 3px solid currentColor; font-size: .95em; opacity: .9; }
 .cc-why[hidden] { display: none; }
 .cc-score { font-weight: 600; margin: 0; }
+.cc-score.cc-perfect { font-size: 1.15em; color: var(--cc-right, #1E7B4F); }
 .cc-retry { all: unset; cursor: pointer; text-decoration: underline; margin-left: .75em; font-weight: 400; }
 .cc-video { margin: 0 0 2em; }
 .cc-video video { width: 100%; height: auto; border-radius: 8px; display: block; background: #F5F0E6; aspect-ratio: 16 / 9; }

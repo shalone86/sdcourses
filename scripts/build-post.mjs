@@ -88,10 +88,11 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
 }
 
 /**
- * The same lesson for kids.sdcason.com, in the way her kids posts are built there (that site
- * has no quiz code): the video, an accent "Quiz" header card, one toggle card per question
- * (the question as its title, the answer and why inside), and the words of the video in a
- * toggle. Ghost turns this markup into its own header and toggle cards.
+ * The same lesson for kids.sdcason.com, written the way that site's theme reads quizzes
+ * (its assets/js/quiz.js turns them into tap-to-answer cards with a score): a "Quiz: …"
+ * heading, each question a paragraph, choices a bulleted list with the right one in bold,
+ * "Answer: a / b" for a blank (____), "Why: …", and a divider to end it. Then the words of
+ * the video in a toggle card.
  * tags: the top-level tag (Catholic Kids Video Lessons, or Byzantine Catholic Lessons for a
  * Byzantine course) and the course's series tag (course.yml `series`, else its title).
  */
@@ -103,12 +104,14 @@ export function buildKidsSitePost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl 
   const outro = segments.find((s) => s.kind === 'outro') ?? {text: ''};
   const span = (t) => `<span style="white-space: pre-wrap;">${smart(t)}</span>`;
   const toggle = (heading, content) => `<div class="kg-card kg-toggle-card" data-kg-toggle-state="close"><div class="kg-toggle-heading"><h4 class="kg-toggle-heading-text">${span(heading)}</h4><button class="kg-toggle-card-icon" aria-label="Expand toggle to read content"></button></div><div class="kg-toggle-content">${content}</div></div>`;
-  const letters = 'abcdefghij';
-  const question = (q) => {
-    if (q.type === 'truefalse') return {heading: `True or False: ${q.question}`, answer: `${q.answer ? 'True' : 'False'}. ${q.why}`};
-    if (q.type === 'blank') return {heading: `Fill the Blank: ${q.question}`, answer: `${q.accept[0]}. ${q.why}`};
-    return {heading: `${q.question} ${q.options.map((o, i) => `${letters[i]}) ${o}`).join(' ')}`, answer: `${letters[q.answer]}) ${q.options[q.answer]}. ${q.why}`};
-  };
+  const list = (items, right) => `<ul>${items.map((t, i) => `<li>${i === right ? `<strong>${span(t)}</strong>` : span(t)}</li>`).join('')}</ul>`;
+  const question = (q) => [
+    `<p>${span(q.question.replace(/_{2,}/g, '____'))}</p>`,
+    q.type === 'truefalse' ? list(['True', 'False'], q.answer ? 0 : 1)
+      : q.type === 'blank' ? `<p>${span('Answer: ' + q.accept.join(' / '))}</p>`
+      : list(q.options, q.answer),
+    q.why && `<p>${span('Why: ' + q.why)}</p>`,
+  ].filter(Boolean).join('');
   const questions = points.flatMap((p) => p.quiz.map((q) => normalizeQuestion(q, p.heading)));
   const words = [
     intro.text && `<p>${span(intro.text)}</p>`,
@@ -118,8 +121,7 @@ export function buildKidsSitePost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl 
   ].filter(Boolean).join('');
   const html = [
     `<figure class="kg-card kg-video-card kg-width-regular"><div class="kg-video-container"><video src="${videoUrl}" poster="${posterUrl}" width="1920" height="1080" playsinline preload="metadata"></video></div></figure>`,
-    questions.length && `<div class="kg-card kg-header-card kg-v2 kg-width-wide kg-style-accent" data-background-color="accent"><div class="kg-header-card-content"><div class="kg-header-card-text kg-align-center"><h2 id="quiz" class="kg-header-card-heading" style="color: #FFFFFF;" data-text-color="#FFFFFF">${span('Quiz')}</h2></div></div></div>`,
-    ...questions.map((q) => { const x = question(q); return toggle(x.heading, `<p>${span(x.answer)}</p>`); }),
+    questions.length && [`<h2>${span('Quiz: ' + lesson.title)}</h2>`, ...questions.map(question), '<hr>'].join('\n'),
     toggle('Read the words of the video', words),
     imageCredits(dir, lesson),
     `<h3>Sources</h3>\n<ul>${lesson.sources.map((s) => `<li>${s.url ? `<a href="${esc(s.url)}">${esc(s.label)}</a>` : esc(s.label)}</li>`).join('')}</ul>`,
@@ -148,13 +150,13 @@ function imageCredits(dir, lesson) {
 /** Ready-to-paste Ghost code injection (only needed until the new theme ships). */
 function writeCodeInjection() {
   const css = fs.readFileSync(path.join(ROOT, 'ghost/quiz.css'), 'utf8');
-  const js = fs.readFileSync(path.join(ROOT, 'ghost/quiz.js'), 'utf8');
+  const js = fs.readFileSync(path.join(ROOT, 'ghost/confetti.js'), 'utf8') + '\n' + fs.readFileSync(path.join(ROOT, 'ghost/quiz.js'), 'utf8');
   fs.writeFileSync(path.join(ROOT, 'dist/code-injection.html'), `<!-- Site header -->\n<style>\n${css}</style>\n\n<!-- Site footer -->\n<script>\n${js}</script>\n`);
 }
 
 function preview(meta, body) {
   const css = fs.readFileSync(path.join(ROOT, 'ghost/quiz.css'), 'utf8');
-  const js = fs.readFileSync(path.join(ROOT, 'ghost/quiz.js'), 'utf8');
+  const js = fs.readFileSync(path.join(ROOT, 'ghost/confetti.js'), 'utf8') + '\n' + fs.readFileSync(path.join(ROOT, 'ghost/quiz.js'), 'utf8');
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(meta.title)}</title><style>
 body{margin:0;background:#fff;color:#1E2740;font:19px/1.65 Georgia,serif}
