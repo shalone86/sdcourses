@@ -38,6 +38,12 @@ for (const which of sites) {
     continue;
   }
   const g = ghost(which);
+  // Already live there and not asked to replace it: leave it, and don't upload the video again.
+  const cur = await g.find('posts', lesson.slug);
+  if (cur && cur.status !== 'draft' && !updateLive) {
+    console.log(`Already live${label}, left as it is: ${cur.url}`);
+    continue;
+  }
   console.log(`Uploading video${label}…`);
   const videoUrl = await g.upload('media', path.join(dist, 'lesson.mp4'), 'video/mp4');
   const posterUrl = await g.upload('images', path.join(dist, 'poster.jpg'), 'image/jpeg');
