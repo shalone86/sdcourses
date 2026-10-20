@@ -9,6 +9,8 @@ style: kids
 # course; otherwise Catholic Kids Video Lessons) and this series.
 tradition: byzantine
 series: Intro to Byzantine Rite
+# The drawing on its kids-site thumbnails (a lesson.yml `thumb:` can choose another).
+thumb: {sprite: hagia-sophia, fit: bleed}
 music: music/blessed-art-thou-ambient-instrumental.mp3
 cover: {icon: church, eyebrow: Catholic Course for Kids}
 planned:

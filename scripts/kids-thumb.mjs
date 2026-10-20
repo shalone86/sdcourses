@@ -1,5 +1,5 @@
 // Thumbnail for a kids lesson on kids.sdcason.com, in the look of her kids thumbnails there
-// (video/KidsThumb.tsx). The drawing: lesson.yml or course.yml `thumb: {sprite: <name>}`,
+// (video/KidsThumb.tsx). The drawing: lesson.yml or course.yml `thumb: {sprite: <name>, fit: frame | bleed}`,
 // else the lesson's first pixel animation. Run: node scripts/kids-thumb.mjs <course>/<lesson>
 import fs from 'node:fs';
 import path from 'node:path';
@@ -19,7 +19,7 @@ export function renderKidsThumb(arg) {
   const title = (m ? lesson.title.slice(m[0].length) : lesson.title).trim();
   const dist = outDir(id);
   const props = path.join(dist, 'kids-thumb-props.json');
-  fs.writeFileSync(props, JSON.stringify({lead, title, art}));
+  fs.writeFileSync(props, JSON.stringify({lead, title, art, fit: lesson.thumb?.fit ?? course.thumb?.fit ?? 'frame'}));
   const png = path.join(dist, 'kids-thumb.png');
   execFileSync(path.join(ROOT, 'node_modules/.bin/remotion'), ['still', 'video/index.ts', 'KidsThumb', png, `--props=${props}`, '--log=error'], {cwd: ROOT, stdio: 'inherit'});
   return png;
