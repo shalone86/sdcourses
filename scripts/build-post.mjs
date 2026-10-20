@@ -87,6 +87,51 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
   return {html, meta, dist};
 }
 
+/**
+ * The same lesson for kids.sdcason.com, in the way her kids posts are built there (that site
+ * has no quiz code): the video, an accent "Quiz" header card, one toggle card per question
+ * (the question as its title, the answer and why inside), and the words of the video in a
+ * toggle. Ghost turns this markup into its own header and toggle cards.
+ * tags: the top-level tag (Catholic Kids Video Lessons, or Byzantine Catholic Lessons for a
+ * Byzantine course) and the course's series tag (course.yml `series`, else its title).
+ */
+export function buildKidsSitePost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER_PLACEHOLDER} = {}) {
+  const dir = lessonDir(arg);
+  const {lesson, course, segments, points, pixelArt, id} = loadLesson(dir);
+  const site = loadSite();
+  const intro = segments[0];
+  const outro = segments.find((s) => s.kind === 'outro') ?? {text: ''};
+  const span = (t) => `<span style="white-space: pre-wrap;">${smart(t)}</span>`;
+  const toggle = (heading, content) => `<div class="kg-card kg-toggle-card" data-kg-toggle-state="close"><div class="kg-toggle-heading"><h4 class="kg-toggle-heading-text">${span(heading)}</h4><button class="kg-toggle-card-icon" aria-label="Expand toggle to read content"></button></div><div class="kg-toggle-content">${content}</div></div>`;
+  const letters = 'abcdefghij';
+  const question = (q) => {
+    if (q.type === 'truefalse') return {heading: `True or False: ${q.question}`, answer: `${q.answer ? 'True' : 'False'}. ${q.why}`};
+    if (q.type === 'blank') return {heading: `Fill the Blank: ${q.question}`, answer: `${q.accept[0]}. ${q.why}`};
+    return {heading: `${q.question} ${q.options.map((o, i) => `${letters[i]}) ${o}`).join(' ')}`, answer: `${letters[q.answer]}) ${q.options[q.answer]}. ${q.why}`};
+  };
+  const questions = points.flatMap((p) => p.quiz.map((q) => normalizeQuestion(q, p.heading)));
+  const words = [
+    intro.text && `<p>${span(intro.text)}</p>`,
+    ...points.map((p) => [p.heading && `<p><strong>${span(p.heading)}</strong></p>`, p.quote.lead && `<p>${span(p.quote.lead)}</p>`,
+      p.quote.text && `<p><em>${span(`“${p.quote.text}” (${p.quote.cite})`)}</em></p>`, p.explanation && `<p>${span(p.explanation)}</p>`].filter(Boolean).join('')),
+    outro.text && `<p>${span(outro.text)}</p>`,
+  ].filter(Boolean).join('');
+  const html = [
+    `<figure class="kg-card kg-video-card kg-width-regular"><div class="kg-video-container"><video src="${videoUrl}" poster="${posterUrl}" width="1920" height="1080" playsinline preload="metadata"></video></div></figure>`,
+    questions.length && `<div class="kg-card kg-header-card kg-v2 kg-width-wide kg-style-accent" data-background-color="accent"><div class="kg-header-card-content"><div class="kg-header-card-text kg-align-center"><h2 id="quiz" class="kg-header-card-heading" style="color: #FFFFFF;" data-text-color="#FFFFFF">${span('Quiz')}</h2></div></div></div>`,
+    ...questions.map((q) => { const x = question(q); return toggle(x.heading, `<p>${span(x.answer)}</p>`); }),
+    toggle('Read the words of the video', words),
+    imageCredits(dir, lesson),
+    `<h3>Sources</h3>\n<ul>${lesson.sources.map((s) => `<li>${s.url ? `<a href="${esc(s.url)}">${esc(s.label)}</a>` : esc(s.label)}</li>`).join('')}</ul>`,
+    pixelArt && `<p><em>Every pixel drawing in this video is drawn by hand by ${esc(site.author || 'the host')}.</em></p>`,
+    `<p><em>${esc(site.disclosure)}</em></p>`,
+  ].filter(Boolean).join('\n');
+  const tags = course.kids_tags ?? [course.tradition === 'byzantine' ? 'Byzantine Catholic Lessons' : 'Catholic Kids Video Lessons', course.series ?? course.title];
+  const meta = {title: lesson.title, slug: lesson.slug, custom_excerpt: lesson.excerpt.trim(), tags};
+  fs.writeFileSync(path.join(outDir(id), 'kids-site-post.html'), html);
+  return {html, meta};
+}
+
 /** "Image credits" for pictures used in the video (CC BY and similar licenses require it). */
 function imageCredits(dir, lesson) {
   const f = path.join(dir, 'images', 'credits.json');

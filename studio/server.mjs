@@ -396,6 +396,9 @@ function followProgress(j, line) {
     j.progress = ((j.Rendered ?? 0) + (j.Encoded ?? 0)) / 2;
   }
   else if ((m = /^Draft saved: (\S+)/.exec(line))) j.link = m[1];
+  else if ((m = /^Draft saved \(kids site\): (\S+)/.exec(line))) j.kidsLink = m[1];
+  else if (/^Kids site skipped/.test(line)) j.kidsSkipped = true;
+  else if (/^Uploading video \(kids site\)/.test(line)) j.step = 'Uploading the video to the kids site…';
   else if (/^Uploading video/.test(line)) j.step = 'Uploading the video to Ghost…';
 }
 

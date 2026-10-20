@@ -62,7 +62,15 @@ Chrome). In the cloud container, prefix with
 `REMOTION_BROWSER=$(ls -d /opt/pw-browsers/chromium_headless_shell-*/*/headless_shell | head -1)`.
 
 Ghost publishing needs `COURSES_GHOST_URL` and `COURSES_GHOST_ADMIN_API_KEY`
-(the courses site, not Shalone's other Ghost site). On the Mac they go in
+(the courses site, not Shalone's other Ghost site). Kids lessons (`style:
+kids`) also go to kids.sdcason.com with `KIDS_GHOST_URL` and
+`KIDS_GHOST_ADMIN_API_KEY` (skipped, with a note, until those are set). There
+the post is built from Ghost's own cards (`buildKidsSitePost`): video, an
+accent "Quiz" header, one toggle per question, the words in a toggle. Tags
+there: Byzantine Catholic Lessons (course.yml `tradition: byzantine`) or
+Catholic Kids Video Lessons, plus the series (`series:`, else the course
+title). For kids, prefer short quotations (an exact short passage that carries
+the meaning) over long ones. On the Mac they go in
 `.env` at the repo root (gitignored; `scripts/lib.mjs` loads it); in the
 cloud, in the environment settings. Never ask Shalone to paste the key
 into chat; she types it into the file herself.

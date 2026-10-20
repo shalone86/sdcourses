@@ -1074,6 +1074,8 @@ function jobPanel(kind) {
       'Saved to Ghost as a draft. ',
       j.link ? el('a', {href: j.link, target: '_blank', rel: 'noopener', text: 'Open it in Ghost'}) : null,
       j.link ? ' to look it over and press Publish.' : null,
+      j.kidsLink ? el('div', {}, [el('a', {href: j.kidsLink, target: '_blank', rel: 'noopener', text: 'Open it on the kids site'}), ' and press Publish there too.']) : null,
+      j.kidsSkipped ? el('div', {class: 'small muted', text: 'Not sent to kids.sdcason.com yet: its key isn’t in the .env file.'}) : null,
     ])];
   }
   if (j.ok) return [el('div', {class: 'small ok', text: 'Video made in ' + mins + '.'})];

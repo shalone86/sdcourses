@@ -1,16 +1,23 @@
-// Minimal Ghost Admin API client (no dependencies).
-// Reads COURSES_GHOST_URL and COURSES_GHOST_ADMIN_API_KEY (names specific to
-// the courses site, so another Ghost site's key can live in the same
-// environment without mix-ups); see README.
+// Minimal Ghost Admin API client (no dependencies). Two sites:
+//   courses  courses.sdcason.com  COURSES_GHOST_URL, COURSES_GHOST_ADMIN_API_KEY
+//   kids     kids.sdcason.com     KIDS_GHOST_URL, KIDS_GHOST_ADMIN_API_KEY
+// (names specific to each site, so the keys live in the same .env without mix-ups); see README.
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
-export function ghost() {
-  const GHOST_URL = process.env.COURSES_GHOST_URL;
-  const GHOST_ADMIN_API_KEY = process.env.COURSES_GHOST_ADMIN_API_KEY;
+const PREFIX = {courses: 'COURSES', kids: 'KIDS'};
+
+/** Is this site's key in the environment? */
+export const ghostReady = (which = 'courses') => !!(process.env[`${PREFIX[which]}_GHOST_URL`] && process.env[`${PREFIX[which]}_GHOST_ADMIN_API_KEY`]);
+
+export function ghost(which = 'courses') {
+  const p = PREFIX[which];
+  if (!p) throw new Error(`Unknown Ghost site "${which}"`);
+  const GHOST_URL = process.env[`${p}_GHOST_URL`];
+  const GHOST_ADMIN_API_KEY = process.env[`${p}_GHOST_ADMIN_API_KEY`];
   if (!GHOST_URL || !GHOST_ADMIN_API_KEY) {
-    throw new Error('COURSES_GHOST_URL and COURSES_GHOST_ADMIN_API_KEY are not set. On the Mac, put them in the .env file at the top of the project; in the cloud, in the environment settings (see README → Publishing from chat).');
+    throw new Error(`${p}_GHOST_URL and ${p}_GHOST_ADMIN_API_KEY are not set. On the Mac, put them in the .env file at the top of the project; in the cloud, in the environment settings (see README → Publishing from chat).`);
   }
   const site = GHOST_URL.replace(/\/$/, '');
   const api = `${site}/ghost/api/admin`;

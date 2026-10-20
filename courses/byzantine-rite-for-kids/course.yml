@@ -5,6 +5,10 @@ summary: >-
   how they pray, and how they belong to the one Catholic Church.
 # Kids look: bright colors, rounded letters, pictures that bounce on the beat.
 style: kids
+# Kids courses also go to kids.sdcason.com, tagged Byzantine Catholic Lessons (a Byzantine
+# course; otherwise Catholic Kids Video Lessons) and this series.
+tradition: byzantine
+series: Intro to Byzantine Rite
 music: music/blessed-art-thou-ambient-instrumental.mp3
 cover: {icon: church, eyebrow: Catholic Course for Kids}
 planned:
