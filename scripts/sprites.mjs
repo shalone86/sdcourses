@@ -2,6 +2,9 @@
 //   sprites/<name>.json  {name, width, height, fps, palette: ['#rrggbb', …], frames: [[row, …], …]}
 // Each row is a string, one character per pixel: '.' is see-through, otherwise
 // the position in the palette (0–9, then a–z). 1 to 4 frames.
+// Sketches (free drawing, kind: 'sketch') keep each frame as a picture instead:
+//   sprites/<name>.json {name, kind: 'sketch', width, height, fps, frames: ['<name>/1.png', …]}
+//   sprites/<name>/1.png …
 import fs from 'node:fs';
 import path from 'node:path';
 import {ROOT} from './lib.mjs';
@@ -14,7 +17,21 @@ export function listSprites() {
   if (!fs.existsSync(SPRITES)) return [];
   return fs.readdirSync(SPRITES).filter((f) => f.endsWith('.json')).sort()
     .map((f) => { try { return {slug: f.slice(0, -5), ...JSON.parse(fs.readFileSync(path.join(SPRITES, f), 'utf8'))}; } catch { return null; } })
-    .filter(Boolean);
+    .filter(Boolean)
+    // A sketch's frames as addresses the studio serves (with a version, so a re-save shows).
+    .map((s) => s.kind === 'sketch' ? {...s, urls: s.frames.map((fr) => `/sprites/${fr}?v=${Math.round(fs.statSync(path.join(SPRITES, fr)).mtimeMs)}`)} : s);
+}
+
+/** A sketch's frame pictures copied next to a lesson's video files; returns the drawing with their paths there. */
+export function publishSketch(art, publicDir, id) {
+  if (art?.kind !== 'sketch') return art;
+  const frames = art.frames.map((fr) => {
+    const dest = path.join(publicDir, 'sprites', fr);
+    fs.mkdirSync(path.dirname(dest), {recursive: true});
+    fs.copyFileSync(path.join(SPRITES, fr), dest);
+    return path.posix.join(id, 'sprites', fr);
+  });
+  return {...art, frames};
 }
 
 export function loadSprite(slug) {
@@ -46,7 +63,29 @@ export function deleteSprite(slug) {
   if (used.length) throw new Error(`It's still in ${used.join(', ')}. Remove it there first (Timing tab, ×).`);
   const bin = path.join(SPRITES, '.deleted');
   fs.mkdirSync(bin, {recursive: true});
-  fs.renameSync(f, path.join(bin, `${s}-${new Date().toISOString().replace(/[:.]/g, '-')}.json`));
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  fs.renameSync(f, path.join(bin, `${s}-${stamp}.json`));
+  if (fs.existsSync(path.join(SPRITES, s))) fs.renameSync(path.join(SPRITES, s), path.join(bin, `${s}-${stamp}`));
+}
+
+/** A sketch: each frame arrives as a PNG data address and is saved as sprites/<slug>/<n>.png. */
+function saveSketch(slug, s) {
+  const {width: w, height: h} = s;
+  if (![w, h].every((n) => Number.isInteger(n) && n >= 64 && n <= 1920)) throw new Error('Bad sketch size');
+  if (!Array.isArray(s.frames) || s.frames.length < 1 || s.frames.length > 4) throw new Error('1 to 4 frames');
+  const pngs = s.frames.map((d) => {
+    const m = /^data:image\/png;base64,([A-Za-z0-9+/=]+)$/.exec(d ?? '');
+    const buf = m && Buffer.from(m[1], 'base64');
+    if (!buf || buf.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') throw new Error('A frame isn\'t a picture');
+    return buf;
+  });
+  const dir = path.join(SPRITES, slug);
+  fs.rmSync(dir, {recursive: true, force: true});
+  fs.mkdirSync(dir, {recursive: true});
+  const frames = pngs.map((buf, i) => { fs.writeFileSync(path.join(dir, `${i + 1}.png`), buf); return `${slug}/${i + 1}.png`; });
+  const fps = Math.max(1, Math.min(12, Math.round(Number(s.fps) || 4)));
+  fs.writeFileSync(path.join(SPRITES, `${slug}.json`), JSON.stringify({name: String(s.name).trim().slice(0, 60), kind: 'sketch', width: w, height: h, fps, frames}, null, 1) + '\n');
+  return slug;
 }
 
 /** Check and save one animation; returns its slug. */
@@ -54,6 +93,7 @@ export function saveSprite(s) {
   const slug = spriteSlug(s?.name);
   if (!slug) throw new Error('Give it a name');
   const {width: w, height: h} = s;
+  if (s.kind === 'sketch') return saveSketch(slug, s);
   if (![w, h].every((n) => Number.isInteger(n) && n >= 8 && n <= 64)) throw new Error('Size must be 8 to 64 pixels');
   const palette = (s.palette ?? []).slice(0, CODES.length);
   if (!palette.every((c) => /^#[0-9a-f]{6}$/i.test(c))) throw new Error('Bad color in the palette');

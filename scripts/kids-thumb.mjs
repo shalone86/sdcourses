@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {ROOT, lessonDir, loadLesson, outDir} from './lib.mjs';
-import {loadSprite} from './sprites.mjs';
+import {loadSprite, publishSketch} from './sprites.mjs';
 
 // "What is …", "Who was …": the opening words go small above the rest.
 const LEAD = /^(what|who|why|how|when|where)\s+(is|was|are|were|does|do|did|is a|is the)\b/i;
@@ -13,7 +13,7 @@ const LEAD = /^(what|who|why|how|when|where)\s+(is|was|are|were|does|do|did|is a
 export function renderKidsThumb(arg) {
   const {lesson, course, segments, id} = loadLesson(lessonDir(arg));
   const name = lesson.thumb?.sprite ?? course.thumb?.sprite ?? segments.flatMap((s) => s.scenes).find((sc) => sc?.type === 'sprite')?.sprite;
-  const art = name ? loadSprite(name) : null;
+  const art = name ? publishSketch(loadSprite(name), path.join(ROOT, 'video', 'public', id), id) : null;
   const m = LEAD.exec(lesson.title);
   const lead = m ? lesson.title.slice(0, m[0].length) : '';
   const title = (m ? lesson.title.slice(m[0].length) : lesson.title).trim();

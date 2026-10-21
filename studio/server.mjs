@@ -473,6 +473,9 @@ async function handle(req, res) {
     if (p === '/api/sprites') return json(res, 200, listSprites());
     if (p === '/api/courses') return json(res, 200, await courseChoices());
     if (p === '/pixels.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
+    if (p === '/sketch.js') return sendFile(req, res, path.join(ROOT, 'studio/sketch.js'));
+    if (p === '/reference.js') return sendFile(req, res, path.join(ROOT, 'studio/reference.js'));
+    if (/^\/sprites\/[a-z0-9-]+\/\d+\.png$/.test(p)) return sendFile(req, res, path.join(ROOT, p.slice(1)));
     if (p === '/api/images/search') {
       const q = (url.searchParams.get('q') ?? '').trim();
       if (!q) throw httpError(400, 'Type something to search for');
@@ -566,7 +569,8 @@ async function handle(req, res) {
       return json(res, 200, {sprites: listSprites()});
     }
     if (p === '/api/sprite') {
-      const slug = saveSprite(await readJson(req));
+      // (a sketch's frames are pictures, so this can be a few megabytes)
+      const slug = saveSprite(JSON.parse(String(await readBody(req, 60e6)) || '{}'));
       return json(res, 200, {slug, sprites: listSprites()});
     }
     if (p === '/api/timing') {

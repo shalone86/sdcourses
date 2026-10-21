@@ -1,4 +1,4 @@
-import {AbsoluteFill} from 'remotion';
+import {AbsoluteFill, Img, staticFile} from 'remotion';
 import {bounds, Frame, type Art} from './scenes/Sprite';
 import './theme'; // loads the fonts
 
@@ -19,7 +19,7 @@ export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, fit = 'fr
   const b = art ? bounds(art) : null;
   // A drawing that fills its canvas (a scene, like a church) touches the edges and would look
   // cut off: it goes in a white-bordered card instead, like a framed picture.
-  const edges = b && art ? [b.x === 0, b.y === 0, b.x + b.w === art.width, b.y + b.h === art.height].filter(Boolean).length : 0;
+  const edges = b && art && art.kind !== 'sketch' ? [b.x === 0, b.y === 0, b.x + b.w === art.width, b.y + b.h === art.height].filter(Boolean).length : 0;
   const framed = !!art && edges >= 3;
   const px = framed && art ? Math.floor(Math.min(500 / art.width, 520 / art.height)) : b ? Math.floor(Math.min(560 / b.w, 600 / b.h)) : 0;
   const big = title.length > 22 ? 96 : title.length > 14 ? 112 : 150;
@@ -32,25 +32,28 @@ export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, fit = 'fr
       <Blob x={1080} y={500} w={190} color="#F4B6C2" turn={60} />
       <Blob x={1120} y={120} w={90} color="#22B8B0" turn={10} ring />
       <Blob x={520} y={560} w={120} color="#F7DF8C" turn={140} />
-      {framed && art && fit === 'bleed' && (
+      {art?.kind === 'sketch' && (
+        <Img src={staticFile(art.frames[0] as string)} style={{position: 'absolute', right: 70, top: '50%', transform: 'translateY(-50%)', maxWidth: 560, maxHeight: 600, objectFit: 'contain'}} />
+      )}
+      {art?.kind !== 'sketch' && framed && art && fit === 'bleed' && (
         // Off the top-right corner: the drawing's cut edges are the thumbnail's own edges.
         <svg width={art.width * 19} height={art.height * 19} viewBox={`0 0 ${art.width} ${art.height}`} shapeRendering="crispEdges"
           style={{position: 'absolute', right: 0, top: 0}}>
-          <Frame art={art} rows={art.frames[0]} />
+          <Frame art={art} rows={art.frames[0] as string[]} />
         </svg>
       )}
-      {framed && art && fit === 'frame' && (
+      {art?.kind !== 'sketch' && framed && art && fit === 'frame' && (
         <div style={{position: 'absolute', right: 80, top: (720 - art.height * px - 28) / 2, padding: 14, background: '#FFFFFF', borderRadius: 30,
           transform: 'rotate(4deg)', boxShadow: `0 16px 0 ${SHADOW}55, 0 22px 40px rgba(0,0,0,0.18)`}}>
           <svg width={art.width * px} height={art.height * px} viewBox={`0 0 ${art.width} ${art.height}`} shapeRendering="crispEdges" style={{display: 'block', borderRadius: 18}}>
-            <Frame art={art} rows={art.frames[0]} />
+            <Frame art={art} rows={art.frames[0] as string[]} />
           </svg>
         </div>
       )}
-      {!framed && art && b && (
+      {art?.kind !== 'sketch' && !framed && art && b && (
         <svg width={b.w * px} height={b.h * px} viewBox={`${b.x} ${b.y} ${b.w} ${b.h}`} shapeRendering="crispEdges"
           style={{position: 'absolute', right: 70, top: (720 - b.h * px) / 2}}>
-          <Frame art={art} rows={art.frames[0]} />
+          <Frame art={art} rows={art.frames[0] as string[]} />
         </svg>
       )}
       <div style={{position: 'absolute', left: 70, top: 0, bottom: 0, width: art ? 760 : 1140, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 10}}>

@@ -6,7 +6,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
 import {detectBeats} from './beats.mjs';
-import {loadSprite} from './sprites.mjs';
+import {loadSprite, publishSketch} from './sprites.mjs';
 import {phraseSpan, phraseTime, transcribe, trimLead, trimVoice, whisperAvailable} from './voice.mjs';
 
 const FPS = 30;
@@ -65,7 +65,7 @@ export function prepare(arg) {
   }
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'image' && sc.src && !sc.src.startsWith(id + '/')) sc.src = path.posix.join(id, sc.src);
   // Pixel animations: the drawing itself goes into the props (sprites/<name>.json).
-  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'sprite') sc.art = loadSprite(sc.sprite);
+  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'sprite') sc.art = publishSketch(loadSprite(sc.sprite), publicDir, id);
 
   // The host scene's photo (site.yml host_photo); without one it shows initials.
   const site = loadSite();

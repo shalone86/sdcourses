@@ -107,7 +107,10 @@ If it's already running, `npm start` just opens the page.
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
   Pixel animation, a `sprite` scene (`move: stay | hop | across`, `size`);
   prepare.mjs copies the drawing into the props. With `motion: dance` it
-  changes frame on the beat.
+  changes frame on the beat. **Sketch** mode (same tab, `studio/sketch.js`):
+  free drawing with brush sizes and the same tools, saved as one PNG per
+  frame (`sprites/<name>/<n>.png`, `kind: sketch`). Both modes can show a
+  **reference picture** under the drawing (`studio/reference.js`; never saved).
 - **New lessons and slides:** "+ New lesson" (studio header) picks a course
   here, a course on the site (Ghost tags, numbering continues after its
   published lessons), or a new one, and starts with one blank slide (the

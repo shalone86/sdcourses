@@ -84,7 +84,7 @@ window.PixelTab = (() => {
     return out;
   }
 
-  function open(root, api, post) {
+  function open(root, api, post, reference = window.DrawReference) {
     const pal = PALETTES[store.get('studio.pixelPalette')] ? store.get('studio.pixelPalette') : 'video';
     const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false,
       undo: [], saved: '', timer: null,
@@ -98,7 +98,7 @@ window.PixelTab = (() => {
     const canvas = h('canvas', {class: 'px-canvas', width: 512, height: 512, 'aria-label': 'Drawing grid', tabindex: '0'});
     const preview = h('canvas', {class: 'px-preview', width: 192, height: 192, 'aria-label': 'Animation preview'});
     const body = h('div', {class: 'px-side'});
-    root.replaceChildren(h('div', {class: 'px-wrap'}, [h('div', {class: 'px-left'}, [canvas,
+    root.replaceChildren(h('div', {class: 'px-wrap'}, [h('div', {class: 'px-left'}, [canvas, reference.controls(() => drawCanvas()),
       h('div', {class: 'small muted', text: 'Click or drag to draw. ⌘Z undo · ⌘C copy · ⌘X cut · ⌘V paste · arrows move a selection · Delete clears it · Esc lets go.'})]), body]));
 
     const W = () => P.art.width, H = () => P.art.height;
@@ -106,7 +106,7 @@ window.PixelTab = (() => {
     const inBounds = (x, y) => x >= 0 && y >= 0 && x < W() && y < H();
 
     // ---------- drawing on screen ----------
-    function paint(cv, pixels, w, hgt, size, {grid, onion} = {}) {
+    function paint(cv, pixels, w, hgt, size, {grid, onion, ref} = {}) {
       const g = cv.getContext('2d');
       const c = size / Math.max(w, hgt);
       g.clearRect(0, 0, cv.width, cv.height);
@@ -115,6 +115,7 @@ window.PixelTab = (() => {
         g.fillStyle = (x + y) % 2 ? '#EEE9DF' : '#F8F5EE';
         g.fillRect(x * c, y * c, c, c);
       }
+      if (ref) reference.draw(g, w * c, hgt * c);
       if (onion) {
         g.globalAlpha = 0.28;
         onion.forEach((col, i) => { if (col) { g.fillStyle = col; g.fillRect((i % w) * c, Math.floor(i / w) * c, c, c); } });
@@ -134,7 +135,7 @@ window.PixelTab = (() => {
       const a = P.art;
       // Onion skin: the frame before (on the first frame, the last one, since it loops).
       const prev = P.onion && a.frames.length > 1 ? a.frames[(P.frame + a.frames.length - 1) % a.frames.length] : null;
-      const {g, c} = paint(canvas, px(), a.width, a.height, canvas.width, {grid: true, onion: prev});
+      const {g, c} = paint(canvas, px(), a.width, a.height, canvas.width, {grid: true, onion: prev, ref: true});
       const layer = P.float && P.float.layers.find((l) => l.frame === P.frame);
       if (layer) {
         const f = P.float;
@@ -486,7 +487,7 @@ window.PixelTab = (() => {
         if (!confirm(`Delete "${a.name}"? It's kept in sprites/.deleted, so Claude can bring it back.`)) return;
         try {
           const d = await post('/api/sprite/delete', {slug: a.slug});
-          P.list = d.sprites; P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); draw();
+          P.list = d.sprites.filter((s) => s.kind !== 'sketch'); P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); draw();
         } catch (e) { alert('Couldn’t delete it: ' + e.message); }
       };
       const name = h('input', {type: 'text', value: a.name, placeholder: 'Name (e.g. Dancing Saint Nicholas)', 'aria-label': 'Name', oninput: (e) => { a.name = e.target.value; markDirty(); }});
@@ -509,7 +510,7 @@ window.PixelTab = (() => {
         letGo();
         try {
           const d = await post('/api/sprite', toSaved(a));
-          P.list = d.sprites; a.slug = d.slug; P.saved = snap(); draw();
+          P.list = d.sprites.filter((s) => s.kind !== 'sketch'); a.slug = d.slug; P.saved = snap(); draw();
         } catch (e) { alert('Couldn’t save it: ' + e.message); }
       };
       const selecting = !!(P.sel || P.float);
@@ -564,7 +565,8 @@ window.PixelTab = (() => {
       markDirty();
     }
 
-    api('/api/sprites').then((list) => { P.list = list; draw(); }, () => draw());
+    // (sketches have their own mode)
+    api('/api/sprites').then((list) => { P.list = list.filter((s) => s.kind !== 'sketch'); draw(); }, () => draw());
     return {dirty};
   }
 
