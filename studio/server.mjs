@@ -117,6 +117,7 @@ function detail(id) {
     : null;
   return {
     id, course: course.title, number: lesson.number, title: lesson.title, status: lesson.status,
+    backup: backup.last, // the studio's last backup to GitHub (any lesson)
     sections, video, requests: openRequests(dir),
   };
 }
@@ -400,8 +401,43 @@ function startJob(kind, id, script) {
     current.ok = code === 0;
     if (code !== 0) current.error = errorMessage(current.log) || `Stopped with code ${code}`;
     else current.step = kind === 'render' ? 'Done' : 'Saved to Ghost as a draft';
+    // Sent to Ghost: back the lesson up right away.
+    if (code === 0 && kind === 'publish') backupSoon(id, lessonPaths(id), `${id} (sent to Ghost)`, true);
   });
   return current;
+}
+
+// ---------- backup to GitHub ----------
+// Her work is saved on this Mac as she goes. A few minutes after she stops changing a lesson
+// (and right after she sends one to Ghost), the studio commits that lesson's folder (script,
+// recordings, pictures, timing; not her camera clips, which stay on this Mac) and pushes it.
+const BACKUP_WAIT = 3 * 60 * 1000;
+const backup = {timers: new Map(), chain: Promise.resolve(), last: null};
+const lessonPaths = (id) => { const [course, lesson] = id.split('/'); return [`courses/${course}/${lesson}`, `courses/${course}/course.yml`]; };
+
+function backupSoon(key, paths, label, now = false) {
+  clearTimeout(backup.timers.get(key));
+  const go = () => { backup.timers.delete(key); backup.chain = backup.chain.then(() => runBackup(paths, label)).catch(() => {}); };
+  if (now) go(); else backup.timers.set(key, setTimeout(go, BACKUP_WAIT));
+}
+
+async function runBackup(paths, label) {
+  const git = (...args) => run('git', args, {cwd: ROOT, maxBuffer: 1 << 24});
+  const there = paths.filter((x) => fs.existsSync(path.join(ROOT, x)));
+  try {
+    if (!there.length) return;
+    await git('add', '-A', '--', ...there);
+    const staged = await git('diff', '--cached', '--name-only', '--', ...there);
+    if (!staged.stdout.trim()) return;
+    await git('commit', '-q', '-m', `Studio backup: ${label}`, '--', ...there);
+    const branch = (await git('rev-parse', '--abbrev-ref', 'HEAD')).stdout.trim();
+    if (branch === 'main') await git('push', '-q', 'origin', 'main');
+    backup.last = {at: Date.now(), ok: true, label};
+    console.log(`Backed up to GitHub: ${label}`);
+  } catch (e) {
+    backup.last = {at: Date.now(), ok: false, label, error: String(e.stderr || e.message).trim().split('\n').pop()};
+    console.log(`Backup to GitHub failed (${label}): ${backup.last.error}`);
+  }
 }
 
 /** Turn the scripts' output into a short step label and a 0–1 progress value. */
@@ -517,6 +553,9 @@ async function handle(req, res) {
   }
 
   if (req.method === 'POST') {
+    // Anything that changes a lesson or a drawing: back it up a few minutes after the last change.
+    if (id && /^\/api\/(save|use-spoken|quiz|slide|timing|scene|audio|take|ask|images\/import)$/.test(p)) backupSoon(id, lessonPaths(id), id);
+    if (/^\/api\/sprite(\/delete)?$/.test(p)) backupSoon('sprites', ['sprites'], 'drawings');
     if (p === '/api/save') {
       const dir = lessonPath(id);
       const body = await readJson(req);
@@ -548,7 +587,11 @@ async function handle(req, res) {
       const {course, title} = await readJson(req);
       // A course on Ghost that isn't here yet: continue its numbering after its published lessons.
       const published = course?.ghost ? Number(course.posts) || 0 : 0;
-      try { return json(res, 200, {id: newLesson({course: course ?? {}, title, published}), lessons: lessonIds().map(summary)}); }
+      try {
+        const made = newLesson({course: course ?? {}, title, published});
+        backupSoon(made, lessonPaths(made), `${made} (new lesson)`);
+        return json(res, 200, {id: made, lessons: lessonIds().map(summary)});
+      }
       catch (e) { throw httpError(400, e.message); }
     }
     if (p === '/api/quiz') {

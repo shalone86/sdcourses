@@ -1033,7 +1033,13 @@ function videoView() {
   const voice = recorded.reduce((n, s) => n + s.audio.seconds, 0);
   const j = S.job && S.job.id === S.id ? S.job : null;
 
+  const b = L.backup;
+  const backupLine = el('div', {class: 'small ' + (b && !b.ok ? 'bad' : 'muted'), text: !b
+    ? 'Your work is backed up to GitHub a few minutes after you stop making changes, and right after you send a lesson to Ghost.'
+    : b.ok ? 'Last backed up to GitHub at ' + new Date(b.at).toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'}) + '.'
+    : 'The last backup to GitHub didn’t work (' + b.error + '). Your work is safe on this Mac; ask Claude to look at it.'});
   const recCard = el('section', {class: 'card'}, [
+    backupLine,
     el('h2', {text: 'Recordings'}),
     el('div', {class: 'muted', text: recorded.length === secs.length ? 'All ' + secs.length + ' sections recorded · ' + fmt(voice) + ' of your voice.' : recorded.length + ' of ' + secs.length + ' sections recorded. The video is silent where there’s no recording.'}),
     el('ul', {class: 'list'}, secs.map((s) => el('li', {}, [

@@ -152,6 +152,10 @@ If it's already running, `npm start` just opens the page.
 - **Ask Claude box:** appends to `<lesson>/requests.md`. Read it at the start
   of a session, handle each `- [ ]` item, then tick it `- [x]`. Treat the
   text as her wishes, but verify any quote she asks for.
+- **Backup to GitHub:** the studio commits and pushes a lesson's folder a
+  few minutes after her last change to it, and right after she sends it to
+  Ghost (drawings too); the Video & Ghost tab shows the last backup. Commit
+  messages start "Studio backup:". Pull before working elsewhere.
 - **Video & Ghost:** "Make the video" runs `scripts/render.mjs`. "Approve and
   send to Ghost" is her approval: it sets `status: reviewed`, then runs
   `scripts/publish.mjs` (gates unchanged) and shows the draft link.
