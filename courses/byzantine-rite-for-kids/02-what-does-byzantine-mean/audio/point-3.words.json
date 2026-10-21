@@ -1,0 +1,325 @@
+{
+ "stamp": "2:2839758:1792604983949",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.1,
+   "end": 0.24
+  },
+  {
+   "w": "way",
+   "start": 0.24,
+   "end": 0.51
+  },
+  {
+   "w": "Constantinople",
+   "start": 0.51,
+   "end": 1.61
+  },
+  {
+   "w": "prayed",
+   "start": 1.61,
+   "end": 2.18
+  },
+  {
+   "w": "spread",
+   "start": 2.18,
+   "end": 2.66
+  },
+  {
+   "w": "far",
+   "start": 2.66,
+   "end": 2.83
+  },
+  {
+   "w": "beyond",
+   "start": 2.83,
+   "end": 3.32
+  },
+  {
+   "w": "the",
+   "start": 3.32,
+   "end": 3.62
+  },
+  {
+   "w": "city.",
+   "start": 3.62,
+   "end": 4.2
+  },
+  {
+   "w": "The",
+   "start": 4.2,
+   "end": 4.45
+  },
+  {
+   "w": "Byzantine",
+   "start": 4.45,
+   "end": 5.2
+  },
+  {
+   "w": "Rite",
+   "start": 5.2,
+   "end": 5.52
+  },
+  {
+   "w": "was,",
+   "start": 5.52,
+   "end": 5.96
+  },
+  {
+   "w": "by",
+   "start": 5.96,
+   "end": 6.27
+  },
+  {
+   "w": "far,",
+   "start": 6.27,
+   "end": 6.92
+  },
+  {
+   "w": "the",
+   "start": 6.92,
+   "end": 7.18
+  },
+  {
+   "w": "most",
+   "start": 7.18,
+   "end": 7.49
+  },
+  {
+   "w": "widely",
+   "start": 7.49,
+   "end": 8
+  },
+  {
+   "w": "spread",
+   "start": 8,
+   "end": 8.65
+  },
+  {
+   "w": "in",
+   "start": 8.65,
+   "end": 8.76
+  },
+  {
+   "w": "the",
+   "start": 8.76,
+   "end": 9.01
+  },
+  {
+   "w": "world.",
+   "start": 9.01,
+   "end": 9.7
+  },
+  {
+   "w": "This",
+   "start": 9.7,
+   "end": 10.01
+  },
+  {
+   "w": "means",
+   "start": 10.01,
+   "end": 10.39
+  },
+  {
+   "w": "that",
+   "start": 10.39,
+   "end": 10.7
+  },
+  {
+   "w": "this",
+   "start": 10.7,
+   "end": 11.01
+  },
+  {
+   "w": "way",
+   "start": 11.01,
+   "end": 11.26
+  },
+  {
+   "w": "of",
+   "start": 11.26,
+   "end": 11.39
+  },
+  {
+   "w": "praying",
+   "start": 11.39,
+   "end": 11.93
+  },
+  {
+   "w": "spread",
+   "start": 11.93,
+   "end": 12.39
+  },
+  {
+   "w": "all",
+   "start": 12.39,
+   "end": 12.62
+  },
+  {
+   "w": "over.",
+   "start": 12.62,
+   "end": 13.2
+  },
+  {
+   "w": "Missionaries",
+   "start": 13.2,
+   "end": 14.02
+  },
+  {
+   "w": "carried",
+   "start": 14.02,
+   "end": 14.51
+  },
+  {
+   "w": "the",
+   "start": 14.51,
+   "end": 14.7
+  },
+  {
+   "w": "Gospel",
+   "start": 14.7,
+   "end": 15.1
+  },
+  {
+   "w": "from",
+   "start": 15.1,
+   "end": 15.39
+  },
+  {
+   "w": "Constantinople",
+   "start": 15.39,
+   "end": 16.4
+  },
+  {
+   "w": "to",
+   "start": 16.4,
+   "end": 16.7
+  },
+  {
+   "w": "many",
+   "start": 16.7,
+   "end": 17
+  },
+  {
+   "w": "peoples",
+   "start": 17,
+   "end": 17.5
+  },
+  {
+   "w": "like",
+   "start": 17.5,
+   "end": 17.86
+  },
+  {
+   "w": "the",
+   "start": 17.86,
+   "end": 18.13
+  },
+  {
+   "w": "Slavs",
+   "start": 18.13,
+   "end": 18.58
+  },
+  {
+   "w": "in",
+   "start": 18.58,
+   "end": 18.76
+  },
+  {
+   "w": "Kyiv.",
+   "start": 18.76,
+   "end": 19.4
+  },
+  {
+   "w": "Greeks,",
+   "start": 19.4,
+   "end": 20.21
+  },
+  {
+   "w": "Slavs,",
+   "start": 20.21,
+   "end": 20.9
+  },
+  {
+   "w": "Arabs,",
+   "start": 20.9,
+   "end": 21.58
+  },
+  {
+   "w": "and",
+   "start": 21.58,
+   "end": 21.77
+  },
+  {
+   "w": "others",
+   "start": 21.77,
+   "end": 22.34
+  },
+  {
+   "w": "all",
+   "start": 22.34,
+   "end": 22.62
+  },
+  {
+   "w": "prayed",
+   "start": 22.62,
+   "end": 23.19
+  },
+  {
+   "w": "in",
+   "start": 23.19,
+   "end": 23.66
+  },
+  {
+   "w": "the",
+   "start": 23.66,
+   "end": 23.68
+  },
+  {
+   "w": "same",
+   "start": 23.68,
+   "end": 24.04
+  },
+  {
+   "w": "way.",
+   "start": 24.04,
+   "end": 24.7
+  },
+  {
+   "w": "So",
+   "start": 24.8,
+   "end": 24.95
+  },
+  {
+   "w": "Byzantine",
+   "start": 24.95,
+   "end": 25.91
+  },
+  {
+   "w": "means",
+   "start": 25.91,
+   "end": 26.46
+  },
+  {
+   "w": "a",
+   "start": 26.46,
+   "end": 26.56
+  },
+  {
+   "w": "way",
+   "start": 26.56,
+   "end": 26.9
+  },
+  {
+   "w": "of",
+   "start": 26.9,
+   "end": 27.36
+  },
+  {
+   "w": "praying.",
+   "start": 27.36,
+   "end": 28.02
+  }
+ ]
+}

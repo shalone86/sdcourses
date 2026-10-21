@@ -70,11 +70,6 @@ points:
         term: Byzantium
         origin: Greek Byzantion
         meaning: the city of Byzas
-      - type: map
-        region: east
-        places: [{name: Byzantium, label: above}, Athens, Antioch, Jerusalem]
-        highlight: Byzantium
-        caption: Where Europe meets Asia
     quiz:
       type: choice
       question: Where does the word "Byzantine" come from?

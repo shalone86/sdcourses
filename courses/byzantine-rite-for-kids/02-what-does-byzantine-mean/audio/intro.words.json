@@ -1,0 +1,340 @@
+{
+ "stamp": "2:2793678:1792604803324",
+ "words": [
+  {
+   "w": "Byzantium,",
+   "start": 0.09,
+   "end": 0.99
+  },
+  {
+   "w": "Constantinople,",
+   "start": 0.99,
+   "end": 2.31
+  },
+  {
+   "w": "Istanbul,",
+   "start": 2.31,
+   "end": 3.39
+  },
+  {
+   "w": "What",
+   "start": 3.39,
+   "end": 3.46
+  },
+  {
+   "w": "do",
+   "start": 3.46,
+   "end": 3.6
+  },
+  {
+   "w": "these",
+   "start": 3.6,
+   "end": 4.08
+  },
+  {
+   "w": "three",
+   "start": 4.08,
+   "end": 4.24
+  },
+  {
+   "w": "names",
+   "start": 4.24,
+   "end": 4.66
+  },
+  {
+   "w": "have",
+   "start": 4.66,
+   "end": 4.99
+  },
+  {
+   "w": "in",
+   "start": 4.99,
+   "end": 5.15
+  },
+  {
+   "w": "common?",
+   "start": 5.15,
+   "end": 5.92
+  },
+  {
+   "w": "Well,",
+   "start": 5.92,
+   "end": 6.47
+  },
+  {
+   "w": "these",
+   "start": 6.47,
+   "end": 6.94
+  },
+  {
+   "w": "are",
+   "start": 6.94,
+   "end": 7.24
+  },
+  {
+   "w": "all",
+   "start": 7.24,
+   "end": 7.5
+  },
+  {
+   "w": "names",
+   "start": 7.5,
+   "end": 7.97
+  },
+  {
+   "w": "of",
+   "start": 7.97,
+   "end": 8.16
+  },
+  {
+   "w": "one",
+   "start": 8.16,
+   "end": 8.43
+  },
+  {
+   "w": "city,",
+   "start": 8.43,
+   "end": 9.18
+  },
+  {
+   "w": "and",
+   "start": 9.18,
+   "end": 9.35
+  },
+  {
+   "w": "the",
+   "start": 9.35,
+   "end": 9.5
+  },
+  {
+   "w": "word",
+   "start": 9.5,
+   "end": 10
+  },
+  {
+   "w": "Byzantine",
+   "start": 10,
+   "end": 10.57
+  },
+  {
+   "w": "comes",
+   "start": 10.57,
+   "end": 10.99
+  },
+  {
+   "w": "from",
+   "start": 10.99,
+   "end": 11.31
+  },
+  {
+   "w": "that",
+   "start": 11.31,
+   "end": 11.85
+  },
+  {
+   "w": "city.",
+   "start": 11.85,
+   "end": 12.52
+  },
+  {
+   "w": "Not",
+   "start": 12.52,
+   "end": 12.74
+  },
+  {
+   "w": "only",
+   "start": 12.74,
+   "end": 12.99
+  },
+  {
+   "w": "that,",
+   "start": 12.99,
+   "end": 13.51
+  },
+  {
+   "w": "but",
+   "start": 13.51,
+   "end": 13.68
+  },
+  {
+   "w": "Byzantine",
+   "start": 13.68,
+   "end": 14.39
+  },
+  {
+   "w": "Catholics",
+   "start": 14.39,
+   "end": 15
+  },
+  {
+   "w": "get",
+   "start": 15,
+   "end": 15.26
+  },
+  {
+   "w": "their",
+   "start": 15.26,
+   "end": 15.95
+  },
+  {
+   "w": "traditions",
+   "start": 15.95,
+   "end": 16.33
+  },
+  {
+   "w": "from",
+   "start": 16.33,
+   "end": 16.62
+  },
+  {
+   "w": "here,",
+   "start": 16.62,
+   "end": 17.05
+  },
+  {
+   "w": "too.",
+   "start": 17.05,
+   "end": 17.56
+  },
+  {
+   "w": "Let's",
+   "start": 17.56,
+   "end": 17.98
+  },
+  {
+   "w": "explore",
+   "start": 17.98,
+   "end": 18.59
+  },
+  {
+   "w": "with",
+   "start": 18.59,
+   "end": 18.93
+  },
+  {
+   "w": "this",
+   "start": 18.93,
+   "end": 19.27
+  },
+  {
+   "w": "lesson,",
+   "start": 19.27,
+   "end": 20.02
+  },
+  {
+   "w": "I'm",
+   "start": 20.02,
+   "end": 20.21
+  },
+  {
+   "w": "your",
+   "start": 20.21,
+   "end": 20.5
+  },
+  {
+   "w": "host,",
+   "start": 20.5,
+   "end": 20.99
+  },
+  {
+   "w": "Shalone,",
+   "start": 20.99,
+   "end": 21.64
+  },
+  {
+   "w": "Cason,",
+   "start": 21.64,
+   "end": 22.09
+  },
+  {
+   "w": "and",
+   "start": 22.09,
+   "end": 22.24
+  },
+  {
+   "w": "let's",
+   "start": 22.24,
+   "end": 22.61
+  },
+  {
+   "w": "begin",
+   "start": 22.61,
+   "end": 23
+  },
+  {
+   "w": "in",
+   "start": 23,
+   "end": 23.16
+  },
+  {
+   "w": "the",
+   "start": 23.16,
+   "end": 23.44
+  },
+  {
+   "w": "name",
+   "start": 23.44,
+   "end": 23.44
+  },
+  {
+   "w": "of",
+   "start": 23.44,
+   "end": 23.57
+  },
+  {
+   "w": "the",
+   "start": 23.57,
+   "end": 23.76
+  },
+  {
+   "w": "Father",
+   "start": 23.76,
+   "end": 24.15
+  },
+  {
+   "w": "and",
+   "start": 24.15,
+   "end": 24.43
+  },
+  {
+   "w": "of",
+   "start": 24.43,
+   "end": 24.47
+  },
+  {
+   "w": "the",
+   "start": 24.47,
+   "end": 24.76
+  },
+  {
+   "w": "Son",
+   "start": 24.76,
+   "end": 24.85
+  },
+  {
+   "w": "and",
+   "start": 24.85,
+   "end": 25.04
+  },
+  {
+   "w": "of",
+   "start": 25.04,
+   "end": 25.17
+  },
+  {
+   "w": "the",
+   "start": 25.17,
+   "end": 25.36
+  },
+  {
+   "w": "Holy",
+   "start": 25.36,
+   "end": 25.68
+  },
+  {
+   "w": "Spirit.",
+   "start": 25.68,
+   "end": 26.28
+  }
+ ]
+}
