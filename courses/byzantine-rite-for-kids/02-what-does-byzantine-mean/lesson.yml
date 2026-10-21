@@ -195,6 +195,18 @@ points:
       unity with the Pope. Even though we are so close, it will be hard for
       everyone to agree, soWe pray that one day we'll all be together again!
     visuals:
+      - type: sprite
+        sprite: pope-francis
+        size: full
+      - type: sprite
+        sprite: patriarch
+        size: full
+        with: side
+      - type: image
+        src: images/sdcason-byzantine-catholic-great-and-holy-wednes-000112643f.jpg
+        aspect: 2.162
+        credit: The Free Catholic Gallery · The Free Catholic Gallery (sdcason.com) · Public domain (per the gallery)
+        fit: cover
       - type: union
         center: Byzantine
         items:
