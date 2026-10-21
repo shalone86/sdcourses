@@ -1,0 +1,470 @@
+{
+ "stamp": "2:3934158:1792600435686",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.26
+  },
+  {
+   "w": "Catholic",
+   "start": 0.26,
+   "end": 0.96
+  },
+  {
+   "w": "Encyclopedia",
+   "start": 0.96,
+   "end": 2.02
+  },
+  {
+   "w": "traces",
+   "start": 2.02,
+   "end": 2.55
+  },
+  {
+   "w": "the",
+   "start": 2.55,
+   "end": 2.81
+  },
+  {
+   "w": "order",
+   "start": 2.81,
+   "end": 3.25
+  },
+  {
+   "w": "of",
+   "start": 3.25,
+   "end": 3.42
+  },
+  {
+   "w": "the",
+   "start": 3.42,
+   "end": 3.67
+  },
+  {
+   "w": "Byzantine",
+   "start": 3.67,
+   "end": 4.47
+  },
+  {
+   "w": "Liturgies",
+   "start": 4.47,
+   "end": 5.25
+  },
+  {
+   "w": "to",
+   "start": 5.25,
+   "end": 5.42
+  },
+  {
+   "w": "one",
+   "start": 5.42,
+   "end": 5.68
+  },
+  {
+   "w": "city.",
+   "start": 5.68,
+   "end": 6.44
+  },
+  {
+   "w": "The",
+   "start": 6.44,
+   "end": 6.72
+  },
+  {
+   "w": "Byzantine",
+   "start": 6.72,
+   "end": 7.57
+  },
+  {
+   "w": "use",
+   "start": 7.57,
+   "end": 7.85
+  },
+  {
+   "w": "in",
+   "start": 7.85,
+   "end": 8.04
+  },
+  {
+   "w": "both",
+   "start": 8.04,
+   "end": 8.42
+  },
+  {
+   "w": "its",
+   "start": 8.42,
+   "end": 8.7
+  },
+  {
+   "w": "Liturgies",
+   "start": 8.7,
+   "end": 9.54
+  },
+  {
+   "w": "of",
+   "start": 9.54,
+   "end": 9.73
+  },
+  {
+   "w": "Saint",
+   "start": 9.73,
+   "end": 10.21
+  },
+  {
+   "w": "Basil",
+   "start": 10.21,
+   "end": 10.69
+  },
+  {
+   "w": "and",
+   "start": 10.69,
+   "end": 10.97
+  },
+  {
+   "w": "Saint",
+   "start": 10.97,
+   "end": 11.46
+  },
+  {
+   "w": "John",
+   "start": 11.46,
+   "end": 11.86
+  },
+  {
+   "w": "Chrysostom",
+   "start": 11.86,
+   "end": 12.88
+  },
+  {
+   "w": "follows",
+   "start": 12.88,
+   "end": 13.28
+  },
+  {
+   "w": "exactly",
+   "start": 13.28,
+   "end": 14.24
+  },
+  {
+   "w": "the",
+   "start": 14.24,
+   "end": 14.66
+  },
+  {
+   "w": "order",
+   "start": 14.66,
+   "end": 15.35
+  },
+  {
+   "w": "of",
+   "start": 15.35,
+   "end": 15.65
+  },
+  {
+   "w": "Antioch.",
+   "start": 15.65,
+   "end": 17.04
+  },
+  {
+   "w": "Tradition",
+   "start": 17.04,
+   "end": 17.58
+  },
+  {
+   "w": "ascribes",
+   "start": 17.58,
+   "end": 18.1
+  },
+  {
+   "w": "the",
+   "start": 18.1,
+   "end": 18.29
+  },
+  {
+   "w": "two",
+   "start": 18.29,
+   "end": 18.42
+  },
+  {
+   "w": "Byzantine",
+   "start": 18.42,
+   "end": 18.97
+  },
+  {
+   "w": "Liturgies",
+   "start": 18.97,
+   "end": 19.51
+  },
+  {
+   "w": "to",
+   "start": 19.51,
+   "end": 19.63
+  },
+  {
+   "w": "Saint",
+   "start": 19.63,
+   "end": 19.93
+  },
+  {
+   "w": "Basil,",
+   "start": 19.93,
+   "end": 20.35
+  },
+  {
+   "w": "the",
+   "start": 20.35,
+   "end": 20.53
+  },
+  {
+   "w": "Great,",
+   "start": 20.53,
+   "end": 20.95
+  },
+  {
+   "w": "and",
+   "start": 20.95,
+   "end": 21.13
+  },
+  {
+   "w": "Saint",
+   "start": 21.13,
+   "end": 21.43
+  },
+  {
+   "w": "John",
+   "start": 21.43,
+   "end": 21.8
+  },
+  {
+   "w": "Chrysostom,",
+   "start": 21.8,
+   "end": 22.76
+  },
+  {
+   "w": "bishops",
+   "start": 22.76,
+   "end": 23.33
+  },
+  {
+   "w": "of",
+   "start": 23.33,
+   "end": 23.53
+  },
+  {
+   "w": "the",
+   "start": 23.53,
+   "end": 23.73
+  },
+  {
+   "w": "4th",
+   "start": 23.73,
+   "end": 24.17
+  },
+  {
+   "w": "century.",
+   "start": 24.17,
+   "end": 25
+  },
+  {
+   "w": "Bishops",
+   "start": 25.06,
+   "end": 25.42
+  },
+  {
+   "w": "follow",
+   "start": 25.42,
+   "end": 25.79
+  },
+  {
+   "w": "the",
+   "start": 25.79,
+   "end": 25.97
+  },
+  {
+   "w": "order",
+   "start": 25.97,
+   "end": 26.3
+  },
+  {
+   "w": "of",
+   "start": 26.3,
+   "end": 26.39
+  },
+  {
+   "w": "Antioch,",
+   "start": 26.39,
+   "end": 26.93
+  },
+  {
+   "w": "the",
+   "start": 26.93,
+   "end": 27.12
+  },
+  {
+   "w": "city",
+   "start": 27.12,
+   "end": 27.34
+  },
+  {
+   "w": "where",
+   "start": 27.34,
+   "end": 27.65
+  },
+  {
+   "w": "the",
+   "start": 27.65,
+   "end": 27.83
+  },
+  {
+   "w": "disciples",
+   "start": 27.83,
+   "end": 28.4
+  },
+  {
+   "w": "were",
+   "start": 28.4,
+   "end": 28.62
+  },
+  {
+   "w": "first",
+   "start": 28.62,
+   "end": 28.98
+  },
+  {
+   "w": "called",
+   "start": 28.98,
+   "end": 29.29
+  },
+  {
+   "w": "Christians.",
+   "start": 29.29,
+   "end": 30.36
+  },
+  {
+   "w": "So",
+   "start": 30.36,
+   "end": 30.5
+  },
+  {
+   "w": "the",
+   "start": 30.5,
+   "end": 30.72
+  },
+  {
+   "w": "Divine",
+   "start": 30.72,
+   "end": 31.2
+  },
+  {
+   "w": "Liturgy",
+   "start": 31.2,
+   "end": 31.66
+  },
+  {
+   "w": "is",
+   "start": 31.66,
+   "end": 31.8
+  },
+  {
+   "w": "not",
+   "start": 31.8,
+   "end": 32.06
+  },
+  {
+   "w": "a",
+   "start": 32.06,
+   "end": 32.09
+  },
+  {
+   "w": "recent",
+   "start": 32.09,
+   "end": 32.54
+  },
+  {
+   "w": "invention.",
+   "start": 32.54,
+   "end": 33.48
+  },
+  {
+   "w": "It",
+   "start": 33.48,
+   "end": 33.63
+  },
+  {
+   "w": "is",
+   "start": 33.63,
+   "end": 33.78
+  },
+  {
+   "w": "an",
+   "start": 33.78,
+   "end": 34
+  },
+  {
+   "w": "ancient",
+   "start": 34,
+   "end": 34.45
+  },
+  {
+   "w": "family",
+   "start": 34.45,
+   "end": 34.89
+  },
+  {
+   "w": "of",
+   "start": 34.89,
+   "end": 35.04
+  },
+  {
+   "w": "prayers",
+   "start": 35.04,
+   "end": 35.56
+  },
+  {
+   "w": "shaped",
+   "start": 35.56,
+   "end": 36
+  },
+  {
+   "w": "over",
+   "start": 36,
+   "end": 36.29
+  },
+  {
+   "w": "the",
+   "start": 36.29,
+   "end": 36.51
+  },
+  {
+   "w": "centuries",
+   "start": 36.51,
+   "end": 37.2
+  },
+  {
+   "w": "by",
+   "start": 37.2,
+   "end": 37.38
+  },
+  {
+   "w": "the",
+   "start": 37.38,
+   "end": 37.55
+  },
+  {
+   "w": "Church",
+   "start": 37.55,
+   "end": 37.99
+  },
+  {
+   "w": "of",
+   "start": 37.99,
+   "end": 38.14
+  },
+  {
+   "w": "Constantinople.",
+   "start": 38.14,
+   "end": 39.28
+  }
+ ]
+}

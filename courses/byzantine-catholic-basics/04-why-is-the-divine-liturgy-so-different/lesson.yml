@@ -88,6 +88,15 @@ points:
       ancient family of prayers, shaped over the centuries by the Church of
       Constantinople.
     visuals:
+      - type: image
+        src: images/wikimedia-st-basil-the-great-prizren-2-img-4905-2-135801145.jpg
+        aspect: 0.667
+        credit: BLAGO Fund, Inc. · Wikimedia Commons · CC BY 4.0
+      - type: image
+        src: images/wikimedia-johnchrysostom-332744.jpg
+        aspect: 0.842
+        credit: Wikimedia Commons · Public domain
+        with: side
       - type: map
         region: east
         places: [{name: Antioch, label: below}, {name: Constantinople, label: above}]
@@ -207,10 +216,12 @@ outro:
   text: >-
     So, why is the Divine Liturgy different in a nutshell? We all have the
     same Eucharist, but it can be celebrated in different ways. The Divine
-    Liturgy originates in Antioch and in Greek-speaking communities. The
-    Divine Liturgy is always sung unaccompanied by instruments, among other
-    differences, and although it differs, it is equal to all other approved
-    forms of Eucharistic celebration.
+    Liturgy originates in Antioch and in Greek-speaking communities, and that
+    is why it is always sung unaccompanied by instruments, among other
+    differences; although it differs, it is equal to all other approved forms
+    of Eucharistic celebration. Because every liturgical rite expresses the
+    same Faith in Christ. Thanks for learning with us. I've been your host,
+    Shalone, and until next time, stay holy, my friends.
   notes:
     - "Recap: one mystery, many forms · prayers rooted in Antioch · heaven on earth · a Liturgy that is sung · different, but equal."
     - "Next lesson: Baptism, Chrismation and Communion Together."

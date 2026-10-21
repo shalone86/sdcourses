@@ -1,0 +1,415 @@
+{
+ "stamp": "2:3674958:1792600538696",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.26
+  },
+  {
+   "w": "Encyclopedia",
+   "start": 0.26,
+   "end": 1.28
+  },
+  {
+   "w": "describes",
+   "start": 1.28,
+   "end": 2.08
+  },
+  {
+   "w": "how",
+   "start": 2.08,
+   "end": 2.3
+  },
+  {
+   "w": "the",
+   "start": 2.3,
+   "end": 2.52
+  },
+  {
+   "w": "Byzantine",
+   "start": 2.52,
+   "end": 3.2
+  },
+  {
+   "w": "Rite",
+   "start": 3.2,
+   "end": 3.46
+  },
+  {
+   "w": "has",
+   "start": 3.46,
+   "end": 3.7
+  },
+  {
+   "w": "traditionally",
+   "start": 3.7,
+   "end": 4.48
+  },
+  {
+   "w": "been",
+   "start": 4.48,
+   "end": 4.89
+  },
+  {
+   "w": "sung.",
+   "start": 4.89,
+   "end": 5.98
+  },
+  {
+   "w": "The",
+   "start": 5.98,
+   "end": 6.32
+  },
+  {
+   "w": "singing",
+   "start": 6.32,
+   "end": 6.91
+  },
+  {
+   "w": "in",
+   "start": 6.91,
+   "end": 7.08
+  },
+  {
+   "w": "the",
+   "start": 7.08,
+   "end": 7.36
+  },
+  {
+   "w": "Byzantine",
+   "start": 7.36,
+   "end": 8.2
+  },
+  {
+   "w": "Rite",
+   "start": 8.2,
+   "end": 8.57
+  },
+  {
+   "w": "is",
+   "start": 8.57,
+   "end": 8.73
+  },
+  {
+   "w": "always",
+   "start": 8.73,
+   "end": 9.3
+  },
+  {
+   "w": "unaccompanied.",
+   "start": 9.3,
+   "end": 10.84
+  },
+  {
+   "w": "That",
+   "start": 10.84,
+   "end": 11.06
+  },
+  {
+   "w": "was",
+   "start": 11.06,
+   "end": 11.23
+  },
+  {
+   "w": "written",
+   "start": 11.23,
+   "end": 11.62
+  },
+  {
+   "w": "in",
+   "start": 11.62,
+   "end": 11.73
+  },
+  {
+   "w": "1908,",
+   "start": 11.73,
+   "end": 12.52
+  },
+  {
+   "w": "and",
+   "start": 12.52,
+   "end": 12.69
+  },
+  {
+   "w": "it",
+   "start": 12.69,
+   "end": 13.01
+  },
+  {
+   "w": "describes",
+   "start": 13.01,
+   "end": 13.31
+  },
+  {
+   "w": "the",
+   "start": 13.31,
+   "end": 13.48
+  },
+  {
+   "w": "tradition.",
+   "start": 13.48,
+   "end": 14.2
+  },
+  {
+   "w": "The",
+   "start": 14.2,
+   "end": 14.44
+  },
+  {
+   "w": "voice",
+   "start": 14.44,
+   "end": 14.85
+  },
+  {
+   "w": "itself",
+   "start": 14.85,
+   "end": 15.4
+  },
+  {
+   "w": "is",
+   "start": 15.4,
+   "end": 15.5
+  },
+  {
+   "w": "the",
+   "start": 15.5,
+   "end": 15.74
+  },
+  {
+   "w": "instrument.",
+   "start": 15.74,
+   "end": 16.86
+  },
+  {
+   "w": "The",
+   "start": 16.86,
+   "end": 17.08
+  },
+  {
+   "w": "priest",
+   "start": 17.08,
+   "end": 17.53
+  },
+  {
+   "w": "and",
+   "start": 17.53,
+   "end": 17.75
+  },
+  {
+   "w": "deacon",
+   "start": 17.75,
+   "end": 18.21
+  },
+  {
+   "w": "sing,",
+   "start": 18.21,
+   "end": 18.64
+  },
+  {
+   "w": "and",
+   "start": 18.64,
+   "end": 18.94
+  },
+  {
+   "w": "the",
+   "start": 18.94,
+   "end": 19.09
+  },
+  {
+   "w": "choir",
+   "start": 19.09,
+   "end": 19.47
+  },
+  {
+   "w": "and",
+   "start": 19.47,
+   "end": 19.69
+  },
+  {
+   "w": "people",
+   "start": 19.69,
+   "end": 20.14
+  },
+  {
+   "w": "answer.",
+   "start": 20.14,
+   "end": 20.9
+  },
+  {
+   "w": "Litanies,",
+   "start": 20.9,
+   "end": 21.86
+  },
+  {
+   "w": "hymns,",
+   "start": 21.86,
+   "end": 22.52
+  },
+  {
+   "w": "and",
+   "start": 22.52,
+   "end": 22.81
+  },
+  {
+   "w": "responses",
+   "start": 22.81,
+   "end": 23.68
+  },
+  {
+   "w": "are",
+   "start": 23.68,
+   "end": 23.97
+  },
+  {
+   "w": "sung",
+   "start": 23.97,
+   "end": 24.35
+  },
+  {
+   "w": "rather",
+   "start": 24.35,
+   "end": 24.93
+  },
+  {
+   "w": "than",
+   "start": 24.93,
+   "end": 25.31
+  },
+  {
+   "w": "said.",
+   "start": 25.31,
+   "end": 26.06
+  },
+  {
+   "w": "So",
+   "start": 26.06,
+   "end": 26.23
+  },
+  {
+   "w": "the",
+   "start": 26.23,
+   "end": 26.48
+  },
+  {
+   "w": "whole",
+   "start": 26.48,
+   "end": 26.91
+  },
+  {
+   "w": "liturgy",
+   "start": 26.91,
+   "end": 27.55
+  },
+  {
+   "w": "becomes",
+   "start": 27.55,
+   "end": 28.14
+  },
+  {
+   "w": "one",
+   "start": 28.14,
+   "end": 28.35
+  },
+  {
+   "w": "long",
+   "start": 28.35,
+   "end": 28.69
+  },
+  {
+   "w": "prayer.",
+   "start": 28.69,
+   "end": 29.52
+  },
+  {
+   "w": "This",
+   "start": 29.61,
+   "end": 29.83
+  },
+  {
+   "w": "is",
+   "start": 29.83,
+   "end": 29.97
+  },
+  {
+   "w": "the",
+   "start": 29.97,
+   "end": 30.19
+  },
+  {
+   "w": "biggest",
+   "start": 30.19,
+   "end": 30.71
+  },
+  {
+   "w": "difference",
+   "start": 30.71,
+   "end": 31.46
+  },
+  {
+   "w": "a",
+   "start": 31.46,
+   "end": 31.69
+  },
+  {
+   "w": "visitor",
+   "start": 31.69,
+   "end": 32.05
+  },
+  {
+   "w": "notices.",
+   "start": 32.05,
+   "end": 32.84
+  },
+  {
+   "w": "The",
+   "start": 32.84,
+   "end": 33.06
+  },
+  {
+   "w": "liturgy",
+   "start": 33.06,
+   "end": 33.6
+  },
+  {
+   "w": "is",
+   "start": 33.6,
+   "end": 33.7
+  },
+  {
+   "w": "not",
+   "start": 33.7,
+   "end": 33.92
+  },
+  {
+   "w": "just",
+   "start": 33.92,
+   "end": 34.21
+  },
+  {
+   "w": "attended.",
+   "start": 34.21,
+   "end": 35.04
+  },
+  {
+   "w": "It",
+   "start": 35.04,
+   "end": 35.19
+  },
+  {
+   "w": "is",
+   "start": 35.19,
+   "end": 35.35
+  },
+  {
+   "w": "sung",
+   "start": 35.35,
+   "end": 35.64
+  },
+  {
+   "w": "together.",
+   "start": 35.64,
+   "end": 36.5
+  }
+ ]
+}

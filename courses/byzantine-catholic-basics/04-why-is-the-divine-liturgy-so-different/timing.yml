@@ -1,0 +1,12 @@
+# Hand-tuned timing from the studio's Timing tab, in seconds into each
+# section's recording. Scenes not listed keep their automatic timing.
+point-2:
+  scenes:
+    "1":
+      start: 19.1
+    "2":
+      start: 20.8
+    "3":
+      start: 26.67
+point-3:
+  camera: bubble
