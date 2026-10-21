@@ -208,11 +208,14 @@ points:
         credit: The Free Catholic Gallery · The Free Catholic Gallery (sdcason.com) · Public domain (per the gallery)
         fit: cover
       - type: union
-        center: Byzantine
+        center: The Catholic Church
         items:
-          - City
-          - Empire
-          - Prayer
+          - Roman Catholics
+          - Eastern Catholics
+          - Eastern Orthodox?
+          - Oriental Orthodox?
+          - Church of the East?
+        caption: Hopefully we can all be united in the future!
     quiz:
       type: truefalse
       question: Byzantine Catholics and Orthodox Christians pray the same Byzantine liturgy.
