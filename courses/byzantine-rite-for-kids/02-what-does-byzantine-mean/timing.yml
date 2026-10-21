@@ -5,13 +5,16 @@ point-2:
     "0":
       start: 6.33
     "1":
-      start: 0.9
+      start: 1.67
     "2":
+      start: 0.47
+    "3":
       start: 13.7
       cues:
         Rome: 15.6
-    "3":
-      start: 21.47
+    "4":
+      start: 22.07
+      end: 31.37
 point-4:
   camera: off
 point-5:
@@ -25,3 +28,11 @@ point-5:
       start: 18.8
     "4":
       start: 29.5
+intro:
+  camera: off
+point-1:
+  scenes:
+    "2":
+      start: 13.4
+      cues:
+        Byzantium: 16.03

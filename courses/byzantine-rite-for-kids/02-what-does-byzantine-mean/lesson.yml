@@ -70,6 +70,11 @@ points:
         term: Byzantium
         origin: Greek Byzantion
         meaning: the city of Byzas
+      - type: map
+        region: mediterranean
+        places:
+          - Byzantium
+        highlight: Byzantium
     quiz:
       type: choice
       question: Where does the word "Byzantine" come from?
@@ -96,6 +101,11 @@ points:
       was Hagia Sophia, which means Holy Wisdom. So Byzantium became
       Constantinople.
     visuals:
+      - type: image
+        src: images/wikimedia-constantine-the-great-label-qs-lit-l-imp-148609.jpg
+        aspect: 0.777
+        credit: Byzantine mosaicist, ca. 1000 · Wikimedia Commons · Public domain
+        with: side
       - type: sprite
         sprite: constantine
         size: full
@@ -105,9 +115,10 @@ points:
         routes: [[Rome, Constantinople]]
         highlight: Constantinople
         caption: From Old Rome to New Rome
-      - type: sprite
-        sprite: hagia-sophia-full
-        size: full
+      - type: image
+        src: images/wikimedia-hagia-sophia-february-2013-02-25214386.jpg
+        aspect: 1.498
+        credit: Arild Vågen · Wikimedia Commons · CC BY-SA 3.0
     quiz:
       type: blank
       question: Byzantium was renamed ____, after Emperor Constantine.
