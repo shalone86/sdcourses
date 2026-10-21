@@ -1,10 +1,10 @@
 // Sketch mode (Pixel art tab → Sketch): free drawing, not on a grid, with the same tools as
-// the pixel editor plus brush sizes. 1 to 4 frames, saved as one picture per frame
+// the pixel editor plus brush sizes. 1 to 8 frames, saved as one picture per frame
 // (sprites/<name>/<n>.png, scripts/sprites.mjs). Goes in a lesson the same way
 // (Timing tab → + Add a picture here → Pixel animation).
 'use strict';
 window.SketchTab = (() => {
-  const MAX_FRAMES = 4;
+  const MAX_FRAMES = 8;
   const PALETTES = {
     video: {label: 'Video colors (12)', colors: ['#2B2350', '#FFFFFF', '#FFF6E0', '#FF4F6D', '#FF8A3D', '#FFB300', '#18B7A6', '#2F8CFF', '#7B5CFF', '#F2C6A0', '#A86B3C', '#5A3825']},
     gbc: {label: 'Game Boy Color (16)', colors: ['#000000', '#FFFFFF', '#888888', '#F8E8C8', '#E0A070', '#A05030', '#503018', '#F83838',
@@ -370,7 +370,7 @@ window.SketchTab = (() => {
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.mirror || null, onchange: (e) => { P.mirror = e.target.checked; drawCanvas(); }}), ' Mirror (draw both sides)']),
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.onion || null, onchange: (e) => { P.onion = e.target.checked; drawCanvas(); }}), ' Show the frame before, faintly']),
         ]),
-        h('div', {class: 'small muted', text: 'Frames (2 to 4 make it move):'}),
+        h('div', {class: 'small muted', text: 'Frames (2 to 8 make it move):'}),
         h('div', {class: 'px-frames'}, [...frames,
           a.frames.length < MAX_FRAMES ? btn('+ Copy this frame', () => { letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame + 1, 0, copyOf(cur())); P.frame++; P.changed = true; draw(); }) : null,
           a.frames.length > 1 ? btn('Delete this frame', () => { if (!confirm('Delete frame ' + (P.frame + 1) + '?')) return; letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); P.changed = true; draw(); }) : null]),

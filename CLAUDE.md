@@ -100,8 +100,8 @@ If it's already running, `npm start` just opens the page.
   so it lines up with the trimmed voice. Per slide, the Timing tab sets
   `camera:` in timing.yml: bubble (default), card, side, lower, only, off
   (geometry in `video/Camera.tsx`).
-- **Pixel art tab** (`studio/pixels.js`): she draws 1–4 frame pixel
-  animations (16/24/32 px; pencil, dither, eraser, fill, line, box, circle,
+- **Pixel art tab** (`studio/pixels.js`): she draws 1–8 frame pixel
+  animations, 1–8 frames (16/24/32/48/64 px; pencil, dither, eraser, fill, line, box, circle,
   select & move, color picker; copy/cut/paste across drawings; flips; mirror, onion
   skin, speed). Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
@@ -110,7 +110,9 @@ If it's already running, `npm start` just opens the page.
   changes frame on the beat. **Sketch** mode (same tab, `studio/sketch.js`):
   free drawing with brush sizes and the same tools, saved as one PNG per
   frame (`sprites/<name>/<n>.png`, `kind: sketch`). Both modes can show a
-  **reference picture** under the drawing (`studio/reference.js`; never saved).
+  **reference picture** under the drawing (`studio/reference.js`; never saved):
+  from her Mac, pasted (a copied picture or its link, e.g. from Google;
+  fetched by `/api/fetch-image`), or from the free picture search.
 - **New lessons and slides:** "+ New lesson" (studio header) picks a course
   here, a course on the site (Ghost tags, numbering continues after its
   published lessons), or a new one, and starts with one blank slide (the

@@ -1,7 +1,7 @@
 // Her pixel animations (the studio's Pixel art tab), shared by every lesson:
 //   sprites/<name>.json  {name, width, height, fps, palette: ['#rrggbb', …], frames: [[row, …], …]}
 // Each row is a string, one character per pixel: '.' is see-through, otherwise
-// the position in the palette (0–9, then a–z). 1 to 4 frames.
+// the position in the palette (0–9, then a–z). 1 to 8 frames.
 // Sketches (free drawing, kind: 'sketch') keep each frame as a picture instead:
 //   sprites/<name>.json {name, kind: 'sketch', width, height, fps, frames: ['<name>/1.png', …]}
 //   sprites/<name>/1.png …
@@ -72,7 +72,7 @@ export function deleteSprite(slug) {
 function saveSketch(slug, s) {
   const {width: w, height: h} = s;
   if (![w, h].every((n) => Number.isInteger(n) && n >= 64 && n <= 1920)) throw new Error('Bad sketch size');
-  if (!Array.isArray(s.frames) || s.frames.length < 1 || s.frames.length > 4) throw new Error('1 to 4 frames');
+  if (!Array.isArray(s.frames) || s.frames.length < 1 || s.frames.length > 8) throw new Error('1 to 8 frames');
   const pngs = s.frames.map((d) => {
     const m = /^data:image\/png;base64,([A-Za-z0-9+/=]+)$/.exec(d ?? '');
     const buf = m && Buffer.from(m[1], 'base64');
@@ -98,7 +98,7 @@ export function saveSprite(s) {
   const palette = (s.palette ?? []).slice(0, CODES.length);
   if (!palette.every((c) => /^#[0-9a-f]{6}$/i.test(c))) throw new Error('Bad color in the palette');
   const allowed = new RegExp(`^[.${CODES.slice(0, palette.length)}]{${w}}$`);
-  if (!Array.isArray(s.frames) || s.frames.length < 1 || s.frames.length > 4) throw new Error('1 to 4 frames');
+  if (!Array.isArray(s.frames) || s.frames.length < 1 || s.frames.length > 8) throw new Error('1 to 8 frames');
   for (const fr of s.frames) if (!Array.isArray(fr) || fr.length !== h || !fr.every((row) => allowed.test(row))) throw new Error('A frame doesn\'t match the size');
   const fps = Math.max(1, Math.min(12, Math.round(Number(s.fps) || 4)));
   fs.mkdirSync(SPRITES, {recursive: true});

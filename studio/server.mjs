@@ -69,6 +69,26 @@ async function courseChoices() {
   return {local: local.map((c) => ({slug: c.slug, title: c.title, style: c.style ?? 'classic'})).sort((a, b) => a.title.localeCompare(b.title)), site, error};
 }
 
+/**
+ * A picture from the web for the drawing tabs' reference (a link she copied from Google,
+ * DuckDuckGo or any site), fetched here so the page can draw it. Public addresses only.
+ */
+async function fetchImage(res, address) {
+  let u;
+  try { u = new URL(address); } catch { throw httpError(400, 'That isn\'t a web address'); }
+  if (!/^https?:$/.test(u.protocol)) throw httpError(400, 'Only http and https links');
+  if (/^(localhost|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.|\[?::1\]?$|\[?f[cd])/i.test(u.hostname) || u.hostname.endsWith('.local')) throw httpError(400, 'Only public web addresses');
+  const r = await fetch(u, {headers: {'User-Agent': 'sdcourses-lesson-studio/1.0 (https://courses.sdcason.com)', Accept: 'image/*'}, redirect: 'follow', signal: AbortSignal.timeout(20000)})
+    .catch((e) => { throw httpError(502, `Couldn't get it (${e.message})`); });
+  const type = r.headers.get('content-type') ?? '';
+  if (!r.ok) throw httpError(502, `That site answered ${r.status}`);
+  if (!type.startsWith('image/')) throw httpError(400, 'That link isn\'t a picture (try “Copy Image Address” on the picture itself)');
+  const buf = Buffer.from(await r.arrayBuffer());
+  if (buf.length > 25e6) throw httpError(413, 'That picture is too big');
+  res.writeHead(200, {'Content-Type': type, 'Content-Length': buf.length, 'Cache-Control': 'no-store'});
+  res.end(buf);
+}
+
 function summary(id) {
   try {
     const {lesson, course} = loadLesson(lessonPath(id));
@@ -471,6 +491,7 @@ async function handle(req, res) {
     if (p === '/api/timing') return json(res, 200, timingData(id));
     if (p === '/api/images/sources') return json(res, 200, sourceList());
     if (p === '/api/sprites') return json(res, 200, listSprites());
+    if (p === '/api/fetch-image') return fetchImage(res, url.searchParams.get('url') ?? '');
     if (p === '/api/courses') return json(res, 200, await courseChoices());
     if (p === '/pixels.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
     if (p === '/sketch.js') return sendFile(req, res, path.join(ROOT, 'studio/sketch.js'));
