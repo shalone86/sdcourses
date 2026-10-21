@@ -24,7 +24,13 @@ sources:
     url: https://www.vatican.va/archive/ENG0015/__P29.HTM
 
 intro:
-  text: ""               # Shalone writes this
+  text: >-
+    Byzantium, Constantinople, Istanbul...what do these 3 names have in
+    common? Well, these are all names of one city, and the word Byzantine
+    comes from this city. Not only that, but Byzantine Rite Catholics get
+    their traditions from here too. Let's explore more with this lesson. I'm
+    your host, Shalone Cason, and let's begin in the name of the Father and of
+    the Son and of the Holy Spirit.
   notes:
     - Kids version of lesson 2 of The Byzantine Rite. Aim for about 40–50 words.
     - "A question to open with: Byzantium, Constantinople, Istanbul. One city, three names! And \"Byzantine\" comes from the first one."
@@ -56,9 +62,9 @@ points:
       cite: Catholic Encyclopedia, "Constantinople"
       highlight: Byzas
     text: >-
-      Byzantion, or Byzantium, was a Greek city on a narrow strait where Europe
-      meets Asia. It was the city of Byzas. When we say "Byzantine," we mean
-      "from Byzantium."
+      Byzantion, or Byzantium, was a Greek city on a narrow strait where
+      Europe meets Asia. It was the city of Byzas. So when we say "Byzantine,"
+      we mean "from Byzantium."
     visuals:
       - type: term
         term: Byzantium
@@ -90,9 +96,10 @@ points:
       cite: Catholic Encyclopedia, "Constantinople"
       highlight: 11 May, 330
     text: >-
-      Constantine gave the city a new name: Constantinople, the city of
-      Constantine! It was called a "New Rome." Its great church was Hagia
-      Sophia, which means Holy Wisdom.
+      Constantine gave the city a new name: Constantinople, which means the
+      city of Constantine! It was also called a "New Rome." Its great church
+      was Hagia Sophia, which means Holy Wisdom. So Byzantium became
+      Constantinople.
     visuals:
       - type: map
         region: mediterranean
@@ -113,16 +120,19 @@ points:
 
   - heading: A way of praying that spread
     quote:
-      lead: The way Constantinople prayed spread far beyond the city.
+      lead: >-
+        The way Constantinople prayed spread far beyond the city. The
+        Byzantine Rite was...
       text: >-
         by far the most widely spread in the world.
       source: ce-byzantine-rite
       cite: Catholic Encyclopedia, "The Rite of Constantinople"
       highlight: most widely spread
     text: >-
-      Missionaries carried the Gospel from Constantinople to many peoples, like
-      the Slavs in Kyiv. Greeks, Slavs, Arabs and others all prayed the same
-      way. So "Byzantine" means a way of praying!
+      This means that this way of praying spread all over. Missionaries
+      carried the Gospel from Constantinople to many peoples, like the Slavs
+      in Kyiv. Greeks, Slavs, Arabs, and others all prayed this same way. So
+      "Byzantine" means a way of praying!
     visuals:
       - type: map
         region: east
@@ -140,7 +150,9 @@ points:
 
   - heading: Still with the Pope
     quote:
-      lead: A Byzantine catechism tells how the Church of Kyiv stayed close to the Church of Rome.
+      lead: >-
+        A Byzantine catechism tells how the Church of Kyiv stayed close to the
+        Church of Rome. Kyiv
       text: >-
         remained in communion with the Church of Rome
       source: ugcc
@@ -149,7 +161,7 @@ points:
     text: >-
       Over the years, Rome and Constantinople drifted apart. But the Church of
       Kyiv kept its Byzantine prayers and stayed united with Rome. Byzantine
-      Catholics are their family today.
+      Catholics get their history and traditions from Constantinople and Kyiv.
     visuals:
       - type: timeline
         items:
@@ -170,16 +182,20 @@ points:
 
   - heading: Close to the Orthodox
     quote:
-      lead: The Catechism says Catholics and the Orthodox are very close.
+      lead: >-
+        The Catechism says Catholics and the Orthodox are very close. The
+        Orthodox community...
       text: >-
         lacks little to attain the fullness
       source: ccc-church
       cite: Catechism 838
       highlight: lacks little
     text: >-
-      Orthodox Christians pray the same Byzantine liturgy, with the same icons
-      and feasts. The difference is unity with the Pope. We pray that one day
-      we'll all be together again!
+      This means that it wouldn't take much for our churches, Catholic and
+      Orthodox, to reunite. That's because Orthodox Christians pray the same
+      Byzantine liturgy, with the same icons and feasts. The difference is
+      unity with the Pope. Even though we are so close, it will be hard for
+      everyone to agree, soWe pray that one day we'll all be together again!
     visuals:
       - type: union
         center: Byzantine
@@ -196,7 +212,13 @@ points:
         communion "lacks little to attain the fullness" (CCC 838).
 
 outro:
-  text: ""               # Shalone writes this
+  text: >-
+    So what does Byzantine mean? It was the name of a city that became
+    Constantinople, the capital of the Roman Empire. It also became the name
+    of the way people from that city prayed, and even though Orthodox and
+    eastern catholics both share the Byzantine tradition, only the Eastern
+    Catholics are in full communion with the Pope. Thanks for learning with
+    us, and until next time, stay holy my friend
   notes:
     - "Recap: a city named for Byzas · Constantine's new capital · a way of praying that spread · still with the Pope · close to the Orthodox."
     - "Next lesson: Inside a Byzantine Church."
