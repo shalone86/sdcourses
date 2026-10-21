@@ -51,11 +51,18 @@ for (const which of sites) {
   // The kids site's thumbnails have their own look (turquoise, big letters, her pixel art), and
   // there the same picture is the video's poster.
   const posterUrl = which === 'kids' ? await g.upload('images', renderKidsThumb(arg), 'image/png') : await g.upload('images', path.join(dist, 'poster.jpg'), 'image/jpeg');
-  const {html, meta} = which === 'kids' ? buildKidsSitePost(arg, {videoUrl, posterUrl}) : buildPost(arg, {videoUrl, posterUrl});
+  const {html, meta, words} = which === 'kids' ? buildKidsSitePost(arg, {videoUrl, posterUrl}) : buildPost(arg, {videoUrl, posterUrl});
   const feature = posterUrl;
   const saved = await g.saveDraft('posts', {
     title: meta.title, slug: meta.slug, custom_excerpt: meta.custom_excerpt, html,
     tags: meta.tags.map((name) => ({name})), feature_image: feature,
   }, {updateLive});
+  // Ghost flattens the paragraphs inside a toggle when it reads the post: put them back.
+  if (which === 'kids' && words) {
+    const r = await g.call('GET', `/posts/${saved.id}/?formats=lexical`);
+    const lx = JSON.parse(r.posts[0].lexical);
+    const t = lx.root.children.find((n) => n.type === 'toggle' && /Read the words/.test(n.heading));
+    if (t) { t.content = words; await g.call('PUT', `/posts/${saved.id}/`, {posts: [{lexical: JSON.stringify(lx), updated_at: r.posts[0].updated_at}]}); }
+  }
   console.log(saved.status === 'published' ? `Live post updated${label}: ${saved.url}` : `Draft saved${label}: ${saved.editorUrl}`);
 }

@@ -128,10 +128,12 @@ export function buildKidsSitePost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl 
     pixelArt && `<p><em>Every pixel drawing in this video is drawn by hand by ${esc(site.author || 'the host')}.</em></p>`,
     `<p><em>${esc(site.disclosure)}</em></p>`,
   ].filter(Boolean).join('\n');
-  const tags = course.kids_tags ?? [course.tradition === 'byzantine' ? 'Byzantine Catholic Lessons' : 'Catholic Kids Video Lessons', course.series ?? course.title];
+  // #project puts it in her collections (Latest work, All videos); every lesson is a Catholic Kids
+  // Video Lesson, Byzantine ones are Byzantine Catholic Lessons too, then the series.
+  const tags = course.kids_tags ?? ['Catholic Kids Video Lessons', ...(course.tradition === 'byzantine' ? ['Byzantine Catholic Lessons'] : []), course.series ?? course.title, '#project'];
   const meta = {title: lesson.title, slug: lesson.slug, custom_excerpt: lesson.excerpt.trim(), tags};
   fs.writeFileSync(path.join(outDir(id), 'kids-site-post.html'), html);
-  return {html, meta};
+  return {html, meta, words};
 }
 
 /** "Image credits" for pictures used in the video (CC BY and similar licenses require it). */
