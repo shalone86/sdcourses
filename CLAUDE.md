@@ -12,7 +12,9 @@ HANDOFF.md.**
   Claude finds 3–5 anchor quotations and builds the script; she can swap,
   cut, or ask for more quotes, and her call is final.
 - **Shalone writes the intro and outro.** Give her facts in `notes`, never
-  prose. If she dictates text in chat, use her words as given (ask before
+  prose. Her fixed lines are always in them (the template and the studio's
+  New lesson put them in): the intro ends "I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit."
+  and the outro ends "Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends." If she dictates text in chat, use her words as given (ask before
   fixing more than a typo).
 - **Shalone approves.** Only set `status: reviewed` when she explicitly says the
   lesson is approved. Publishing creates Ghost **drafts** only; she presses

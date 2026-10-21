@@ -78,12 +78,16 @@ export function addSlide(dir, after) {
   return `point-${at + 1}`;
 }
 
+// Her sign-off, always the end of the outro.
+const OUTRO_END = "Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.";
+
 /** Add the closing slide (the outro, with the lesson summary). */
 export function addClosing(dir) {
   const file = path.join(dir, 'lesson.yml');
   const src = fs.readFileSync(file, 'utf8');
   if (YAML.parse(src).outro) throw new Error('There is already a closing slide');
-  fs.writeFileSync(file, src.replace(/\n*$/, '\n\n') + 'outro:\n  text: ""\n  scenes:\n    - type: recap\n');
+  // Her outro always ends with her sign-off; she writes the start of it before.
+  fs.writeFileSync(file, src.replace(/\n*$/, '\n\n') + 'outro:\n  text: >-\n    ' + OUTRO_END + '\n  scenes:\n    - type: recap\n');
   return 'outro';
 }
 
@@ -154,7 +158,9 @@ excerpt: ""
 sources: []
 
 intro:
-  text: ""
+  # Your intro always ends with these words; write the start of it before them.
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
   scenes:
     - type: title
     - type: host         # your name, when you say "I'm your host"

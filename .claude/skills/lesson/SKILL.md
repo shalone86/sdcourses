@@ -24,7 +24,10 @@ Shalone. Keep messages short: she reads on her phone.
 2. `npm run new -- lesson <course> "<Title>"` and build `lesson.yml`: 3–5
    points, each on one exact quotation, with a 60–100-word explanation,
    1–2 visuals and a quiz (mix `choice`, `truefalse`, `blank`). Facts for her
-   intro/outro go in `notes`; leave their `text` empty.
+   intro/outro go in `notes`. Their `text` holds only her fixed lines (the
+   template has them); she writes the rest in front of them:
+   - intro always ends: "I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit."
+   - outro always ends: "Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends."
 3. `npm run check` until it passes; `npm run stills` and look at the sheet.
 4. Start the Lesson Studio (`npm start`, in the background; see CLAUDE.md)
    and give her a two-line summary of the points and their sources.

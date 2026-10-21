@@ -13,7 +13,9 @@ sources:
     url: TODO
 
 intro:
-  text: ""               # Shalone writes this
+  # Shalone writes the start of the intro before this; it always ends with these words (hers).
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
   notes: []
   # Every lesson opens the same way: title, her photo at "I'm your host",
   # and the Trinity at the Sign of the Cross.
@@ -43,7 +45,9 @@ points:
       why: TODO
 
 outro:
-  text: ""               # Shalone writes this
+  # Shalone writes the start of the outro before this; it always ends with these words (hers).
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
   notes: []
   scenes:
     - type: recap
