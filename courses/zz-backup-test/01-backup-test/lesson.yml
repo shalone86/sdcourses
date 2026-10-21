@@ -1,0 +1,23 @@
+# Started in the Lesson Studio.
+status: draft
+course: zz-backup-test
+number: 1
+slug: backup-test
+title: "Backup Test"
+excerpt: ""
+
+sources: []
+
+intro:
+  # Your intro always ends with these words; write the start of it before them.
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  scenes:
+    - type: title
+    - type: host         # your name, when you say "I'm your host"
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points: []
