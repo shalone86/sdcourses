@@ -131,6 +131,12 @@ If it's already running, `npm start` just opens the page.
   the source the quote check uses), and a quiz editor (choice, true/false,
   fill in the blank; saved with `setValue`, checked like the post checks
   them). Slides without a quotation are allowed.
+- **Changing a picture:** clicking any picture's block on the Timing tab opens
+  its form with its boxes filled in (op `replace`, same place and timing);
+  pictures from the search open their framing options instead. Forms use
+  separate boxes (no `|`). **Icons** (`type: icons`): 1–4 lucide.dev icons
+  that draw themselves in, each with an optional word (cued when said); the
+  form has an icon search with previews (`/api/icons`).
 - **Stacking:** in the Timing tab, a picture's ◫/⧉ button shows it beside or
   over the picture before (`with: side | over` on the scene).
 - **Trimming:** in the Timing tab, a picture's right edge ends it sooner

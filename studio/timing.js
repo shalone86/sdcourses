@@ -5,7 +5,7 @@
 'use strict';
 (function () {
   const FPS = 30;
-  const LABELS = {image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
+  const LABELS = {icons: 'Icons', image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
     recap: 'Lesson summary', union: 'Union', partners: 'Partners', title: 'Title card', host: 'Your photo', trinity: 'Trinity', term: 'Word', keys: 'Keys', college: 'College', iconostasis: 'Iconostasis'};
 
   function h(tag, attrs, kids) {
@@ -28,36 +28,63 @@
   // Lists are one item per line; "a | b" splits an item into two parts.
   const lines = (v) => String(v || '').split('\n').map((x) => x.trim()).filter(Boolean);
   const pair = (l) => l.split('|').map((x) => x.trim());
+  const nl = (a) => (a || []).join('\n');
+  // Each kind of picture: its boxes ([name, label, kind, options]), how to make the scene from
+  // them (make), and how to fill them from a scene already in the lesson (read, for editing).
+  // Box kinds: text, lines (one per line), check, select, areas, sprite, icon (one, with a picker),
+  // icons (one per line, with a picker), and a heading (kind 'head') between groups of boxes.
   const ADD = {
     image: {label: 'Picture (search)', fields: [], search: true},
     map: {label: 'Map', fields: [['region', 'Show', 'select', ['auto (fit what’s highlighted)', 'world', 'europe', 'mediterranean', 'east', 'holyland', 'middle-east', 'africa', 'asia', 'south-asia', 'east-asia', 'americas', 'north-america', 'south-america', 'oceania']],
       ['places', 'Cities, one per line (e.g. Rome, Antioch, Constantinople, Kyiv, Jerusalem)', 'lines'], ['route', 'Draw a route through the cities in order', 'check'],
       ['areas', 'Highlight, one per line: a country (Ukraine, United States…), a continent (Africa), a group (EU, NATO, BRICS…) or an empire (Roman Empire, Mongol Empire…)', 'areas'],
       ['caption', 'Caption', 'text']],
-      make: (v) => { const p = lines(v.places); const a = lines(v.areas);
-        return {type: 'map', region: !v.region || v.region.startsWith('auto') ? (a.length ? 'auto' : 'mediterranean') : v.region, ...(p.length ? {places: p} : {}), ...(a.length ? {areas: a} : {}),
-          ...(v.route && p.length > 1 ? {routes: p.slice(1).map((x, i) => [p[i], x])} : {}), ...(p.length ? {highlight: p[p.length - 1]} : {}), ...(v.caption ? {caption: v.caption} : {})}; }},
-    titles: {label: 'Titles', fields: [['items', 'One per line: Big text | small text under it', 'lines']],
-      make: (v) => ({type: 'titles', items: lines(v.items).map((l) => { const [a, b] = pair(l); return {latin: a, english: b || ''}; })})},
+      make: (v, old) => { const p = lines(v.places); const a = lines(v.areas);
+        // Keep a city's label placement when it's still there.
+        const places = p.map((n) => (old?.places || []).find((x) => typeof x === 'object' && x.name === n) || n);
+        return {type: 'map', region: !v.region || v.region.startsWith('auto') ? (a.length ? 'auto' : 'mediterranean') : v.region, ...(p.length ? {places} : {}), ...(a.length ? {areas: a} : {}),
+          ...(v.route && p.length > 1 ? {routes: p.slice(1).map((x, i) => [p[i], x])} : {}), ...(p.length ? {highlight: old?.highlight && p.includes(old.highlight) ? old.highlight : p[p.length - 1]} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
+      read: (sc) => ({region: sc.region && sc.region !== 'auto' ? sc.region : 'auto (fit what’s highlighted)', places: nl((sc.places || []).map((x) => (typeof x === 'string' ? x : x.name))),
+        route: !!(sc.routes && sc.routes.length), areas: nl(sc.areas), caption: sc.caption || ''})},
+    titles: {label: 'Titles', fields: [['items', 'Big text, one per line', 'lines'], ['smalls', 'Small text under each, one per line in the same order (optional)', 'lines']],
+      make: (v) => { const s = lines(v.smalls); return {type: 'titles', items: lines(v.items).map((a, i) => ({latin: a, english: s[i] || ''}))}; },
+      read: (sc) => ({items: nl((sc.items || []).map((x) => x.latin)), smalls: nl((sc.items || []).map((x) => x.english || ''))})},
     union: {label: 'Union (one and many)', fields: [['center', 'In the middle', 'text', 'The Catholic Church'], ['items', 'Around it, one per line', 'lines'], ['caption', 'Caption', 'text']],
-      make: (v) => ({type: 'union', center: v.center || 'The Catholic Church', items: lines(v.items), ...(v.caption ? {caption: v.caption} : {})})},
-    partners: {label: 'Partners (two sides together)', fields: [['ltitle', 'Left heading', 'text'], ['litems', 'Left items, one per line: icon | label (icons from lucide.dev)', 'lines'],
-      ['rtitle', 'Right heading', 'text'], ['ritems', 'Right items, one per line: icon | label', 'lines'], ['link', 'Words under the arrow', 'text']],
-      make: (v) => { const side = (t, l) => ({title: t, items: lines(l).map((x) => { const [a, b] = pair(x); return b ? {icon: a, label: b} : {label: a}; })});
-        return {type: 'partners', left: side(v.ltitle, v.litems), right: side(v.rtitle, v.ritems), ...(v.link ? {link: v.link} : {})}; }},
-    compare: {label: 'Compare (two cards)', fields: [['left', 'Left card: small | big | note | icon', 'text'], ['right', 'Right card: small | big | note | icon', 'text'], ['emphasis', 'Check mark on', 'select', ['right', 'left', 'none']]],
-      make: (v) => { const card = (t) => { const [kicker, title, note, icon] = pair(t || ''); return {kicker: kicker || '', title: title || '', note: note || '', ...(icon ? {icon} : {})}; };
-        return {type: 'compare', left: card(v.left), right: card(v.right), emphasis: v.emphasis || 'right'}; }},
+      make: (v) => ({type: 'union', center: v.center || 'The Catholic Church', items: lines(v.items), ...(v.caption ? {caption: v.caption} : {})}),
+      read: (sc) => ({center: sc.center || '', items: nl(sc.items), caption: sc.caption || ''})},
+    partners: {label: 'Partners (two sides together)', fields: [['h1', 'Left side', 'head'], ['ltitle', 'Heading', 'text'], ['litems', 'Things on this side, one per line', 'lines'], ['licons', 'An icon for each, one per line in the same order (optional)', 'icons'],
+      ['h2', 'Right side', 'head'], ['rtitle', 'Heading', 'text'], ['ritems', 'Things on this side, one per line', 'lines'], ['ricons', 'An icon for each, one per line in the same order (optional)', 'icons'],
+      ['h3', 'Between them', 'head'], ['link', 'Words under the arrow', 'text']],
+      make: (v) => { const side = (t, l, ic) => { const icons = lines(ic); const items = lines(l).map((label, i) => (icons[i] ? {icon: icons[i], label} : {label}));
+          if (!t || !items.length) throw new Error('Each side needs a heading and at least one thing'); return {title: t, items}; };
+        return {type: 'partners', left: side(v.ltitle, v.litems, v.licons), right: side(v.rtitle, v.ritems, v.ricons), ...(v.link ? {link: v.link} : {})}; },
+      read: (sc) => ({ltitle: sc.left?.title || '', litems: nl((sc.left?.items || []).map((x) => x.label)), licons: nl((sc.left?.items || []).map((x) => x.icon || '')),
+        rtitle: sc.right?.title || '', ritems: nl((sc.right?.items || []).map((x) => x.label)), ricons: nl((sc.right?.items || []).map((x) => x.icon || '')), link: sc.link || ''})},
+    compare: {label: 'Compare (two cards)', fields: [['h1', 'Left card', 'head'], ['lkicker', 'Small words on top (e.g. Latin tradition)', 'text'], ['ltitle', 'Big words', 'text'], ['lnote', 'Note under them', 'text'], ['licon', 'Icon (optional)', 'icon'],
+      ['h2', 'Right card', 'head'], ['rkicker', 'Small words on top (e.g. Eastern tradition)', 'text'], ['rtitle', 'Big words', 'text'], ['rnote', 'Note under them', 'text'], ['ricon', 'Icon (optional)', 'icon'],
+      ['emphasis', 'Check mark on', 'select', ['right', 'left', 'none']]],
+      make: (v) => { const card = (k, t, n, i) => { if (!t) throw new Error('Each card needs its big words'); return {kicker: k || '', title: t, note: n || '', ...(i ? {icon: i} : {})}; };
+        return {type: 'compare', left: card(v.lkicker, v.ltitle, v.lnote, v.licon), right: card(v.rkicker, v.rtitle, v.rnote, v.ricon), emphasis: v.emphasis || 'right'}; },
+      read: (sc) => ({lkicker: sc.left?.kicker || '', ltitle: sc.left?.title || '', lnote: sc.left?.note || '', licon: sc.left?.icon || '',
+        rkicker: sc.right?.kicker || '', rtitle: sc.right?.title || '', rnote: sc.right?.note || '', ricon: sc.right?.icon || '', emphasis: sc.emphasis || 'right'})},
+    icons: {label: 'Icons (draw themselves in)', fields: [['icons', 'Icons, one per line (up to 4)', 'icons'], ['labels', 'A word under each, one per line in the same order (optional; each appears when you say it)', 'lines'], ['caption', 'Caption', 'text']],
+      make: (v) => { const ic = lines(v.icons).slice(0, 4), lb = lines(v.labels); if (!ic.length) throw new Error('Choose at least one icon');
+        return {type: 'icons', items: ic.map((icon, i) => (lb[i] ? {icon, label: lb[i]} : {icon})), ...(v.caption ? {caption: v.caption} : {})}; },
+      read: (sc) => ({icons: nl((sc.items || []).map((x) => x.icon)), labels: nl((sc.items || []).map((x) => x.label || '')), caption: sc.caption || ''})},
     chain: {label: 'Chain (handed on)', fields: [['items', 'Steps, one per line', 'lines'], ['caption', 'Caption', 'text']],
-      make: (v) => ({type: 'chain', items: lines(v.items), ...(v.caption ? {caption: v.caption} : {})})},
-    timeline: {label: 'Timeline', fields: [['items', 'One per line: year | what happened', 'lines']],
-      make: (v) => ({type: 'timeline', items: lines(v.items).map((l) => { const [a, b] = pair(l); return {year: a, label: b || ''}; })})},
+      make: (v) => ({type: 'chain', items: lines(v.items), ...(v.caption ? {caption: v.caption} : {})}),
+      read: (sc) => ({items: nl(sc.items), caption: sc.caption || ''})},
+    timeline: {label: 'Timeline', fields: [['years', 'Years, one per line', 'lines'], ['events', 'What happened, one per line in the same order', 'lines']],
+      make: (v) => { const e = lines(v.events); return {type: 'timeline', items: lines(v.years).map((year, i) => ({year, label: e[i] || ''}))}; },
+      read: (sc) => ({years: nl((sc.items || []).map((x) => x.year)), events: nl((sc.items || []).map((x) => x.label || ''))})},
     sprite: {label: 'Pixel animation (from the Pixel art tab)', fields: [['sprite', 'Which drawing', 'sprite'], ['move', 'How it moves', 'select', ['stay', 'hop', 'across']],
       ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
       make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
-        return {type: 'sprite', sprite: v.sprite, ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; }},
+        return {type: 'sprite', sprite: v.sprite, ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
+      read: (sc) => ({sprite: sc.sprite || '', move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
     term: {label: 'A word', fields: [['term', 'The word', 'text'], ['origin', 'From (e.g. Greek …)', 'text'], ['meaning', 'Meaning', 'text']],
-      make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning})},
+      make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning}),
+      read: (sc) => ({term: sc.term || '', origin: sc.origin || '', meaning: sc.meaning || ''})},
   };
   const REMOVABLE = (s, i) => !['quote', 'keys', 'title', 'host', 'trinity', 'recap'].includes(s.scenes[i].type);
   // A picture's framing and, when cropped, which part stays.
@@ -223,7 +250,9 @@
         // A click (no drag) jumps there; on a picture it also opens its options.
         drag(block, sc.from, (f) => { setStart(i, f); }, () => {
           T.player.seek(segStart(T.seg) + Math.max(0, sc.from - 10));
-          if (sc.type === 'image') { T.editPic = {seg: T.seg, i}; draw(); }
+          if (sc.type === 'image') { T.editPic = {seg: T.seg, i}; T.editing = null; draw(); }
+          // Any other kind the form knows: open it to change.
+          else if (ADD[sc.type]?.read) { T.editing = {seg: T.seg, i}; T.adding = false; T.editPic = null; draw(); }
         });
         // Right edge: drag left to end this picture sooner (double-click to undo).
         const trim = h('div', {class: 'tl-trim' + (touched && touched.end != null ? ' moved' : ''), title: 'Drag to end this picture sooner · double-click to undo',
@@ -321,7 +350,7 @@
           }});
         })) : null,
       ]) : null;
-      const adder = T.adding ? addForm() : null;
+      const adder = T.editing && T.editing.seg === T.seg && s.scenes[T.editing.i] && ADD[s.scenes[T.editing.i].type]?.read ? addForm(T.editing.i) : T.adding ? addForm() : null;
       const picOpts = T.editPic && T.editPic.seg === T.seg && s.scenes[T.editPic.i]?.type === 'image' ? pictureOptions(T.editPic.i) : null;
       const tl = timeline();
       const box = root.querySelector('.tl-scroll') || h('div', {class: 'tl-scroll'});
@@ -362,35 +391,55 @@
       ]);
     }
 
-    function addForm() {
+    /**
+     * The form for a picture: adding a new one, or (edit = scene index) changing one already in
+     * the lesson, with its boxes filled in. Pictures from the search have their own options.
+     */
+    function addForm(edit) {
       const s = seg();
+      const old = edit != null ? s.scenes[edit] : null;
+      const kind = old ? old.type : (T.addType || 'map');
       const now = Math.max(0, secOf(T.player.frame() - segStart(T.seg)));
-      const typeSel = h('select', {'aria-label': 'Kind of picture'}, Object.entries(ADD).map(([k, d]) => h('option', {value: k, text: d.label, selected: k === (T.addType || 'map')})));
+      const typeSel = h('select', {'aria-label': 'Kind of picture', disabled: !!old}, Object.entries(ADD).map(([k, d]) => h('option', {value: k, text: d.label, selected: k === kind})));
       const fields = h('div', {class: 'stack', style: {gap: '8px'}});
       const vals = {};
+      const start = old && ADD[kind].read ? ADD[kind].read(old) : {};
       const fill = () => {
-        T.addType = typeSel.value;
-        fields.replaceChildren(...ADD[T.addType].fields.map(([name, label, kind, extra]) => {
+        if (!old) T.addType = typeSel.value;
+        const def = ADD[old ? kind : T.addType];
+        fields.replaceChildren(...def.fields.map(([name, label, type, extra]) => {
+          if (type === 'head') return h('div', {class: 'tl-head-row', text: label});
           let input;
-          if (kind === 'lines') input = h('textarea', {rows: 3});
-          else if (kind === 'check') input = h('input', {type: 'checkbox', checked: true});
-          else if (kind === 'select') input = h('select', {}, extra.map((o) => h('option', {value: o, text: o})));
-          else if (kind === 'areas') {
+          const value = start[name];
+          if (type === 'lines') { input = h('textarea', {rows: 3}); input.value = value || ''; }
+          else if (type === 'check') input = h('input', {type: 'checkbox', checked: value === undefined ? true : value || null});
+          else if (type === 'select') { input = h('select', {}, extra.map((o) => h('option', {value: o, text: o, selected: o === value}))); }
+          else if (type === 'areas') {
             // The highlight box, with every name it knows a click away.
-            const box = h('textarea', {rows: 3});
+            const box = h('textarea', {rows: 3}); box.value = value || '';
             const all = h('details', {class: 'small'}, [h('summary', {text: 'See every continent, group and empire'})]);
             api('/api/map-areas').then((groups) => all.append(...groups.map((g) => h('div', {style: {margin: '6px 0'}}, [h('b', {text: g.title + ': '}),
               ...g.names.map((n, i) => h('span', {}, [i ? ', ' : '', h('a', {href: '#', text: n, onclick: (e) => { e.preventDefault(); box.value = (box.value.trim() ? box.value.trim() + '\n' : '') + n; }})]))]))));
             vals[name] = box;
             return h('label', {class: 'tl-field'}, [h('span', {text: label}), box, all]);
           }
-          else if (kind === 'sprite') {
-            // Her saved pixel animations.
+          else if (type === 'icon' || type === 'icons') {
+            // An icon name (or one per line), with a search that shows the icons.
+            input = type === 'icon' ? h('input', {type: 'text', placeholder: 'e.g. church'}) : h('textarea', {rows: 3, placeholder: 'e.g. book-open'});
+            input.value = value || '';
+            vals[name] = input;
+            return h('label', {class: 'tl-field'}, [h('span', {text: label}), input, iconPicker((n) => {
+              if (type === 'icon') input.value = n;
+              else input.value = (input.value.trim() ? input.value.trim() + '\n' : '') + n;
+            })]);
+          }
+          else if (type === 'sprite') {
+            // Her saved pixel animations and sketches.
             input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);
-            api('/api/sprites').then((list) => input.replaceChildren(...(list.length ? list.map((x) => h('option', {value: x.slug, text: x.name}))
+            api('/api/sprites').then((list) => input.replaceChildren(...(list.length ? list.map((x) => h('option', {value: x.slug, text: x.name, selected: x.slug === value}))
               : [h('option', {value: '', text: 'None yet: draw one on the Pixel art tab'})])));
           }
-          else input = h('input', {type: 'text', value: extra || ''});
+          else input = h('input', {type: 'text', value: value ?? extra ?? ''});
           vals[name] = input;
           return h('label', {class: 'tl-field'}, [h('span', {text: label}), input]);
         }));
@@ -398,31 +447,53 @@
       typeSel.addEventListener('change', () => { T.picked = null; fill(); draw(); });
       fill();
       // Picture: search free sources, pick one, add a caption.
-      if (T.addType === 'image') fields.replaceChildren(imagePicker());
+      if (!old && T.addType === 'image') fields.replaceChildren(imagePicker());
       const at = h('input', {type: 'number', step: '0.1', min: '0', value: now.toFixed(1), style: {width: '6em'}});
-      const add = async () => {
+      const close = () => { T.adding = false; T.editing = null; draw(); };
+      const save = async () => {
         const v = Object.fromEntries(Object.entries(vals).map(([k, el]) => [k, el.type === 'checkbox' ? el.checked : el.value]));
         try {
           await persist();
           let scene;
-          if (T.addType === 'image') {
+          if (!old && T.addType === 'image') {
             if (!T.picked) { alert('Pick a picture first.'); return; }
             const credit = await post('/api/images/import?id=' + encodeURIComponent(T.id), {img: T.picked});
             const line = [credit.creator && credit.creator !== 'Unknown' ? credit.creator : '', credit.source, credit.license].filter(Boolean).join(' · ');
             scene = {type: 'image', src: credit.file, aspect: credit.aspect, credit: line, ...(T.caption ? {caption: T.caption} : {}), ...(T.fit && T.fit !== 'contain' ? {fit: T.fit} : {}), ...(T.focus && T.focus !== 'center' ? {focus: T.focus} : {})};
             T.picked = null;
-          } else scene = ADD[T.addType].make(v);
-          const d = await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'add', section: s.name, scene, start: Number(at.value)});
-          T.adding = false; reload(d);
-        } catch (e) { alert('Couldn’t add it: ' + e.message); }
+          } else scene = ADD[old ? kind : T.addType].make(v, old);
+          const d = old
+            ? await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'replace', section: s.name, index: edit, scene})
+            : await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'add', section: s.name, scene, start: Number(at.value)});
+          T.adding = false; T.editing = null; reload(d);
+        } catch (e) { alert((old ? 'Couldn’t change it: ' : 'Couldn’t add it: ') + e.message); }
       };
       return h('div', {class: 'card', style: {gap: '10px'}}, [
-        h('div', {class: 'row'}, [h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Kind'}), typeSel]),
-          h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Starts at (seconds into the recording)'}), at])]),
+        old ? h('b', {text: 'Change this ' + (LABELS[kind] || kind).toLowerCase()})
+          : h('div', {class: 'row'}, [h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Kind'}), typeSel]),
+            h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Starts at (seconds into the recording)'}), at])]),
         fields,
-        h('div', {class: 'row'}, [h('span', {class: 'small muted', text: 'Items appear when you say them. You can drag it afterwards.'}),
-          h('span', {}, [h('button', {class: 'btn', text: 'Cancel', onclick: () => { T.adding = false; draw(); }}), ' ', h('button', {class: 'btn primary', text: 'Add it', onclick: add})])]),
+        h('div', {class: 'row'}, [h('span', {class: 'small muted', text: old ? 'Its place and timing stay as they are.' : 'Items appear when you say them. You can drag it afterwards.'}),
+          h('span', {}, [h('button', {class: 'btn', text: 'Cancel', onclick: close}), ' ', h('button', {class: 'btn primary', text: old ? 'Save changes' : 'Add it', onclick: save})])]),
       ]);
+    }
+
+    /** Search Lucide icons by name and see them; onPick(name) when one is clicked. */
+    function iconPicker(onPick) {
+      const q = h('input', {type: 'search', placeholder: 'Search icons, e.g. church, book, heart'});
+      const grid = h('div', {class: 'ic-grid'});
+      const box = h('details', {class: 'small'}, [h('summary', {text: 'Find an icon'}), q, grid,
+        h('div', {class: 'small muted', text: 'From lucide.dev. Click one to use it.'})]);
+      let timer = null;
+      const search = () => api('/api/icons?q=' + encodeURIComponent(q.value)).then((list) => grid.replaceChildren(...list.map((ic) => {
+        const b = h('button', {class: 'ic-pick', type: 'button', title: ic.name, onclick: () => onPick(ic.name)});
+        b.innerHTML = ic.svg; // drawn by the studio from the icon set (no outside content)
+        b.append(h('span', {text: ic.name}));
+        return b;
+      })));
+      q.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(search, 200); });
+      box.addEventListener('toggle', () => { if (box.open && !grid.children.length) search(); });
+      return box;
     }
 
     function imagePicker() {

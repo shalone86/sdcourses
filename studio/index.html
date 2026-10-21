@@ -200,6 +200,11 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
 .ref-pick{padding:2px;border:1px solid var(--rule);border-radius:6px;background:var(--bg);cursor:pointer}
 .ref-pick img{display:block;height:84px;max-width:140px;object-fit:contain}
 .ref-box summary{cursor:pointer;font-weight:600;color:var(--muted);font-size:14px}
+.tl-head-row{font:700 13px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-top:8px;padding-top:8px;border-top:1px dashed var(--rule)}
+.ic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:6px;max-height:240px;overflow:auto;margin:8px 0}
+.ic-pick{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border:1px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink);cursor:pointer}
+.ic-pick:hover{border-color:var(--accent)}
+.ic-pick span{font:500 10px/1.1 var(--sans);color:var(--muted);text-align:center;word-break:break-all}
 .tl-trim{position:absolute;top:0;right:0;bottom:0;width:14px;cursor:ew-resize;background:color-mix(in srgb,var(--ink) 18%,transparent);border-left:2px solid var(--ink);opacity:.35;touch-action:none}
 .tl-trim:hover,.tl-trim.moved{opacity:.9}
 .tl-trim.moved{border-left-color:var(--ok)}

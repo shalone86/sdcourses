@@ -15,6 +15,9 @@ import {normalizeQuestion} from '../scripts/build-post.mjs';
 import {cachedWords, compare, whisperAvailable} from '../scripts/voice.mjs';
 import {prepare} from '../scripts/prepare.mjs';
 import YAML from 'yaml';
+import {icons as LUCIDE} from 'lucide-react';
+import {createElement} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
 import * as esbuild from 'esbuild';
 import {importImage, searchImages, sourceList} from './images.mjs';
 import {deleteSprite, listSprites, saveSprite} from '../scripts/sprites.mjs';
@@ -212,6 +215,19 @@ function editScenes(dir, section, op, sceneIndex, scene, key, value) {
       const pos = at < seq.items.length ? refLine : (src.indexOf('\n', seq.items[seq.items.length - 1].range[1] - 1) + 1 || src.length);
       src = src.slice(0, pos) + text + src.slice(pos);
     }
+  } else if (op === 'replace') {
+    // Change a picture in place: its lines become the new ones (same spot, same hand timing).
+    const item = seq.items[k];
+    if (!item) throw httpError(400, 'No such scene');
+    const from = lineStart(item.range[0]);
+    const next = seq.items[k + 1];
+    const to = next ? lineStart(next.range[0]) : src.indexOf('\n', item.range[1] - 1) + 1 || src.length;
+    const indent = src.slice(from, item.range[0]).length - 2; // the "- " column
+    src = src.slice(0, from) + YAML.stringify([scene], {lineWidth: 0}).trimEnd().split('\n').map((l) => ' '.repeat(indent) + l).join('\n') + '\n' + src.slice(to);
+    YAML.parse(src);
+    fs.writeFileSync(file, src);
+    const tf = path.join(dir, 'timing.yml');
+    return fs.existsSync(tf) ? YAML.parse(fs.readFileSync(tf, 'utf8')) ?? {} : {};
   } else if (op === 'set') {
     // One setting on a scene (e.g. `with: side`): drop its old line, then add the new one at the end of the scene.
     const item = seq.items[k];
@@ -237,8 +253,10 @@ function editScenes(dir, section, op, sceneIndex, scene, key, value) {
     const from = lineStart(item.range[0]);
     const next = seq.items[k + 1];
     const to = next ? lineStart(next.range[0]) : src.indexOf('\n', item.range[1] - 1) + 1 || src.length;
+    // The last picture gone: write "visuals: []" on THIS slide's key (it's before the cut, so its place holds).
+    const key = doc.getIn(p.slice(0, -1), true).items.find((pr) => pr.key?.value === p[p.length - 1]).key;
     src = src.slice(0, from) + src.slice(to);
-    if (seq.items.length === 1) src = src.replace(new RegExp(`(\\n[ ]*${p[p.length - 1]}:)[ ]*\\n`), '$1 []\n');
+    if (seq.items.length === 1) src = src.slice(0, key.range[1]) + src.slice(key.range[1]).replace(/^:[ \t]*\n/, ': []\n');
   }
   YAML.parse(src); // must still be valid
   fs.writeFileSync(file, src);
@@ -529,6 +547,13 @@ async function handle(req, res) {
     if (p === '/api/timing') return json(res, 200, timingData(id));
     if (p === '/api/images/sources') return json(res, 200, sourceList());
     if (p === '/api/sprites') return json(res, 200, listSprites());
+    if (p === '/api/icons') {
+      // Lucide icons whose name matches, with a small drawing of each, for the Icons picker.
+      const q = (url.searchParams.get('q') ?? '').trim().toLowerCase().replace(/\s+/g, '-');
+      const all = Object.keys(LUCIDE).map((n) => [n, n.replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([a-zA-Z])(\d)/g, '$1-$2').toLowerCase()]);
+      const hits = all.filter(([, k]) => !q || k.includes(q)).sort((a, b) => (a[1].startsWith(q) ? 0 : 1) - (b[1].startsWith(q) ? 0 : 1) || a[1].length - b[1].length).slice(0, 72);
+      return json(res, 200, hits.map(([n, k]) => ({name: k, svg: renderToStaticMarkup(createElement(LUCIDE[n], {size: 36, strokeWidth: 1.6}))})));
+    }
     if (p === '/api/map-areas') {
       // The names a map can highlight beyond countries (video/data/areas.json), for the Timing tab.
       const {areas} = JSON.parse(fs.readFileSync(path.join(ROOT, 'video/data/areas.json'), 'utf8'));
@@ -676,6 +701,15 @@ async function handle(req, res) {
         if (!Number.isInteger(index) || index < 1 || index < sceneList(section, dir).first) throw httpError(400, 'Only a picture after another one can share its space');
         if (![null, 'side', 'over'].includes(value)) throw httpError(400, 'Bad choice');
         editScenes(dir, section, 'set', index, null, 'with', value);
+        setStatus(dir, 'draft');
+        return json(res, 200, timingData(id));
+      } else if (op === 'replace') {
+        // Edit a picture (from the Timing tab's form): keep what the form doesn't show.
+        if (!Number.isInteger(index) || index < sceneList(section, dir).first) throw httpError(400, 'No such picture');
+        if (!scene || typeof scene.type !== 'string') throw httpError(400, 'Missing scene');
+        const old = loadLesson(dir).segments.find((x) => x.name === section).scenes[index] ?? {};
+        const keep = Object.fromEntries(['with', 'at', 'cues', 'src', 'aspect', 'credit', 'fit', 'focus'].filter((k) => old[k] !== undefined && scene[k] === undefined).map((k) => [k, old[k]]));
+        editScenes(dir, section, 'replace', index, {...scene, ...keep});
         setStatus(dir, 'draft');
         return json(res, 200, timingData(id));
       } else if (op === 'set') {
