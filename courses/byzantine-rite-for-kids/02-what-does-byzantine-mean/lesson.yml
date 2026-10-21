@@ -96,11 +96,9 @@ points:
       was Hagia Sophia, which means Holy Wisdom. So Byzantium became
       Constantinople.
     visuals:
-      - type: image
-        src: images/wikimedia-constantine-the-great-label-qs-lit-l-imp-148609.jpg
-        aspect: 0.777
-        credit: Byzantine mosaicist, ca. 1000 · Wikimedia Commons · Public domain
-        fit: cover
+      - type: sprite
+        sprite: constantine
+        size: full
       - type: map
         region: mediterranean
         places: [Rome, {name: Constantinople, label: above}]
