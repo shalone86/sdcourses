@@ -12,9 +12,11 @@ import {ROOT, lessonDir, loadLesson, loadSite} from './lib.mjs';
 const arg = process.argv[2];
 // --update-live: replace an already published lesson in place (only when Shalone asks).
 const updateLive = process.argv.includes('--update-live');
+// --only=kids (or courses): send to just that site.
+const only = (process.argv.find((a) => a.startsWith('--only=')) ?? '').slice(7);
 const {id, lesson, course, segments, kids} = loadLesson(lessonDir(arg));
 // Kids lessons go to both sites (course.yml `sites:` can say otherwise).
-const sites = lesson.sites ?? course.sites ?? (kids ? ['courses', 'kids'] : ['courses']);
+const sites = (lesson.sites ?? course.sites ?? (kids ? ['courses', 'kids'] : ['courses'])).filter((x) => !only || x === only);
 
 // A person signs off on every lesson before it can reach the site.
 const problems = [];
@@ -46,10 +48,11 @@ for (const which of sites) {
   }
   console.log(`Uploading video${label}…`);
   const videoUrl = await g.upload('media', path.join(dist, 'lesson.mp4'), 'video/mp4');
-  const posterUrl = await g.upload('images', path.join(dist, 'poster.jpg'), 'image/jpeg');
+  // The kids site's thumbnails have their own look (turquoise, big letters, her pixel art), and
+  // there the same picture is the video's poster.
+  const posterUrl = which === 'kids' ? await g.upload('images', renderKidsThumb(arg), 'image/png') : await g.upload('images', path.join(dist, 'poster.jpg'), 'image/jpeg');
   const {html, meta} = which === 'kids' ? buildKidsSitePost(arg, {videoUrl, posterUrl}) : buildPost(arg, {videoUrl, posterUrl});
-  // The kids site's thumbnails have their own look (turquoise, big letters, her pixel art).
-  const feature = which === 'kids' ? await g.upload('images', renderKidsThumb(arg), 'image/png') : posterUrl;
+  const feature = posterUrl;
   const saved = await g.saveDraft('posts', {
     title: meta.title, slug: meta.slug, custom_excerpt: meta.custom_excerpt, html,
     tags: meta.tags.map((name) => ({name})), feature_image: feature,

@@ -120,7 +120,7 @@ export function buildKidsSitePost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl 
     outro.text && `<p>${span(outro.text)}</p>`,
   ].filter(Boolean).join('');
   const html = [
-    `<figure class="kg-card kg-video-card kg-width-regular"><div class="kg-video-container"><video src="${videoUrl}" poster="${posterUrl}" width="1920" height="1080" playsinline preload="metadata"></video></div></figure>`,
+    `<figure class="kg-card kg-video-card kg-width-regular" data-kg-thumbnail="${posterUrl}" data-kg-custom-thumbnail="${posterUrl}"><div class="kg-video-container"><video src="${videoUrl}" poster="${posterUrl}" width="1920" height="1080" playsinline preload="metadata"></video></div></figure>`,
     questions.length && [`<h2>${span('Quiz: ' + lesson.title)}</h2>`, ...questions.map(question), '<hr>'].join('\n'),
     toggle('Read the words of the video', words),
     imageCredits(dir, lesson),
