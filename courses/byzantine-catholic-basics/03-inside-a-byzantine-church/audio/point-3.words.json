@@ -1,0 +1,455 @@
+{
+ "stamp": "2:3577038:1792516983573",
+ "words": [
+  {
+   "w": "Every",
+   "start": 0.09,
+   "end": 0.5
+  },
+  {
+   "w": "icon",
+   "start": 0.5,
+   "end": 0.9
+  },
+  {
+   "w": "points",
+   "start": 0.9,
+   "end": 1.5
+  },
+  {
+   "w": "to",
+   "start": 1.5,
+   "end": 1.79
+  },
+  {
+   "w": "one",
+   "start": 1.79,
+   "end": 2
+  },
+  {
+   "w": "person,",
+   "start": 2,
+   "end": 2.8
+  },
+  {
+   "w": "as",
+   "start": 2.8,
+   "end": 3.27
+  },
+  {
+   "w": "the",
+   "start": 3.27,
+   "end": 3.3
+  },
+  {
+   "w": "catechism",
+   "start": 3.3,
+   "end": 4.2
+  },
+  {
+   "w": "explains.",
+   "start": 4.2,
+   "end": 5.36
+  },
+  {
+   "w": "The",
+   "start": 5.36,
+   "end": 5.63
+  },
+  {
+   "w": "sacred",
+   "start": 5.63,
+   "end": 6.13
+  },
+  {
+   "w": "image,",
+   "start": 6.13,
+   "end": 6.75
+  },
+  {
+   "w": "the",
+   "start": 6.75,
+   "end": 7.01
+  },
+  {
+   "w": "liturgical",
+   "start": 7.01,
+   "end": 7.87
+  },
+  {
+   "w": "icon,",
+   "start": 7.87,
+   "end": 8.63
+  },
+  {
+   "w": "principally,",
+   "start": 8.63,
+   "end": 9.52
+  },
+  {
+   "w": "represents",
+   "start": 9.52,
+   "end": 10.72
+  },
+  {
+   "w": "Christ.",
+   "start": 10.72,
+   "end": 11.24
+  },
+  {
+   "w": "To",
+   "start": 11.24,
+   "end": 11.38
+  },
+  {
+   "w": "the",
+   "start": 11.38,
+   "end": 11.59
+  },
+  {
+   "w": "right",
+   "start": 11.59,
+   "end": 11.94
+  },
+  {
+   "w": "of",
+   "start": 11.94,
+   "end": 12.08
+  },
+  {
+   "w": "the",
+   "start": 12.08,
+   "end": 12.29
+  },
+  {
+   "w": "Royal",
+   "start": 12.29,
+   "end": 12.64
+  },
+  {
+   "w": "Doors",
+   "start": 12.64,
+   "end": 13.03
+  },
+  {
+   "w": "is",
+   "start": 13.03,
+   "end": 13.13
+  },
+  {
+   "w": "the",
+   "start": 13.13,
+   "end": 13.34
+  },
+  {
+   "w": "icon",
+   "start": 13.34,
+   "end": 13.65
+  },
+  {
+   "w": "of",
+   "start": 13.65,
+   "end": 13.76
+  },
+  {
+   "w": "Christ",
+   "start": 13.76,
+   "end": 14.18
+  },
+  {
+   "w": "holding",
+   "start": 14.18,
+   "end": 14.72
+  },
+  {
+   "w": "the",
+   "start": 14.72,
+   "end": 14.89
+  },
+  {
+   "w": "Book",
+   "start": 14.89,
+   "end": 15.16
+  },
+  {
+   "w": "of",
+   "start": 15.16,
+   "end": 15.31
+  },
+  {
+   "w": "the",
+   "start": 15.31,
+   "end": 15.56
+  },
+  {
+   "w": "Gospels",
+   "start": 15.56,
+   "end": 16.04
+  },
+  {
+   "w": "and",
+   "start": 16.04,
+   "end": 16.33
+  },
+  {
+   "w": "Blessing.",
+   "start": 16.33,
+   "end": 17.4
+  },
+  {
+   "w": "To",
+   "start": 17.4,
+   "end": 17.54
+  },
+  {
+   "w": "the",
+   "start": 17.54,
+   "end": 17.75
+  },
+  {
+   "w": "left",
+   "start": 17.75,
+   "end": 18.03
+  },
+  {
+   "w": "is",
+   "start": 18.03,
+   "end": 18.17
+  },
+  {
+   "w": "the",
+   "start": 18.17,
+   "end": 18.38
+  },
+  {
+   "w": "Mother",
+   "start": 18.38,
+   "end": 18.8
+  },
+  {
+   "w": "of",
+   "start": 18.8,
+   "end": 18.94
+  },
+  {
+   "w": "God",
+   "start": 18.94,
+   "end": 19.19
+  },
+  {
+   "w": "holding",
+   "start": 19.19,
+   "end": 19.65
+  },
+  {
+   "w": "the",
+   "start": 19.65,
+   "end": 19.88
+  },
+  {
+   "w": "Christ",
+   "start": 19.88,
+   "end": 20.28
+  },
+  {
+   "w": "Child",
+   "start": 20.28,
+   "end": 20.67
+  },
+  {
+   "w": "and",
+   "start": 20.67,
+   "end": 20.85
+  },
+  {
+   "w": "pointing",
+   "start": 20.85,
+   "end": 21.41
+  },
+  {
+   "w": "to",
+   "start": 21.41,
+   "end": 21.55
+  },
+  {
+   "w": "Him,",
+   "start": 21.55,
+   "end": 21.9
+  },
+  {
+   "w": "showing",
+   "start": 21.9,
+   "end": 22.48
+  },
+  {
+   "w": "us",
+   "start": 22.48,
+   "end": 22.75
+  },
+  {
+   "w": "the",
+   "start": 22.75,
+   "end": 23.16
+  },
+  {
+   "w": "way.",
+   "start": 23.16,
+   "end": 24
+  },
+  {
+   "w": "Above",
+   "start": 24,
+   "end": 24.36
+  },
+  {
+   "w": "the",
+   "start": 24.36,
+   "end": 24.57
+  },
+  {
+   "w": "Doors",
+   "start": 24.57,
+   "end": 24.92
+  },
+  {
+   "w": "is",
+   "start": 24.92,
+   "end": 25.06
+  },
+  {
+   "w": "the",
+   "start": 25.06,
+   "end": 25.32
+  },
+  {
+   "w": "Mystical",
+   "start": 25.32,
+   "end": 25.83
+  },
+  {
+   "w": "Supper,",
+   "start": 25.83,
+   "end": 26.41
+  },
+  {
+   "w": "the",
+   "start": 26.41,
+   "end": 26.6
+  },
+  {
+   "w": "Last",
+   "start": 26.6,
+   "end": 26.87
+  },
+  {
+   "w": "Supper,",
+   "start": 26.87,
+   "end": 27.48
+  },
+  {
+   "w": "and",
+   "start": 27.48,
+   "end": 27.65
+  },
+  {
+   "w": "higher",
+   "start": 27.65,
+   "end": 28.09
+  },
+  {
+   "w": "still",
+   "start": 28.09,
+   "end": 28.47
+  },
+  {
+   "w": "are",
+   "start": 28.47,
+   "end": 28.64
+  },
+  {
+   "w": "the",
+   "start": 28.64,
+   "end": 28.86
+  },
+  {
+   "w": "Great",
+   "start": 28.86,
+   "end": 29.36
+  },
+  {
+   "w": "Feast",
+   "start": 29.45,
+   "end": 29.86
+  },
+  {
+   "w": "of",
+   "start": 29.86,
+   "end": 30.02
+  },
+  {
+   "w": "the",
+   "start": 30.02,
+   "end": 30.3
+  },
+  {
+   "w": "Year.",
+   "start": 30.3,
+   "end": 31
+  },
+  {
+   "w": "Read",
+   "start": 31,
+   "end": 31.3
+  },
+  {
+   "w": "together,",
+   "start": 31.3,
+   "end": 32.06
+  },
+  {
+   "w": "the",
+   "start": 32.06,
+   "end": 32.32
+  },
+  {
+   "w": "Alcanostasis",
+   "start": 32.32,
+   "end": 33.2
+  },
+  {
+   "w": "tells",
+   "start": 33.2,
+   "end": 33.58
+  },
+  {
+   "w": "the",
+   "start": 33.58,
+   "end": 33.81
+  },
+  {
+   "w": "whole",
+   "start": 33.81,
+   "end": 34.27
+  },
+  {
+   "w": "story",
+   "start": 34.27,
+   "end": 34.57
+  },
+  {
+   "w": "of",
+   "start": 34.57,
+   "end": 34.72
+  },
+  {
+   "w": "our",
+   "start": 34.72,
+   "end": 34.96
+  },
+  {
+   "w": "salvation.",
+   "start": 34.96,
+   "end": 35.72
+  }
+ ]
+}

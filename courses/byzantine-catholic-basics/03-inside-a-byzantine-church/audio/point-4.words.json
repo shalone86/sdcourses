@@ -1,0 +1,530 @@
+{
+ "stamp": "2:4101198:1792517069589",
+ "words": [
+  {
+   "w": "Byzantine",
+   "start": 0.09,
+   "end": 0.66
+  },
+  {
+   "w": "Catholics",
+   "start": 0.66,
+   "end": 1.54
+  },
+  {
+   "w": "receive",
+   "start": 1.54,
+   "end": 1.85
+  },
+  {
+   "w": "the",
+   "start": 1.85,
+   "end": 2.07
+  },
+  {
+   "w": "Body",
+   "start": 2.07,
+   "end": 2.37
+  },
+  {
+   "w": "and",
+   "start": 2.37,
+   "end": 2.63
+  },
+  {
+   "w": "Blood",
+   "start": 2.63,
+   "end": 3.07
+  },
+  {
+   "w": "of",
+   "start": 3.07,
+   "end": 3.11
+  },
+  {
+   "w": "Christ",
+   "start": 3.11,
+   "end": 3.71
+  },
+  {
+   "w": "together",
+   "start": 3.71,
+   "end": 4.52
+  },
+  {
+   "w": "from",
+   "start": 4.52,
+   "end": 4.66
+  },
+  {
+   "w": "a",
+   "start": 4.66,
+   "end": 4.72
+  },
+  {
+   "w": "golden",
+   "start": 4.72,
+   "end": 5.16
+  },
+  {
+   "w": "spoon.",
+   "start": 5.16,
+   "end": 6.32
+  },
+  {
+   "w": "With",
+   "start": 6.32,
+   "end": 6.61
+  },
+  {
+   "w": "a",
+   "start": 6.61,
+   "end": 6.68
+  },
+  {
+   "w": "spoon,",
+   "start": 6.68,
+   "end": 7.18
+  },
+  {
+   "w": "the",
+   "start": 7.18,
+   "end": 7.39
+  },
+  {
+   "w": "priest",
+   "start": 7.39,
+   "end": 7.87
+  },
+  {
+   "w": "gives",
+   "start": 7.87,
+   "end": 8.18
+  },
+  {
+   "w": "the",
+   "start": 8.18,
+   "end": 8.39
+  },
+  {
+   "w": "faithful",
+   "start": 8.39,
+   "end": 8.97
+  },
+  {
+   "w": "the",
+   "start": 8.97,
+   "end": 9.18
+  },
+  {
+   "w": "most",
+   "start": 9.18,
+   "end": 9.47
+  },
+  {
+   "w": "pure",
+   "start": 9.47,
+   "end": 9.77
+  },
+  {
+   "w": "Body",
+   "start": 9.77,
+   "end": 10.05
+  },
+  {
+   "w": "and",
+   "start": 10.05,
+   "end": 10.26
+  },
+  {
+   "w": "precious",
+   "start": 10.26,
+   "end": 10.84
+  },
+  {
+   "w": "Blood",
+   "start": 10.84,
+   "end": 11.2
+  },
+  {
+   "w": "of",
+   "start": 11.2,
+   "end": 11.48
+  },
+  {
+   "w": "Christ",
+   "start": 11.48,
+   "end": 12.16
+  },
+  {
+   "w": "for",
+   "start": 12.16,
+   "end": 12.44
+  },
+  {
+   "w": "the",
+   "start": 12.44,
+   "end": 12.72
+  },
+  {
+   "w": "cleansing",
+   "start": 12.72,
+   "end": 13.7
+  },
+  {
+   "w": "from",
+   "start": 13.7,
+   "end": 13.93
+  },
+  {
+   "w": "sins.",
+   "start": 13.93,
+   "end": 14.6
+  },
+  {
+   "w": "The",
+   "start": 14.6,
+   "end": 14.83
+  },
+  {
+   "w": "Catechism",
+   "start": 14.83,
+   "end": 15.47
+  },
+  {
+   "w": "explains",
+   "start": 15.47,
+   "end": 16.14
+  },
+  {
+   "w": "the",
+   "start": 16.14,
+   "end": 16.41
+  },
+  {
+   "w": "spoon",
+   "start": 16.41,
+   "end": 16.66
+  },
+  {
+   "w": "with",
+   "start": 16.66,
+   "end": 16.92
+  },
+  {
+   "w": "a",
+   "start": 16.92,
+   "end": 16.99
+  },
+  {
+   "w": "scene",
+   "start": 16.99,
+   "end": 17.35
+  },
+  {
+   "w": "from",
+   "start": 17.35,
+   "end": 17.67
+  },
+  {
+   "w": "Isaiah.",
+   "start": 17.67,
+   "end": 18.36
+  },
+  {
+   "w": "The",
+   "start": 18.36,
+   "end": 18.6
+  },
+  {
+   "w": "prophet",
+   "start": 18.6,
+   "end": 19.16
+  },
+  {
+   "w": "sees",
+   "start": 19.16,
+   "end": 19.48
+  },
+  {
+   "w": "God's",
+   "start": 19.48,
+   "end": 19.9
+  },
+  {
+   "w": "glory",
+   "start": 19.9,
+   "end": 20.28
+  },
+  {
+   "w": "and",
+   "start": 20.28,
+   "end": 20.56
+  },
+  {
+   "w": "cries",
+   "start": 20.56,
+   "end": 20.92
+  },
+  {
+   "w": "out",
+   "start": 20.92,
+   "end": 21.16
+  },
+  {
+   "w": "that",
+   "start": 21.16,
+   "end": 21.48
+  },
+  {
+   "w": "his",
+   "start": 21.48,
+   "end": 21.67
+  },
+  {
+   "w": "lips",
+   "start": 21.67,
+   "end": 22.09
+  },
+  {
+   "w": "are",
+   "start": 22.09,
+   "end": 22.28
+  },
+  {
+   "w": "unclean.",
+   "start": 22.28,
+   "end": 23.16
+  },
+  {
+   "w": "An",
+   "start": 23.16,
+   "end": 23.33
+  },
+  {
+   "w": "angel",
+   "start": 23.33,
+   "end": 23.75
+  },
+  {
+   "w": "takes",
+   "start": 23.75,
+   "end": 24.18
+  },
+  {
+   "w": "a",
+   "start": 24.18,
+   "end": 24.25
+  },
+  {
+   "w": "burning",
+   "start": 24.25,
+   "end": 24.97
+  },
+  {
+   "w": "coal",
+   "start": 24.97,
+   "end": 25.22
+  },
+  {
+   "w": "from",
+   "start": 25.22,
+   "end": 25.5
+  },
+  {
+   "w": "the",
+   "start": 25.5,
+   "end": 25.79
+  },
+  {
+   "w": "altar",
+   "start": 25.79,
+   "end": 26.23
+  },
+  {
+   "w": "with",
+   "start": 26.23,
+   "end": 26.47
+  },
+  {
+   "w": "tongs",
+   "start": 26.47,
+   "end": 26.91
+  },
+  {
+   "w": "and",
+   "start": 26.91,
+   "end": 27.16
+  },
+  {
+   "w": "touches",
+   "start": 27.16,
+   "end": 27.75
+  },
+  {
+   "w": "his",
+   "start": 27.75,
+   "end": 28
+  },
+  {
+   "w": "mouth.",
+   "start": 28,
+   "end": 28.76
+  },
+  {
+   "w": "Now",
+   "start": 28.85,
+   "end": 29.02
+  },
+  {
+   "w": "that",
+   "start": 29.02,
+   "end": 29.36
+  },
+  {
+   "w": "this",
+   "start": 29.36,
+   "end": 29.78
+  },
+  {
+   "w": "has",
+   "start": 29.78,
+   "end": 30
+  },
+  {
+   "w": "touched",
+   "start": 30,
+   "end": 30.6
+  },
+  {
+   "w": "your",
+   "start": 30.6,
+   "end": 30.96
+  },
+  {
+   "w": "lips,",
+   "start": 30.96,
+   "end": 31.47
+  },
+  {
+   "w": "your",
+   "start": 31.47,
+   "end": 31.83
+  },
+  {
+   "w": "wickedness",
+   "start": 31.83,
+   "end": 32.7
+  },
+  {
+   "w": "is",
+   "start": 32.7,
+   "end": 32.87
+  },
+  {
+   "w": "removed,",
+   "start": 32.87,
+   "end": 33.66
+  },
+  {
+   "w": "your",
+   "start": 33.66,
+   "end": 34.06
+  },
+  {
+   "w": "sin",
+   "start": 34.06,
+   "end": 34.28
+  },
+  {
+   "w": "purged.",
+   "start": 34.28,
+   "end": 35.2
+  },
+  {
+   "w": "In",
+   "start": 35.2,
+   "end": 35.36
+  },
+  {
+   "w": "the",
+   "start": 35.36,
+   "end": 35.6
+  },
+  {
+   "w": "same",
+   "start": 35.6,
+   "end": 35.91
+  },
+  {
+   "w": "way,",
+   "start": 35.91,
+   "end": 36.32
+  },
+  {
+   "w": "Christ",
+   "start": 36.32,
+   "end": 36.8
+  },
+  {
+   "w": "comes",
+   "start": 36.8,
+   "end": 37.2
+  },
+  {
+   "w": "to",
+   "start": 37.2,
+   "end": 37.4
+  },
+  {
+   "w": "our",
+   "start": 37.4,
+   "end": 37.6
+  },
+  {
+   "w": "lips",
+   "start": 37.6,
+   "end": 37.92
+  },
+  {
+   "w": "in",
+   "start": 37.92,
+   "end": 38.27
+  },
+  {
+   "w": "Holy",
+   "start": 38.27,
+   "end": 38.4
+  },
+  {
+   "w": "Communion",
+   "start": 38.4,
+   "end": 39.12
+  },
+  {
+   "w": "to",
+   "start": 39.12,
+   "end": 39.28
+  },
+  {
+   "w": "cleanse",
+   "start": 39.28,
+   "end": 39.84
+  },
+  {
+   "w": "and",
+   "start": 39.84,
+   "end": 40.08
+  },
+  {
+   "w": "heal",
+   "start": 40.08,
+   "end": 40.43
+  },
+  {
+   "w": "us.",
+   "start": 40.43,
+   "end": 40.84
+  }
+ ]
+}

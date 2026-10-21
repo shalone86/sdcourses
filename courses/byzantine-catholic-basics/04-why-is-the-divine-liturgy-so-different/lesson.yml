@@ -18,7 +18,12 @@ sources:
     url: https://www.newadvent.org/cathen/04312d.htm
 
 intro:
-  text: ""               # Shalone writes this
+  text: >-
+    Icons, singing, holy doors, and wow, so many more differences between the
+    Novus Ordo Mass and the Liturgies of Saint Basil and John Chrysostom. But
+    why? Let's find out with this lesson on the Divine Liturgy. I'm your host,
+    Shalone Cason, and let's begin in the name of the Father and of the Son
+    and of the Holy Spirit.
   notes:
     - From the course introduction: a Byzantine Divine Liturgy can feel very different from a Roman Mass. Why? This lesson answers in five points.
     - The Divine Liturgy is the Byzantine Catholic name for the Eucharist, the same sacrament Roman Catholics celebrate at Mass.
@@ -199,7 +204,13 @@ points:
         to be of equal right and dignity."
 
 outro:
-  text: ""               # Shalone writes this
+  text: >-
+    So, why is the Divine Liturgy different in a nutshell? We all have the
+    same Eucharist, but it can be celebrated in different ways. The Divine
+    Liturgy originates in Antioch and in Greek-speaking communities. The
+    Divine Liturgy is always sung unaccompanied by instruments, among other
+    differences, and although it differs, it is equal to all other approved
+    forms of Eucharistic celebration.
   notes:
     - "Recap: one mystery, many forms · prayers rooted in Antioch · heaven on earth · a Liturgy that is sung · different, but equal."
     - "Next lesson: Baptism, Chrismation and Communion Together."

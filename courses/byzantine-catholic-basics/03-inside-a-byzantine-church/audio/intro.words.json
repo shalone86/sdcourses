@@ -1,0 +1,405 @@
+{
+ "stamp": "2:2960718:1792516795914",
+ "words": [
+  {
+   "w": "Inside,",
+   "start": 0.09,
+   "end": 0.58
+  },
+  {
+   "w": "a",
+   "start": 0.58,
+   "end": 0.68
+  },
+  {
+   "w": "Byzantine",
+   "start": 0.68,
+   "end": 1.3
+  },
+  {
+   "w": "Church,",
+   "start": 1.3,
+   "end": 1.93
+  },
+  {
+   "w": "there",
+   "start": 1.93,
+   "end": 2.24
+  },
+  {
+   "w": "are",
+   "start": 2.24,
+   "end": 2.46
+  },
+  {
+   "w": "screens",
+   "start": 2.46,
+   "end": 2.97
+  },
+  {
+   "w": "in",
+   "start": 2.97,
+   "end": 3.24
+  },
+  {
+   "w": "front",
+   "start": 3.24,
+   "end": 3.53
+  },
+  {
+   "w": "of",
+   "start": 3.53,
+   "end": 3.61
+  },
+  {
+   "w": "the",
+   "start": 3.61,
+   "end": 3.83
+  },
+  {
+   "w": "altar.",
+   "start": 3.83,
+   "end": 4.48
+  },
+  {
+   "w": "They",
+   "start": 4.48,
+   "end": 4.76
+  },
+  {
+   "w": "take",
+   "start": 4.76,
+   "end": 5.04
+  },
+  {
+   "w": "communion",
+   "start": 5.04,
+   "end": 5.69
+  },
+  {
+   "w": "with",
+   "start": 5.69,
+   "end": 5.98
+  },
+  {
+   "w": "the",
+   "start": 5.98,
+   "end": 6.4
+  },
+  {
+   "w": "spoon,",
+   "start": 6.4,
+   "end": 6.72
+  },
+  {
+   "w": "and",
+   "start": 6.72,
+   "end": 7.02
+  },
+  {
+   "w": "they",
+   "start": 7.02,
+   "end": 7.42
+  },
+  {
+   "w": "sing",
+   "start": 7.42,
+   "end": 7.84
+  },
+  {
+   "w": "all",
+   "start": 7.84,
+   "end": 8.04
+  },
+  {
+   "w": "throughout",
+   "start": 8.04,
+   "end": 8.76
+  },
+  {
+   "w": "the",
+   "start": 8.76,
+   "end": 9.11
+  },
+  {
+   "w": "Liturgy.",
+   "start": 9.11,
+   "end": 9.6
+  },
+  {
+   "w": "Why",
+   "start": 9.6,
+   "end": 9.81
+  },
+  {
+   "w": "are",
+   "start": 9.81,
+   "end": 10.02
+  },
+  {
+   "w": "there",
+   "start": 10.02,
+   "end": 10.37
+  },
+  {
+   "w": "so",
+   "start": 10.37,
+   "end": 10.52
+  },
+  {
+   "w": "many",
+   "start": 10.52,
+   "end": 10.81
+  },
+  {
+   "w": "differences",
+   "start": 10.81,
+   "end": 11.61
+  },
+  {
+   "w": "between",
+   "start": 11.61,
+   "end": 12.16
+  },
+  {
+   "w": "a",
+   "start": 12.16,
+   "end": 12.26
+  },
+  {
+   "w": "Latin",
+   "start": 12.26,
+   "end": 12.79
+  },
+  {
+   "w": "Rite",
+   "start": 12.79,
+   "end": 13.22
+  },
+  {
+   "w": "Mass",
+   "start": 13.22,
+   "end": 13.67
+  },
+  {
+   "w": "and",
+   "start": 13.67,
+   "end": 13.88
+  },
+  {
+   "w": "a",
+   "start": 13.88,
+   "end": 13.91
+  },
+  {
+   "w": "Byzantine",
+   "start": 13.91,
+   "end": 14.56
+  },
+  {
+   "w": "Rite",
+   "start": 14.56,
+   "end": 14.96
+  },
+  {
+   "w": "Divine",
+   "start": 14.96,
+   "end": 15.47
+  },
+  {
+   "w": "Liturgy?",
+   "start": 15.47,
+   "end": 16.32
+  },
+  {
+   "w": "Let's",
+   "start": 16.32,
+   "end": 16.79
+  },
+  {
+   "w": "find",
+   "start": 16.79,
+   "end": 17.17
+  },
+  {
+   "w": "out",
+   "start": 17.17,
+   "end": 17.45
+  },
+  {
+   "w": "with",
+   "start": 17.45,
+   "end": 17.82
+  },
+  {
+   "w": "this",
+   "start": 17.82,
+   "end": 18.25
+  },
+  {
+   "w": "lesson",
+   "start": 18.25,
+   "end": 18.78
+  },
+  {
+   "w": "on",
+   "start": 18.78,
+   "end": 18.97
+  },
+  {
+   "w": "what",
+   "start": 18.97,
+   "end": 19.35
+  },
+  {
+   "w": "exactly",
+   "start": 19.35,
+   "end": 20.01
+  },
+  {
+   "w": "is",
+   "start": 20.01,
+   "end": 20.21
+  },
+  {
+   "w": "inside",
+   "start": 20.21,
+   "end": 20.86
+  },
+  {
+   "w": "a",
+   "start": 20.86,
+   "end": 20.96
+  },
+  {
+   "w": "Byzantine",
+   "start": 20.96,
+   "end": 21.51
+  },
+  {
+   "w": "Rite",
+   "start": 21.51,
+   "end": 21.7
+  },
+  {
+   "w": "Church.",
+   "start": 21.7,
+   "end": 22.32
+  },
+  {
+   "w": "I'm",
+   "start": 22.32,
+   "end": 22.48
+  },
+  {
+   "w": "your",
+   "start": 22.48,
+   "end": 22.7
+  },
+  {
+   "w": "host,",
+   "start": 22.7,
+   "end": 23.03
+  },
+  {
+   "w": "Shalone",
+   "start": 23.03,
+   "end": 23.4
+  },
+  {
+   "w": "Cason,",
+   "start": 23.4,
+   "end": 23.83
+  },
+  {
+   "w": "and",
+   "start": 23.83,
+   "end": 24.24
+  },
+  {
+   "w": "let's",
+   "start": 24.24,
+   "end": 24.37
+  },
+  {
+   "w": "begin",
+   "start": 24.37,
+   "end": 24.72
+  },
+  {
+   "w": "in",
+   "start": 24.72,
+   "end": 24.82
+  },
+  {
+   "w": "the",
+   "start": 24.82,
+   "end": 24.97
+  },
+  {
+   "w": "name",
+   "start": 24.97,
+   "end": 25.24
+  },
+  {
+   "w": "of",
+   "start": 25.24,
+   "end": 25.28
+  },
+  {
+   "w": "the",
+   "start": 25.28,
+   "end": 25.56
+  },
+  {
+   "w": "Father",
+   "start": 25.56,
+   "end": 25.76
+  },
+  {
+   "w": "and",
+   "start": 25.76,
+   "end": 25.92
+  },
+  {
+   "w": "of",
+   "start": 25.92,
+   "end": 26
+  },
+  {
+   "w": "the",
+   "start": 26,
+   "end": 26.21
+  },
+  {
+   "w": "Son",
+   "start": 26.21,
+   "end": 26.6
+  },
+  {
+   "w": "and",
+   "start": 26.6,
+   "end": 26.72
+  },
+  {
+   "w": "of",
+   "start": 26.72,
+   "end": 26.8
+  },
+  {
+   "w": "the",
+   "start": 26.89,
+   "end": 27.01
+  },
+  {
+   "w": "Holy",
+   "start": 27.01,
+   "end": 27.29
+  },
+  {
+   "w": "Spirit.",
+   "start": 27.29,
+   "end": 27.92
+  }
+ ]
+}

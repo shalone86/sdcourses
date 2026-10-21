@@ -1,6 +1,6 @@
 # Quote-anchored lesson. See courses/what-is-the-pope/01-what-is-the-pope
 # for a complete example.
-status: draft
+status: reviewed
 course: byzantine-catholic-basics
 number: 3
 slug: inside-a-byzantine-church
@@ -24,7 +24,13 @@ sources:
     url: https://www.vatican.va/archive/ENG0015/__P3C.HTM
 
 intro:
-  text: ""               # Shalone writes this
+  text: >-
+    Inside a Byzantine Church there are screens in front of the altar, they
+    take communion with a spoon, and they sing all throughout the Litrugy. Why
+    are there so many differences between Latin Rite Mass and Byzantine Rite
+    Divine Liturgy? Let's find out with this lesson on what exactly is inside
+    each Byzantine Rite church. I'm your host Shalone Cason and let's begin in
+    the name of the Father and of the Son and of the Holy Spirit.
   notes:
     - "From your course introduction: \"Why do they have screens in front of their altar? Why do they take communion with a spoon?\" This lesson answers both."
     - The screen is the iconostasis, a wall of icons between the sanctuary and the nave.
@@ -146,6 +152,11 @@ points:
       sin purged." In the same way, Christ comes to our lips in Holy
       Communion to cleanse and heal us.
     visuals:
+      - type: image
+        src: images/sdcason-isaiah-and-the-angel-catholic-coloring-p-003b8a3594.jpg
+        aspect: 0.773
+        credit: The Free Catholic Gallery · The Free Catholic Gallery (sdcason.com) · Public domain (per the gallery)
+        fit: cover
       - type: compare
         left: { kicker: Isaiah 6, title: A burning coal, note: An angel touches the prophet's lips, icon: flame }
         right: { kicker: Divine Liturgy, title: The golden spoon, note: The priest brings Christ to our lips, icon: sparkles }
@@ -175,9 +186,21 @@ points:
       apostles, and together they show more of Christ than either could
       alone.
     visuals:
+      - type: union
+        center: Byzantine Rite Traditions
+        items:
+          - Iconostasis
+          - Icons
+          - Royal Doors
+          - Chalice and Spoon
+        caption: These traditions teach us something about Christ
       - type: chain
-        items: [Jerusalem, Antioch, Constantinople, Kyiv, Your parish]
-        caption: One faith, handed on
+        items:
+          - Apostles
+          - Antioch and Rome
+          - Greek and Latin Rites
+          - Your Church Today
+        caption: All Rites originate with the apostles and together they express the fullness of the Church.
     quiz:
       type: choice
       question: Why does the Church have more than one liturgical tradition?
@@ -191,7 +214,14 @@ points:
         exhausted by its expression in any single liturgical tradition" (CCC 1201).
 
 outro:
-  text: ""               # Shalone writes this
+  text: >-
+    So what's inside a Byzantine-Rite church? There's a wall of icons called
+    an iconostasis, and each icon brings us closer to Christ. There are holy
+    doors in the iconostasis that allow entry into communion with the Gospel
+    and the body and blood of Christ. Byzantine Catholics receive the
+    Eucharist with a spoon, instead of from a chalice and host. That was our
+    lesson in a nutshell. I hope you learned something. I've been your host,
+    Shalone Cason, and until next time, stay holy, my friend.
   notes:
     - "Recap: a wall of icons · the doors to the Kingdom · Christ and his Mother · Communion with a spoon · one mystery, many forms."
     - "Coming later in this course: Why Is the Divine Liturgy So Different?; Baptism, Chrismation and Communion Together; The Sign of the Cross, Right to Left."
