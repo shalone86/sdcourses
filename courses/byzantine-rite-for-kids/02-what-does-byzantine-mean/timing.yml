@@ -6,3 +6,11 @@ point-2:
       start: 6.33
     "1":
       start: 0.9
+    "2":
+      start: 13.7
+      cues:
+        Rome: 15.6
+    "3":
+      start: 21.47
+point-4:
+  camera: off
