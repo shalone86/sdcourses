@@ -39,8 +39,13 @@ HANDOFF.md.**
   the pictures, headings and her video bounce, snaps them to the beat, and
   shows the beats as dots in the Timing tab; the default `calm` is for
   explainers.
-- Maps can highlight `areas:` (a country name, or an approximate empire from
-  `video/data/empires.ts`; those show "Borders approximate"). Add empires there.
+- Maps can highlight `areas:`: a country (Natural Earth name or a common one,
+  "United States"), a continent, a group of countries (EU, NATO, BRICS…;
+  members as of 2025), or an empire (approximate, at about its peak; those
+  show "Borders approximate"). The list is `video/data/areas.json` (plus the
+  older `video/data/empires.ts`); add new ones there. With areas and no
+  `region:`, a map fits itself to them (`region: auto`); regions also include
+  world, africa, asia, americas, oceania and more.
 
 ## Commands (all take `<course>/<lesson-folder>`)
 

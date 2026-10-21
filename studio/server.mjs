@@ -529,6 +529,13 @@ async function handle(req, res) {
     if (p === '/api/timing') return json(res, 200, timingData(id));
     if (p === '/api/images/sources') return json(res, 200, sourceList());
     if (p === '/api/sprites') return json(res, 200, listSprites());
+    if (p === '/api/map-areas') {
+      // The names a map can highlight beyond countries (video/data/areas.json), for the Timing tab.
+      const {areas} = JSON.parse(fs.readFileSync(path.join(ROOT, 'video/data/areas.json'), 'utf8'));
+      const of = (kind) => areas.filter((a) => a.kind === kind).map((a) => a.label.replace(/,.*$/, '').replace(/ members$/, ''));
+      return json(res, 200, [{title: 'Continents', names: of('continent')}, {title: 'Groups of countries', names: of('bloc')}, {title: 'Empires (borders approximate)', names: of('empire').sort()},
+        {title: 'Countries', names: ['any country by name, e.g. Ukraine, Brazil, United States, Democratic Republic of the Congo']}]);
+    }
     if (p === '/api/fetch-image') return fetchImage(res, url.searchParams.get('url') ?? '');
     if (p === '/api/courses') return json(res, 200, await courseChoices());
     if (p === '/pixels.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));

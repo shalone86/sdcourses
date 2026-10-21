@@ -389,11 +389,15 @@ window.SketchTab = (() => {
         h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
         h('div', {class: 'px-palette'}, [...colors.map(swatch), h('label', {class: 'px-any', title: 'Any color'}, [custom, h('span', {text: 'Any color'})])]),
         h('div', {class: 'row', style: {gap: '8px', flexWrap: 'wrap'}}, [
+          btn('Undo', undo),
           btn('Copy', () => copy(false)), btn('Copy all frames', () => copy(true)), btn('Cut', cut),
           btn('Paste', () => paste(false)), btn('Paste in every frame', () => paste(true)),
           btn('Bigger ×2', () => scaleBy(2)), btn('Smaller ÷2', () => scaleBy(0.5)),
           btn('Flip ↔', () => flip('h')), btn('Flip ↕', () => flip('v')),
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.every || null, onchange: (e) => { P.every = e.target.checked; }}), ' Move, cut, flip and clear in every frame']),
+          btn('Clear this frame', () => { letGo(); remember([P.frame]); cur().getContext('2d').clearRect(0, 0, W(), H()); P.changed = true; draw(); }),
+          h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
+          a.slug ? btn('Delete this sketch', remove) : null,
           selecting ? btn('Done moving', () => { letGo(); draw(); }) : null,
         ]),
         h('div', {class: 'small muted', 'data-note': '', text: selecting ? 'Drag inside the box to move it; drag its corner square to resize (Shift keeps the shape).' : 'Copy, Cut and Flip use the whole picture when nothing is selected.'}),
@@ -408,12 +412,6 @@ window.SketchTab = (() => {
         h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; P.changed = true; startPreview(); markDirty(); }})])]),
-        h('div', {class: 'row', style: {gap: '8px'}}, [
-          btn('Undo', undo),
-          btn('Clear this frame', () => { letGo(); remember([P.frame]); cur().getContext('2d').clearRect(0, 0, W(), H()); P.changed = true; draw(); }),
-          h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
-          a.slug ? btn('Delete this sketch', remove) : null,
-        ]),
         h('div', {class: 'small muted', text: 'Saved sketches go in a lesson like pixel art: Timing tab, + Add a picture here → Pixel animation.'}),
       ].filter(Boolean));
       drawCanvas();

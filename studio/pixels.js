@@ -559,6 +559,7 @@ window.PixelTab = (() => {
           used.length ? h('span', {class: 'small muted', text: 'In this drawing:'}) : null, ...used.map(swatch),
           h('label', {class: 'px-any', title: 'Any color'}, [custom, h('span', {text: 'Any color'})])]),
         h('div', {class: 'row', style: {gap: '8px', flexWrap: 'wrap'}}, [
+          btn('Undo', undo),
           btn('Copy', () => copy(false), {title: 'From this frame: the selection, or the whole picture'}),
           btn('Copy all frames', () => copy(true), {title: 'The whole animation (or the selected spot in every frame)'}),
           btn('Cut', cut),
@@ -570,6 +571,9 @@ window.PixelTab = (() => {
           btn('Flip ↕', () => flip('v'), {title: selecting ? 'Flip the selection upside down' : 'Flip upside down'}),
           h('label', {class: 'small', title: 'Moving, cutting, flipping and clearing work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
             onchange: (e) => { P.every = e.target.checked; }}), ' Move, cut, flip and clear in every frame']),
+          btn('Clear this frame', () => { letGo(); remember(); a.frames[P.frame] = blank(a.width, a.height); draw(); markDirty(); }),
+          h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
+          a.slug ? btn('Delete this drawing', remove) : null,
           selecting ? btn('Done moving', () => { letGo(); draw(); markDirty(); }) : null,
         ]),
         h('div', {class: 'small muted', 'data-note': '', text: (selecting ? 'Drag inside the box to move it. Copy, Cut and Flip use the selection.' : 'Copy, Cut and Flip use the whole picture when nothing is selected.')
@@ -585,12 +589,6 @@ window.PixelTab = (() => {
         h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; startPreview(); markDirty(); }})])]),
-        h('div', {class: 'row', style: {gap: '8px'}}, [
-          btn('Undo', undo),
-          btn('Clear this frame', () => { letGo(); remember(); a.frames[P.frame] = blank(a.width, a.height); draw(); markDirty(); }),
-          h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
-          a.slug ? btn('Delete this drawing', remove) : null,
-        ]),
         h('div', {class: 'small muted', text: 'Saved drawings can go in any lesson: on the Timing tab, + Add a picture here → Pixel animation.'}),
       ].filter(Boolean));
       drawCanvas();

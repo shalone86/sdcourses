@@ -30,12 +30,12 @@
   const pair = (l) => l.split('|').map((x) => x.trim());
   const ADD = {
     image: {label: 'Picture (search)', fields: [], search: true},
-    map: {label: 'Map', fields: [['region', 'Show', 'select', ['mediterranean', 'east', 'europe', 'holyland']],
+    map: {label: 'Map', fields: [['region', 'Show', 'select', ['auto (fit what’s highlighted)', 'world', 'europe', 'mediterranean', 'east', 'holyland', 'middle-east', 'africa', 'asia', 'south-asia', 'east-asia', 'americas', 'north-america', 'south-america', 'oceania']],
       ['places', 'Cities, one per line (e.g. Rome, Antioch, Constantinople, Kyiv, Jerusalem)', 'lines'], ['route', 'Draw a route through the cities in order', 'check'],
-      ['areas', 'Highlight countries or empires, one per line: a country name (Ukraine, Greece…) or roman-empire-117, byzantine-empire-555, byzantine-empire-1025, kyivan-rus-1050', 'lines'],
+      ['areas', 'Highlight, one per line: a country (Ukraine, United States…), a continent (Africa), a group (EU, NATO, BRICS…) or an empire (Roman Empire, Mongol Empire…)', 'areas'],
       ['caption', 'Caption', 'text']],
       make: (v) => { const p = lines(v.places); const a = lines(v.areas);
-        return {type: 'map', region: v.region || 'mediterranean', ...(p.length ? {places: p} : {}), ...(a.length ? {areas: a} : {}),
+        return {type: 'map', region: !v.region || v.region.startsWith('auto') ? (a.length ? 'auto' : 'mediterranean') : v.region, ...(p.length ? {places: p} : {}), ...(a.length ? {areas: a} : {}),
           ...(v.route && p.length > 1 ? {routes: p.slice(1).map((x, i) => [p[i], x])} : {}), ...(p.length ? {highlight: p[p.length - 1]} : {}), ...(v.caption ? {caption: v.caption} : {})}; }},
     titles: {label: 'Titles', fields: [['items', 'One per line: Big text | small text under it', 'lines']],
       make: (v) => ({type: 'titles', items: lines(v.items).map((l) => { const [a, b] = pair(l); return {latin: a, english: b || ''}; })})},
@@ -375,6 +375,15 @@
           if (kind === 'lines') input = h('textarea', {rows: 3});
           else if (kind === 'check') input = h('input', {type: 'checkbox', checked: true});
           else if (kind === 'select') input = h('select', {}, extra.map((o) => h('option', {value: o, text: o})));
+          else if (kind === 'areas') {
+            // The highlight box, with every name it knows a click away.
+            const box = h('textarea', {rows: 3});
+            const all = h('details', {class: 'small'}, [h('summary', {text: 'See every continent, group and empire'})]);
+            api('/api/map-areas').then((groups) => all.append(...groups.map((g) => h('div', {style: {margin: '6px 0'}}, [h('b', {text: g.title + ': '}),
+              ...g.names.map((n, i) => h('span', {}, [i ? ', ' : '', h('a', {href: '#', text: n, onclick: (e) => { e.preventDefault(); box.value = (box.value.trim() ? box.value.trim() + '\n' : '') + n; }})]))]))));
+            vals[name] = box;
+            return h('label', {class: 'tl-field'}, [h('span', {text: label}), box, all]);
+          }
           else if (kind === 'sprite') {
             // Her saved pixel animations.
             input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);

@@ -1,0 +1,6504 @@
+{
+ "areas": [
+  {
+   "key": "europe",
+   "label": "Europe",
+   "kind": "continent",
+   "members": [
+    "Albania",
+    "Andorra",
+    "Austria",
+    "Belarus",
+    "Belgium",
+    "Bosnia and Herz.",
+    "Bulgaria",
+    "Croatia",
+    "Czechia",
+    "Denmark",
+    "Estonia",
+    "Faeroe Is.",
+    "Finland",
+    "France",
+    "Germany",
+    "Greece",
+    "Guernsey",
+    "Hungary",
+    "Iceland",
+    "Ireland",
+    "Isle of Man",
+    "Italy",
+    "Jersey",
+    "Kosovo",
+    "Latvia",
+    "Liechtenstein",
+    "Lithuania",
+    "Luxembourg",
+    "Macedonia",
+    "Malta",
+    "Moldova",
+    "Monaco",
+    "Montenegro",
+    "Netherlands",
+    "Norway",
+    "Poland",
+    "Portugal",
+    "Romania",
+    "San Marino",
+    "Serbia",
+    "Slovakia",
+    "Slovenia",
+    "Spain",
+    "Sweden",
+    "Switzerland",
+    "Ukraine",
+    "United Kingdom",
+    "Vatican",
+    "Åland"
+   ],
+   "rings": [
+    [
+     [
+      27,
+      56
+     ],
+     [
+      28,
+      60
+     ],
+     [
+      30,
+      69.5
+     ],
+     [
+      33,
+      70
+     ],
+     [
+      41,
+      67
+     ],
+     [
+      44,
+      68.5
+     ],
+     [
+      50,
+      68.5
+     ],
+     [
+      60,
+      69
+     ],
+     [
+      66,
+      69
+     ],
+     [
+      60,
+      64
+     ],
+     [
+      59,
+      60
+     ],
+     [
+      57,
+      56
+     ],
+     [
+      59,
+      52
+     ],
+     [
+      61,
+      50.5
+     ],
+     [
+      56,
+      50.5
+     ],
+     [
+      50,
+      51
+     ],
+     [
+      48,
+      48.5
+     ],
+     [
+      47,
+      45
+     ],
+     [
+      48,
+      42
+     ],
+     [
+      46,
+      41.3
+     ],
+     [
+      44,
+      42.5
+     ],
+     [
+      40,
+      43.5
+     ],
+     [
+      38,
+      45
+     ],
+     [
+      38,
+      47
+     ],
+     [
+      40,
+      49
+     ],
+     [
+      38,
+      50
+     ],
+     [
+      35,
+      52
+     ],
+     [
+      32,
+      52.2
+     ],
+     [
+      31,
+      54
+     ],
+     [
+      28,
+      56
+     ]
+    ]
+   ],
+   "approx": false,
+   "note": "Russia is split at the Urals"
+  },
+  {
+   "key": "asia",
+   "label": "Asia",
+   "kind": "continent",
+   "members": [
+    "Afghanistan",
+    "Armenia",
+    "Azerbaijan",
+    "Bahrain",
+    "Bangladesh",
+    "Bhutan",
+    "Brunei",
+    "Cambodia",
+    "China",
+    "Cyprus",
+    "N. Cyprus",
+    "Georgia",
+    "Hong Kong",
+    "India",
+    "Indonesia",
+    "Iran",
+    "Iraq",
+    "Israel",
+    "Japan",
+    "Jordan",
+    "Kazakhstan",
+    "Kuwait",
+    "Kyrgyzstan",
+    "Laos",
+    "Lebanon",
+    "Macao",
+    "Malaysia",
+    "Maldives",
+    "Mongolia",
+    "Myanmar",
+    "Nepal",
+    "North Korea",
+    "Oman",
+    "Pakistan",
+    "Palestine",
+    "Philippines",
+    "Qatar",
+    "Saudi Arabia",
+    "Singapore",
+    "South Korea",
+    "Sri Lanka",
+    "Syria",
+    "Taiwan",
+    "Tajikistan",
+    "Thailand",
+    "Timor-Leste",
+    "Turkey",
+    "Turkmenistan",
+    "United Arab Emirates",
+    "Uzbekistan",
+    "Vietnam",
+    "Yemen",
+    "Siachen Glacier"
+   ],
+   "rings": [
+    [
+     [
+      60,
+      69
+     ],
+     [
+      66,
+      69
+     ],
+     [
+      70,
+      73
+     ],
+     [
+      80,
+      73.5
+     ],
+     [
+      100,
+      78
+     ],
+     [
+      115,
+      74
+     ],
+     [
+      140,
+      73
+     ],
+     [
+      160,
+      70
+     ],
+     [
+      179.9,
+      69
+     ],
+     [
+      179.9,
+      64
+     ],
+     [
+      178,
+      62
+     ],
+     [
+      164,
+      60
+     ],
+     [
+      163,
+      56
+     ],
+     [
+      160,
+      53
+     ],
+     [
+      156,
+      51
+     ],
+     [
+      155,
+      57
+     ],
+     [
+      150,
+      59
+     ],
+     [
+      143,
+      59
+     ],
+     [
+      141,
+      53
+     ],
+     [
+      140,
+      48
+     ],
+     [
+      135,
+      43
+     ],
+     [
+      131,
+      42.5
+     ],
+     [
+      127,
+      49.5
+     ],
+     [
+      120,
+      53
+     ],
+     [
+      115,
+      50
+     ],
+     [
+      105,
+      50
+     ],
+     [
+      98,
+      50.5
+     ],
+     [
+      88,
+      49
+     ],
+     [
+      80,
+      50.5
+     ],
+     [
+      70,
+      55
+     ],
+     [
+      62,
+      54.5
+     ],
+     [
+      61,
+      50.5
+     ],
+     [
+      59,
+      52
+     ],
+     [
+      57,
+      56
+     ],
+     [
+      59,
+      60
+     ],
+     [
+      60,
+      64
+     ]
+    ]
+   ],
+   "approx": false,
+   "note": "Russia is split at the Urals"
+  },
+  {
+   "key": "africa",
+   "label": "Africa",
+   "kind": "continent",
+   "members": [
+    "Algeria",
+    "Angola",
+    "Benin",
+    "Botswana",
+    "Burkina Faso",
+    "Burundi",
+    "Cabo Verde",
+    "Cameroon",
+    "Central African Rep.",
+    "Chad",
+    "Comoros",
+    "Congo",
+    "Dem. Rep. Congo",
+    "Djibouti",
+    "Egypt",
+    "Eq. Guinea",
+    "Eritrea",
+    "eSwatini",
+    "Ethiopia",
+    "Gabon",
+    "Gambia",
+    "Ghana",
+    "Guinea",
+    "Guinea-Bissau",
+    "Côte d'Ivoire",
+    "Kenya",
+    "Lesotho",
+    "Liberia",
+    "Libya",
+    "Madagascar",
+    "Malawi",
+    "Mali",
+    "Mauritania",
+    "Mauritius",
+    "Morocco",
+    "Mozambique",
+    "Namibia",
+    "Niger",
+    "Nigeria",
+    "Rwanda",
+    "São Tomé and Principe",
+    "Senegal",
+    "Seychelles",
+    "Sierra Leone",
+    "Somalia",
+    "Somaliland",
+    "South Africa",
+    "S. Sudan",
+    "Sudan",
+    "Tanzania",
+    "Togo",
+    "Tunisia",
+    "Uganda",
+    "W. Sahara",
+    "Zambia",
+    "Zimbabwe",
+    "Saint Helena"
+   ],
+   "approx": false
+  },
+  {
+   "key": "north-america",
+   "label": "North America",
+   "kind": "continent",
+   "members": [
+    "Canada",
+    "United States of America",
+    "Mexico",
+    "Greenland",
+    "Belize",
+    "Costa Rica",
+    "El Salvador",
+    "Guatemala",
+    "Honduras",
+    "Nicaragua",
+    "Panama",
+    "Cuba",
+    "Jamaica",
+    "Haiti",
+    "Dominican Rep.",
+    "Bahamas",
+    "Puerto Rico",
+    "Trinidad and Tobago",
+    "Barbados",
+    "Saint Lucia",
+    "Grenada",
+    "St. Vin. and Gren.",
+    "Antigua and Barb.",
+    "Dominica",
+    "St. Kitts and Nevis",
+    "Bermuda",
+    "Cayman Is.",
+    "Turks and Caicos Is.",
+    "British Virgin Is.",
+    "U.S. Virgin Is.",
+    "Anguilla",
+    "Montserrat",
+    "Aruba",
+    "Curaçao",
+    "Sint Maarten",
+    "St-Barthélemy",
+    "St-Martin",
+    "St. Pierre and Miquelon"
+   ],
+   "approx": false
+  },
+  {
+   "key": "south-america",
+   "label": "South America",
+   "kind": "continent",
+   "members": [
+    "Argentina",
+    "Bolivia",
+    "Brazil",
+    "Chile",
+    "Colombia",
+    "Ecuador",
+    "Guyana",
+    "Paraguay",
+    "Peru",
+    "Suriname",
+    "Uruguay",
+    "Venezuela",
+    "Falkland Is.",
+    "S. Geo. and the Is."
+   ],
+   "approx": false
+  },
+  {
+   "key": "oceania",
+   "label": "Oceania",
+   "kind": "continent",
+   "aliases": [
+    "oceania-australia",
+    "oceania / australia",
+    "australia and oceania"
+   ],
+   "members": [
+    "Australia",
+    "New Zealand",
+    "Papua New Guinea",
+    "Fiji",
+    "Solomon Is.",
+    "Vanuatu",
+    "New Caledonia",
+    "Fr. Polynesia",
+    "Samoa",
+    "American Samoa",
+    "Tonga",
+    "Kiribati",
+    "Micronesia",
+    "Marshall Is.",
+    "Palau",
+    "Nauru",
+    "Guam",
+    "N. Mariana Is.",
+    "Cook Is.",
+    "Niue",
+    "Norfolk Island",
+    "Wallis and Futuna Is.",
+    "Pitcairn Is.",
+    "Ashmore and Cartier Is."
+   ],
+   "approx": false
+  },
+  {
+   "key": "antarctica-continent",
+   "label": "Antarctica",
+   "kind": "continent",
+   "aliases": [
+    "antarctica"
+   ],
+   "members": [
+    "Antarctica"
+   ],
+   "approx": false
+  },
+  {
+   "key": "arab-league",
+   "label": "Arab League",
+   "kind": "bloc",
+   "members": [
+    "Algeria",
+    "Bahrain",
+    "Comoros",
+    "Djibouti",
+    "Egypt",
+    "Iraq",
+    "Jordan",
+    "Kuwait",
+    "Lebanon",
+    "Libya",
+    "Mauritania",
+    "Morocco",
+    "Oman",
+    "Palestine",
+    "Qatar",
+    "Saudi Arabia",
+    "Somalia",
+    "Somaliland",
+    "Sudan",
+    "Syria",
+    "Tunisia",
+    "United Arab Emirates",
+    "Yemen"
+   ],
+   "approx": false
+  },
+  {
+   "key": "asean",
+   "label": "ASEAN",
+   "kind": "bloc",
+   "aliases": [
+    "association of southeast asian nations"
+   ],
+   "members": [
+    "Brunei",
+    "Cambodia",
+    "Indonesia",
+    "Laos",
+    "Malaysia",
+    "Myanmar",
+    "Philippines",
+    "Singapore",
+    "Thailand",
+    "Vietnam",
+    "Timor-Leste"
+   ],
+   "approx": false
+  },
+  {
+   "key": "brics",
+   "label": "BRICS",
+   "kind": "bloc",
+   "members": [
+    "Brazil",
+    "Russia",
+    "India",
+    "China",
+    "South Africa",
+    "Egypt",
+    "Ethiopia",
+    "Iran",
+    "United Arab Emirates",
+    "Indonesia"
+   ],
+   "approx": false
+  },
+  {
+   "key": "cis",
+   "label": "CIS",
+   "kind": "bloc",
+   "aliases": [
+    "commonwealth of independent states"
+   ],
+   "members": [
+    "Armenia",
+    "Azerbaijan",
+    "Belarus",
+    "Kazakhstan",
+    "Kyrgyzstan",
+    "Moldova",
+    "Russia",
+    "Tajikistan",
+    "Uzbekistan"
+   ],
+   "approx": false
+  },
+  {
+   "key": "commonwealth",
+   "label": "Commonwealth of Nations",
+   "kind": "bloc",
+   "aliases": [
+    "the commonwealth"
+   ],
+   "members": [
+    "Antigua and Barb.",
+    "Australia",
+    "Bahamas",
+    "Bangladesh",
+    "Barbados",
+    "Belize",
+    "Botswana",
+    "Brunei",
+    "Cameroon",
+    "Canada",
+    "Cyprus",
+    "Dominica",
+    "eSwatini",
+    "Fiji",
+    "Gabon",
+    "Gambia",
+    "Ghana",
+    "Grenada",
+    "Guyana",
+    "India",
+    "Jamaica",
+    "Kenya",
+    "Kiribati",
+    "Lesotho",
+    "Malawi",
+    "Malaysia",
+    "Maldives",
+    "Malta",
+    "Mauritius",
+    "Mozambique",
+    "Namibia",
+    "Nauru",
+    "New Zealand",
+    "Nigeria",
+    "Pakistan",
+    "Papua New Guinea",
+    "Rwanda",
+    "Saint Lucia",
+    "St. Kitts and Nevis",
+    "St. Vin. and Gren.",
+    "Samoa",
+    "Seychelles",
+    "Sierra Leone",
+    "Singapore",
+    "Solomon Is.",
+    "South Africa",
+    "Sri Lanka",
+    "Tanzania",
+    "Togo",
+    "Tonga",
+    "Trinidad and Tobago",
+    "Uganda",
+    "United Kingdom",
+    "Vanuatu",
+    "Zambia"
+   ],
+   "approx": false
+  },
+  {
+   "key": "council-of-europe",
+   "label": "Council of Europe",
+   "kind": "bloc",
+   "members": [
+    "Albania",
+    "Andorra",
+    "Armenia",
+    "Austria",
+    "Azerbaijan",
+    "Belgium",
+    "Bosnia and Herz.",
+    "Bulgaria",
+    "Croatia",
+    "Cyprus",
+    "Czechia",
+    "Denmark",
+    "Estonia",
+    "Finland",
+    "France",
+    "Georgia",
+    "Germany",
+    "Greece",
+    "Hungary",
+    "Iceland",
+    "Ireland",
+    "Italy",
+    "Latvia",
+    "Liechtenstein",
+    "Lithuania",
+    "Luxembourg",
+    "Malta",
+    "Moldova",
+    "Monaco",
+    "Montenegro",
+    "Netherlands",
+    "Macedonia",
+    "Norway",
+    "Poland",
+    "Portugal",
+    "Romania",
+    "San Marino",
+    "Serbia",
+    "Slovakia",
+    "Slovenia",
+    "Spain",
+    "Sweden",
+    "Switzerland",
+    "Turkey",
+    "Ukraine",
+    "United Kingdom"
+   ],
+   "approx": false
+  },
+  {
+   "key": "ecowas",
+   "label": "ECOWAS",
+   "kind": "bloc",
+   "aliases": [
+    "economic community of west african states"
+   ],
+   "members": [
+    "Benin",
+    "Cabo Verde",
+    "Côte d'Ivoire",
+    "Gambia",
+    "Ghana",
+    "Guinea",
+    "Guinea-Bissau",
+    "Liberia",
+    "Nigeria",
+    "Senegal",
+    "Sierra Leone",
+    "Togo"
+   ],
+   "approx": false
+  },
+  {
+   "key": "eu",
+   "label": "European Union",
+   "kind": "bloc",
+   "aliases": [
+    "european union (eu)",
+    "the eu"
+   ],
+   "members": [
+    "Austria",
+    "Belgium",
+    "Bulgaria",
+    "Croatia",
+    "Cyprus",
+    "Czechia",
+    "Denmark",
+    "Estonia",
+    "Finland",
+    "France",
+    "Germany",
+    "Greece",
+    "Hungary",
+    "Ireland",
+    "Italy",
+    "Latvia",
+    "Lithuania",
+    "Luxembourg",
+    "Malta",
+    "Netherlands",
+    "Poland",
+    "Portugal",
+    "Romania",
+    "Slovakia",
+    "Slovenia",
+    "Spain",
+    "Sweden"
+   ],
+   "approx": false
+  },
+  {
+   "key": "g7",
+   "label": "G7",
+   "kind": "bloc",
+   "members": [
+    "Canada",
+    "France",
+    "Germany",
+    "Italy",
+    "Japan",
+    "United Kingdom",
+    "United States of America"
+   ],
+   "approx": false
+  },
+  {
+   "key": "g8",
+   "label": "G8 (1997–2014)",
+   "kind": "bloc",
+   "aliases": [
+    "g8"
+   ],
+   "members": [
+    "Canada",
+    "France",
+    "Germany",
+    "Italy",
+    "Japan",
+    "United Kingdom",
+    "United States of America",
+    "Russia"
+   ],
+   "approx": false
+  },
+  {
+   "key": "g20",
+   "label": "G20",
+   "kind": "bloc",
+   "members": [
+    "Argentina",
+    "Australia",
+    "Brazil",
+    "Canada",
+    "China",
+    "France",
+    "Germany",
+    "India",
+    "Indonesia",
+    "Italy",
+    "Japan",
+    "Mexico",
+    "Russia",
+    "Saudi Arabia",
+    "South Africa",
+    "South Korea",
+    "Turkey",
+    "United Kingdom",
+    "United States of America"
+   ],
+   "approx": false,
+   "note": "the 19 member countries (the EU and African Union are members too)"
+  },
+  {
+   "key": "mercosur",
+   "label": "Mercosur",
+   "kind": "bloc",
+   "members": [
+    "Argentina",
+    "Brazil",
+    "Paraguay",
+    "Uruguay",
+    "Bolivia"
+   ],
+   "approx": false,
+   "note": "full members; Venezuela is suspended"
+  },
+  {
+   "key": "nato",
+   "label": "NATO",
+   "kind": "bloc",
+   "aliases": [
+    "north atlantic treaty organization"
+   ],
+   "members": [
+    "Albania",
+    "Belgium",
+    "Bulgaria",
+    "Canada",
+    "Croatia",
+    "Czechia",
+    "Denmark",
+    "Estonia",
+    "Finland",
+    "France",
+    "Germany",
+    "Greece",
+    "Hungary",
+    "Iceland",
+    "Italy",
+    "Latvia",
+    "Lithuania",
+    "Luxembourg",
+    "Montenegro",
+    "Netherlands",
+    "Macedonia",
+    "Norway",
+    "Poland",
+    "Portugal",
+    "Romania",
+    "Slovakia",
+    "Slovenia",
+    "Spain",
+    "Sweden",
+    "Turkey",
+    "United Kingdom",
+    "United States of America"
+   ],
+   "approx": false
+  },
+  {
+   "key": "oas",
+   "label": "OAS",
+   "kind": "bloc",
+   "aliases": [
+    "organization of american states"
+   ],
+   "members": [
+    "Antigua and Barb.",
+    "Argentina",
+    "Bahamas",
+    "Barbados",
+    "Belize",
+    "Bolivia",
+    "Brazil",
+    "Canada",
+    "Chile",
+    "Colombia",
+    "Costa Rica",
+    "Dominica",
+    "Dominican Rep.",
+    "Ecuador",
+    "El Salvador",
+    "Grenada",
+    "Guatemala",
+    "Guyana",
+    "Haiti",
+    "Honduras",
+    "Jamaica",
+    "Mexico",
+    "Panama",
+    "Paraguay",
+    "Peru",
+    "St. Kitts and Nevis",
+    "Saint Lucia",
+    "St. Vin. and Gren.",
+    "Suriname",
+    "Trinidad and Tobago",
+    "United States of America",
+    "Uruguay"
+   ],
+   "approx": false,
+   "note": "active members; Cuba, Nicaragua and Venezuela are not taking part"
+  },
+  {
+   "key": "oecd",
+   "label": "OECD",
+   "kind": "bloc",
+   "aliases": [
+    "organization for economic co-operation and development",
+    "organisation for economic co-operation and development"
+   ],
+   "members": [
+    "Australia",
+    "Austria",
+    "Belgium",
+    "Canada",
+    "Chile",
+    "Colombia",
+    "Costa Rica",
+    "Czechia",
+    "Denmark",
+    "Estonia",
+    "Finland",
+    "France",
+    "Germany",
+    "Greece",
+    "Hungary",
+    "Iceland",
+    "Ireland",
+    "Israel",
+    "Italy",
+    "Japan",
+    "South Korea",
+    "Latvia",
+    "Lithuania",
+    "Luxembourg",
+    "Mexico",
+    "Netherlands",
+    "New Zealand",
+    "Norway",
+    "Poland",
+    "Portugal",
+    "Slovakia",
+    "Slovenia",
+    "Spain",
+    "Sweden",
+    "Switzerland",
+    "Turkey",
+    "United Kingdom",
+    "United States of America"
+   ],
+   "approx": false
+  },
+  {
+   "key": "opec",
+   "label": "OPEC",
+   "kind": "bloc",
+   "aliases": [
+    "organization of the petroleum exporting countries"
+   ],
+   "members": [
+    "Algeria",
+    "Congo",
+    "Eq. Guinea",
+    "Gabon",
+    "Iran",
+    "Iraq",
+    "Kuwait",
+    "Libya",
+    "Nigeria",
+    "Saudi Arabia",
+    "United Arab Emirates",
+    "Venezuela"
+   ],
+   "approx": false
+  },
+  {
+   "key": "sadc",
+   "label": "SADC",
+   "kind": "bloc",
+   "aliases": [
+    "southern african development community"
+   ],
+   "members": [
+    "Angola",
+    "Botswana",
+    "Comoros",
+    "Dem. Rep. Congo",
+    "eSwatini",
+    "Lesotho",
+    "Madagascar",
+    "Malawi",
+    "Mauritius",
+    "Mozambique",
+    "Namibia",
+    "Seychelles",
+    "South Africa",
+    "Tanzania",
+    "Zambia",
+    "Zimbabwe"
+   ],
+   "approx": false
+  },
+  {
+   "key": "sco",
+   "label": "Shanghai Cooperation Organisation",
+   "kind": "bloc",
+   "aliases": [
+    "sco",
+    "shanghai cooperation organization"
+   ],
+   "members": [
+    "China",
+    "Russia",
+    "India",
+    "Pakistan",
+    "Kazakhstan",
+    "Kyrgyzstan",
+    "Tajikistan",
+    "Uzbekistan",
+    "Iran",
+    "Belarus"
+   ],
+   "approx": false
+  },
+  {
+   "key": "un",
+   "label": "United Nations members",
+   "kind": "bloc",
+   "aliases": [
+    "united nations",
+    "un",
+    "united nations (un)"
+   ],
+   "members": [
+    "@all-but:Antarctica|Kosovo|N. Cyprus|Palestine|Siachen Glacier|Somaliland|Taiwan|Vatican|W. Sahara"
+   ],
+   "approx": false
+  },
+  {
+   "key": "akkadian-empire",
+   "label": "Akkadian Empire, c. 2250 BC",
+   "kind": "empire",
+   "aliases": [
+    "akkadian empire"
+   ],
+   "rings": [
+    [
+     [
+      38,
+      37
+     ],
+     [
+      42,
+      38
+     ],
+     [
+      45,
+      37
+     ],
+     [
+      48,
+      34
+     ],
+     [
+      49,
+      31
+     ],
+     [
+      48,
+      29.5
+     ],
+     [
+      46,
+      30
+     ],
+     [
+      44,
+      32
+     ],
+     [
+      41,
+      34
+     ],
+     [
+      38,
+      35
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "sumerian-empire",
+   "label": "Sumer (Third Dynasty of Ur), c. 2100 BC",
+   "kind": "empire",
+   "aliases": [
+    "sumerian empire",
+    "sumer"
+   ],
+   "rings": [
+    [
+     [
+      43,
+      36
+     ],
+     [
+      45.5,
+      36
+     ],
+     [
+      48,
+      33
+     ],
+     [
+      48.5,
+      30.5
+     ],
+     [
+      47,
+      30
+     ],
+     [
+      45,
+      31
+     ],
+     [
+      43.5,
+      33
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "assyrian-empire",
+   "label": "Assyrian Empire, c. 670 BC",
+   "kind": "empire",
+   "aliases": [
+    "assyrian empire",
+    "neo-assyrian empire"
+   ],
+   "rings": [
+    [
+     [
+      32,
+      31
+     ],
+     [
+      34,
+      30.5
+     ],
+     [
+      35,
+      30
+     ],
+     [
+      35.5,
+      32.5
+     ],
+     [
+      36,
+      34.5
+     ],
+     [
+      35.5,
+      36
+     ],
+     [
+      36,
+      37.5
+     ],
+     [
+      38,
+      38
+     ],
+     [
+      41,
+      38.5
+     ],
+     [
+      44,
+      38
+     ],
+     [
+      46,
+      36.5
+     ],
+     [
+      48,
+      34
+     ],
+     [
+      48.5,
+      32
+     ],
+     [
+      47.5,
+      30
+     ],
+     [
+      45,
+      30.5
+     ],
+     [
+      42,
+      33
+     ],
+     [
+      39,
+      33
+     ],
+     [
+      37,
+      31
+     ],
+     [
+      34,
+      30.5
+     ]
+    ],
+    [
+     [
+      29.5,
+      31.5
+     ],
+     [
+      32.5,
+      31.3
+     ],
+     [
+      32.5,
+      29.8
+     ],
+     [
+      31,
+      29.5
+     ],
+     [
+      29.5,
+      30.5
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "babylonian-empire",
+   "label": "Babylonian Empire, c. 560 BC",
+   "kind": "empire",
+   "aliases": [
+    "babylonian empire",
+    "neo-babylonian empire"
+   ],
+   "rings": [
+    [
+     [
+      34.5,
+      31
+     ],
+     [
+      34.2,
+      29.8
+     ],
+     [
+      36,
+      29.5
+     ],
+     [
+      39,
+      30
+     ],
+     [
+      42,
+      30
+     ],
+     [
+      46,
+      29
+     ],
+     [
+      48.5,
+      30
+     ],
+     [
+      48,
+      33
+     ],
+     [
+      46,
+      35
+     ],
+     [
+      44,
+      36.5
+     ],
+     [
+      41,
+      37
+     ],
+     [
+      38,
+      37
+     ],
+     [
+      36,
+      36.5
+     ],
+     [
+      35.8,
+      35
+     ],
+     [
+      35,
+      33
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "hittite-empire",
+   "label": "Hittite Empire, c. 1300 BC",
+   "kind": "empire",
+   "aliases": [
+    "hittite empire"
+   ],
+   "rings": [
+    [
+     [
+      26.5,
+      39.5
+     ],
+     [
+      27,
+      41
+     ],
+     [
+      31,
+      41.3
+     ],
+     [
+      35,
+      42
+     ],
+     [
+      38,
+      41
+     ],
+     [
+      40,
+      40
+     ],
+     [
+      41,
+      38
+     ],
+     [
+      40,
+      36.5
+     ],
+     [
+      38,
+      36
+     ],
+     [
+      36.5,
+      34.5
+     ],
+     [
+      35.8,
+      34
+     ],
+     [
+      36,
+      36
+     ],
+     [
+      34,
+      36.5
+     ],
+     [
+      31,
+      36.8
+     ],
+     [
+      28,
+      36.8
+     ],
+     [
+      27,
+      38
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "egyptian-empire",
+   "label": "Egypt (New Kingdom), c. 1450 BC",
+   "kind": "empire",
+   "aliases": [
+    "egyptian empire",
+    "egyptian empire (new kingdom)",
+    "new kingdom egypt"
+   ],
+   "rings": [
+    [
+     [
+      25,
+      31.5
+     ],
+     [
+      29,
+      31
+     ],
+     [
+      32,
+      31.2
+     ],
+     [
+      34.2,
+      31.3
+     ],
+     [
+      35,
+      33
+     ],
+     [
+      35.5,
+      35
+     ],
+     [
+      36.5,
+      36
+     ],
+     [
+      38.5,
+      36
+     ],
+     [
+      38,
+      34.5
+     ],
+     [
+      36.5,
+      33
+     ],
+     [
+      35.5,
+      31
+     ],
+     [
+      34.5,
+      29.5
+     ],
+     [
+      33.5,
+      27
+     ],
+     [
+      34,
+      25
+     ],
+     [
+      33.5,
+      22
+     ],
+     [
+      33,
+      19
+     ],
+     [
+      33.5,
+      17
+     ],
+     [
+      31.5,
+      17.5
+     ],
+     [
+      30,
+      19
+     ],
+     [
+      31,
+      22
+     ],
+     [
+      30.5,
+      24
+     ],
+     [
+      29.5,
+      27
+     ],
+     [
+      28,
+      29
+     ],
+     [
+      25,
+      30
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "achaemenid-empire",
+   "label": "Achaemenid (Persian) Empire, c. 500 BC",
+   "kind": "empire",
+   "aliases": [
+    "achaemenid empire",
+    "persian empire"
+   ],
+   "rings": [
+    [
+     [
+      22,
+      41.5
+     ],
+     [
+      26,
+      42
+     ],
+     [
+      28,
+      41.5
+     ],
+     [
+      30,
+      41.2
+     ],
+     [
+      34,
+      42
+     ],
+     [
+      40,
+      41.5
+     ],
+     [
+      42,
+      43.5
+     ],
+     [
+      48,
+      42
+     ],
+     [
+      52,
+      40
+     ],
+     [
+      55,
+      42
+     ],
+     [
+      60,
+      44
+     ],
+     [
+      66,
+      45
+     ],
+     [
+      70,
+      43
+     ],
+     [
+      72,
+      40
+     ],
+     [
+      73,
+      37
+     ],
+     [
+      74,
+      34
+     ],
+     [
+      72,
+      30
+     ],
+     [
+      71,
+      25
+     ],
+     [
+      67,
+      24
+     ],
+     [
+      61,
+      25
+     ],
+     [
+      57,
+      25.5
+     ],
+     [
+      54,
+      26.5
+     ],
+     [
+      50,
+      29
+     ],
+     [
+      48,
+      30
+     ],
+     [
+      46,
+      29.5
+     ],
+     [
+      44,
+      31
+     ],
+     [
+      40,
+      32
+     ],
+     [
+      38,
+      30
+     ],
+     [
+      35,
+      28.5
+     ],
+     [
+      34,
+      27
+     ],
+     [
+      33.5,
+      24
+     ],
+     [
+      32,
+      22
+     ],
+     [
+      30,
+      22
+     ],
+     [
+      29,
+      25
+     ],
+     [
+      25,
+      30
+     ],
+     [
+      25,
+      31.5
+     ],
+     [
+      29,
+      31.2
+     ],
+     [
+      32,
+      31.3
+     ],
+     [
+      34.3,
+      31.4
+     ],
+     [
+      35,
+      33
+     ],
+     [
+      35.7,
+      35
+     ],
+     [
+      36,
+      36.5
+     ],
+     [
+      33,
+      36.2
+     ],
+     [
+      30,
+      36.3
+     ],
+     [
+      27,
+      37
+     ],
+     [
+      26,
+      39
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "macedonian-empire",
+   "label": "Empire of Alexander the Great, 323 BC",
+   "kind": "empire",
+   "aliases": [
+    "macedonian empire",
+    "alexander the great"
+   ],
+   "rings": [
+    [
+     [
+      19.5,
+      41
+     ],
+     [
+      21,
+      42.5
+     ],
+     [
+      24,
+      42.5
+     ],
+     [
+      26,
+      42
+     ],
+     [
+      28,
+      41.5
+     ],
+     [
+      30,
+      41.2
+     ],
+     [
+      34,
+      42
+     ],
+     [
+      38,
+      41
+     ],
+     [
+      42,
+      41.5
+     ],
+     [
+      46,
+      41
+     ],
+     [
+      48,
+      39
+     ],
+     [
+      51,
+      37.5
+     ],
+     [
+      55,
+      38
+     ],
+     [
+      59,
+      40
+     ],
+     [
+      63,
+      41.5
+     ],
+     [
+      68,
+      41
+     ],
+     [
+      71,
+      40
+     ],
+     [
+      73,
+      36
+     ],
+     [
+      75,
+      32
+     ],
+     [
+      73,
+      26
+     ],
+     [
+      68,
+      24
+     ],
+     [
+      62,
+      25
+     ],
+     [
+      57,
+      25.5
+     ],
+     [
+      54,
+      26.5
+     ],
+     [
+      50,
+      29
+     ],
+     [
+      47.5,
+      30
+     ],
+     [
+      45,
+      30.5
+     ],
+     [
+      40,
+      32
+     ],
+     [
+      37,
+      30
+     ],
+     [
+      35,
+      28.5
+     ],
+     [
+      34,
+      27
+     ],
+     [
+      33.5,
+      24.5
+     ],
+     [
+      30,
+      24
+     ],
+     [
+      29,
+      27
+     ],
+     [
+      25,
+      29
+     ],
+     [
+      24.5,
+      31.5
+     ],
+     [
+      27,
+      31.3
+     ],
+     [
+      30,
+      31.3
+     ],
+     [
+      32,
+      31.3
+     ],
+     [
+      34.3,
+      31.4
+     ],
+     [
+      35,
+      33
+     ],
+     [
+      35.7,
+      35
+     ],
+     [
+      36,
+      36.5
+     ],
+     [
+      32,
+      36.2
+     ],
+     [
+      28,
+      36.6
+     ],
+     [
+      26,
+      38.5
+     ],
+     [
+      24,
+      38
+     ],
+     [
+      22,
+      37
+     ],
+     [
+      21,
+      38.5
+     ],
+     [
+      20,
+      40
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "seleucid-empire",
+   "label": "Seleucid Empire, c. 300 BC",
+   "kind": "empire",
+   "aliases": [
+    "seleucid empire"
+   ],
+   "rings": [
+    [
+     [
+      27,
+      37.5
+     ],
+     [
+      30,
+      38.5
+     ],
+     [
+      33,
+      39.5
+     ],
+     [
+      37,
+      39.5
+     ],
+     [
+      40,
+      40
+     ],
+     [
+      44,
+      39
+     ],
+     [
+      48,
+      38
+     ],
+     [
+      52,
+      37.5
+     ],
+     [
+      56,
+      38
+     ],
+     [
+      60,
+      39
+     ],
+     [
+      64,
+      40
+     ],
+     [
+      68,
+      39
+     ],
+     [
+      70,
+      37
+     ],
+     [
+      71,
+      34
+     ],
+     [
+      70,
+      30
+     ],
+     [
+      66,
+      27
+     ],
+     [
+      61,
+      25.5
+     ],
+     [
+      57,
+      25.5
+     ],
+     [
+      54,
+      26.5
+     ],
+     [
+      50,
+      29
+     ],
+     [
+      47.5,
+      30
+     ],
+     [
+      45,
+      30.5
+     ],
+     [
+      41,
+      32
+     ],
+     [
+      38,
+      32
+     ],
+     [
+      36,
+      33
+     ],
+     [
+      35.5,
+      35
+     ],
+     [
+      36,
+      36.3
+     ],
+     [
+      33,
+      36.2
+     ],
+     [
+      30,
+      36.5
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "parthian-empire",
+   "label": "Parthian Empire, c. AD 1",
+   "kind": "empire",
+   "aliases": [
+    "parthian empire"
+   ],
+   "rings": [
+    [
+     [
+      38,
+      37
+     ],
+     [
+      40,
+      38.5
+     ],
+     [
+      44,
+      40
+     ],
+     [
+      47,
+      40
+     ],
+     [
+      49,
+      38.5
+     ],
+     [
+      53,
+      39
+     ],
+     [
+      56,
+      38.5
+     ],
+     [
+      60,
+      38
+     ],
+     [
+      63,
+      37.5
+     ],
+     [
+      65,
+      35
+     ],
+     [
+      64,
+      31
+     ],
+     [
+      62,
+      27
+     ],
+     [
+      58,
+      25.5
+     ],
+     [
+      54,
+      26.5
+     ],
+     [
+      50,
+      29
+     ],
+     [
+      48,
+      30
+     ],
+     [
+      46,
+      30
+     ],
+     [
+      44,
+      31.5
+     ],
+     [
+      41,
+      33
+     ],
+     [
+      39,
+      35
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "sasanian-empire",
+   "label": "Sasanian Empire, c. 550",
+   "kind": "empire",
+   "aliases": [
+    "sasanian empire",
+    "sassanid empire"
+   ],
+   "rings": [
+    [
+     [
+      38,
+      37
+     ],
+     [
+      40,
+      40
+     ],
+     [
+      42,
+      42
+     ],
+     [
+      45,
+      43
+     ],
+     [
+      48,
+      42
+     ],
+     [
+      50,
+      40
+     ],
+     [
+      53,
+      39
+     ],
+     [
+      56,
+      38.5
+     ],
+     [
+      60,
+      38
+     ],
+     [
+      66,
+      38
+     ],
+     [
+      70,
+      37
+     ],
+     [
+      70,
+      34
+     ],
+     [
+      67,
+      30
+     ],
+     [
+      66,
+      26
+     ],
+     [
+      61,
+      25.2
+     ],
+     [
+      57,
+      25.5
+     ],
+     [
+      55,
+      26
+     ],
+     [
+      56,
+      24
+     ],
+     [
+      54,
+      23.5
+     ],
+     [
+      51,
+      25
+     ],
+     [
+      50,
+      26.5
+     ],
+     [
+      48,
+      29.5
+     ],
+     [
+      46,
+      30
+     ],
+     [
+      44,
+      31
+     ],
+     [
+      41,
+      33
+     ],
+     [
+      39,
+      35
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "maurya-empire",
+   "label": "Maurya Empire, c. 250 BC",
+   "kind": "empire",
+   "aliases": [
+    "maurya empire",
+    "mauryan empire"
+   ],
+   "rings": [
+    [
+     [
+      61,
+      31
+     ],
+     [
+      63,
+      35
+     ],
+     [
+      68,
+      37
+     ],
+     [
+      71,
+      36
+     ],
+     [
+      74,
+      35.5
+     ],
+     [
+      76,
+      34
+     ],
+     [
+      78,
+      31
+     ],
+     [
+      80,
+      29.5
+     ],
+     [
+      84,
+      27.5
+     ],
+     [
+      88,
+      27
+     ],
+     [
+      89,
+      25
+     ],
+     [
+      88,
+      22
+     ],
+     [
+      86,
+      20
+     ],
+     [
+      84,
+      18
+     ],
+     [
+      82,
+      16.5
+     ],
+     [
+      80,
+      15
+     ],
+     [
+      79,
+      13
+     ],
+     [
+      77,
+      12.5
+     ],
+     [
+      75,
+      13
+     ],
+     [
+      74,
+      15
+     ],
+     [
+      73,
+      17
+     ],
+     [
+      72.8,
+      19
+     ],
+     [
+      72.5,
+      21
+     ],
+     [
+      70,
+      22
+     ],
+     [
+      68,
+      23.5
+     ],
+     [
+      66,
+      25
+     ],
+     [
+      64,
+      26
+     ],
+     [
+      62,
+      27
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "gupta-empire",
+   "label": "Gupta Empire, c. 400",
+   "kind": "empire",
+   "aliases": [
+    "gupta empire"
+   ],
+   "rings": [
+    [
+     [
+      70,
+      24
+     ],
+     [
+      72,
+      27
+     ],
+     [
+      74,
+      30
+     ],
+     [
+      76,
+      31.5
+     ],
+     [
+      78,
+      31
+     ],
+     [
+      80,
+      29
+     ],
+     [
+      84,
+      27.5
+     ],
+     [
+      88,
+      27
+     ],
+     [
+      92,
+      26
+     ],
+     [
+      92,
+      24
+     ],
+     [
+      89,
+      22
+     ],
+     [
+      86,
+      20.5
+     ],
+     [
+      84,
+      18.5
+     ],
+     [
+      82,
+      17
+     ],
+     [
+      80,
+      17
+     ],
+     [
+      78,
+      19
+     ],
+     [
+      76,
+      20
+     ],
+     [
+      74,
+      21
+     ],
+     [
+      72.5,
+      21.5
+     ],
+     [
+      70,
+      22
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "kushan-empire",
+   "label": "Kushan Empire, c. 200",
+   "kind": "empire",
+   "aliases": [
+    "kushan empire"
+   ],
+   "rings": [
+    [
+     [
+      60,
+      37
+     ],
+     [
+      62,
+      40
+     ],
+     [
+      66,
+      42
+     ],
+     [
+      70,
+      42
+     ],
+     [
+      74,
+      40.5
+     ],
+     [
+      76,
+      38
+     ],
+     [
+      76,
+      35
+     ],
+     [
+      78,
+      32
+     ],
+     [
+      80,
+      29
+     ],
+     [
+      82,
+      27
+     ],
+     [
+      82,
+      25
+     ],
+     [
+      79,
+      24
+     ],
+     [
+      76,
+      24
+     ],
+     [
+      73,
+      23.5
+     ],
+     [
+      70,
+      23
+     ],
+     [
+      68,
+      24
+     ],
+     [
+      66,
+      26
+     ],
+     [
+      63,
+      29
+     ],
+     [
+      61,
+      32
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "carthaginian-empire",
+   "label": "Carthage, c. 264 BC",
+   "kind": "empire",
+   "aliases": [
+    "carthaginian empire",
+    "carthage"
+   ],
+   "rings": [
+    [
+     [
+      -9,
+      33
+     ],
+     [
+      -6,
+      35.9
+     ],
+     [
+      -2,
+      35.3
+     ],
+     [
+      3,
+      36.8
+     ],
+     [
+      9,
+      37.3
+     ],
+     [
+      11,
+      37.2
+     ],
+     [
+      11,
+      35
+     ],
+     [
+      13,
+      33
+     ],
+     [
+      19,
+      30.5
+     ],
+     [
+      20,
+      31.5
+     ],
+     [
+      19.5,
+      30
+     ],
+     [
+      13,
+      31
+     ],
+     [
+      10,
+      32
+     ],
+     [
+      5,
+      33.5
+     ],
+     [
+      0,
+      34
+     ],
+     [
+      -5,
+      33.5
+     ],
+     [
+      -9,
+      32
+     ]
+    ],
+    [
+     [
+      -7,
+      37
+     ],
+     [
+      -5.5,
+      36
+     ],
+     [
+      -2,
+      36.7
+     ],
+     [
+      0,
+      38.5
+     ],
+     [
+      -0.5,
+      39.5
+     ],
+     [
+      -3,
+      38.5
+     ],
+     [
+      -6,
+      38
+     ]
+    ],
+    [
+     [
+      8,
+      39
+     ],
+     [
+      9.8,
+      39
+     ],
+     [
+      9.8,
+      41.2
+     ],
+     [
+      8.2,
+      41
+     ],
+     [
+      8,
+      40
+     ]
+    ],
+    [
+     [
+      8.5,
+      41.4
+     ],
+     [
+      9.6,
+      41.4
+     ],
+     [
+      9.5,
+      43
+     ],
+     [
+      8.6,
+      42.6
+     ]
+    ],
+    [
+     [
+      12.3,
+      37.6
+     ],
+     [
+      13.5,
+      37.1
+     ],
+     [
+      14,
+      37.8
+     ],
+     [
+      13.5,
+      38.2
+     ],
+     [
+      12.4,
+      38.1
+     ]
+    ],
+    [
+     [
+      1.2,
+      38.6
+     ],
+     [
+      4.4,
+      39.4
+     ],
+     [
+      4.3,
+      40.1
+     ],
+     [
+      2.3,
+      39.8
+     ],
+     [
+      1.2,
+      39.1
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "umayyad-caliphate",
+   "label": "Umayyad Caliphate, c. 750",
+   "kind": "empire",
+   "aliases": [
+    "umayyad caliphate"
+   ],
+   "rings": [
+    [
+     [
+      -9.5,
+      43.5
+     ],
+     [
+      -1.5,
+      43.5
+     ],
+     [
+      3,
+      42.5
+     ],
+     [
+      3.2,
+      41.5
+     ],
+     [
+      0.3,
+      39
+     ],
+     [
+      -1,
+      37.3
+     ],
+     [
+      -2,
+      36.6
+     ],
+     [
+      3,
+      36.9
+     ],
+     [
+      10,
+      37.3
+     ],
+     [
+      11.2,
+      35.2
+     ],
+     [
+      15,
+      32.4
+     ],
+     [
+      20,
+      32.4
+     ],
+     [
+      25,
+      31.8
+     ],
+     [
+      30,
+      31.4
+     ],
+     [
+      34.3,
+      31.6
+     ],
+     [
+      35.5,
+      34
+     ],
+     [
+      36,
+      36.5
+     ],
+     [
+      38,
+      37.8
+     ],
+     [
+      41,
+      39
+     ],
+     [
+      44,
+      41.2
+     ],
+     [
+      46,
+      41.5
+     ],
+     [
+      48.5,
+      41.5
+     ],
+     [
+      51,
+      40
+     ],
+     [
+      54,
+      40.5
+     ],
+     [
+      57,
+      40.5
+     ],
+     [
+      60,
+      42.5
+     ],
+     [
+      63,
+      43.5
+     ],
+     [
+      67,
+      42.5
+     ],
+     [
+      70,
+      42
+     ],
+     [
+      71.5,
+      40
+     ],
+     [
+      72,
+      37
+     ],
+     [
+      71,
+      35
+     ],
+     [
+      70,
+      32
+     ],
+     [
+      69,
+      29
+     ],
+     [
+      67.5,
+      25
+     ],
+     [
+      66,
+      24.8
+     ],
+     [
+      61.5,
+      25.2
+     ],
+     [
+      58,
+      25.7
+     ],
+     [
+      56.4,
+      26.4
+     ],
+     [
+      56.3,
+      24
+     ],
+     [
+      59,
+      22.5
+     ],
+     [
+      58.5,
+      20.5
+     ],
+     [
+      55.5,
+      17.5
+     ],
+     [
+      52,
+      16
+     ],
+     [
+      45,
+      12.8
+     ],
+     [
+      43.2,
+      12.7
+     ],
+     [
+      42.7,
+      15.5
+     ],
+     [
+      40,
+      19.5
+     ],
+     [
+      38.5,
+      22
+     ],
+     [
+      37.5,
+      24.5
+     ],
+     [
+      35.5,
+      27.5
+     ],
+     [
+      34.5,
+      29
+     ],
+     [
+      33.5,
+      27.5
+     ],
+     [
+      34.5,
+      25
+     ],
+     [
+      35.5,
+      23
+     ],
+     [
+      31,
+      22
+     ],
+     [
+      25,
+      22
+     ],
+     [
+      25,
+      29
+     ],
+     [
+      20,
+      30
+     ],
+     [
+      15,
+      30
+     ],
+     [
+      10,
+      30
+     ],
+     [
+      5,
+      30
+     ],
+     [
+      0,
+      30
+     ],
+     [
+      -5,
+      29
+     ],
+     [
+      -9.5,
+      30
+     ],
+     [
+      -9.8,
+      33
+     ],
+     [
+      -6.5,
+      35.7
+     ],
+     [
+      -9,
+      37
+     ],
+     [
+      -9.5,
+      39
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "fatimid-caliphate",
+   "label": "Fatimid Caliphate, c. 1000",
+   "kind": "empire",
+   "aliases": [
+    "fatimid caliphate"
+   ],
+   "rings": [
+    [
+     [
+      -1,
+      35
+     ],
+     [
+      3,
+      36.9
+     ],
+     [
+      10,
+      37.3
+     ],
+     [
+      11.2,
+      35.2
+     ],
+     [
+      15,
+      32.4
+     ],
+     [
+      20,
+      32.4
+     ],
+     [
+      25,
+      31.8
+     ],
+     [
+      30,
+      31.4
+     ],
+     [
+      34.3,
+      31.6
+     ],
+     [
+      35.3,
+      33.5
+     ],
+     [
+      36.3,
+      35
+     ],
+     [
+      37,
+      34.5
+     ],
+     [
+      37,
+      32
+     ],
+     [
+      36,
+      30
+     ],
+     [
+      38,
+      27
+     ],
+     [
+      40,
+      21.5
+     ],
+     [
+      42.5,
+      17
+     ],
+     [
+      41,
+      15
+     ],
+     [
+      39,
+      15.5
+     ],
+     [
+      36,
+      20
+     ],
+     [
+      35,
+      24
+     ],
+     [
+      33,
+      27
+     ],
+     [
+      32.5,
+      22
+     ],
+     [
+      31,
+      21
+     ],
+     [
+      28,
+      22
+     ],
+     [
+      25,
+      22
+     ],
+     [
+      25,
+      25
+     ],
+     [
+      20,
+      27
+     ],
+     [
+      15,
+      28
+     ],
+     [
+      10,
+      30
+     ],
+     [
+      5,
+      32
+     ],
+     [
+      0,
+      33
+     ],
+     [
+      -1,
+      34
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "mongol-empire",
+   "label": "Mongol Empire, 1279",
+   "kind": "empire",
+   "aliases": [
+    "mongol empire"
+   ],
+   "rings": [
+    [
+     [
+      23,
+      48
+     ],
+     [
+      26,
+      52
+     ],
+     [
+      30,
+      55
+     ],
+     [
+      35,
+      57
+     ],
+     [
+      40,
+      58
+     ],
+     [
+      45,
+      60
+     ],
+     [
+      50,
+      62
+     ],
+     [
+      58,
+      60
+     ],
+     [
+      62,
+      56
+     ],
+     [
+      70,
+      56
+     ],
+     [
+      80,
+      54
+     ],
+     [
+      90,
+      52
+     ],
+     [
+      100,
+      52
+     ],
+     [
+      110,
+      54
+     ],
+     [
+      120,
+      53
+     ],
+     [
+      130,
+      50
+     ],
+     [
+      135,
+      48
+     ],
+     [
+      132,
+      43
+     ],
+     [
+      129,
+      42.5
+     ],
+     [
+      126,
+      38
+     ],
+     [
+      125,
+      39
+     ],
+     [
+      122,
+      40
+     ],
+     [
+      121,
+      37
+     ],
+     [
+      119,
+      35
+     ],
+     [
+      121,
+      31
+     ],
+     [
+      122,
+      28
+     ],
+     [
+      119,
+      25
+     ],
+     [
+      117,
+      23
+     ],
+     [
+      113,
+      22
+     ],
+     [
+      110,
+      20.5
+     ],
+     [
+      108,
+      21.5
+     ],
+     [
+      106,
+      22.5
+     ],
+     [
+      103,
+      22.5
+     ],
+     [
+      100,
+      22
+     ],
+     [
+      98,
+      24
+     ],
+     [
+      97,
+      28
+     ],
+     [
+      94,
+      29
+     ],
+     [
+      90,
+      28
+     ],
+     [
+      85,
+      29
+     ],
+     [
+      80,
+      31
+     ],
+     [
+      77,
+      34
+     ],
+     [
+      74,
+      35
+     ],
+     [
+      71,
+      34
+     ],
+     [
+      68,
+      31
+     ],
+     [
+      65,
+      30
+     ],
+     [
+      62,
+      28
+     ],
+     [
+      61,
+      25.5
+     ],
+     [
+      57,
+      25.7
+     ],
+     [
+      54,
+      26.6
+     ],
+     [
+      50,
+      29.5
+     ],
+     [
+      48,
+      30
+     ],
+     [
+      46,
+      31
+     ],
+     [
+      43,
+      33
+     ],
+     [
+      40,
+      34
+     ],
+     [
+      38,
+      36
+     ],
+     [
+      36.5,
+      37
+     ],
+     [
+      34,
+      36.5
+     ],
+     [
+      32,
+      37.5
+     ],
+     [
+      30,
+      39
+     ],
+     [
+      29,
+      40.5
+     ],
+     [
+      32,
+      41.5
+     ],
+     [
+      36,
+      41.5
+     ],
+     [
+      40,
+      41
+     ],
+     [
+      42,
+      42.5
+     ],
+     [
+      44,
+      43
+     ],
+     [
+      47,
+      44
+     ],
+     [
+      48,
+      46
+     ],
+     [
+      45,
+      47
+     ],
+     [
+      40,
+      47
+     ],
+     [
+      36,
+      46
+     ],
+     [
+      32,
+      46
+     ],
+     [
+      29,
+      46
+     ],
+     [
+      27,
+      47
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "golden-horde",
+   "label": "Golden Horde, c. 1300",
+   "kind": "empire",
+   "aliases": [
+    "golden horde"
+   ],
+   "rings": [
+    [
+     [
+      23,
+      48
+     ],
+     [
+      27,
+      52
+     ],
+     [
+      32,
+      55
+     ],
+     [
+      36,
+      57
+     ],
+     [
+      42,
+      58
+     ],
+     [
+      48,
+      60
+     ],
+     [
+      56,
+      60
+     ],
+     [
+      62,
+      58
+     ],
+     [
+      68,
+      56
+     ],
+     [
+      72,
+      55
+     ],
+     [
+      78,
+      53
+     ],
+     [
+      80,
+      50
+     ],
+     [
+      80,
+      46
+     ],
+     [
+      75,
+      43
+     ],
+     [
+      70,
+      42
+     ],
+     [
+      64,
+      42.5
+     ],
+     [
+      60,
+      42
+     ],
+     [
+      56,
+      41
+     ],
+     [
+      53,
+      42
+     ],
+     [
+      50,
+      44
+     ],
+     [
+      48,
+      42
+     ],
+     [
+      47,
+      41.5
+     ],
+     [
+      44,
+      42.5
+     ],
+     [
+      40,
+      43.5
+     ],
+     [
+      38,
+      44.5
+     ],
+     [
+      36,
+      45
+     ],
+     [
+      34,
+      44.5
+     ],
+     [
+      33,
+      45.5
+     ],
+     [
+      30,
+      46
+     ],
+     [
+      29,
+      45.5
+     ],
+     [
+      27,
+      46.5
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "timurid-empire",
+   "label": "Timurid Empire, c. 1405",
+   "kind": "empire",
+   "aliases": [
+    "timurid empire"
+   ],
+   "rings": [
+    [
+     [
+      39,
+      38
+     ],
+     [
+      42,
+      40
+     ],
+     [
+      44,
+      42
+     ],
+     [
+      47,
+      42.5
+     ],
+     [
+      49,
+      40.5
+     ],
+     [
+      52,
+      41
+     ],
+     [
+      55,
+      42.5
+     ],
+     [
+      58,
+      44
+     ],
+     [
+      63,
+      45.5
+     ],
+     [
+      68,
+      45
+     ],
+     [
+      72,
+      43
+     ],
+     [
+      76,
+      42
+     ],
+     [
+      78,
+      40
+     ],
+     [
+      75,
+      37
+     ],
+     [
+      73,
+      35
+     ],
+     [
+      72,
+      32
+     ],
+     [
+      70,
+      29
+     ],
+     [
+      68,
+      26
+     ],
+     [
+      66,
+      25
+     ],
+     [
+      62,
+      25.2
+     ],
+     [
+      58,
+      25.7
+     ],
+     [
+      56,
+      26.5
+     ],
+     [
+      52,
+      27.5
+     ],
+     [
+      50,
+      29.5
+     ],
+     [
+      48,
+      30
+     ],
+     [
+      46,
+      31
+     ],
+     [
+      44,
+      32
+     ],
+     [
+      42,
+      34
+     ],
+     [
+      40,
+      35
+     ],
+     [
+      38,
+      36.5
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "mughal-empire",
+   "label": "Mughal Empire, c. 1700",
+   "kind": "empire",
+   "aliases": [
+    "mughal empire"
+   ],
+   "rings": [
+    [
+     [
+      66,
+      31
+     ],
+     [
+      68,
+      35
+     ],
+     [
+      70,
+      36
+     ],
+     [
+      73,
+      35
+     ],
+     [
+      75,
+      35.5
+     ],
+     [
+      77,
+      34
+     ],
+     [
+      78,
+      32
+     ],
+     [
+      80,
+      30
+     ],
+     [
+      84,
+      27.5
+     ],
+     [
+      88,
+      27
+     ],
+     [
+      92,
+      26.5
+     ],
+     [
+      94,
+      26
+     ],
+     [
+      92,
+      23
+     ],
+     [
+      89,
+      22
+     ],
+     [
+      87,
+      21.5
+     ],
+     [
+      86,
+      20.5
+     ],
+     [
+      84,
+      18.5
+     ],
+     [
+      82,
+      17
+     ],
+     [
+      80,
+      15.5
+     ],
+     [
+      79,
+      13.5
+     ],
+     [
+      78,
+      12
+     ],
+     [
+      76,
+      12
+     ],
+     [
+      75,
+      13
+     ],
+     [
+      74,
+      15
+     ],
+     [
+      73.5,
+      16.5
+     ],
+     [
+      72.8,
+      19
+     ],
+     [
+      72.6,
+      21
+     ],
+     [
+      70,
+      22.3
+     ],
+     [
+      68.5,
+      23.5
+     ],
+     [
+      67,
+      24.5
+     ],
+     [
+      66,
+      26
+     ],
+     [
+      64,
+      27
+     ],
+     [
+      62.5,
+      29
+     ],
+     [
+      64,
+      30
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "safavid-empire",
+   "label": "Safavid Empire, c. 1600",
+   "kind": "empire",
+   "aliases": [
+    "safavid empire"
+   ],
+   "rings": [
+    [
+     [
+      44,
+      39.5
+     ],
+     [
+      44,
+      41.5
+     ],
+     [
+      46,
+      42
+     ],
+     [
+      48,
+      41.5
+     ],
+     [
+      49.5,
+      40
+     ],
+     [
+      52,
+      39.5
+     ],
+     [
+      54,
+      38
+     ],
+     [
+      57,
+      38
+     ],
+     [
+      60,
+      37
+     ],
+     [
+      62,
+      36
+     ],
+     [
+      63,
+      35
+     ],
+     [
+      64,
+      33
+     ],
+     [
+      63,
+      30
+     ],
+     [
+      62,
+      27
+     ],
+     [
+      61,
+      25.2
+     ],
+     [
+      57,
+      25.7
+     ],
+     [
+      56,
+      26.5
+     ],
+     [
+      54,
+      26.5
+     ],
+     [
+      51,
+      28
+     ],
+     [
+      50,
+      29.8
+     ],
+     [
+      48,
+      30
+     ],
+     [
+      46,
+      31
+     ],
+     [
+      45,
+      32.5
+     ],
+     [
+      45.5,
+      34.5
+     ],
+     [
+      45,
+      36.5
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "ottoman-empire",
+   "label": "Ottoman Empire, 1683",
+   "kind": "empire",
+   "aliases": [
+    "ottoman empire"
+   ],
+   "rings": [
+    [
+     [
+      14,
+      45
+     ],
+     [
+      16.5,
+      46.5
+     ],
+     [
+      18,
+      47.5
+     ],
+     [
+      20,
+      48.5
+     ],
+     [
+      22.5,
+      48.5
+     ],
+     [
+      24,
+      48
+     ],
+     [
+      27,
+      48.3
+     ],
+     [
+      30,
+      48
+     ],
+     [
+      33,
+      47
+     ],
+     [
+      36,
+      47.5
+     ],
+     [
+      39,
+      47.5
+     ],
+     [
+      40,
+      46
+     ],
+     [
+      38,
+      45
+     ],
+     [
+      37,
+      44.5
+     ],
+     [
+      40,
+      43.5
+     ],
+     [
+      42,
+      42.5
+     ],
+     [
+      44,
+      41.5
+     ],
+     [
+      44.5,
+      40
+     ],
+     [
+      44.5,
+      38.5
+     ],
+     [
+      46,
+      36.5
+     ],
+     [
+      46,
+      34
+     ],
+     [
+      48,
+      31
+     ],
+     [
+      48.5,
+      29.5
+     ],
+     [
+      50,
+      26
+     ],
+     [
+      51,
+      24.5
+     ],
+     [
+      50,
+      24
+     ],
+     [
+      47,
+      28.5
+     ],
+     [
+      45,
+      29
+     ],
+     [
+      42,
+      29
+     ],
+     [
+      39,
+      30
+     ],
+     [
+      37.5,
+      29
+     ],
+     [
+      39,
+      26
+     ],
+     [
+      40,
+      22
+     ],
+     [
+      42,
+      18
+     ],
+     [
+      43,
+      13
+     ],
+     [
+      44,
+      13
+     ],
+     [
+      45.5,
+      13
+     ],
+     [
+      43.5,
+      12.5
+     ],
+     [
+      41,
+      15
+     ],
+     [
+      39,
+      15.5
+     ],
+     [
+      37,
+      18
+     ],
+     [
+      35,
+      24
+     ],
+     [
+      34,
+      27
+     ],
+     [
+      33,
+      28.5
+     ],
+     [
+      32.5,
+      24
+     ],
+     [
+      33,
+      22
+     ],
+     [
+      32,
+      20
+     ],
+     [
+      30,
+      22
+     ],
+     [
+      25,
+      22
+     ],
+     [
+      25,
+      29
+     ],
+     [
+      20,
+      30
+     ],
+     [
+      15,
+      30
+     ],
+     [
+      12,
+      31
+     ],
+     [
+      10,
+      31
+     ],
+     [
+      8,
+      32
+     ],
+     [
+      5,
+      33
+     ],
+     [
+      2,
+      34
+     ],
+     [
+      -1,
+      34.5
+     ],
+     [
+      -1.5,
+      35.2
+     ],
+     [
+      2,
+      36.7
+     ],
+     [
+      10,
+      37.3
+     ],
+     [
+      11,
+      35
+     ],
+     [
+      15,
+      32.4
+     ],
+     [
+      20,
+      32.4
+     ],
+     [
+      25,
+      31.8
+     ],
+     [
+      30,
+      31.4
+     ],
+     [
+      34.3,
+      31.6
+     ],
+     [
+      35.5,
+      34
+     ],
+     [
+      36,
+      36.5
+     ],
+     [
+      30,
+      36.3
+     ],
+     [
+      27,
+      37
+     ],
+     [
+      26,
+      39
+     ],
+     [
+      24,
+      38
+     ],
+     [
+      22,
+      37
+     ],
+     [
+      21,
+      38.5
+     ],
+     [
+      19.5,
+      40
+     ],
+     [
+      19.5,
+      42
+     ],
+     [
+      17,
+      43
+     ],
+     [
+      15.5,
+      44
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "tang-dynasty",
+   "label": "Tang dynasty, c. 700",
+   "kind": "empire",
+   "aliases": [
+    "tang dynasty",
+    "tang empire"
+   ],
+   "rings": [
+    [
+     [
+      75,
+      40
+     ],
+     [
+      80,
+      43
+     ],
+     [
+      85,
+      45
+     ],
+     [
+      90,
+      46
+     ],
+     [
+      95,
+      44
+     ],
+     [
+      100,
+      43
+     ],
+     [
+      105,
+      42
+     ],
+     [
+      110,
+      43
+     ],
+     [
+      115,
+      43
+     ],
+     [
+      118,
+      46
+     ],
+     [
+      122,
+      48
+     ],
+     [
+      126,
+      46
+     ],
+     [
+      128,
+      44
+     ],
+     [
+      130,
+      43
+     ],
+     [
+      128,
+      42
+     ],
+     [
+      125,
+      40
+     ],
+     [
+      122,
+      40
+     ],
+     [
+      121,
+      37
+     ],
+     [
+      119,
+      35
+     ],
+     [
+      121,
+      31
+     ],
+     [
+      122,
+      28
+     ],
+     [
+      119,
+      25
+     ],
+     [
+      117,
+      23
+     ],
+     [
+      113,
+      22
+     ],
+     [
+      110,
+      20.5
+     ],
+     [
+      108,
+      21.5
+     ],
+     [
+      106,
+      22.5
+     ],
+     [
+      105,
+      21
+     ],
+     [
+      106.5,
+      19
+     ],
+     [
+      105,
+      18
+     ],
+     [
+      103,
+      21
+     ],
+     [
+      101,
+      22
+     ],
+     [
+      99,
+      23
+     ],
+     [
+      98,
+      25
+     ],
+     [
+      100,
+      28
+     ],
+     [
+      102,
+      30
+     ],
+     [
+      101,
+      33
+     ],
+     [
+      98,
+      35
+     ],
+     [
+      94,
+      36
+     ],
+     [
+      90,
+      37
+     ],
+     [
+      86,
+      38
+     ],
+     [
+      82,
+      37
+     ],
+     [
+      78,
+      36.5
+     ],
+     [
+      74,
+      38
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "khmer-empire",
+   "label": "Khmer Empire, c. 1200",
+   "kind": "empire",
+   "aliases": [
+    "khmer empire"
+   ],
+   "rings": [
+    [
+     [
+      98.5,
+      10
+     ],
+     [
+      99,
+      14
+     ],
+     [
+      99,
+      17
+     ],
+     [
+      100,
+      19.5
+     ],
+     [
+      102,
+      19
+     ],
+     [
+      104,
+      18
+     ],
+     [
+      106,
+      17.5
+     ],
+     [
+      107,
+      16
+     ],
+     [
+      109,
+      13
+     ],
+     [
+      109,
+      11.5
+     ],
+     [
+      107,
+      10.5
+     ],
+     [
+      106.5,
+      9
+     ],
+     [
+      105,
+      8.6
+     ],
+     [
+      104.5,
+      10
+     ],
+     [
+      103,
+      10.5
+     ],
+     [
+      101,
+      12.5
+     ],
+     [
+      100,
+      13
+     ],
+     [
+      99.5,
+      10
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "ghana-empire",
+   "label": "Ghana Empire, c. 1050",
+   "kind": "empire",
+   "aliases": [
+    "ghana empire",
+    "wagadu"
+   ],
+   "rings": [
+    [
+     [
+      -12,
+      18
+     ],
+     [
+      -8,
+      19
+     ],
+     [
+      -4,
+      18.5
+     ],
+     [
+      -2,
+      17
+     ],
+     [
+      -3,
+      15
+     ],
+     [
+      -5,
+      14.5
+     ],
+     [
+      -8,
+      14.2
+     ],
+     [
+      -10.5,
+      14.5
+     ],
+     [
+      -12,
+      15.5
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "mali-empire",
+   "label": "Mali Empire, c. 1350",
+   "kind": "empire",
+   "aliases": [
+    "mali empire"
+   ],
+   "rings": [
+    [
+     [
+      -17,
+      16
+     ],
+     [
+      -16,
+      13
+     ],
+     [
+      -14,
+      12
+     ],
+     [
+      -12,
+      10
+     ],
+     [
+      -10,
+      9.5
+     ],
+     [
+      -7,
+      10
+     ],
+     [
+      -5,
+      11
+     ],
+     [
+      -3,
+      12.5
+     ],
+     [
+      0,
+      14
+     ],
+     [
+      1,
+      16.5
+     ],
+     [
+      1,
+      19
+     ],
+     [
+      -1,
+      21
+     ],
+     [
+      -4,
+      22
+     ],
+     [
+      -7,
+      22
+     ],
+     [
+      -10,
+      20
+     ],
+     [
+      -13,
+      19
+     ],
+     [
+      -16,
+      17.5
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "songhai-empire",
+   "label": "Songhai Empire, c. 1500",
+   "kind": "empire",
+   "aliases": [
+    "songhai empire"
+   ],
+   "rings": [
+    [
+     [
+      -12,
+      15
+     ],
+     [
+      -10,
+      14
+     ],
+     [
+      -7,
+      13
+     ],
+     [
+      -4,
+      12.5
+     ],
+     [
+      -1,
+      12.5
+     ],
+     [
+      2,
+      11.5
+     ],
+     [
+      4,
+      12
+     ],
+     [
+      7,
+      13.5
+     ],
+     [
+      9,
+      15
+     ],
+     [
+      9,
+      18
+     ],
+     [
+      6,
+      19
+     ],
+     [
+      3,
+      21
+     ],
+     [
+      0,
+      21.5
+     ],
+     [
+      -3,
+      21
+     ],
+     [
+      -6,
+      20
+     ],
+     [
+      -9,
+      18
+     ],
+     [
+      -11,
+      16.5
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "aztec-empire",
+   "label": "Aztec Empire, 1519",
+   "kind": "empire",
+   "aliases": [
+    "aztec empire"
+   ],
+   "rings": [
+    [
+     [
+      -103,
+      19
+     ],
+     [
+      -101,
+      20.5
+     ],
+     [
+      -99.5,
+      21.2
+     ],
+     [
+      -97.5,
+      21.5
+     ],
+     [
+      -96.5,
+      19.5
+     ],
+     [
+      -95,
+      18.5
+     ],
+     [
+      -93,
+      17
+     ],
+     [
+      -92,
+      15.5
+     ],
+     [
+      -93.5,
+      15.5
+     ],
+     [
+      -96,
+      15.6
+     ],
+     [
+      -98.5,
+      16.2
+     ],
+     [
+      -101,
+      17.5
+     ],
+     [
+      -103,
+      18.5
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "inca-empire",
+   "label": "Inca Empire, c. 1530",
+   "kind": "empire",
+   "aliases": [
+    "inca empire"
+   ],
+   "rings": [
+    [
+     [
+      -80.5,
+      1
+     ],
+     [
+      -78,
+      1.5
+     ],
+     [
+      -77,
+      -1
+     ],
+     [
+      -76,
+      -4
+     ],
+     [
+      -76,
+      -8
+     ],
+     [
+      -74.5,
+      -11
+     ],
+     [
+      -72.5,
+      -13
+     ],
+     [
+      -70,
+      -15.5
+     ],
+     [
+      -68,
+      -18
+     ],
+     [
+      -66,
+      -21
+     ],
+     [
+      -65,
+      -24
+     ],
+     [
+      -66,
+      -28
+     ],
+     [
+      -68,
+      -32
+     ],
+     [
+      -70,
+      -35
+     ],
+     [
+      -72,
+      -35.5
+     ],
+     [
+      -71.6,
+      -33
+     ],
+     [
+      -71.2,
+      -28
+     ],
+     [
+      -70.4,
+      -23
+     ],
+     [
+      -70.2,
+      -18.5
+     ],
+     [
+      -71.5,
+      -17.3
+     ],
+     [
+      -75,
+      -15.2
+     ],
+     [
+      -76.3,
+      -13.5
+     ],
+     [
+      -77.6,
+      -11.5
+     ],
+     [
+      -79,
+      -8
+     ],
+     [
+      -80.5,
+      -6
+     ],
+     [
+      -81,
+      -4
+     ],
+     [
+      -80,
+      -2
+     ],
+     [
+      -80.5,
+      0
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "ethiopian-empire",
+   "label": "Ethiopian Empire, c. 1900",
+   "kind": "empire",
+   "aliases": [
+    "ethiopian empire",
+    "abyssinia"
+   ],
+   "members": [
+    "Ethiopia"
+   ],
+   "approx": true
+  },
+  {
+   "key": "carolingian-empire",
+   "label": "Carolingian Empire, 814",
+   "kind": "empire",
+   "aliases": [
+    "carolingian empire",
+    "empire of charlemagne"
+   ],
+   "rings": [
+    [
+     [
+      -2,
+      43
+     ],
+     [
+      -1.5,
+      43.5
+     ],
+     [
+      -1.8,
+      46
+     ],
+     [
+      -4.5,
+      47.5
+     ],
+     [
+      -4.6,
+      48.6
+     ],
+     [
+      -1.5,
+      48.7
+     ],
+     [
+      1,
+      50
+     ],
+     [
+      3,
+      51.2
+     ],
+     [
+      4.5,
+      52
+     ],
+     [
+      5,
+      53.4
+     ],
+     [
+      7,
+      53.5
+     ],
+     [
+      9,
+      54.5
+     ],
+     [
+      10.5,
+      54
+     ],
+     [
+      11.5,
+      53
+     ],
+     [
+      12,
+      51
+     ],
+     [
+      13,
+      50.5
+     ],
+     [
+      15,
+      49
+     ],
+     [
+      16,
+      48
+     ],
+     [
+      16.5,
+      46.5
+     ],
+     [
+      15,
+      45.5
+     ],
+     [
+      14,
+      45.5
+     ],
+     [
+      13.7,
+      45
+     ],
+     [
+      14.5,
+      44
+     ],
+     [
+      15,
+      43
+     ],
+     [
+      14,
+      42
+     ],
+     [
+      13,
+      41.5
+     ],
+     [
+      12,
+      42
+     ],
+     [
+      11,
+      42.5
+     ],
+     [
+      10,
+      44
+     ],
+     [
+      8,
+      44
+     ],
+     [
+      6.5,
+      43.2
+     ],
+     [
+      4,
+      43.5
+     ],
+     [
+      3,
+      42.5
+     ],
+     [
+      3,
+      41.3
+     ],
+     [
+      1,
+      41
+     ],
+     [
+      0,
+      42
+     ],
+     [
+      -1,
+      42.8
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "holy-roman-empire",
+   "label": "Holy Roman Empire, c. 1200",
+   "kind": "empire",
+   "aliases": [
+    "holy roman empire"
+   ],
+   "rings": [
+    [
+     [
+      2.5,
+      51
+     ],
+     [
+      4,
+      52
+     ],
+     [
+      4.8,
+      53.4
+     ],
+     [
+      7,
+      53.5
+     ],
+     [
+      9,
+      54.8
+     ],
+     [
+      11,
+      54.2
+     ],
+     [
+      13,
+      54.5
+     ],
+     [
+      14.5,
+      53.5
+     ],
+     [
+      15,
+      51
+     ],
+     [
+      16.5,
+      50.4
+     ],
+     [
+      18.5,
+      49.8
+     ],
+     [
+      17.5,
+      48.8
+     ],
+     [
+      16.8,
+      48
+     ],
+     [
+      16.5,
+      47
+     ],
+     [
+      16,
+      46.5
+     ],
+     [
+      14,
+      46
+     ],
+     [
+      13.7,
+      45.6
+     ],
+     [
+      13,
+      45.7
+     ],
+     [
+      12.5,
+      44.5
+     ],
+     [
+      13.5,
+      43.5
+     ],
+     [
+      13.8,
+      42.5
+     ],
+     [
+      12.5,
+      42
+     ],
+     [
+      11,
+      42.5
+     ],
+     [
+      10,
+      43.8
+     ],
+     [
+      8,
+      44
+     ],
+     [
+      7.5,
+      43.8
+     ],
+     [
+      6.5,
+      44.5
+     ],
+     [
+      5.5,
+      45
+     ],
+     [
+      5,
+      46
+     ],
+     [
+      4.8,
+      47
+     ],
+     [
+      5,
+      48
+     ],
+     [
+      5.5,
+      49
+     ],
+     [
+      4.8,
+      50
+     ],
+     [
+      3.5,
+      50.3
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "habsburg-empire",
+   "label": "Habsburg Monarchy, c. 1780",
+   "kind": "empire",
+   "aliases": [
+    "habsburg empire",
+    "habsburg monarchy"
+   ],
+   "rings": [
+    [
+     [
+      9.5,
+      47.5
+     ],
+     [
+      12,
+      47.7
+     ],
+     [
+      13,
+      48.6
+     ],
+     [
+      13.8,
+      48.8
+     ],
+     [
+      15,
+      49
+     ],
+     [
+      14.3,
+      50.9
+     ],
+     [
+      15,
+      51
+     ],
+     [
+      16.5,
+      50.4
+     ],
+     [
+      18.5,
+      50
+     ],
+     [
+      19.8,
+      50.4
+     ],
+     [
+      21,
+      50.4
+     ],
+     [
+      23,
+      50.8
+     ],
+     [
+      24,
+      50.5
+     ],
+     [
+      25.5,
+      49.5
+     ],
+     [
+      26.6,
+      48.3
+     ],
+     [
+      25,
+      47.7
+     ],
+     [
+      24.8,
+      47.3
+     ],
+     [
+      26,
+      46.2
+     ],
+     [
+      25.5,
+      45.4
+     ],
+     [
+      22.5,
+      44.6
+     ],
+     [
+      21.5,
+      44.7
+     ],
+     [
+      19.5,
+      45
+     ],
+     [
+      19,
+      44.8
+     ],
+     [
+      16.5,
+      45.3
+     ],
+     [
+      15.5,
+      44.5
+     ],
+     [
+      15,
+      45.3
+     ],
+     [
+      13.6,
+      45.6
+     ],
+     [
+      13.7,
+      46.5
+     ],
+     [
+      12.4,
+      46.8
+     ],
+     [
+      10.5,
+      46.8
+     ],
+     [
+      9.5,
+      47
+     ]
+    ],
+    [
+     [
+      2.6,
+      51
+     ],
+     [
+      4,
+      51.3
+     ],
+     [
+      5.8,
+      51.2
+     ],
+     [
+      6.1,
+      50.1
+     ],
+     [
+      5.7,
+      49.6
+     ],
+     [
+      4.5,
+      49.9
+     ],
+     [
+      2.6,
+      50.7
+     ]
+    ],
+    [
+     [
+      8.6,
+      45.2
+     ],
+     [
+      9.8,
+      46.4
+     ],
+     [
+      10.6,
+      45.5
+     ],
+     [
+      10.5,
+      45
+     ],
+     [
+      9.2,
+      44.9
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "austro-hungarian-empire",
+   "label": "Austria-Hungary, 1914",
+   "kind": "empire",
+   "aliases": [
+    "austro-hungarian empire",
+    "austria-hungary"
+   ],
+   "rings": [
+    [
+     [
+      9.5,
+      47.5
+     ],
+     [
+      12,
+      47.7
+     ],
+     [
+      13,
+      48.6
+     ],
+     [
+      13.8,
+      48.8
+     ],
+     [
+      12.2,
+      50.2
+     ],
+     [
+      14.3,
+      50.9
+     ],
+     [
+      15,
+      51
+     ],
+     [
+      16.5,
+      50.4
+     ],
+     [
+      18.5,
+      50
+     ],
+     [
+      19.8,
+      50.2
+     ],
+     [
+      21,
+      50.4
+     ],
+     [
+      23,
+      50.2
+     ],
+     [
+      24,
+      50.5
+     ],
+     [
+      25.5,
+      49.5
+     ],
+     [
+      26.6,
+      48.3
+     ],
+     [
+      25,
+      47.7
+     ],
+     [
+      24.8,
+      47.3
+     ],
+     [
+      26,
+      46.2
+     ],
+     [
+      25.5,
+      45.4
+     ],
+     [
+      22.5,
+      44.6
+     ],
+     [
+      21.5,
+      44.7
+     ],
+     [
+      19.5,
+      45
+     ],
+     [
+      19,
+      44.2
+     ],
+     [
+      19.3,
+      43
+     ],
+     [
+      18.5,
+      42.4
+     ],
+     [
+      17.5,
+      42.8
+     ],
+     [
+      16,
+      43.5
+     ],
+     [
+      15,
+      44.5
+     ],
+     [
+      14.2,
+      45.2
+     ],
+     [
+      13.6,
+      45.6
+     ],
+     [
+      13.7,
+      46.5
+     ],
+     [
+      12.4,
+      46.8
+     ],
+     [
+      10.5,
+      46.8
+     ],
+     [
+      9.5,
+      47
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "british-empire",
+   "label": "British Empire, c. 1920",
+   "kind": "empire",
+   "aliases": [
+    "british empire"
+   ],
+   "members": [
+    "United Kingdom",
+    "Ireland",
+    "Canada",
+    "Australia",
+    "New Zealand",
+    "India",
+    "Pakistan",
+    "Bangladesh",
+    "Myanmar",
+    "Sri Lanka",
+    "Malaysia",
+    "Singapore",
+    "Brunei",
+    "Papua New Guinea",
+    "South Africa",
+    "Namibia",
+    "Botswana",
+    "Lesotho",
+    "eSwatini",
+    "Zimbabwe",
+    "Zambia",
+    "Malawi",
+    "Tanzania",
+    "Kenya",
+    "Uganda",
+    "Sudan",
+    "S. Sudan",
+    "Egypt",
+    "Nigeria",
+    "Ghana",
+    "Sierra Leone",
+    "Gambia",
+    "Somaliland",
+    "Iraq",
+    "Palestine",
+    "Israel",
+    "Jordan",
+    "Kuwait",
+    "Qatar",
+    "Bahrain",
+    "United Arab Emirates",
+    "Cyprus",
+    "Malta",
+    "Jamaica",
+    "Bahamas",
+    "Belize",
+    "Guyana",
+    "Trinidad and Tobago",
+    "Barbados",
+    "Fiji",
+    "Falkland Is.",
+    "Hong Kong",
+    "Mauritius",
+    "Seychelles",
+    "Maldives",
+    "Solomon Is.",
+    "Bermuda"
+   ],
+   "approx": true
+  },
+  {
+   "key": "french-colonial-empire",
+   "label": "French colonial empire, c. 1920",
+   "kind": "empire",
+   "aliases": [
+    "french colonial empire",
+    "french empire"
+   ],
+   "members": [
+    "France",
+    "Algeria",
+    "Morocco",
+    "Tunisia",
+    "Mauritania",
+    "Senegal",
+    "Mali",
+    "Guinea",
+    "Côte d'Ivoire",
+    "Burkina Faso",
+    "Niger",
+    "Benin",
+    "Togo",
+    "Chad",
+    "Central African Rep.",
+    "Congo",
+    "Gabon",
+    "Cameroon",
+    "Madagascar",
+    "Djibouti",
+    "Comoros",
+    "Syria",
+    "Lebanon",
+    "Vietnam",
+    "Laos",
+    "Cambodia",
+    "New Caledonia",
+    "Fr. Polynesia"
+   ],
+   "approx": true
+  },
+  {
+   "key": "spanish-empire",
+   "label": "Spanish Empire, c. 1790",
+   "kind": "empire",
+   "aliases": [
+    "spanish empire"
+   ],
+   "members": [
+    "Spain",
+    "Mexico",
+    "Guatemala",
+    "Honduras",
+    "El Salvador",
+    "Nicaragua",
+    "Costa Rica",
+    "Panama",
+    "Cuba",
+    "Dominican Rep.",
+    "Puerto Rico",
+    "Colombia",
+    "Venezuela",
+    "Ecuador",
+    "Peru",
+    "Bolivia",
+    "Chile",
+    "Argentina",
+    "Paraguay",
+    "Uruguay",
+    "Philippines"
+   ],
+   "rings": [
+    [
+     [
+      -124,
+      42
+     ],
+     [
+      -114,
+      42
+     ],
+     [
+      -109,
+      41
+     ],
+     [
+      -104,
+      38
+     ],
+     [
+      -100,
+      37
+     ],
+     [
+      -95,
+      33
+     ],
+     [
+      -94,
+      30
+     ],
+     [
+      -97,
+      26
+     ],
+     [
+      -104,
+      29
+     ],
+     [
+      -110,
+      31.3
+     ],
+     [
+      -117,
+      32.5
+     ],
+     [
+      -120,
+      34.5
+     ],
+     [
+      -122.5,
+      37.5
+     ],
+     [
+      -124,
+      40.5
+     ]
+    ],
+    [
+     [
+      -87.5,
+      31
+     ],
+     [
+      -81.5,
+      30.7
+     ],
+     [
+      -80,
+      26
+     ],
+     [
+      -81,
+      25
+     ],
+     [
+      -82.5,
+      27.5
+     ],
+     [
+      -84,
+      29.8
+     ],
+     [
+      -87.5,
+      30.3
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "portuguese-empire",
+   "label": "Portuguese Empire, c. 1800",
+   "kind": "empire",
+   "aliases": [
+    "portuguese empire"
+   ],
+   "members": [
+    "Portugal",
+    "Brazil",
+    "Angola",
+    "Mozambique",
+    "Guinea-Bissau",
+    "Cabo Verde",
+    "São Tomé and Principe",
+    "Timor-Leste",
+    "Macao"
+   ],
+   "rings": [
+    [
+     [
+      73.6,
+      15.8
+     ],
+     [
+      74.3,
+      15.8
+     ],
+     [
+      74.3,
+      14.9
+     ],
+     [
+      73.8,
+      14.9
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "dutch-empire",
+   "label": "Dutch colonies (17th–20th c.)",
+   "kind": "empire",
+   "aliases": [
+    "dutch empire"
+   ],
+   "members": [
+    "Netherlands",
+    "Indonesia",
+    "Sri Lanka",
+    "Suriname",
+    "Aruba",
+    "Curaçao",
+    "Sint Maarten"
+   ],
+   "rings": [
+    [
+     [
+      18,
+      -34.5
+     ],
+     [
+      18.2,
+      -31
+     ],
+     [
+      21,
+      -31
+     ],
+     [
+      24,
+      -33
+     ],
+     [
+      25.5,
+      -34
+     ],
+     [
+      22,
+      -34.2
+     ],
+     [
+      19.5,
+      -34.8
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "danish-empire",
+   "label": "Danish realm, c. 1800",
+   "kind": "empire",
+   "aliases": [
+    "danish empire",
+    "denmark-norway"
+   ],
+   "members": [
+    "Denmark",
+    "Norway",
+    "Iceland",
+    "Greenland",
+    "Faeroe Is.",
+    "U.S. Virgin Is."
+   ],
+   "approx": true
+  },
+  {
+   "key": "russian-empire",
+   "label": "Russian Empire, 1914",
+   "kind": "empire",
+   "aliases": [
+    "russian empire"
+   ],
+   "members": [
+    "Russia",
+    "Finland",
+    "Estonia",
+    "Latvia",
+    "Lithuania",
+    "Belarus",
+    "Ukraine",
+    "Moldova",
+    "Georgia",
+    "Armenia",
+    "Azerbaijan",
+    "Kazakhstan",
+    "Uzbekistan",
+    "Turkmenistan",
+    "Kyrgyzstan",
+    "Tajikistan"
+   ],
+   "rings": [
+    [
+     [
+      16.5,
+      51.5
+     ],
+     [
+      18,
+      53
+     ],
+     [
+      20,
+      54.3
+     ],
+     [
+      22.8,
+      54.3
+     ],
+     [
+      23.9,
+      52.7
+     ],
+     [
+      24,
+      50.5
+     ],
+     [
+      23,
+      50.4
+     ],
+     [
+      21,
+      50.4
+     ],
+     [
+      19.5,
+      50.3
+     ],
+     [
+      18.5,
+      51.3
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "japanese-empire",
+   "label": "Empire of Japan, 1942",
+   "kind": "empire",
+   "aliases": [
+    "japanese empire",
+    "empire of japan"
+   ],
+   "members": [
+    "Japan",
+    "South Korea",
+    "North Korea",
+    "Taiwan",
+    "Philippines",
+    "Indonesia",
+    "Malaysia",
+    "Singapore",
+    "Brunei",
+    "Myanmar",
+    "Vietnam",
+    "Laos",
+    "Cambodia",
+    "Timor-Leste"
+   ],
+   "rings": [
+    [
+     [
+      118,
+      40
+     ],
+     [
+      121,
+      39
+     ],
+     [
+      125,
+      40
+     ],
+     [
+      128,
+      42
+     ],
+     [
+      131,
+      43
+     ],
+     [
+      134,
+      48
+     ],
+     [
+      128,
+      50
+     ],
+     [
+      124,
+      53
+     ],
+     [
+      120,
+      52
+     ],
+     [
+      118,
+      48
+     ],
+     [
+      116,
+      44
+     ],
+     [
+      114,
+      41
+     ],
+     [
+      112,
+      38
+     ],
+     [
+      113,
+      34
+     ],
+     [
+      115,
+      30
+     ],
+     [
+      114,
+      26
+     ],
+     [
+      113,
+      22.5
+     ],
+     [
+      116,
+      23
+     ],
+     [
+      119,
+      25
+     ],
+     [
+      121,
+      28
+     ],
+     [
+      122,
+      30.5
+     ],
+     [
+      120,
+      33
+     ],
+     [
+      119,
+      35
+     ],
+     [
+      120.5,
+      37
+     ],
+     [
+      118,
+      38
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "qing-dynasty",
+   "label": "Qing dynasty, c. 1820",
+   "kind": "empire",
+   "aliases": [
+    "qing dynasty",
+    "qing empire",
+    "qing china"
+   ],
+   "members": [
+    "China",
+    "Mongolia",
+    "Taiwan"
+   ],
+   "rings": [
+    [
+     [
+      127,
+      49
+     ],
+     [
+      132,
+      48
+     ],
+     [
+      135,
+      48
+     ],
+     [
+      140,
+      52
+     ],
+     [
+      141,
+      54
+     ],
+     [
+      135,
+      55
+     ],
+     [
+      127,
+      53.5
+     ]
+    ],
+    [
+     [
+      89,
+      50
+     ],
+     [
+      96,
+      49.5
+     ],
+     [
+      99,
+      51
+     ],
+     [
+      97,
+      52.5
+     ],
+     [
+      90,
+      52
+     ]
+    ]
+   ],
+   "approx": true
+  },
+  {
+   "key": "roman-empire",
+   "label": "Roman Empire, AD 117",
+   "kind": "empire",
+   "aliases": [
+    "roman empire"
+   ],
+   "members": [
+    "@empire:roman-empire-117"
+   ],
+   "approx": true
+  },
+  {
+   "key": "byzantine-empire",
+   "label": "Byzantine Empire, c. 555",
+   "kind": "empire",
+   "aliases": [
+    "byzantine empire"
+   ],
+   "members": [
+    "@empire:byzantine-empire-555"
+   ],
+   "approx": true
+  }
+ ],
+ "countryAliases": {
+  "Democratic Republic of the Congo": "Dem. Rep. Congo",
+  "DR Congo": "Dem. Rep. Congo",
+  "DRC": "Dem. Rep. Congo",
+  "Republic of the Congo": "Congo",
+  "United States": "United States of America",
+  "USA": "United States of America",
+  "US": "United States of America",
+  "America": "United States of America",
+  "UK": "United Kingdom",
+  "Great Britain": "United Kingdom",
+  "Britain": "United Kingdom",
+  "Bosnia and Herzegovina": "Bosnia and Herz.",
+  "Bosnia": "Bosnia and Herz.",
+  "Central African Republic": "Central African Rep.",
+  "Dominican Republic": "Dominican Rep.",
+  "Czech Republic": "Czechia",
+  "Ivory Coast": "Côte d'Ivoire",
+  "Cote d'Ivoire": "Côte d'Ivoire",
+  "North Macedonia": "Macedonia",
+  "Eswatini": "eSwatini",
+  "Swaziland": "eSwatini",
+  "South Sudan": "S. Sudan",
+  "Equatorial Guinea": "Eq. Guinea",
+  "Solomon Islands": "Solomon Is.",
+  "Western Sahara": "W. Sahara",
+  "East Timor": "Timor-Leste",
+  "Cape Verde": "Cabo Verde",
+  "Sao Tome and Principe": "São Tomé and Principe",
+  "São Tomé and Príncipe": "São Tomé and Principe",
+  "Antigua and Barbuda": "Antigua and Barb.",
+  "Saint Vincent and the Grenadines": "St. Vin. and Gren.",
+  "Saint Kitts and Nevis": "St. Kitts and Nevis",
+  "Marshall Islands": "Marshall Is.",
+  "Vatican City": "Vatican",
+  "Holy See": "Vatican",
+  "Burma": "Myanmar",
+  "Persia": "Iran",
+  "Holland": "Netherlands",
+  "The Netherlands": "Netherlands",
+  "Türkiye": "Turkey",
+  "Turkiye": "Turkey",
+  "Korea": "South Korea",
+  "Republic of Korea": "South Korea",
+  "DPRK": "North Korea",
+  "Faroe Islands": "Faeroe Is.",
+  "Falkland Islands": "Falkland Is.",
+  "Palestinian territories": "Palestine",
+  "French Polynesia": "Fr. Polynesia",
+  "Northern Cyprus": "N. Cyprus",
+  "Cayman Islands": "Cayman Is.",
+  "Laos PDR": "Laos",
+  "Brunei Darussalam": "Brunei",
+  "Micronesia (Federated States of)": "Micronesia"
+ }
+}
