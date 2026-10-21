@@ -1,0 +1,207 @@
+# Quote-anchored lesson. See courses/what-is-the-pope/01-what-is-the-pope
+# for a complete example.
+status: draft
+course: byzantine-catholic-basics
+number: 4
+slug: why-is-the-divine-liturgy-so-different
+title: Why Is the Divine Liturgy So Different?
+excerpt: >-
+  One Eucharist, many forms: where the Divine Liturgy comes from, why it is
+  sung from start to finish, and why the Church treats it as an equal.
+
+sources:
+  - id: ccc-liturgy
+    label: Catechism of the Catholic Church, 1200–1206
+    url: https://www.vatican.va/archive/ENG0015/__P3C.HTM
+  - id: ce-byzantine-rite
+    label: "Catholic Encyclopedia (1908): The Rite of Constantinople"
+    url: https://www.newadvent.org/cathen/04312d.htm
+
+intro:
+  text: ""               # Shalone writes this
+  notes:
+    - From the course introduction: a Byzantine Divine Liturgy can feel very different from a Roman Mass. Why? This lesson answers in five points.
+    - The Divine Liturgy is the Byzantine Catholic name for the Eucharist, the same sacrament Roman Catholics celebrate at Mass.
+    - Most Byzantine Catholic churches normally celebrate the Liturgy of Saint John Chrysostom; the Liturgy of Saint Basil is used on certain days of the year.
+    - "Background (not quoted): in many Byzantine churches today the people sing the responses along with the choir, and instrument use varies by parish."
+  scenes:
+    - type: title
+    - type: host         # your photo and name, when you say "I'm your host"
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: One mystery, many forms
+    quote:
+      lead: The Catechism says first what stays the same.
+      text: >-
+        the mystery celebrated in the liturgy is one, but the forms of its
+        celebration are diverse.
+      source: ccc-liturgy
+      cite: Catechism 1200
+      highlight: the forms of its celebration are diverse
+    text: >-
+      Byzantine Catholics call it the Divine Liturgy, and Roman Catholics
+      call it the Mass. It is the same Eucharist, the same Paschal mystery of
+      Christ's death and resurrection. What differs is the form: the prayers,
+      the music, the actions and the setting. The differences are real, but
+      they are differences of expression, not of faith. Different regions and
+      cultures came to celebrate the one mystery in their own way.
+    visuals:
+      - type: compare
+        left: { kicker: Latin tradition, title: The Mass, note: One Eucharist, icon: facade }
+        right: { kicker: Byzantine tradition, title: The Divine Liturgy, note: One Eucharist, icon: dome }
+        emphasis: right
+    quiz:
+      type: choice
+      question: What does the Catechism say about the liturgies of the Church?
+      options:
+        - The mystery is one, but the forms are diverse
+        - Each rite celebrates a different mystery
+        - Only one form is allowed
+      answer: 0
+      why: >-
+        Catechism 1200: "the mystery celebrated in the liturgy is one, but
+        the forms of its celebration are diverse."
+
+  - heading: Prayers rooted in Antioch
+    quote:
+      lead: The Catholic Encyclopedia traces the order of the Byzantine Liturgies to one city.
+      text: >-
+        The Byzantine use in both its Liturgies (of St. Basil and St. John
+        Chrysostom) follows exactly the order of Antioch.
+      source: ce-byzantine-rite
+      cite: Catholic Encyclopedia, "The Rite of Constantinople"
+      highlight: follows exactly the order of Antioch
+    text: >-
+      Tradition ascribes the two Byzantine liturgies to Saint Basil the Great
+      and Saint John Chrysostom, bishops of the fourth century. Both follow
+      the order of Antioch, the city where the disciples were first called
+      Christians. So the Divine Liturgy is not a recent invention. It is an
+      ancient family of prayers, shaped over the centuries by the Church of
+      Constantinople.
+    visuals:
+      - type: map
+        region: east
+        places: [{name: Antioch, label: below}, {name: Constantinople, label: above}]
+        routes: [[Antioch, Constantinople]]
+        highlight: Constantinople
+        caption: From Antioch to Constantinople
+    quiz:
+      type: blank
+      question: Both Byzantine Liturgies follow the order of ____.
+      accept: [Antioch]
+      why: >-
+        The Catholic Encyclopedia says the Byzantine use "follows exactly the
+        order of Antioch."
+
+  - heading: Heaven on earth
+    quote:
+      lead: During the Great Entrance, the choir sings the Cherubic Hymn.
+      text: >-
+        Let us, who mystically represent the Cherubim, and who sing to the
+        Life-giving Trinity the thrice holy hymn, put away all earthly cares
+        so as to receive the King of all things
+      source: ce-byzantine-rite
+      cite: Catholic Encyclopedia, "The Rite of Constantinople"
+      highlight: mystically represent the Cherubim
+    text: >-
+      While the hymn is sung, the bread and wine are carried in procession
+      around the church and into the sanctuary through the royal doors. The
+      people join the angels in praising the Trinity. The Encyclopedia says
+      this hymn was apparently added to the Liturgy in the sixth century. It
+      shows how the Byzantine Liturgy sees worship: earth joining heaven's
+      song.
+    visuals:
+      - type: iconostasis
+        highlight: [doors]
+        caption: The royal doors
+    quiz:
+      type: truefalse
+      question: In the Cherubic Hymn, the people sing that they mystically represent the Cherubim.
+      answer: true
+      why: >-
+        True. The hymn begins, "Let us, who mystically represent the
+        Cherubim."
+
+  - heading: A Liturgy that is sung
+    quote:
+      lead: The Encyclopedia describes how the Byzantine Rite has traditionally been sung.
+      text: >-
+        The singing in the Byzantine Rite is always unaccompanied.
+      source: ce-byzantine-rite
+      cite: Catholic Encyclopedia, "The Rite of Constantinople"
+      highlight: always unaccompanied
+    text: >-
+      That was written in 1908, and it describes the tradition: the voice
+      itself is the instrument. The priest and deacon sing, and the choir and
+      people answer. Litanies, hymns and responses are sung rather than said,
+      so the whole Liturgy becomes one long prayer. This is the biggest
+      difference a visitor notices. The Liturgy is not just attended; it is
+      sung together.
+    visuals:
+      - type: union
+        center: A sung Liturgy
+        items:
+          - Priest
+          - Deacon
+          - Choir
+          - People
+        caption: Everyone sings
+    quiz:
+      type: choice
+      question: According to the Encyclopedia, how has the Byzantine Rite traditionally been sung?
+      options:
+        - Unaccompanied
+        - With a full orchestra
+        - Only by the priest
+      answer: 0
+      why: >-
+        The Catholic Encyclopedia says "The singing in the Byzantine Rite is
+        always unaccompanied."
+
+  - heading: Different, but equal
+    quote:
+      lead: The Council states how the Church regards every lawful rite.
+      text: >-
+        Holy Mother Church holds all lawfully recognized rites to be of equal
+        right and dignity
+      source: ccc-liturgy
+      cite: Catechism 1203
+      highlight: equal right and dignity
+    text: >-
+      The Church counts the Byzantine rite among its living rites, beside the
+      Latin, Alexandrian, Syriac, Armenian, Maronite and Chaldean. It is not
+      a concession or an exception. The Catechism also sets the limit on
+      variety: diversity must not damage unity. Every rite must express the
+      same faith, the same sacramental signs from Christ, and communion with
+      the bishops. So the Divine Liturgy is different, and fully Catholic.
+    visuals:
+      - type: union
+        center: One Church
+        items:
+          - Latin
+          - Byzantine
+          - Alexandrian
+          - Syriac
+          - Armenian
+          - Maronite
+          - Chaldean
+        caption: Rites of equal right and dignity
+    quiz:
+      type: truefalse
+      question: The Church holds all lawfully recognized rites to be of equal right and dignity.
+      answer: true
+      why: >-
+        True. Catechism 1203: the Church "holds all lawfully recognized rites
+        to be of equal right and dignity."
+
+outro:
+  text: ""               # Shalone writes this
+  notes:
+    - "Recap: one mystery, many forms · prayers rooted in Antioch · heaven on earth · a Liturgy that is sung · different, but equal."
+    - "Next lesson: Baptism, Chrismation and Communion Together."
+  scenes:
+    - type: recap

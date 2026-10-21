@@ -1,0 +1,205 @@
+# Kids version of byzantine-catholic-basics/02: the same sources, shorter
+# quotations, simpler words, about half as long (explanations ~35 words).
+status: draft
+course: byzantine-rite-for-kids
+number: 2
+slug: what-does-byzantine-mean-for-kids
+title: What Does Byzantine Mean?
+excerpt: >-
+  A city named for its founder, an emperor's new capital, and a way of
+  praying that spread across the world, for kids.
+
+sources:
+  - id: ce-constantinople
+    label: "Catholic Encyclopedia (1908): Constantinople"
+    url: https://www.newadvent.org/cathen/04301a.htm
+  - id: ce-byzantine-rite
+    label: "Catholic Encyclopedia (1908): The Rite of Constantinople"
+    url: https://www.newadvent.org/cathen/04312d.htm
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 307"
+    file: sources-local/ugcc-catechism.txt
+  - id: ccc-church
+    label: Catechism of the Catholic Church, 838
+    url: https://www.vatican.va/archive/ENG0015/__P29.HTM
+
+intro:
+  text: ""               # Shalone writes this
+  notes:
+    - Kids version of lesson 2 of The Byzantine Rite. Aim for about 40–50 words.
+    - "A question to open with: Byzantium, Constantinople, Istanbul. One city, three names! And \"Byzantine\" comes from the first one."
+    - Byzantine Catholics live all over the world; many in America came from the Carpathian Mountains (Ruthenians) and from Ukraine.
+    - "Keep the usual opening: \"I'm your host Shalone Cason\" (your photo) and \"in the name of the Father and of the Son and of the Holy Spirit\" (the Trinity picture)."
+  scenes:
+    - type: title
+    - type: timeline
+      items:
+        - year: Byzantium
+          label: ""
+        - year: Constantinople
+          label: ""
+        - year: Istanbul
+          label: ""
+    - type: host         # your photo and name, when you say "I'm your host"
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: A city named for Byzas
+    quote:
+      lead: A long time ago, a leader named Byzas founded a city, and it took his name.
+      text: >-
+        Byzas, after whom the city was naturally called Byzantion
+      source: ce-constantinople
+      cite: Catholic Encyclopedia, "Constantinople"
+      highlight: Byzas
+    text: >-
+      Byzantion, or Byzantium, was a Greek city on a narrow strait where Europe
+      meets Asia. It was the city of Byzas. When we say "Byzantine," we mean
+      "from Byzantium."
+    visuals:
+      - type: term
+        term: Byzantium
+        origin: Greek Byzantion
+        meaning: the city of Byzas
+      - type: map
+        region: east
+        places: [{name: Byzantium, label: above}, Athens, Antioch, Jerusalem]
+        highlight: Byzantium
+        caption: Where Europe meets Asia
+    quiz:
+      type: choice
+      question: Where does the word "Byzantine" come from?
+      options:
+        - A king named Peter
+        - The city of Byzantium, named for Byzas
+        - A kind of bread
+      answer: 1
+      why: >-
+        The city was "naturally called Byzantion" after Byzas, its founder.
+
+  - heading: Constantine's new capital
+    quote:
+      lead: Emperor Constantine, the first Christian emperor, chose Byzantium for his new capital.
+      text: >-
+        the solemn inauguration of the new city did not occur until 11 May,
+        330
+      source: ce-constantinople
+      cite: Catholic Encyclopedia, "Constantinople"
+      highlight: 11 May, 330
+    text: >-
+      Constantine gave the city a new name: Constantinople, the city of
+      Constantine! It was called a "New Rome." Its great church was Hagia
+      Sophia, which means Holy Wisdom.
+    visuals:
+      - type: map
+        region: mediterranean
+        places: [Rome, {name: Constantinople, label: above}]
+        routes: [[Rome, Constantinople]]
+        highlight: Constantinople
+        caption: From Old Rome to New Rome
+      - type: sprite
+        sprite: hagia-sophia-full
+        size: full
+    quiz:
+      type: blank
+      question: Byzantium was renamed ____, after Emperor Constantine.
+      accept: [Constantinople]
+      why: >-
+        Constantine made it his capital, and the city took his name:
+        Constantinople.
+
+  - heading: A way of praying that spread
+    quote:
+      lead: The way Constantinople prayed spread far beyond the city.
+      text: >-
+        by far the most widely spread in the world.
+      source: ce-byzantine-rite
+      cite: Catholic Encyclopedia, "The Rite of Constantinople"
+      highlight: most widely spread
+    text: >-
+      Missionaries carried the Gospel from Constantinople to many peoples, like
+      the Slavs in Kyiv. Greeks, Slavs, Arabs and others all prayed the same
+      way. So "Byzantine" means a way of praying!
+    visuals:
+      - type: map
+        region: east
+        places: [{name: Constantinople, label: below}, {name: Kyiv, label: above}, Antioch]
+        routes: [[Constantinople, Kyiv]]
+        highlight: Kyiv
+        caption: The Byzantine way of praying reaches Kyiv, 988
+    quiz:
+      type: truefalse
+      question: '"Byzantine" is a way of praying that many different peoples share.'
+      answer: true
+      why: >-
+        True! Greeks, Slavs, Arabs and others pray the Byzantine liturgy,
+        which spread from Constantinople.
+
+  - heading: Still with the Pope
+    quote:
+      lead: A Byzantine catechism tells how the Church of Kyiv stayed close to the Church of Rome.
+      text: >-
+        remained in communion with the Church of Rome
+      source: ugcc
+      cite: Christ – Our Pascha 307
+      highlight: communion with the Church of Rome
+    text: >-
+      Over the years, Rome and Constantinople drifted apart. But the Church of
+      Kyiv kept its Byzantine prayers and stayed united with Rome. Byzantine
+      Catholics are their family today.
+    visuals:
+      - type: timeline
+        items:
+          - { year: "988", label: Baptism of Kyiv }
+          - { year: "1054", label: Rome and Constantinople break }
+          - { year: "1596", label: Union of Brest }
+    quiz:
+      type: choice
+      question: What did Byzantine Catholics keep?
+      options:
+        - Their Byzantine prayers, and unity with Rome
+        - Only the Roman Rite
+        - Neither one
+      answer: 0
+      why: >-
+        They kept their Byzantine way of praying and stayed in communion with
+        the Church of Rome.
+
+  - heading: Close to the Orthodox
+    quote:
+      lead: The Catechism says Catholics and the Orthodox are very close.
+      text: >-
+        lacks little to attain the fullness
+      source: ccc-church
+      cite: Catechism 838
+      highlight: lacks little
+    text: >-
+      Orthodox Christians pray the same Byzantine liturgy, with the same icons
+      and feasts. The difference is unity with the Pope. We pray that one day
+      we'll all be together again!
+    visuals:
+      - type: union
+        center: Byzantine
+        items:
+          - City
+          - Empire
+          - Prayer
+    quiz:
+      type: truefalse
+      question: Byzantine Catholics and Orthodox Christians pray the same Byzantine liturgy.
+      answer: true
+      why: >-
+        True! The difference is unity with the Pope. The Catechism says our
+        communion "lacks little to attain the fullness" (CCC 838).
+
+outro:
+  text: ""               # Shalone writes this
+  notes:
+    - "Recap: a city named for Byzas · Constantine's new capital · a way of praying that spread · still with the Pope · close to the Orthodox."
+    - "Next lesson: Inside a Byzantine Church."
+    - Aim for about 40–50 words, ending with your usual sign-off.
+  scenes:
+    - type: recap
