@@ -116,10 +116,10 @@ window.SketchTab = (() => {
       }
       draw();
     }
-    function stroke(g, a, b, color, erase) {
+    function stroke(g, a, b, color, erase, width = P.brush) {
       g.save();
       g.globalCompositeOperation = erase ? 'destination-out' : 'source-over';
-      g.strokeStyle = color; g.fillStyle = color; g.lineWidth = P.brush; g.lineCap = 'round'; g.lineJoin = 'round';
+      g.strokeStyle = color; g.fillStyle = color; g.lineWidth = width; g.lineCap = 'round'; g.lineJoin = 'round';
       const seg = (p, q) => { g.beginPath(); g.moveTo(p.x, p.y); g.lineTo(q.x + 0.01, q.y); g.stroke(); };
       seg(a, b);
       if (P.mirror) seg({x: W() - a.x, y: a.y}, {x: W() - b.x, y: b.y});
@@ -227,6 +227,28 @@ window.SketchTab = (() => {
       P.changed = true; draw();
     }
 
+    // ---------- uploading pictures (e.g. from Procreate) ----------
+    /** Each picture becomes a frame, from the frame showing on (up to 8), fitted to the sketch's size. */
+    async function upload(files) {
+      const list = [...files].filter((f) => f.type.startsWith('image/'));
+      if (!list.length) return;
+      letGo();
+      remember(P.art.frames.map((_, i) => i));
+      for (const [k, file] of list.slice(0, MAX_FRAMES - P.frame).entries()) {
+        const img = await loadImage(URL.createObjectURL(file));
+        const c = layer(W(), H()), g = c.getContext('2d');
+        g.imageSmoothingQuality = 'high';
+        const s = Math.min(W() / img.width, H() / img.height);
+        g.drawImage(img, (W() - img.width * s) / 2, (H() - img.height * s) / 2, img.width * s, img.height * s);
+        const at = P.frame + k;
+        while (P.art.frames.length <= at) P.art.frames.push(layer(W(), H()));
+        P.art.frames[at] = c;
+      }
+      P.changed = true;
+      draw();
+      note(`Uploaded ${Math.min(list.length, MAX_FRAMES - P.frame)} picture${list.length > 1 ? 's' : ''} as frames.`);
+    }
+
     // ---------- pointer ----------
     const inside = (b, c) => c.x >= b.x && c.y >= b.y && c.x <= b.x + b.w && c.y <= b.y + b.h;
     canvas.addEventListener('pointerdown', (e) => {
@@ -272,9 +294,16 @@ window.SketchTab = (() => {
         return;
       }
       const g = cur().getContext('2d'), erase = P.tool === 'erase';
+      // Apple Pencil (or any pen): press harder for a thicker line.
+      const width = (ev) => (ev.pointerType === 'pen' && ev.pressure > 0 ? P.brush * (0.3 + ev.pressure * 1.4) : P.brush);
       let last = c;
-      stroke(g, c, c, P.color, erase); drawCanvas();
-      listen((ev) => { const d = at(ev); stroke(g, last, d, P.color, erase); last = d; drawCanvas(); }, () => draw());
+      stroke(g, c, c, P.color, erase, width(e)); drawCanvas();
+      listen((ev) => {
+        // Every point the Pencil reported since the last event, for smooth curves.
+        const pts = ev.getCoalescedEvents ? ev.getCoalescedEvents() : [];
+        for (const pe of (pts.length ? pts : [ev])) { const d = at(pe); stroke(g, last, d, P.color, erase, width(pe)); last = d; }
+        drawCanvas();
+      }, () => draw());
     });
 
     const onKey = (e) => {
@@ -350,7 +379,9 @@ window.SketchTab = (() => {
       };
       const selecting = !!(P.sel || P.float);
       body.replaceChildren(...[
-        h('div', {class: 'row', style: {gap: '8px'}}, [pick, size]),
+        h('div', {class: 'row', style: {gap: '8px'}}, [pick, size,
+          h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
+            h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         name,
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
         h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Brush size:'}), brushes]),

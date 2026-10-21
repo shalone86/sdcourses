@@ -23,6 +23,11 @@
         "dist"
       ],
       "port": 5191
+    },
+    {
+      "name": "ipad-draw-page",
+      "url": "http://localhost:5179",
+      "port": 5179
     }
   ]
 }

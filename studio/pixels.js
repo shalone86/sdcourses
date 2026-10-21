@@ -329,6 +329,37 @@ window.PixelTab = (() => {
       drawCanvas(); markDirty();
     }
 
+    // ---------- uploading pictures (e.g. from Procreate) ----------
+    /**
+     * Each picture becomes a frame, from the frame showing on (up to 8): shrunk to fit the grid,
+     * each square matched to the nearest color in the chosen palette; see-through stays see-through.
+     */
+    async function upload(files) {
+      const list = [...files].filter((f) => f.type.startsWith('image/'));
+      if (!list.length) return;
+      letGo();
+      remember();
+      const colors = PALETTES[P.pal].colors.map((c) => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16), c]);
+      const nearest = (r, g, b) => colors.reduce((best, c) => { const d = (c[0] - r) ** 2 + (c[1] - g) ** 2 + (c[2] - b) ** 2; return d < best[0] ? [d, c[3]] : best; }, [Infinity, null])[1];
+      const w = W(), hgt = H();
+      for (const [k, file] of list.slice(0, MAX_FRAMES - P.frame).entries()) {
+        const img = await new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = URL.createObjectURL(file); });
+        const c = document.createElement('canvas'); c.width = w; c.height = hgt;
+        const g = c.getContext('2d');
+        g.imageSmoothingQuality = 'high';
+        const s = Math.min(w / img.width, hgt / img.height);
+        g.drawImage(img, (w - img.width * s) / 2, (hgt - img.height * s) / 2, img.width * s, img.height * s);
+        const d = g.getImageData(0, 0, w, hgt).data;
+        const out = [];
+        for (let i = 0; i < w * hgt; i++) out.push(d[i * 4 + 3] < 128 ? null : nearest(d[i * 4], d[i * 4 + 1], d[i * 4 + 2]));
+        const at = P.frame + k;
+        while (P.art.frames.length <= at) P.art.frames.push(blank(w, hgt));
+        P.art.frames[at] = out;
+      }
+      draw(); markDirty();
+      note(`Uploaded ${Math.min(list.length, MAX_FRAMES - P.frame)} picture${list.length > 1 ? 's' : ''} as frames, in the ${PALETTES[P.pal].label} colors.`);
+    }
+
     // ---------- flips ----------
     function flipped(pixels, w, hgt, dir) {
       const out = new Array(pixels.length);
@@ -516,7 +547,9 @@ window.PixelTab = (() => {
       const selecting = !!(P.sel || P.float);
 
       body.replaceChildren(...[
-        h('div', {class: 'row', style: {gap: '8px'}}, [pick, size]),
+        h('div', {class: 'row', style: {gap: '8px'}}, [pick, size,
+          h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
+            h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         name,
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
         SHAPES.includes(P.tool) && P.tool !== 'line'

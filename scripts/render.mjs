@@ -25,9 +25,15 @@ const run = (cmd, args) => execFileSync(cmd, args, {stdio: 'inherit', cwd: ROOT}
 
 // 1. High-quality master (kept locally, never uploaded).
 run(remotion, ['render', 'video/index.ts', 'Lesson', master, `--props=${propsFile}`, '--crf=16', '--x264-preset=fast', log]);
-// 2. Poster frame from the title card.
+// 2. Poster frame from the title card: just the lesson's name, without her camera clip
+// (a still of a video catches odd faces mid-word).
 step(2, 'Making the cover picture');
-run(remotion, ['still', 'video/index.ts', 'Lesson', path.join(dist, 'poster.png'), `--props=${propsFile}`, '--frame=75', '--log=error']);
+const posterProps = path.join(dist, 'poster-props.json');
+const still = JSON.parse(fs.readFileSync(propsFile, 'utf8'));
+for (const seg of still.segments) seg.camera = null;
+fs.writeFileSync(posterProps, JSON.stringify(still));
+run(remotion, ['still', 'video/index.ts', 'Lesson', path.join(dist, 'poster.png'), `--props=${posterProps}`, '--frame=75', '--log=error']);
+fs.rmSync(posterProps);
 run('ffmpeg', ['-y', '-v', 'error', '-i', path.join(dist, 'poster.png'), '-vf', 'scale=1280:-2', '-q:v', '5', poster]);
 fs.rmSync(path.join(dist, 'poster.png'));
 

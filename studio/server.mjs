@@ -3,6 +3,8 @@
 // It must run locally because browsers only allow the microphone on
 // http://localhost (or https). Listens on 127.0.0.1 only.
 import http from 'node:http';
+import crypto from 'node:crypto';
+import os from 'node:os';
 import fs from 'node:fs';
 import path from 'node:path';
 import {spawn, execFile} from 'node:child_process';
@@ -733,6 +735,90 @@ const server = http.createServer((req, res) => {
     else res.end();
   });
 });
+
+// ---------- the iPad drawing page ----------
+// Only the Pixel art tab, on the home Wi-Fi, behind her PIN (STUDIO_DRAW_PIN in .env):
+// http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
+// Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
+const DRAW_PORT = 5179;
+const DRAW_PATHS = /^(\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
+const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
+const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
+
+function drawPage(res, signedIn, message = '') {
+  const html = fs.readFileSync(path.join(ROOT, 'studio', 'index.html'), 'utf8');
+  const style = (/<style>[\s\S]*?<\/style>/.exec(html) ?? [''])[0];
+  const body = signedIn
+    ? `<main class="draw-only"><h1 class="draw-title">Pixel art</h1><div id="draw"></div></main>
+<script src="/reference.js"></script><script src="/pixels.js"></script><script src="/sketch.js"></script>
+<script>
+'use strict';
+const api = (p, o = {}) => fetch(p, {...o, headers: {...(o.headers || {}), 'X-Studio': '1'}}).then((r) => r.json().catch(() => ({})).then((j) => { if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status); return j; }));
+const post = (p, d) => api(p, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(d || {})});
+const get = (k) => { try { return localStorage.getItem('studio.' + k); } catch { return null; } };
+const root = document.getElementById('draw');
+let tab = null;
+function show() {
+  const mode = get('drawMode') === '"sketch"' ? 'sketch' : 'pixel';
+  const inner = document.createElement('div'); inner.className = 'stack';
+  const seg = document.createElement('div'); seg.className = 'seg'; seg.setAttribute('role', 'group');
+  for (const [m, label] of [['pixel', 'Pixel art (on a grid)'], ['sketch', 'Sketch (free drawing)']]) {
+    const b = document.createElement('button'); b.textContent = label; b.setAttribute('aria-pressed', String(mode === m));
+    b.onclick = () => { if (mode === m) return; if (tab && tab.dirty() && !confirm('Your drawing isn’t saved. Leave it?')) return; try { localStorage.setItem('studio.drawMode', JSON.stringify(m)); } catch {} show(); };
+    seg.append(b);
+  }
+  root.replaceChildren(seg, inner);
+  tab = (mode === 'sketch' ? window.SketchTab : window.PixelTab).open(inner, api, post, window.DrawReference);
+}
+window.addEventListener('beforeunload', (e) => { if (tab && tab.dirty()) { e.preventDefault(); e.returnValue = ''; } });
+show();
+</script>`
+    : `<main class="draw-only"><h1 class="draw-title">Lesson Studio drawing</h1>
+<form method="post" action="/draw/login" class="card stack" style="max-width:360px">
+<label for="pin">PIN</label><input id="pin" name="pin" class="read-line" inputmode="numeric" autocomplete="off" maxlength="12" autofocus>
+${message ? `<div class="small bad">${message}</div>` : ''}<button class="btn primary">Open</button></form></main>`;
+  res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store'});
+  res.end(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pixel art · Lesson Studio</title>${style}
+<style>.draw-only{max-width:1200px;margin:0 auto;padding:18px}.draw-title{font:600 28px/1.2 var(--serif);margin:0 0 14px}body{-webkit-user-select:none;user-select:none}input,textarea{-webkit-user-select:text;user-select:text}</style></head><body class="wide">${body}</body></html>`);
+}
+
+async function handleDraw(req, res) {
+  const pin = process.env.STUDIO_DRAW_PIN;
+  const url = new URL(req.url, 'http://draw');
+  const p = url.pathname;
+  const signedIn = !!cookieToken(req) && draw.tokens.has(cookieToken(req));
+  if (p === '/' || p === '/draw' || p === '/draw/') return drawPage(res, signedIn);
+  if (p === '/draw/login' && req.method === 'POST') {
+    if (Date.now() < draw.waitUntil) return drawPage(res, false, 'Too many tries. Wait a minute, then try again.');
+    const given = new URLSearchParams(String(await readBody(req, 2000))).get('pin') ?? '';
+    const a = crypto.createHash('sha256').update(given).digest(), b = crypto.createHash('sha256').update(pin).digest();
+    if (!crypto.timingSafeEqual(a, b)) {
+      if (++draw.misses >= 5) { draw.misses = 0; draw.waitUntil = Date.now() + 60000; }
+      return drawPage(res, false, 'That PIN isn’t right.');
+    }
+    draw.misses = 0;
+    const token = crypto.randomBytes(24).toString('hex');
+    draw.tokens.add(token);
+    res.writeHead(303, {Location: '/draw', 'Set-Cookie': `sd_draw=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000`});
+    return res.end();
+  }
+  if (!signedIn) throw httpError(401, 'Open /draw and enter the PIN first');
+  if (!DRAW_PATHS.test(p)) throw httpError(404, 'Not found');
+  if (req.method === 'POST' && (req.headers['x-studio'] !== '1' || (req.headers.origin && new URL(req.headers.origin).host !== req.headers.host))) throw httpError(403, 'Forbidden');
+  // Hand the request to the studio as if it came from this Mac (it's one of the drawing paths above).
+  req.headers.host = `localhost:${PORT}`;
+  if (req.headers.origin) req.headers.origin = `http://localhost:${PORT}`;
+  return handle(req, res);
+}
+
+if (process.env.STUDIO_DRAW_PIN) {
+  const drawServer = http.createServer((req, res) => handleDraw(req, res).catch((e) => {
+    if (!e.status) console.error(e);
+    if (!res.headersSent) json(res, e.status ?? 500, {error: e.message}); else res.end();
+  }));
+  drawServer.on('error', (e) => console.log(`iPad drawing page unavailable: ${e.message}`));
+  drawServer.listen(DRAW_PORT, '0.0.0.0', () => console.log(`iPad drawing page: http://${os.hostname().split('.')[0]}.local:${DRAW_PORT}/draw (PIN in .env)`));
+}
 
 const open = !process.argv.includes('--no-open');
 server.on('error', (e) => {
