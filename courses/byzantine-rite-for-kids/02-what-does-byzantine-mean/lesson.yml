@@ -149,6 +149,10 @@ points:
         routes: [[Constantinople, Kyiv]]
         highlight: Kyiv
         caption: The Byzantine way of praying reaches Kyiv, 988
+      - type: sprite
+        sprite: travel-outwards
+        size: small
+        with: over
     quiz:
       type: truefalse
       question: '"Byzantine" is a way of praying that many different peoples share.'

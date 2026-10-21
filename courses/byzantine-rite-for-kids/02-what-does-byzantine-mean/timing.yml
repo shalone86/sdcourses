@@ -21,13 +21,14 @@ point-5:
   scenes:
     "1":
       start: 13.43
+      end: 19.63
     "2":
       start: 13.7
-      end: 19.1
+      end: 19.57
     "3":
-      start: 18.8
+      start: 19.6
     "4":
-      start: 29.5
+      start: 27.07
 intro:
   camera: off
 point-1:
@@ -36,3 +37,7 @@ point-1:
       start: 13.4
       cues:
         Byzantium: 16.03
+point-3:
+  scenes:
+    "2":
+      start: 16.83
