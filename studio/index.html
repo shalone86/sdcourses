@@ -218,6 +218,8 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
 .tl-cue.moved i{background:var(--ok)}
 .tl-cue span{font:600 12px/1.1 var(--sans);color:var(--ink);white-space:nowrap;background:var(--paper);padding:1px 3px;border-radius:4px;max-width:160px;overflow:hidden;text-overflow:ellipsis}
 .tl-cue:nth-child(even){top:44px}
+.tl-dup{position:absolute;top:2px;right:62px;width:22px;height:22px;border:0;border-radius:6px;background:transparent;color:var(--muted);font:600 14px/1 var(--sans);cursor:pointer}
+.tl-dup:hover{background:var(--bg);color:var(--accent)}
 .tl-x{position:absolute;top:2px;right:14px;width:22px;height:22px;border:0;border-radius:6px;background:transparent;color:var(--muted);font:600 16px/1 var(--sans);cursor:pointer}
 .tl-x:hover{background:var(--bg);color:var(--accent)}
 .tl-field{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted)}
@@ -1027,6 +1029,20 @@ function stopPlayback() { S.player.pause(); S.playing = null; }
 // Keep the screen awake while recording (best effort).
 function holdScreen() { try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then((w) => { S.wake = w; }, () => {}); } catch {} }
 function releaseScreen() { try { if (S.wake) S.wake.release(); } catch {} S.wake = null; }
+
+// Space bar: play / pause (the video on the Timing tab, the recording of this slide on the Script tab).
+// Not while typing, and not during a one take (there it is the Next tap).
+document.addEventListener('keydown', (e) => {
+  if (e.code !== 'Space' || e.repeat || e.metaKey || e.ctrlKey || e.altKey || S.busy || S.rec) return;
+  const t = e.target;
+  if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  if (t && t.tagName === 'BUTTON') t.blur();
+  if (S.tab === 'timing' && S.timing) { e.preventDefault(); S.timing.toggle(); }
+  else if (S.tab === 'script' && S.L) {
+    const s = sec();
+    if (s && s.audio) { e.preventDefault(); togglePlay(s); }
+  }
+});
 
 // F17 / F18: previous / next slide (during a one take, F18 is the Next tap; Back is off while recording).
 document.addEventListener('keydown', (e) => {

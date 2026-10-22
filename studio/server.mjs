@@ -695,12 +695,21 @@ async function handle(req, res) {
       // Add a picture at a time (seconds into the recording), or remove one.
       const dir = lessonPath(id);
       const lastBody = await readJson(req);
-      const {op, section, index, scene, start, value} = lastBody;
+      let {op, scene, start} = lastBody;
+      const {section, index, value} = lastBody;
       if (!/^(intro|outro|point-\d+)$/.test(section ?? '')) throw httpError(400, 'Bad section');
       const {props} = prepare(id);
       const seg = props.segments.find((s) => s.name === section);
       if (!seg) throw httpError(400, 'No such section');
       let at = index;
+      if (op === 'duplicate') {
+        // A copy of this picture, a second later, as its own picture.
+        if (!Number.isInteger(index) || index < sceneList(section, dir).first || !seg.scenes[index]) throw httpError(400, 'No such picture');
+        const old = loadLesson(dir).segments.find((x) => x.name === section).scenes[index];
+        if (!old) throw httpError(400, 'That one can\'t be copied');
+        const {at: _at, with: _with, ...copy} = old;
+        op = 'add'; scene = copy; start = (seg.scenes[index].from - seg.audioOffsetInFrames) / 30 + 1;
+      }
       if (op === 'add') {
         if (!scene || typeof scene.type !== 'string') throw httpError(400, 'Missing scene');
         // After every scene that starts before it; never before a point's quotation.

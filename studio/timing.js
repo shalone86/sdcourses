@@ -244,6 +244,13 @@
             }}, face));
         }
         if (REMOVABLE(s, i)) {
+          block.append(h('button', {class: 'tl-dup', title: 'Duplicate this picture (a copy a second later)', 'aria-label': 'Duplicate ' + label,
+            onpointerdown: (e) => e.stopPropagation(), onclick: async (e) => {
+              e.stopPropagation();
+              await persist();
+              try { reload(await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'duplicate', section: s.name, index: i})); }
+              catch (err) { alert('Couldn’t duplicate it: ' + err.message); }
+            }}, '❐'));
           block.append(h('button', {class: 'tl-x', title: 'Remove this picture', 'aria-label': 'Remove ' + label,
             onpointerdown: (e) => e.stopPropagation(), onclick: (e) => { e.stopPropagation(); removeScene(i, label); }}, '×'));
         }
@@ -472,7 +479,7 @@
             if (!T.picked) { alert('Pick a picture first.'); return; }
             let credit;
             if (T.picked.upload) {
-              const r = await fetch('/api/images/upload?id=' + encodeURIComponent(T.id) + '&name=' + encodeURIComponent(T.picked.file.name), {method: 'POST', body: T.picked.file});
+              const r = await fetch('/api/images/upload?id=' + encodeURIComponent(T.id) + '&name=' + encodeURIComponent(T.picked.file.name), {method: 'POST', headers: {'X-Studio': '1'}, body: T.picked.file});
               const j = await r.json().catch(() => ({}));
               if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status);
               credit = j;
@@ -651,7 +658,7 @@
       T.player.seek(0);
     }, (e) => root.replaceChildren(h('div', {class: 'notice error', text: 'Couldn’t load the timeline: ' + e.message})));
 
-    return {dirty: () => T.dirty, pause: () => T.player && T.player.pause()};
+    return {dirty: () => T.dirty, pause: () => T.player && T.player.pause(), toggle: () => T.player && T.player.toggle()};
   }
 
   window.TimingTab = {open};
