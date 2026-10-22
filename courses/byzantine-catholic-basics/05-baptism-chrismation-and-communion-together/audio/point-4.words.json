@@ -1,0 +1,545 @@
+{
+ "stamp": "2:4343118:1792684629022",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.08,
+   "end": 0.26
+  },
+  {
+   "w": "catechism",
+   "start": 0.26,
+   "end": 0.84
+  },
+  {
+   "w": "of",
+   "start": 0.84,
+   "end": 0.98
+  },
+  {
+   "w": "the",
+   "start": 0.98,
+   "end": 1.23
+  },
+  {
+   "w": "Catholic",
+   "start": 1.23,
+   "end": 1.75
+  },
+  {
+   "w": "Church",
+   "start": 1.75,
+   "end": 2.21
+  },
+  {
+   "w": "notes",
+   "start": 2.21,
+   "end": 2.64
+  },
+  {
+   "w": "what",
+   "start": 2.64,
+   "end": 2.95
+  },
+  {
+   "w": "the",
+   "start": 2.95,
+   "end": 3.23
+  },
+  {
+   "w": "Eastern",
+   "start": 3.23,
+   "end": 3.81
+  },
+  {
+   "w": "Churches",
+   "start": 3.81,
+   "end": 4.49
+  },
+  {
+   "w": "do",
+   "start": 4.49,
+   "end": 4.71
+  },
+  {
+   "w": "next.",
+   "start": 4.71,
+   "end": 5.3
+  },
+  {
+   "w": "The",
+   "start": 5.3,
+   "end": 5.56
+  },
+  {
+   "w": "Eastern",
+   "start": 5.56,
+   "end": 6.22
+  },
+  {
+   "w": "Churches",
+   "start": 6.22,
+   "end": 6.83
+  },
+  {
+   "w": "maintain",
+   "start": 6.83,
+   "end": 7.52
+  },
+  {
+   "w": "a",
+   "start": 7.52,
+   "end": 7.6
+  },
+  {
+   "w": "lively",
+   "start": 7.6,
+   "end": 8.2
+  },
+  {
+   "w": "awareness",
+   "start": 8.2,
+   "end": 8.88
+  },
+  {
+   "w": "of",
+   "start": 8.88,
+   "end": 9.04
+  },
+  {
+   "w": "the",
+   "start": 9.04,
+   "end": 9.35
+  },
+  {
+   "w": "unity",
+   "start": 9.35,
+   "end": 9.73
+  },
+  {
+   "w": "of",
+   "start": 9.73,
+   "end": 9.9
+  },
+  {
+   "w": "Christian",
+   "start": 9.9,
+   "end": 10.67
+  },
+  {
+   "w": "initiation",
+   "start": 10.67,
+   "end": 11.6
+  },
+  {
+   "w": "by",
+   "start": 11.6,
+   "end": 11.9
+  },
+  {
+   "w": "giving",
+   "start": 11.9,
+   "end": 12.16
+  },
+  {
+   "w": "Holy",
+   "start": 12.16,
+   "end": 12.55
+  },
+  {
+   "w": "Communion",
+   "start": 12.55,
+   "end": 13.43
+  },
+  {
+   "w": "to",
+   "start": 13.43,
+   "end": 13.66
+  },
+  {
+   "w": "all",
+   "start": 13.66,
+   "end": 13.9
+  },
+  {
+   "w": "the",
+   "start": 13.9,
+   "end": 14.37
+  },
+  {
+   "w": "newly",
+   "start": 14.37,
+   "end": 14.68
+  },
+  {
+   "w": "baptized",
+   "start": 14.68,
+   "end": 15.47
+  },
+  {
+   "w": "and",
+   "start": 15.47,
+   "end": 15.75
+  },
+  {
+   "w": "confirmed",
+   "start": 15.75,
+   "end": 16.63
+  },
+  {
+   "w": "even",
+   "start": 16.63,
+   "end": 17.43
+  },
+  {
+   "w": "little",
+   "start": 17.43,
+   "end": 17.6
+  },
+  {
+   "w": "children.",
+   "start": 17.6,
+   "end": 18.74
+  },
+  {
+   "w": "The",
+   "start": 18.74,
+   "end": 19
+  },
+  {
+   "w": "third",
+   "start": 19,
+   "end": 19.3
+  },
+  {
+   "w": "mystery",
+   "start": 19.3,
+   "end": 19.79
+  },
+  {
+   "w": "completes",
+   "start": 19.79,
+   "end": 20.42
+  },
+  {
+   "w": "the",
+   "start": 20.42,
+   "end": 20.63
+  },
+  {
+   "w": "other",
+   "start": 20.63,
+   "end": 20.98
+  },
+  {
+   "w": "two.",
+   "start": 20.98,
+   "end": 21.44
+  },
+  {
+   "w": "The",
+   "start": 21.44,
+   "end": 21.7
+  },
+  {
+   "w": "newly",
+   "start": 21.7,
+   "end": 22.03
+  },
+  {
+   "w": "baptized",
+   "start": 22.03,
+   "end": 22.67
+  },
+  {
+   "w": "born",
+   "start": 22.67,
+   "end": 22.94
+  },
+  {
+   "w": "in",
+   "start": 22.94,
+   "end": 23.12
+  },
+  {
+   "w": "Christ",
+   "start": 23.12,
+   "end": 23.65
+  },
+  {
+   "w": "and",
+   "start": 23.65,
+   "end": 23.71
+  },
+  {
+   "w": "filled",
+   "start": 23.71,
+   "end": 24.15
+  },
+  {
+   "w": "with",
+   "start": 24.15,
+   "end": 24.48
+  },
+  {
+   "w": "the",
+   "start": 24.48,
+   "end": 24.75
+  },
+  {
+   "w": "Holy",
+   "start": 24.75,
+   "end": 24.95
+  },
+  {
+   "w": "Spirit",
+   "start": 24.95,
+   "end": 25.4
+  },
+  {
+   "w": "received",
+   "start": 25.4,
+   "end": 25.98
+  },
+  {
+   "w": "the",
+   "start": 25.98,
+   "end": 26.19
+  },
+  {
+   "w": "Body",
+   "start": 26.19,
+   "end": 26.71
+  },
+  {
+   "w": "and",
+   "start": 26.71,
+   "end": 26.78
+  },
+  {
+   "w": "Blood",
+   "start": 26.78,
+   "end": 27.23
+  },
+  {
+   "w": "of",
+   "start": 27.23,
+   "end": 27.41
+  },
+  {
+   "w": "Christ.",
+   "start": 27.41,
+   "end": 28.24
+  },
+  {
+   "w": "Unlike",
+   "start": 28.32,
+   "end": 28.66
+  },
+  {
+   "w": "Baptism",
+   "start": 28.66,
+   "end": 29.16
+  },
+  {
+   "w": "and",
+   "start": 29.16,
+   "end": 29.36
+  },
+  {
+   "w": "Chrismation,",
+   "start": 29.36,
+   "end": 30.45
+  },
+  {
+   "w": "which",
+   "start": 30.45,
+   "end": 30.62
+  },
+  {
+   "w": "we",
+   "start": 30.62,
+   "end": 30.76
+  },
+  {
+   "w": "receive",
+   "start": 30.76,
+   "end": 31.29
+  },
+  {
+   "w": "only",
+   "start": 31.29,
+   "end": 31.55
+  },
+  {
+   "w": "once,",
+   "start": 31.55,
+   "end": 31.99
+  },
+  {
+   "w": "we",
+   "start": 31.99,
+   "end": 32.09
+  },
+  {
+   "w": "receive",
+   "start": 32.09,
+   "end": 32.58
+  },
+  {
+   "w": "the",
+   "start": 32.58,
+   "end": 32.79
+  },
+  {
+   "w": "Eucharisth",
+   "start": 32.79,
+   "end": 33.5
+  },
+  {
+   "w": "throughout",
+   "start": 33.5,
+   "end": 34.18
+  },
+  {
+   "w": "our",
+   "start": 34.18,
+   "end": 34.42
+  },
+  {
+   "w": "lives.",
+   "start": 34.42,
+   "end": 34.92
+  },
+  {
+   "w": "It",
+   "start": 34.92,
+   "end": 35.18
+  },
+  {
+   "w": "is",
+   "start": 35.18,
+   "end": 35.24
+  },
+  {
+   "w": "how",
+   "start": 35.24,
+   "end": 35.48
+  },
+  {
+   "w": "we",
+   "start": 35.48,
+   "end": 35.64
+  },
+  {
+   "w": "grow",
+   "start": 35.64,
+   "end": 36.04
+  },
+  {
+   "w": "in",
+   "start": 36.04,
+   "end": 36.19
+  },
+  {
+   "w": "the",
+   "start": 36.19,
+   "end": 36.42
+  },
+  {
+   "w": "grace",
+   "start": 36.42,
+   "end": 36.78
+  },
+  {
+   "w": "of",
+   "start": 36.78,
+   "end": 37.13
+  },
+  {
+   "w": "being",
+   "start": 37.13,
+   "end": 37.35
+  },
+  {
+   "w": "sons",
+   "start": 37.35,
+   "end": 37.68
+  },
+  {
+   "w": "and",
+   "start": 37.68,
+   "end": 37.97
+  },
+  {
+   "w": "daughters",
+   "start": 37.97,
+   "end": 38.66
+  },
+  {
+   "w": "of",
+   "start": 38.66,
+   "end": 38.81
+  },
+  {
+   "w": "God.",
+   "start": 38.81,
+   "end": 39.4
+  },
+  {
+   "w": "That",
+   "start": 39.4,
+   "end": 39.71
+  },
+  {
+   "w": "is",
+   "start": 39.71,
+   "end": 39.94
+  },
+  {
+   "w": "why",
+   "start": 39.94,
+   "end": 40.09
+  },
+  {
+   "w": "the",
+   "start": 40.09,
+   "end": 40.32
+  },
+  {
+   "w": "Church",
+   "start": 40.32,
+   "end": 40.79
+  },
+  {
+   "w": "offers",
+   "start": 40.79,
+   "end": 41.26
+  },
+  {
+   "w": "Communion",
+   "start": 41.26,
+   "end": 41.97
+  },
+  {
+   "w": "even",
+   "start": 41.97,
+   "end": 42.3
+  },
+  {
+   "w": "to",
+   "start": 42.3,
+   "end": 42.45
+  },
+  {
+   "w": "the",
+   "start": 42.45,
+   "end": 42.7
+  },
+  {
+   "w": "youngest.",
+   "start": 42.7,
+   "end": 43.6
+  }
+ ]
+}

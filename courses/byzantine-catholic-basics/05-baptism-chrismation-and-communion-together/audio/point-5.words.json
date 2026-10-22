@@ -1,0 +1,555 @@
+{
+ "stamp": "2:4775118:1792684696079",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.22
+  },
+  {
+   "w": "Catechism",
+   "start": 0.22,
+   "end": 0.75
+  },
+  {
+   "w": "of",
+   "start": 0.75,
+   "end": 0.93
+  },
+  {
+   "w": "the",
+   "start": 0.93,
+   "end": 1.1
+  },
+  {
+   "w": "Catholic",
+   "start": 1.1,
+   "end": 1.57
+  },
+  {
+   "w": "Church",
+   "start": 1.57,
+   "end": 2.29
+  },
+  {
+   "w": "further",
+   "start": 2.29,
+   "end": 2.61
+  },
+  {
+   "w": "compares",
+   "start": 2.61,
+   "end": 3.32
+  },
+  {
+   "w": "the",
+   "start": 3.32,
+   "end": 3.55
+  },
+  {
+   "w": "two",
+   "start": 3.55,
+   "end": 3.81
+  },
+  {
+   "w": "traditions.",
+   "start": 3.81,
+   "end": 4.96
+  },
+  {
+   "w": "In",
+   "start": 4.96,
+   "end": 5.11
+  },
+  {
+   "w": "the",
+   "start": 5.11,
+   "end": 5.34
+  },
+  {
+   "w": "Eastern",
+   "start": 5.34,
+   "end": 5.89
+  },
+  {
+   "w": "Rites,",
+   "start": 5.89,
+   "end": 6.5
+  },
+  {
+   "w": "the",
+   "start": 6.5,
+   "end": 6.64
+  },
+  {
+   "w": "Christian",
+   "start": 6.64,
+   "end": 7.33
+  },
+  {
+   "w": "initiation",
+   "start": 7.33,
+   "end": 8.1
+  },
+  {
+   "w": "of",
+   "start": 8.1,
+   "end": 8.29
+  },
+  {
+   "w": "infants",
+   "start": 8.29,
+   "end": 8.79
+  },
+  {
+   "w": "also",
+   "start": 8.79,
+   "end": 9.1
+  },
+  {
+   "w": "begins",
+   "start": 9.1,
+   "end": 9.8
+  },
+  {
+   "w": "with",
+   "start": 9.8,
+   "end": 9.87
+  },
+  {
+   "w": "Baptism,",
+   "start": 9.87,
+   "end": 10.64
+  },
+  {
+   "w": "followed",
+   "start": 10.64,
+   "end": 11.02
+  },
+  {
+   "w": "immediately",
+   "start": 11.02,
+   "end": 11.79
+  },
+  {
+   "w": "by",
+   "start": 11.79,
+   "end": 11.95
+  },
+  {
+   "w": "Confirmation",
+   "start": 11.95,
+   "end": 12.77
+  },
+  {
+   "w": "and",
+   "start": 12.77,
+   "end": 12.93
+  },
+  {
+   "w": "the",
+   "start": 12.93,
+   "end": 13.31
+  },
+  {
+   "w": "Eucharist,",
+   "start": 13.31,
+   "end": 14.01
+  },
+  {
+   "w": "while",
+   "start": 14.01,
+   "end": 14.34
+  },
+  {
+   "w": "in",
+   "start": 14.34,
+   "end": 14.48
+  },
+  {
+   "w": "the",
+   "start": 14.48,
+   "end": 14.73
+  },
+  {
+   "w": "Roman",
+   "start": 14.73,
+   "end": 15.02
+  },
+  {
+   "w": "Rite,",
+   "start": 15.02,
+   "end": 15.43
+  },
+  {
+   "w": "it",
+   "start": 15.43,
+   "end": 15.57
+  },
+  {
+   "w": "is",
+   "start": 15.57,
+   "end": 15.86
+  },
+  {
+   "w": "followed",
+   "start": 15.86,
+   "end": 16.27
+  },
+  {
+   "w": "by",
+   "start": 16.27,
+   "end": 16.44
+  },
+  {
+   "w": "years",
+   "start": 16.44,
+   "end": 16.89
+  },
+  {
+   "w": "of",
+   "start": 16.89,
+   "end": 17.09
+  },
+  {
+   "w": "Catechesis",
+   "start": 17.09,
+   "end": 17.97
+  },
+  {
+   "w": "before",
+   "start": 17.97,
+   "end": 18.73
+  },
+  {
+   "w": "being",
+   "start": 18.73,
+   "end": 18.96
+  },
+  {
+   "w": "completed",
+   "start": 18.96,
+   "end": 19.77
+  },
+  {
+   "w": "later",
+   "start": 19.77,
+   "end": 20.22
+  },
+  {
+   "w": "by",
+   "start": 20.22,
+   "end": 20.4
+  },
+  {
+   "w": "Confirmation",
+   "start": 20.4,
+   "end": 21.48
+  },
+  {
+   "w": "and",
+   "start": 21.48,
+   "end": 21.75
+  },
+  {
+   "w": "the",
+   "start": 21.75,
+   "end": 22.02
+  },
+  {
+   "w": "Eucharist.",
+   "start": 22.02,
+   "end": 23.12
+  },
+  {
+   "w": "Both",
+   "start": 23.12,
+   "end": 23.45
+  },
+  {
+   "w": "traditions",
+   "start": 23.45,
+   "end": 24.28
+  },
+  {
+   "w": "are",
+   "start": 24.28,
+   "end": 24.53
+  },
+  {
+   "w": "fully",
+   "start": 24.53,
+   "end": 25.41
+  },
+  {
+   "w": "Catholic,",
+   "start": 25.41,
+   "end": 25.78
+  },
+  {
+   "w": "and",
+   "start": 25.78,
+   "end": 26.03
+  },
+  {
+   "w": "both",
+   "start": 26.03,
+   "end": 26.44
+  },
+  {
+   "w": "lead",
+   "start": 26.44,
+   "end": 26.69
+  },
+  {
+   "w": "to",
+   "start": 26.69,
+   "end": 26.88
+  },
+  {
+   "w": "the",
+   "start": 26.88,
+   "end": 27.1
+  },
+  {
+   "w": "same",
+   "start": 27.1,
+   "end": 27.43
+  },
+  {
+   "w": "three",
+   "start": 27.43,
+   "end": 27.97
+  },
+  {
+   "w": "sacraments.",
+   "start": 27.97,
+   "end": 29
+  },
+  {
+   "w": "In",
+   "start": 29.09,
+   "end": 29.15
+  },
+  {
+   "w": "the",
+   "start": 29.15,
+   "end": 29.38
+  },
+  {
+   "w": "Roman",
+   "start": 29.38,
+   "end": 29.76
+  },
+  {
+   "w": "Rite,",
+   "start": 29.76,
+   "end": 30.2
+  },
+  {
+   "w": "a",
+   "start": 30.2,
+   "end": 30.32
+  },
+  {
+   "w": "baby",
+   "start": 30.32,
+   "end": 30.57
+  },
+  {
+   "w": "is",
+   "start": 30.57,
+   "end": 30.72
+  },
+  {
+   "w": "baptized,",
+   "start": 30.72,
+   "end": 31.48
+  },
+  {
+   "w": "then",
+   "start": 31.48,
+   "end": 31.79
+  },
+  {
+   "w": "grows",
+   "start": 31.79,
+   "end": 32.16
+  },
+  {
+   "w": "up",
+   "start": 32.16,
+   "end": 32.32
+  },
+  {
+   "w": "with",
+   "start": 32.32,
+   "end": 32.61
+  },
+  {
+   "w": "years",
+   "start": 32.61,
+   "end": 32.99
+  },
+  {
+   "w": "of",
+   "start": 32.99,
+   "end": 33.14
+  },
+  {
+   "w": "Catechesis,",
+   "start": 33.14,
+   "end": 34.03
+  },
+  {
+   "w": "and",
+   "start": 34.03,
+   "end": 34.26
+  },
+  {
+   "w": "later",
+   "start": 34.26,
+   "end": 34.76
+  },
+  {
+   "w": "receives",
+   "start": 34.76,
+   "end": 35.42
+  },
+  {
+   "w": "Confirmation",
+   "start": 35.42,
+   "end": 36.4
+  },
+  {
+   "w": "and",
+   "start": 36.4,
+   "end": 37.05
+  },
+  {
+   "w": "First",
+   "start": 37.05,
+   "end": 37.05
+  },
+  {
+   "w": "Communion.",
+   "start": 37.05,
+   "end": 38.08
+  },
+  {
+   "w": "In",
+   "start": 38.08,
+   "end": 38.24
+  },
+  {
+   "w": "the",
+   "start": 38.24,
+   "end": 38.49
+  },
+  {
+   "w": "Eastern",
+   "start": 38.49,
+   "end": 39.13
+  },
+  {
+   "w": "Rites,",
+   "start": 39.13,
+   "end": 39.65
+  },
+  {
+   "w": "all",
+   "start": 39.65,
+   "end": 39.9
+  },
+  {
+   "w": "three",
+   "start": 39.9,
+   "end": 40.37
+  },
+  {
+   "w": "come",
+   "start": 40.37,
+   "end": 40.65
+  },
+  {
+   "w": "at",
+   "start": 40.65,
+   "end": 40.88
+  },
+  {
+   "w": "once,",
+   "start": 40.88,
+   "end": 41.41
+  },
+  {
+   "w": "neither",
+   "start": 41.41,
+   "end": 41.89
+  },
+  {
+   "w": "is",
+   "start": 41.89,
+   "end": 42.05
+  },
+  {
+   "w": "a",
+   "start": 42.05,
+   "end": 42.11
+  },
+  {
+   "w": "mistake.",
+   "start": 42.11,
+   "end": 43.08
+  },
+  {
+   "w": "They",
+   "start": 43.08,
+   "end": 43.45
+  },
+  {
+   "w": "are",
+   "start": 43.45,
+   "end": 43.73
+  },
+  {
+   "w": "two",
+   "start": 43.73,
+   "end": 44.01
+  },
+  {
+   "w": "ways",
+   "start": 44.01,
+   "end": 44.4
+  },
+  {
+   "w": "of",
+   "start": 44.4,
+   "end": 44.62
+  },
+  {
+   "w": "expressing",
+   "start": 44.62,
+   "end": 45.5
+  },
+  {
+   "w": "one",
+   "start": 45.5,
+   "end": 45.78
+  },
+  {
+   "w": "initiation",
+   "start": 45.78,
+   "end": 46.79
+  },
+  {
+   "w": "into",
+   "start": 46.79,
+   "end": 47.09
+  },
+  {
+   "w": "Christ.",
+   "start": 47.09,
+   "end": 48
+  }
+ ]
+}
