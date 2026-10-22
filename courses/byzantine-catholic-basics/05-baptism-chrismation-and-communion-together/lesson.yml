@@ -198,8 +198,28 @@ points:
       mistake. They are two ways of expressing one initiation into Christ.
     visuals:
       - type: compare
-        left: { kicker: Roman rite, title: Baptism, then years later, note: Confirmation and First Communion, icon: hourglass }
-        right: { kicker: Eastern rites, title: All at once, note: Baptism, Chrismation, Communion, icon: sparkles }
+        left:
+          kicker: Roman rite
+          title: Baptism
+          note: Confirmation and First Communion
+          icon: hourglass
+        right:
+          kicker: Eastern rites
+          title: Rite of Initiation
+          note: Baptism, Confirmation, and Eucharist all at once
+          icon: sparkles
+        emphasis: left
+      - type: compare
+        left:
+          kicker: Roman Rite
+          title: Baptism
+          note: Confirmation and First Communion
+          icon: hourglass
+        right:
+          kicker: Easter Rites
+          title: Rite of Initiation
+          note: Baptism, Confirmation, and Eucharist all at once
+          icon: sparkles
         emphasis: right
     quiz:
       type: choice

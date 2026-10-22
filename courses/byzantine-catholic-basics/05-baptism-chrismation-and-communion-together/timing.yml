@@ -14,3 +14,12 @@ point-2:
       start: 16.1
     "4":
       start: 21.8
+point-5:
+  scenes:
+    "1":
+      start: 23.57
+    "2":
+      start: 35.97
+outro:
+  camera: bubble
+  side: right
