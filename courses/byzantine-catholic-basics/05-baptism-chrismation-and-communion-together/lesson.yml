@@ -1,0 +1,206 @@
+# Quote-anchored lesson. See courses/what-is-the-pope/01-what-is-the-pope
+# for a complete example.
+status: draft
+course: byzantine-catholic-basics
+number: 5
+slug: baptism-chrismation-and-communion-together
+title: Baptism, Chrismation and Communion Together
+excerpt: >-
+  Why a Byzantine Catholic baby is baptized, chrismated and given Holy
+  Communion in one celebration, and how the Latin Church does it differently.
+
+sources:
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 65, 408, 424, 428"
+    file: sources-local/ugcc-catechism.txt
+  - id: ccc-initiation
+    label: Catechism of the Catholic Church, 1233, 1244
+    url: https://www.vatican.va/archive/ENG0015/__P3J.HTM
+
+intro:
+  # Shalone writes the start of the intro before this; it always ends with these words (hers).
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - "A question to open with: why does a Byzantine Catholic baby receive Baptism, Chrismation and Holy Communion all on the same day, when Roman Catholics wait years for Confirmation and First Communion?"
+    - The three are called the Mysteries of Christian Initiation. "Mystery" is the Byzantine word for sacrament; "Chrismation" is the Eastern name for Confirmation.
+    - This lesson answers in five points, from the whole celebration to the comparison with the Latin Church.
+  scenes:
+    - type: title
+    - type: host         # your photo and name, when you say "I'm your host"
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: Three mysteries, one celebration
+    quote:
+      lead: The Byzantine catechism names the three Mysteries of initiation and says how they are celebrated.
+      text: >-
+        in the tradition of the Eastern Church, these three Holy Mysteries are
+        celebrated together.
+      source: ugcc
+      cite: Christ – Our Pascha 408
+      highlight: celebrated together
+    text: >-
+      The three Mysteries are Baptism, Chrismation and the Eucharist. The
+      catechism compares them to life itself. A baby is born, begins to
+      breathe, and then is fed. In the same way, the newly baptized is born
+      in the font, breathes by the Holy Spirit, and receives the nourishment
+      of Holy Communion in order to grow in Christ. They are not three
+      separate events. They are one action of God's grace.
+    visuals:
+      - type: chain
+        items:
+          - Baptism
+          - Chrismation
+          - Holy Communion
+        caption: One celebration of Christian initiation
+    quiz:
+      type: choice
+      question: In the Eastern Church, how are Baptism, Chrismation and the Eucharist celebrated?
+      options:
+        - Together
+        - Many years apart
+        - Only for adults
+      answer: 0
+      why: >-
+        Christ – Our Pascha 408: "in the tradition of the Eastern Church,
+        these three Holy Mysteries are celebrated together."
+
+  - heading: Baptism, the new birth
+    quote:
+      lead: The first Mystery is Baptism.
+      text: >-
+        Baptism immerses a person into the mystery of Christ's Death and
+        Resurrection.
+      source: ugcc
+      cite: Christ – Our Pascha 65
+      highlight: immerses a person
+    text: >-
+      In the Byzantine tradition the person is traditionally immersed in the
+      water, going down into the font as Christ went into death and rising as
+      he rose. This is the birth to new life in Christ. It is received only
+      once, because, having been born in Christ through the Holy Spirit, we
+      remain children of the Father forever. The newly baptized are then
+      clothed in bright garments, a sign of joy in Christ.
+    visuals:
+      - type: term
+        term: Baptism
+        origin: Greek baptizein
+        meaning: to immerse
+    quiz:
+      type: blank
+      question: Baptism immerses a person into the mystery of Christ's Death and ____.
+      accept: [Resurrection]
+      why: >-
+        Christ – Our Pascha 65: Baptism "immerses a person into the mystery
+        of Christ's Death and Resurrection."
+
+  - heading: Chrismation, the seal of the Spirit
+    quote:
+      lead: Right after Baptism comes the second Mystery, Chrismation.
+      text: >-
+        Chrismation is the seal of the gift that we received in Baptism.
+      source: ugcc
+      cite: Christ – Our Pascha 424
+      highlight: the seal of the gift
+    text: >-
+      The Rite of Chrismation follows Baptism immediately, "because where
+      there is life, there is breath." The priest anoints the newly baptized
+      with Holy Chrism, a fragrant mixture of oils, on the forehead, eyes,
+      nostrils, lips, ears, breast, hands and feet. He says, "The seal of the
+      gift of the Holy Spirit." Each person receives the Spirit as the
+      apostles did at Pentecost.
+    visuals:
+      - type: term
+        term: Chrismation
+        origin: Greek chrisma
+        meaning: anointing, the Eastern name for Confirmation
+    quiz:
+      type: choice
+      question: What does the priest say as he anoints the newly baptized?
+      options:
+        - The seal of the gift of the Holy Spirit
+        - Peace be with you
+        - Go in peace
+      answer: 0
+      why: >-
+        Christ – Our Pascha 429: the priest proclaims, "The seal of the gift
+        of the Holy Spirit."
+
+  - heading: Holy Communion for the newly baptized
+    quote:
+      lead: The Catechism of the Catholic Church notes what the Eastern Churches do next.
+      text: >-
+        the Eastern Churches maintain a lively awareness of the unity of
+        Christian initiation by giving Holy Communion to all the newly
+        baptized and confirmed, even little children
+      source: ccc-initiation
+      cite: Catechism 1244
+      highlight: even little children
+    text: >-
+      The third Mystery completes the other two. The newly baptized, born in
+      Christ and filled with the Holy Spirit, receives the Body and Blood of
+      Christ. Unlike Baptism and Chrismation, which we receive only once, we
+      receive the Eucharist throughout our lives. It is how we grow in the
+      grace of being sons and daughters of God. That is why the Church
+      offers Communion even to the youngest.
+    visuals:
+      - type: compare
+        left: { kicker: Once in a lifetime, title: Baptism and Chrismation, note: Born and sealed, icon: droplets }
+        right: { kicker: Throughout life, title: Holy Communion, note: Growing in Christ, icon: wheat }
+        emphasis: right
+    quiz:
+      type: truefalse
+      question: In the Eastern Churches, even little children receive Holy Communion after Baptism and Chrismation.
+      answer: true
+      why: >-
+        True. Catechism 1244 says the Eastern Churches give Holy Communion to
+        all the newly baptized and confirmed, "even little children."
+
+  - heading: How the Latin Church does it
+    quote:
+      lead: The Catechism of the Catholic Church compares the two traditions.
+      text: >-
+        In the Eastern rites the Christian initiation of infants also begins
+        with Baptism followed immediately by Confirmation and the Eucharist,
+        while in the Roman rite it is followed by years of catechesis before
+        being completed later by Confirmation and the Eucharist
+      source: ccc-initiation
+      cite: Catechism 1233
+      highlight: followed immediately by Confirmation and the Eucharist
+    text: >-
+      Both traditions are fully Catholic, and both lead to the same three
+      sacraments. In the Roman rite, a baby is baptized, then grows up with
+      years of catechesis, and later receives Confirmation and First
+      Communion. In the Eastern rites, all three come at once. Neither is a
+      mistake. They are two ways of expressing one initiation into Christ.
+    visuals:
+      - type: compare
+        left: { kicker: Roman rite, title: Baptism, then years later, note: Confirmation and First Communion, icon: hourglass }
+        right: { kicker: Eastern rites, title: All at once, note: Baptism, Chrismation, Communion, icon: sparkles }
+        emphasis: right
+    quiz:
+      type: choice
+      question: In the Roman rite, what follows Baptism for an infant?
+      options:
+        - Years of catechesis before Confirmation and the Eucharist
+        - Confirmation and the Eucharist right away
+        - Nothing more
+      answer: 0
+      why: >-
+        Catechism 1233: in the Roman rite Baptism "is followed by years of
+        catechesis before being completed later by Confirmation and the
+        Eucharist."
+
+outro:
+  # Shalone writes the start of the outro before this; it always ends with these words (hers).
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: three mysteries, one celebration · Baptism, the new birth · Chrismation, the seal of the Spirit · Holy Communion for the newly baptized · how the Latin Church does it."
+    - "Coming later in this course: The Sign of the Cross, Right to Left; The Church Year and the Great Feasts."
+  scenes:
+    - type: recap

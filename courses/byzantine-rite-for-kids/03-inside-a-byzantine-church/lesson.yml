@@ -1,0 +1,188 @@
+# Kids version of byzantine-catholic-basics/03: the same sources, shorter
+# quotations, simpler words, about half as long (explanations ~35 words).
+status: draft
+course: byzantine-rite-for-kids
+number: 3
+slug: inside-a-byzantine-church-for-kids
+title: Inside a Byzantine Church
+excerpt: >-
+  A wall of icons, doors that open to heaven, and Communion from a golden
+  spoon: a look inside a Byzantine church, for kids.
+
+sources:
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 600–601, 646"
+    file: sources-local/ugcc-catechism.txt
+  - id: ccc-images
+    label: Catechism of the Catholic Church, 1159
+    url: https://www.vatican.va/archive/ENG0015/__P38.HTM
+  - id: ccc-liturgy
+    label: Catechism of the Catholic Church, 1203
+    url: https://www.vatican.va/archive/ENG0015/__P3C.HTM
+
+intro:
+  # Shalone writes the start of the intro before this; it always ends with these words (hers).
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - Kids version of lesson 3 of The Byzantine Rite. Aim for about 40–50 words.
+    - "A question to open with: have you ever seen a church with a wall of pictures in front of the altar? Today we step inside a Byzantine church!"
+    - The wall of icons is called the iconostasis. Byzantine Catholics receive Communion from a golden spoon.
+    - "Keep the usual opening: \"I'm your host Shalone Cason\" (your photo) and \"in the name of the Father and of the Son and of the Holy Spirit\" (the Trinity picture)."
+  scenes:
+    - type: title
+    - type: host         # your photo and name, when you say "I'm your host"
+      at: I'm your host
+    - type: trinity      # triangle (Father), cross (Son), dove (Holy Spirit)
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: A wall of icons
+    quote:
+      lead: The first thing you notice is a wall of icons in front of the altar. It is a wall that...
+      text: >-
+        separates and at the same time unites the sanctuary and nave.
+      source: ugcc
+      cite: Christ – Our Pascha 600
+      highlight: separates and at the same time unites
+    text: >-
+      The wall is called the iconostasis. The altar side is like heaven, and
+      the side where the people stand is like our world. The icons look at
+      us from heaven, so it is more like a window than a wall.
+    visuals:
+      - type: iconostasis
+        highlight: [wall]
+        caption: Heaven behind, earth in front
+    quiz:
+      type: choice
+      question: What is the wall of icons called?
+      options:
+        - The iconostasis
+        - The bell tower
+        - The font
+      answer: 0
+      why: >-
+        The iconostasis is a wall of icons that separates and unites the
+        sanctuary and the nave.
+
+  - heading: The doors to the Kingdom
+    quote:
+      lead: A great Ukrainian archbishop said...
+      text: >-
+        the doors to God's eternal kingdom.
+      source: ugcc
+      cite: Christ – Our Pascha 601
+      highlight: God's eternal kingdom
+    text: >-
+      In the middle of the wall are the Royal Doors. When they open during
+      the Divine Liturgy, it shows that God opens heaven to us. The priest
+      comes out through them to bring us the Gospel and Holy Communion.
+    visuals:
+      - type: iconostasis
+        highlight: [doors]
+        open: true
+        caption: The Royal Doors open during the Divine Liturgy
+    quiz:
+      type: blank
+      question: The doors in the middle of the iconostasis are called the ____ Doors.
+      accept: [Royal, Holy]
+      why: >-
+        The Royal (or Holy) Doors are in the center of the iconostasis.
+
+  - heading: Icons point to Christ
+    quote:
+      lead: Every icon points to one person, as the Catechism explains.
+      text: >-
+        principally represents Christ.
+      source: ccc-images
+      cite: Catechism 1159
+      highlight: Christ
+    text: >-
+      On one side of the Royal Doors is the icon of Christ, blessing us. On
+      the other is Mary, the Mother of God, holding Jesus and pointing to him.
+      Mary always shows us the way to her Son!
+    visuals:
+      - type: iconostasis
+        highlight: [icons, supper]
+        caption: Christ on the right, his Mother on the left
+    quiz:
+      type: truefalse
+      question: In an icon of Mary, she points us to Jesus.
+      answer: true
+      why: >-
+        True! The Mother of God holds Christ and points to him, showing us the
+        way.
+
+  - heading: Communion with a spoon
+    quote:
+      lead: Byzantine Catholics receive Holy Communion from a golden spoon. The priest gives...
+      text: >-
+        the most pure Body and precious Blood of Christ for the cleansing from
+        sins.
+      source: ugcc
+      cite: Christ – Our Pascha 646
+      highlight: cleansing from sins
+    text: >-
+      Long ago, an angel touched the prophet Isaiah's lips with a burning
+      coal, and his sin was taken away. In the same way, Jesus comes to our
+      lips in Holy Communion to make us clean.
+    visuals:
+      - type: image
+        src: images/sdcason-isaiah-and-the-angel-catholic-coloring-p-003b8a3594.jpg
+        aspect: 0.773
+        credit: The Free Catholic Gallery · The Free Catholic Gallery (sdcason.com) · Public domain (per the gallery)
+        fit: cover
+      - type: compare
+        left: { kicker: Isaiah 6, title: A burning coal, note: An angel touches the prophet's lips, icon: flame }
+        right: { kicker: Divine Liturgy, title: The golden spoon, note: The priest brings Christ to our lips, icon: sparkles }
+        emphasis: right
+    quiz:
+      type: choice
+      question: How do Byzantine Catholics receive Holy Communion?
+      options:
+        - From a golden spoon
+        - From a cup they hold themselves
+        - They do not receive it
+      answer: 0
+      why: >-
+        The priest gives the Body and Blood of Christ with a spoon, for the
+        cleansing from sins.
+
+  - heading: Different, but equal
+    quote:
+      lead: The Church says every lawful way of praying is...
+      text: >-
+        of equal right and dignity
+      source: ccc-liturgy
+      cite: Catechism 1203
+      highlight: equal right and dignity
+    text: >-
+      A Roman Catholic church looks different inside, but it teaches the same
+      faith. Both come from the apostles. Together they show us more of Jesus
+      than either one could alone!
+    visuals:
+      - type: union
+        center: One Church
+        items:
+          - Roman Catholic
+          - Byzantine Catholic
+        caption: Different, but equal
+    quiz:
+      type: truefalse
+      question: The Church holds all lawfully recognized rites to be of equal right and dignity.
+      answer: true
+      why: >-
+        True! Catechism 1203: all lawful rites are "of equal right and
+        dignity."
+
+outro:
+  # Shalone writes the start of the outro before this; it always ends with these words (hers).
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: a wall of icons · the doors to the Kingdom · icons point to Christ · Communion with a spoon · different, but equal."
+    - "Next lesson idea: Why Is the Divine Liturgy So Different?"
+    - Aim for about 40–50 words, ending with your usual sign-off.
+  scenes:
+    - type: recap

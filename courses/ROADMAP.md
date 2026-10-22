@@ -37,6 +37,22 @@ they don't count (old Review posts are quizzes too). Read from the live site on 
 - What Is the Pope?: pilot course: lesson 1 done; about 10 lessons planned, back burner for now
 - All About the Pope: replaced by What Is the Pope? (its drafts can be retired)
 
+**New course ideas** (Shalone's list, 2026-10-22; not yet scheduled, no lessons planned)
+
+- What Is the Eucharist? (Catholic): based on the Catechism of the Catholic Church
+- What Is the Eucharist? (Byzantine): based on *God With Us*
+- Saint Augustine: his life, his books, his teachings, his order
+- Sacraments of Initiation, East and West
+- The Desert Fathers and Early Monasticism
+- Catholic Social Teaching
+- Thomas Aquinas for Beginners
+- Catholic Prayer
+- Navigating the Bible
+- Communion with the Saints
+- Marian Devotion
+- The Mass Step by Step
+- The Divine Liturgy Step by Step
+
 **Kept as they are** (not redone)
 
 - Augustine Class with Father Kluge: donated by Father Kluge; kept as it is
