@@ -74,9 +74,18 @@ kids`) also go to kids.sdcason.com with `KIDS_GHOST_URL` and
 `KIDS_GHOST_ADMIN_API_KEY` (skipped, with a note, until those are set). There
 the post is built from Ghost's own cards (`buildKidsSitePost`): video, an
 accent "Quiz" header, one toggle per question, the words in a toggle. Tags
-there: Catholic Kids Video Lessons, Byzantine Catholic Lessons too for
-`tradition: byzantine`, the series (`series:`, else the course title), and
-`#project` (her collection pages need it). The words toggle is rewritten in
+there, in this order: the series (`series:`, else the course title) **first** (the
+first tag is the primary one; the page uses it to pick which other videos to show
+automatically), then Catholic Kids Video Lessons, Byzantine Catholic Lessons too
+for `tradition: byzantine`, and `#project` (her collection pages need it).
+Kids thumbnails (`video/KidsThumb.tsx`) always use her own corner shapes from
+`thumb-shapes/` (PNG or SVG, transparent background; `corner-<tl|tr|bl|br>-…`
+names are flush corner pieces, the rest free blobs; one per corner, chosen at
+random from the title). Wrapped titles: the small lead ("WHAT DOES") sits over the title block's right
+edge when the drawing is on the left, else centered over it, and shorter title
+lines are centered under the longest (her Affinity fix; the block is only as wide
+as its longest line). They keep all text and art inside the middle
+(x 190–1090): the home page crops them to ~4:3 from the center. The words toggle is rewritten in
 the post's lexical after saving (Ghost flattens toggle paragraphs). For kids, prefer short quotations (an exact short passage that carries
 the meaning) over long ones. On the Mac they go in
 `.env` at the repo root (gitignored; `scripts/lib.mjs` loads it); in the

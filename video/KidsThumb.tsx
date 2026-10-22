@@ -5,45 +5,77 @@ import './theme'; // loads the fonts
 // Thumbnail for kids.sdcason.com in the look of her kids thumbnails there: turquoise, soft
 // blobs, chunky pale-yellow capitals with a shadow ("WHAT IS" small, the rest big), and one of
 // her pixel drawings. 1280×720.
-// fit: frame (a white-bordered card) or bleed (off the top-right corner) for a drawing that fills its canvas.
-export type KidsThumbProps = {lead?: string; title: string; art?: Art | null; fit?: 'frame' | 'bleed'};
+// Everything stays inside the SAFE zone (x 175–1105): the kids site's home page crops
+// thumbnails to about 4:3 from the middle (160px off each side), which cut the text off.
+export type KidsThumbProps = {lead?: string; title: string; art?: Art | null; shapes?: ShapeFile[]; fit?: 'frame' | 'bleed'} // fit is kept for old props; every full-canvas drawing is framed now;
 
+const SAFE_W = 930; // text width inside the 4:3 crop (x 175–1105)
 const INK = '#FFE58A', SHADOW = '#B8862B';
-const Blob: React.FC<{x: number; y: number; w: number; color: string; turn?: number; ring?: boolean}> = ({x, y, w, color, turn = 0, ring}) => (
-  <svg width={w} height={w} viewBox="0 0 100 100" style={{position: 'absolute', left: x, top: y, transform: `rotate(${turn}deg)`}}>
-    <path d="M52 6c22 2 40 16 42 38 2 24-14 46-38 48C30 94 8 80 6 56 4 30 26 4 52 6z" fill={ring ? 'none' : color} stroke={ring ? color : 'none'} strokeWidth={ring ? 9 : 0} />
-  </svg>
-);
+// Decorations: her own shapes (thumb-shapes/*.png|svg), one in each corner so they never touch the
+// title or the drawing. Which shape goes where is random but fixed by the title. Files named
+// corner-<tl|tr|bl|br>-… are pieces that sit flush in a corner (flipped to fit any corner); the rest
+// are free blobs placed partly off the corner, turned and flipped at random.
+export type ShapeFile = {src: string; w: number; h: number; corner?: 'tl' | 'tr' | 'bl' | 'br'};
+const seeded = (text: string) => {
+  let h = 2166136261;
+  for (const c of text) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+  return () => { h = Math.imul(h ^ (h >>> 15), 2246822519) + 0x6d2b79f5 | 0; h ^= h >>> 13; return ((h >>> 0) % 100000) / 100000; };
+};
+const CORNERS = [{x: 125, y: 45, id: 'tl'}, {x: 1130, y: 60, id: 'tr'}, {x: 120, y: 650, id: 'bl'}, {x: 1160, y: 650, id: 'br'}] as const;
+const Shapes: React.FC<{title: string; files: ShapeFile[]}> = ({title, files}) => {
+  const rnd = seeded(title);
+  const pool = [...files].sort(() => rnd() - 0.5);
+  return (
+    <>
+      {CORNERS.map((c, i) => {
+        const f = pool[i % Math.max(pool.length, 1)];
+        if (!f) return null;
+        if (f.corner) {
+          const k = Math.min(215 / f.w, 250 / f.h) * (0.85 + rnd() * 0.15), w = f.w * k, h = f.h * k;
+          const flipX = f.corner[1] !== c.id[1] ? -1 : 1, flipY = f.corner[0] !== c.id[0] ? -1 : 1;
+          return <Img key={i} src={staticFile(f.src)} style={{position: 'absolute', width: w, height: h, [c.id[0] === 't' ? 'top' : 'bottom']: 0, [c.id[1] === 'l' ? 'left' : 'right']: 0, transform: `scale(${flipX}, ${flipY})`}} />;
+        }
+        const k = (150 + rnd() * 80) / Math.max(f.w, f.h), w = f.w * k, h = f.h * k;
+        const cx = c.x + (rnd() - 0.5) * 40, cy = c.y + (rnd() - 0.5) * 30;
+        return <Img key={i} src={staticFile(f.src)} style={{position: 'absolute', width: w, height: h, left: cx - w / 2, top: cy - h / 2,
+          transform: `rotate(${Math.round(rnd() * 360)}deg) scaleX(${rnd() < 0.5 ? -1 : 1})`}} />;
+      })}
+    </>
+  );
+};
 
-export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, fit = 'frame'}) => {
+export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = []}) => {
   const b = art ? bounds(art) : null;
   // A drawing that fills its canvas (a scene, like a church) touches the edges and would look
   // cut off: it goes in a white-bordered card instead, like a framed picture.
   const edges = b && art && art.kind !== 'sketch' ? [b.x === 0, b.y === 0, b.x + b.w === art.width, b.y + b.h === art.height].filter(Boolean).length : 0;
   const framed = !!art && edges >= 3;
-  const px = framed && art ? Math.floor(Math.min(500 / art.width, 520 / art.height)) : b ? Math.floor(Math.min(560 / b.w, 600 / b.h)) : 0;
-  const big = title.length > 22 ? 96 : title.length > 14 ? 112 : 150;
+  // The drawing is big and centered; the title sits over its lower part, centered, as big as fits in
+  // the safe width on one or two lines (Fredoka caps ≈ 0.62em per letter, a space ≈ 0.3em).
+  const px = framed && art ? Math.floor(Math.min(560 / art.width, 520 / art.height)) : b ? Math.floor(Math.min(640 / b.w, 560 / b.h)) : 0;
+  const wrap = (size: number) => {
+    const w = (t: string) => t.length * 0.62 * size;
+    const lines: string[] = [];
+    for (const word of title.split(/\s+/)) {
+      const last = lines[lines.length - 1];
+      if (last !== undefined && w(last + ' ' + word) <= SAFE_W) lines[lines.length - 1] = last + ' ' + word; else lines.push(word);
+    }
+    return lines;
+  };
+  let big = 125, lines = wrap(big);
+  while (big > 60 && (lines.length > 2 || Math.max(...lines.map((l) => l.length)) * 0.62 * big > SAFE_W)) { big -= 4; lines = wrap(big); }
+  // A narrow drawing (a person) goes to the left so the small "WHAT DOES" line beside the title stays readable.
+  const narrow = !framed && !!b && b.w * px < 520;
   const text = (size: number): React.CSSProperties => ({fontFamily: 'Fredoka, sans-serif', fontWeight: 700, fontSize: size, lineHeight: 0.98, color: INK,
     letterSpacing: 2, textTransform: 'uppercase', textShadow: `0 ${size * 0.06}px 0 ${SHADOW}, 0 ${size * 0.09}px ${size * 0.08}px rgba(0,0,0,0.18)`});
   return (
     <AbsoluteFill style={{background: '#6CEBDE', overflow: 'hidden'}}>
-      <Blob x={40} y={30} w={170} color="#22B8B0" turn={20} />
-      <Blob x={760} y={-30} w={150} color="#F7DF8C" turn={-30} />
-      <Blob x={1080} y={500} w={190} color="#F4B6C2" turn={60} />
-      <Blob x={1120} y={120} w={90} color="#22B8B0" turn={10} ring />
-      <Blob x={520} y={560} w={120} color="#F7DF8C" turn={140} />
+      <Shapes title={title} files={shapes} />
       {art?.kind === 'sketch' && (
-        <Img src={staticFile(art.frames[0] as string)} style={{position: 'absolute', right: 70, top: '50%', transform: 'translateY(-50%)', maxWidth: 560, maxHeight: 600, objectFit: 'contain'}} />
+        <Img src={staticFile(art.frames[0] as string)} style={{position: 'absolute', left: 640 - 380, width: 760, top: 15, height: 640, objectFit: 'contain', objectPosition: 'center top'}} />
       )}
-      {art?.kind !== 'sketch' && framed && art && fit === 'bleed' && (
-        // Off the top-right corner: the drawing's cut edges are the thumbnail's own edges.
-        <svg width={art.width * 19} height={art.height * 19} viewBox={`0 0 ${art.width} ${art.height}`} shapeRendering="crispEdges"
-          style={{position: 'absolute', right: 0, top: 0}}>
-          <Frame art={art} rows={art.frames[0] as string[]} />
-        </svg>
-      )}
-      {art?.kind !== 'sketch' && framed && art && fit === 'frame' && (
-        <div style={{position: 'absolute', right: 80, top: (720 - art.height * px - 28) / 2, padding: 14, background: '#FFFFFF', borderRadius: 30,
+      {art?.kind !== 'sketch' && framed && art && (
+        <div style={{position: 'absolute', left: 640 - (art.width * px + 28) / 2, top: 30, padding: 14, background: '#FFFFFF', borderRadius: 30,
           transform: 'rotate(4deg)', boxShadow: `0 16px 0 ${SHADOW}55, 0 22px 40px rgba(0,0,0,0.18)`}}>
           <svg width={art.width * px} height={art.height * px} viewBox={`0 0 ${art.width} ${art.height}`} shapeRendering="crispEdges" style={{display: 'block', borderRadius: 18}}>
             <Frame art={art} rows={art.frames[0] as string[]} />
@@ -52,13 +84,17 @@ export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, fit = 'fr
       )}
       {art?.kind !== 'sketch' && !framed && art && b && (
         <svg width={b.w * px} height={b.h * px} viewBox={`${b.x} ${b.y} ${b.w} ${b.h}`} shapeRendering="crispEdges"
-          style={{position: 'absolute', right: 70, top: (720 - b.h * px) / 2}}>
+          style={{position: 'absolute', left: narrow ? 215 : 640 - (b.w * px) / 2, top: 20}}>
           <Frame art={art} rows={art.frames[0] as string[]} />
         </svg>
       )}
-      <div style={{position: 'absolute', left: 70, top: 0, bottom: 0, width: art ? 760 : 1140, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 10}}>
-        {lead && <div style={text(64)}>{lead}</div>}
-        <div style={text(big)}>{title}</div>
+      <div style={{position: 'absolute', left: 175, bottom: 30, width: SAFE_W, display: 'flex', justifyContent: 'center'}}>
+        {/* The block is as wide as the longest title line: the small lead lines up with that line's
+            right edge (or is centered over it), and shorter lines are centered under it. */}
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 6}}>
+          {lead && <div style={{...text(Math.round(big * 0.4)), alignSelf: narrow ? 'flex-end' : 'center', whiteSpace: 'nowrap'}}>{lead}</div>}
+          {lines.map((l) => <div key={l} style={{...text(big), whiteSpace: 'nowrap'}}>{l}</div>)}
+        </div>
       </div>
     </AbsoluteFill>
   );

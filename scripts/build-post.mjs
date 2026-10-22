@@ -93,8 +93,8 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
  * heading, each question a paragraph, choices a bulleted list with the right one in bold,
  * "Answer: a / b" for a blank (____), "Why: …", and a divider to end it. Then the words of
  * the video in a toggle card.
- * tags: the top-level tag (Catholic Kids Video Lessons, or Byzantine Catholic Lessons for a
- * Byzantine course) and the course's series tag (course.yml `series`, else its title).
+ * tags: the course's series tag FIRST (course.yml `series`, else its title; the first tag is the
+ * primary one that tells the page which other videos to show), then the top-level tags.
  */
 export function buildKidsSitePost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER_PLACEHOLDER} = {}) {
   const dir = lessonDir(arg);
@@ -128,9 +128,11 @@ export function buildKidsSitePost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl 
     pixelArt && `<p><em>Every pixel drawing in this video is drawn by hand by ${esc(site.author || 'the host')}.</em></p>`,
     `<p><em>${esc(site.disclosure)}</em></p>`,
   ].filter(Boolean).join('\n');
-  // #project puts it in her collections (Latest work, All videos); every lesson is a Catholic Kids
-  // Video Lesson, Byzantine ones are Byzantine Catholic Lessons too, then the series.
-  const tags = course.kids_tags ?? ['Catholic Kids Video Lessons', ...(course.tradition === 'byzantine' ? ['Byzantine Catholic Lessons'] : []), course.series ?? course.title, '#project'];
+  // Order matters: the first tag is the post's primary tag, and the kids site's page uses it to
+  // pick which other videos to show automatically, so the course/series tag goes FIRST. Then
+  // Catholic Kids Video Lessons (Byzantine ones are Byzantine Catholic Lessons too), then #project,
+  // which puts it in her collections (Latest work, All videos).
+  const tags = course.kids_tags ?? [course.series ?? course.title, 'Catholic Kids Video Lessons', ...(course.tradition === 'byzantine' ? ['Byzantine Catholic Lessons'] : []), '#project'];
   const meta = {title: lesson.title, slug: lesson.slug, custom_excerpt: lesson.excerpt.trim(), tags};
   fs.writeFileSync(path.join(outDir(id), 'kids-site-post.html'), html);
   return {html, meta, words};
