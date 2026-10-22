@@ -28,5 +28,49 @@
     "license": "CC BY-SA 4.0",
     "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
     "page": "https://commons.wikimedia.org/wiki/File:Holy_Baptism_of_Syriac_Orthodox_Church.jpg"
+  },
+  "images/mine-1000027236-mvjrqonh.jpg": {
+    "file": "images/mine-1000027236-mvjrqonh.jpg",
+    "aspect": 0.75,
+    "title": "1000027236.jpg",
+    "creator": "Shalone Cason",
+    "source": "Her own picture",
+    "license": "",
+    "license_url": "",
+    "page": "",
+    "own": true
+  },
+  "images/mine-1000027236-mvjrsbja.jpg": {
+    "file": "images/mine-1000027236-mvjrsbja.jpg",
+    "aspect": 0.75,
+    "title": "1000027236.jpg",
+    "creator": "Shalone Cason",
+    "source": "Her own picture",
+    "license": "",
+    "license_url": "",
+    "page": "",
+    "own": true
+  },
+  "images/mine-1000006361-mvjrt8xp.jpg": {
+    "file": "images/mine-1000006361-mvjrt8xp.jpg",
+    "aspect": 1.502,
+    "title": "1000006361.jpg",
+    "creator": "Shalone Cason",
+    "source": "Her own picture",
+    "license": "",
+    "license_url": "",
+    "page": "",
+    "own": true
+  },
+  "images/mine-1000006359-mvjru4j8.jpg": {
+    "file": "images/mine-1000006359-mvjru4j8.jpg",
+    "aspect": 1.502,
+    "title": "1000006359.jpg",
+    "creator": "Shalone Cason",
+    "source": "Her own picture",
+    "license": "",
+    "license_url": "",
+    "page": "",
+    "own": true
   }
 }

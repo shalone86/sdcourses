@@ -60,6 +60,11 @@ points:
           - Chrismation
           - Eucharist
         caption: One celebration of Christian initiation
+      - type: chain
+        items:
+          - Born
+          - Breathes
+          - Is Nourished
     quiz:
       type: choice
       question: In the Eastern Church, how are Baptism, Chrismation and the Eucharist celebrated?
@@ -109,6 +114,10 @@ points:
         credit: Ronyrajan95 · Wikimedia Commons · CC BY-SA 4.0
         fit: cover
         focus: bottom
+      - type: image
+        src: images/mine-1000027236-mvjrqonh.jpg
+        aspect: 0.75
+        fit: cover
     quiz:
       type: blank
       question: Baptism immerses a person into the mystery of Christ's Death and ____.
@@ -137,6 +146,12 @@ points:
         term: Chrismation
         origin: Greek chrisma
         meaning: anointing, the Eastern name for Confirmation
+      - type: image
+        src: images/mine-1000006359-mvjru4j8.jpg
+        aspect: 1.502
+      - type: image
+        src: images/mine-1000006361-mvjrt8xp.jpg
+        aspect: 1.502
     quiz:
       type: choice
       question: What does the priest say as he anoints the newly baptized?
@@ -171,6 +186,12 @@ points:
         left: { kicker: Once in a lifetime, title: Baptism and Chrismation, note: Born and sealed, icon: droplets }
         right: { kicker: Throughout life, title: Holy Communion, note: Growing in Christ, icon: wheat }
         emphasis: right
+      - type: chain
+        items:
+          - Baptism
+          - Chrismation
+          - Eucharist
+        caption: The Eucharist completes the initiation started with Baptism and Chrismation
     quiz:
       type: truefalse
       question: In the Eastern Churches, even little children receive Holy Communion after Baptism and Chrismation.
