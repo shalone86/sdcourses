@@ -436,7 +436,7 @@
           else if (type === 'sprite') {
             // Her saved pixel animations and sketches.
             input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);
-            api('/api/sprites').then((list) => input.replaceChildren(...(list.length ? list.map((x) => h('option', {value: x.slug, text: x.name, selected: x.slug === value}))
+            api('/api/sprites').then((list) => input.replaceChildren(...(list.length ? [...list].sort((x, y) => (y.favorite ? 1 : 0) - (x.favorite ? 1 : 0) || (y.at || 0) - (x.at || 0)).map((x) => h('option', {value: x.slug, text: (x.favorite ? '★ ' : '') + x.name, selected: x.slug === value}))
               : [h('option', {value: '', text: 'None yet: draw one on the Pixel art tab'})])));
           }
           else input = h('input', {type: 'text', value: value ?? extra ?? ''});

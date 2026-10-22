@@ -13,10 +13,23 @@ export const SPRITES = path.join(ROOT, 'sprites');
 const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
 export const spriteSlug = (name) => String(name ?? '').toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
 
+const FAVORITES = path.join(SPRITES, '.favorites.json');
+const readFavorites = () => { try { return new Set(JSON.parse(fs.readFileSync(FAVORITES, 'utf8'))); } catch { return new Set(); } };
+
+/** Star (or unstar) a drawing. Kept in one small file so the drawings themselves stay as they are. */
+export function setFavorite(slug, on) {
+  const s = spriteSlug(slug);
+  if (!s || !fs.existsSync(path.join(SPRITES, `${s}.json`))) throw new Error('That drawing isn\'t saved');
+  const fav = readFavorites();
+  if (on) fav.add(s); else fav.delete(s);
+  fs.writeFileSync(FAVORITES, JSON.stringify([...fav].sort()) + '\n');
+}
+
 export function listSprites() {
   if (!fs.existsSync(SPRITES)) return [];
-  return fs.readdirSync(SPRITES).filter((f) => f.endsWith('.json')).sort()
-    .map((f) => { try { return {slug: f.slice(0, -5), ...JSON.parse(fs.readFileSync(path.join(SPRITES, f), 'utf8'))}; } catch { return null; } })
+  const fav = readFavorites();
+  return fs.readdirSync(SPRITES).filter((f) => f.endsWith('.json') && !f.startsWith('.')).sort()
+    .map((f) => { try { return {slug: f.slice(0, -5), favorite: fav.has(f.slice(0, -5)), at: Math.round(fs.statSync(path.join(SPRITES, f)).mtimeMs), ...JSON.parse(fs.readFileSync(path.join(SPRITES, f), 'utf8'))}; } catch { return null; } })
     .filter(Boolean)
     // A sketch's frames as addresses the studio serves (with a version, so a re-save shows).
     .map((s) => s.kind === 'sketch' ? {...s, urls: s.frames.map((fr) => `/sprites/${fr}?v=${Math.round(fs.statSync(path.join(SPRITES, fr)).mtimeMs)}`)} : s);

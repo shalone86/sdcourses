@@ -20,7 +20,7 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import * as esbuild from 'esbuild';
 import {importImage, searchImages, sourceList} from './images.mjs';
-import {deleteSprite, listSprites, saveSprite} from '../scripts/sprites.mjs';
+import {deleteSprite, listSprites, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
 
@@ -589,7 +589,7 @@ async function handle(req, res) {
   if (req.method === 'POST') {
     // Anything that changes a lesson or a drawing: back it up a few minutes after the last change.
     if (id && /^\/api\/(save|use-spoken|quiz|slide|timing|scene|audio|take|ask|images\/import)$/.test(p)) backupSoon(id, lessonPaths(id), id);
-    if (/^\/api\/sprite(\/delete)?$/.test(p)) backupSoon('sprites', ['sprites'], 'drawings');
+    if (/^\/api\/sprite(\/delete|\/favorite)?$/.test(p)) backupSoon('sprites', ['sprites'], 'drawings');
     if (p === '/api/save') {
       const dir = lessonPath(id);
       const body = await readJson(req);
@@ -660,6 +660,11 @@ async function handle(req, res) {
       } catch (e) { throw httpError(400, e.message); }
       setStatus(dir, 'draft');
       return json(res, 200, {slide, lesson: detail(id)});
+    }
+    if (p === '/api/sprite/favorite') {
+      const {slug, on} = await readJson(req);
+      try { setFavorite(slug, !!on); } catch (e) { throw httpError(409, e.message); }
+      return json(res, 200, {sprites: listSprites()});
     }
     if (p === '/api/sprite/delete') {
       const {slug} = await readJson(req);
@@ -782,7 +787,7 @@ const server = http.createServer((req, res) => {
 // http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
 // Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
 const DRAW_PORT = 5179;
-const DRAW_PATHS = /^(\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
+const DRAW_PATHS = /^(\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
 const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
 const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
 

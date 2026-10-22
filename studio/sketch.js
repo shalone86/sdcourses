@@ -41,7 +41,7 @@ window.SketchTab = (() => {
     const pal = PALETTES[store.get('studio.pixelPalette')] ? store.get('studio.pixelPalette') : 'video';
     const fresh = (w = 512, hgt = 512) => ({name: '', width: w, height: hgt, fps: 4, frames: [layer(w, hgt), layer(w, hgt)]});
     const P = {list: [], art: fresh(), frame: 0, tool: 'pen', brush: Number(store.get('studio.sketchBrush')) || 8, color: PALETTES[pal].colors[0], pal,
-      mirror: false, onion: true, filled: false, every: false, undo: [], changed: false, timer: null, sel: null, float: null, shape: null};
+      mirror: false, onion: true, filled: false, every: false, gal: {open: false, q: ''}, undo: [], changed: false, timer: null, sel: null, float: null, shape: null};
     const dirty = () => P.changed || !!P.float;
 
     const canvas = h('canvas', {class: 'px-canvas sk-canvas', width: P.art.width, height: P.art.height, 'aria-label': 'Sketch', tabindex: '0'});
@@ -140,8 +140,9 @@ window.SketchTab = (() => {
       return c;
     }
     /** Paint-bucket fill: the touching area of (nearly) the same color. */
-    function fill(x, y) {
-      const g = cur().getContext('2d'), d = g.getImageData(0, 0, W(), H()), px = d.data;
+    function fill(x, y) { for (const i of targets()) fillFrame(P.art.frames[i], x, y); }
+    function fillFrame(canvas, x, y) {
+      const g = canvas.getContext('2d'), d = g.getImageData(0, 0, W(), H()), px = d.data;
       x = Math.floor(x); y = Math.floor(y);
       const at0 = (y * W() + x) * 4, t = [px[at0], px[at0 + 1], px[at0 + 2], px[at0 + 3]];
       const n = parseInt(P.color.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255, 255];
@@ -285,7 +286,7 @@ window.SketchTab = (() => {
         return;
       }
       if (P.float || P.sel) letGo();
-      remember([P.frame]);
+      remember(P.tool === 'fill' ? targets() : [P.frame]);
       P.changed = true;
       if (P.tool === 'fill') { fill(c.x, c.y); draw(); return; }
       if (SHAPES.includes(P.tool)) {
@@ -342,14 +343,15 @@ window.SketchTab = (() => {
       const a = P.art;
       const btn = (text, onclick, attrs = {}) => h('button', {class: 'btn', text, onclick, ...attrs});
       const mine = P.list.filter((s) => s.kind === 'sketch');
-      const pick = h('select', {'aria-label': 'Open a saved sketch', onchange: (e) => {
-        if (dirty() && !confirm('Leave this sketch without saving?')) { e.target.value = a.slug ? 'open:' + a.slug : ''; return; }
-        const [kind, slug] = e.target.value.split(':');
-        const s = mine.find((x) => x.slug === slug);
-        if (s) openSaved(s, kind === 'copy'); else { P.art = fresh(a.width, a.height); P.frame = 0; P.undo = []; P.changed = false; draw(); }
-      }}, [h('option', {value: '', text: 'New sketch'}),
-        mine.length ? h('optgroup', {label: 'Open'}, mine.map((s) => h('option', {value: 'open:' + s.slug, text: s.name, selected: s.slug === a.slug}))) : null,
-        mine.length ? h('optgroup', {label: 'Start a new one from a copy of'}, mine.map((s) => h('option', {value: 'copy:' + s.slug, text: s.name + ' (all frames)'}))) : null]);
+      const startNew = () => {
+        if (dirty() && !confirm('Leave this sketch without saving?')) return;
+        P.art = fresh(a.width, a.height); P.frame = 0; P.undo = []; P.changed = false; draw();
+      };
+      const pick = window.SpriteGallery.build({items: mine, state: P.gal, current: a.slug, noun: 'sketch', onNew: startNew, onToggle: draw,
+        onOpen: (s, copy) => { if (dirty() && !confirm('Leave this sketch without saving?')) return; P.gal.open = false; openSaved(s, copy); },
+        onFavorite: async (slug, on) => {
+          try { const d = await post('/api/sprite/favorite', {slug, on}); P.list = d.sprites; draw(); } catch (e) { alert('Couldn’t change the favorite: ' + e.message); }
+        }});
       const size = h('select', {'aria-label': 'Size', disabled: !!a.slug || P.changed, onchange: (e) => { const [w, hgt] = e.target.value.split('x').map(Number); P.art = {...fresh(w, hgt), name: a.name, fps: a.fps}; P.frame = 0; draw(); }},
         SIZES.map(([w, hgt, label]) => h('option', {value: `${w}x${hgt}`, text: label, selected: a.width === w && a.height === hgt})));
       const name = h('input', {type: 'text', value: a.name, placeholder: 'Name (e.g. Saint Nicholas waving)', 'aria-label': 'Name', oninput: (e) => { a.name = e.target.value; P.changed = true; markDirty(); }});
@@ -379,7 +381,8 @@ window.SketchTab = (() => {
       };
       const selecting = !!(P.sel || P.float);
       body.replaceChildren(...[
-        h('div', {class: 'row', style: {gap: '8px'}}, [pick, size,
+        pick,
+        h('div', {class: 'row', style: {gap: '8px'}}, [size,
           h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         name,
@@ -394,7 +397,7 @@ window.SketchTab = (() => {
           btn('Paste', () => paste(false)), btn('Paste in every frame', () => paste(true)),
           btn('Bigger ×2', () => scaleBy(2)), btn('Smaller ÷2', () => scaleBy(0.5)),
           btn('Flip ↔', () => flip('h')), btn('Flip ↕', () => flip('v')),
-          h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.every || null, onchange: (e) => { P.every = e.target.checked; }}), ' Move, cut, flip and clear in every frame']),
+          h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.every || null, onchange: (e) => { P.every = e.target.checked; }}), ' Fill, move, cut, flip and clear in every frame']),
           btn('Clear this frame', () => { letGo(); remember([P.frame]); cur().getContext('2d').clearRect(0, 0, W(), H()); P.changed = true; draw(); }),
           h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
           a.slug ? btn('Delete this sketch', remove) : null,

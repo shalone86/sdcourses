@@ -349,8 +349,13 @@ function renderHeader() {
   const st = document.getElementById('status');
   st.replaceChildren(L ? el('span', {class: 'pill' + (L.status === 'reviewed' ? ' approved' : ''), text: L.status === 'reviewed' ? 'Approved' : L.status === 'published' ? 'Published' : 'Draft'}) : '');
   const pick = document.getElementById('pick');
+  // Finished lessons (approved or published) live in the archive; the open one stays in the list.
+  const isDone = (l) => l.status === 'reviewed' || l.status === 'published';
+  const active = S.lessons.filter((l) => !isDone(l) || l.id === S.id);
+  const archived = S.lessons.filter(isDone);
   pick.hidden = S.lessons.length < 2;
-  pick.replaceChildren(...S.lessons.map((l) => el('option', {value: l.id, selected: l.id === S.id, text: l.course + ' ' + l.number + ': ' + l.title})));
+  pick.replaceChildren(...active.map((l) => el('option', {value: l.id, selected: S.tab !== 'archive' && l.id === S.id, text: l.course + ' ' + l.number + ': ' + l.title + (isDone(l) ? ' (done)' : '')})),
+    archived.length ? el('option', {value: '__archive', selected: S.tab === 'archive', text: 'Archive (' + archived.length + ' finished)…'}) : null);
   pick.disabled = !!(S.rec || S.busy);
   for (const t of ['script', 'timing', 'pixels', 'video']) {
     const b = document.getElementById('tab-' + t);
@@ -365,6 +370,7 @@ function render() {
   const kids = [];
   if (S.notice) kids.push(noticeEl(S.notice));
   if (S.tab === 'new') kids.push(newLessonView());
+  else if (S.tab === 'archive') kids.push(archiveView());
   else if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : S.tab === 'pixels' ? pixelsView() : videoView());
   view.replaceChildren(...kids);
   for (const t of view.querySelectorAll('textarea.read')) grow(t);
@@ -382,7 +388,30 @@ document.getElementById('tab-video').addEventListener('click', () => switchTab('
 document.getElementById('tab-timing').addEventListener('click', () => switchTab('timing'));
 document.getElementById('tab-pixels').addEventListener('click', () => switchTab('pixels'));
 document.getElementById('new-lesson').addEventListener('click', async () => { await saveAll(); if (S.timing) S.timing.pause(); S.tab = 'new'; S.notice = null; stopPlayback(); releaseMic(); render(); });
-document.getElementById('pick').addEventListener('change', async (e) => { await saveAll(); if (S.tab === 'new') S.tab = 'script'; openLesson(e.target.value, 0); });
+document.getElementById('pick').addEventListener('change', async (e) => {
+  await saveAll();
+  if (e.target.value === '__archive') { if (S.timing) S.timing.pause(); S.tab = 'archive'; S.notice = null; stopPlayback(); releaseMic(); render(); return; }
+  if (S.tab === 'new' || S.tab === 'archive') S.tab = 'script';
+  openLesson(e.target.value, 0);
+});
+
+// Finished lessons, searchable, so the lesson list stays short as the courses grow.
+function archiveView() {
+  const done = S.lessons.filter((l) => l.status === 'reviewed' || l.status === 'published');
+  const list = el('div', {class: 'stack'});
+  const q = el('input', {type: 'search', class: 'read-line', placeholder: 'Search finished lessons by course or title', 'aria-label': 'Search the archive'});
+  const draw = () => {
+    const words = q.value.toLowerCase().split(/\s+/).filter(Boolean);
+    const hits = done.filter((l) => words.every((w) => (l.course + ' ' + l.title).toLowerCase().includes(w)));
+    list.replaceChildren(...(hits.length ? hits.map((l) => el('div', {class: 'row'}, [
+      el('span', {text: l.course + ' · Lesson ' + l.number + ': ' + l.title}),
+      el('button', {class: 'btn', text: 'Open', onclick: () => { S.tab = 'script'; openLesson(l.id, 0); }}),
+    ])) : [el('div', {class: 'muted', text: 'Nothing matches.'})]));
+  };
+  q.addEventListener('input', draw);
+  draw();
+  return el('div', {class: 'card stack'}, [el('h2', {text: 'Archive'}), el('div', {class: 'muted', text: 'Lessons that are approved and sent to Ghost. Open one to look at it or change it.'}), q, list]);
+}
 
 async function switchTab(tab) {
   if (S.tab === tab) return;

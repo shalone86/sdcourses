@@ -98,3 +98,58 @@ window.DrawReference = (() => {
   }
   return {draw, controls};
 })();
+
+// Her saved drawings, for the Pixel art and Sketch tabs: starred favorites, the 10 most
+// recent, and a search for everything else (there will be a lot of them).
+window.SpriteGallery = (() => {
+  const RECENT = 10;
+  function h(tag, attrs, kids) {
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v === null || v === undefined || v === false) continue;
+      if (k === 'text') e.textContent = v; else if (k === 'class') e.className = v;
+      else if (k.startsWith('on')) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v === true ? '' : v);
+    }
+    for (const c of [].concat(kids || [])) if (c !== null && c !== undefined && c !== false) e.append(c);
+    return e;
+  }
+  /** items: saved drawings (name, slug, at, favorite). state: {open, q} kept by the tab between redraws. */
+  function build({items, state, current, noun, onNew, onToggle, onOpen, onFavorite}) {
+    const byNew = (a, b) => (b.at || 0) - (a.at || 0);
+    const list = h('div', {class: 'stack', style: {gap: '4px'}});
+    const row = (s) => h('div', {class: 'row', style: {gap: '6px', flexWrap: 'nowrap'}}, [
+      h('button', {class: 'btn', title: s.favorite ? 'Remove from favorites' : 'Add to favorites', 'aria-label': (s.favorite ? 'Unfavorite ' : 'Favorite ') + s.name, 'aria-pressed': s.favorite ? 'true' : 'false',
+        text: s.favorite ? '★' : '☆', onclick: () => onFavorite(s.slug, !s.favorite)}),
+      h('span', {style: {flex: '1', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: s.slug === current ? '700' : '400'}, text: s.name}),
+      h('button', {class: 'btn', text: 'Open', onclick: () => onOpen(s, false)}),
+      h('button', {class: 'btn', title: 'Start a new one from a copy of this (all frames)', text: 'Copy', onclick: () => onOpen(s, true)}),
+    ]);
+    const heading = (t) => h('div', {class: 'small muted', text: t});
+    const draw = () => {
+      const q = state.q.trim().toLowerCase();
+      const out = [];
+      if (q) {
+        const hits = items.filter((s) => q.split(/\s+/).every((w) => s.name.toLowerCase().includes(w))).sort(byNew);
+        out.push(heading(hits.length ? `${hits.length} found` : 'Nothing matches.'), ...hits.map(row));
+      } else {
+        const favs = items.filter((s) => s.favorite).sort((a, b) => a.name.localeCompare(b.name));
+        if (favs.length) out.push(heading('★ Favorites'), ...favs.map(row));
+        const recent = [...items].sort(byNew).slice(0, RECENT);
+        out.push(heading(items.length > RECENT ? `Last ${RECENT} (search for the other ${items.length - RECENT})` : 'Your drawings'), ...recent.map(row));
+        if (!items.length) out.push(heading(`No ${noun}s saved yet.`));
+      }
+      list.replaceChildren(...out);
+    };
+    const search = h('input', {type: 'search', value: state.q, placeholder: `Search your ${noun}s by name`, 'aria-label': `Search your ${noun}s`, oninput: (e) => { state.q = e.target.value; draw(); }});
+    draw();
+    const panel = h('div', {class: 'stack', style: {gap: '6px', padding: '8px', border: '1px solid currentColor', borderRadius: '8px', maxHeight: '320px', overflowY: 'auto'}}, [search, list]);
+    return h('div', {class: 'stack', style: {gap: '6px'}}, [
+      h('div', {class: 'row', style: {gap: '8px', justifyContent: 'flex-start'}}, [
+        h('button', {class: 'btn', text: 'New ' + noun, onclick: onNew}),
+        h('button', {class: 'btn', 'aria-expanded': state.open ? 'true' : 'false', text: (state.open ? 'Hide' : 'Open a saved ' + noun) + (items.length ? ` (${items.length})` : ''), onclick: () => { state.open = !state.open; onToggle(); }}),
+      ]),
+      state.open ? panel : null,
+    ]);
+  }
+  return {build};
+})();

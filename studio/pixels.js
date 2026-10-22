@@ -86,7 +86,7 @@ window.PixelTab = (() => {
 
   function open(root, api, post, reference = window.DrawReference) {
     const pal = PALETTES[store.get('studio.pixelPalette')] ? store.get('studio.pixelPalette') : 'video';
-    const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false,
+    const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false, gal: {open: false, q: ''},
       undo: [], saved: '', timer: null,
       sel: null,    // selected box {x, y, w, h}
       float: null,  // lifted pixels being moved or pasted {x, y, w, h, layers: [{frame, px}]} (one layer per frame)
@@ -189,8 +189,9 @@ window.PixelTab = (() => {
       px()[y * W() + x] = col;
       if (P.mirror) { const mx = W() - 1 - x; if (P.tool !== 'dither' || (mx + y) % 2 === 0) px()[y * W() + mx] = col; }
     }
-    function fill(x, y, col) {
-      const w = W(), hgt = H(), p = px();
+    function fill(x, y, col) { for (const i of targets()) fillFrame(P.art.frames[i], x, y, col); }
+    function fillFrame(p, x, y, col) {
+      const w = W(), hgt = H();
       const target = p[y * w + x];
       if (target === col) return;
       const stack = [[x, y]];
@@ -497,18 +498,23 @@ window.PixelTab = (() => {
     function draw() {
       const a = P.art;
       const btn = (text, onclick, attrs = {}) => h('button', {class: 'btn', text, onclick, ...attrs});
-      const pick = h('select', {'aria-label': 'Open a saved animation', onchange: (e) => {
-        if (dirty() && !confirm('Leave this drawing without saving?')) { e.target.value = a.slug ? 'open:' + a.slug : ''; return; }
-        const [kind, slug] = e.target.value.split(':');
-        const s = P.list.find((x) => x.slug === slug);
+      const openSaved = (s, copy) => {
+        if (dirty() && !confirm('Leave this drawing without saving?')) return;
         // The copied pixels stay, so they can be pasted into the drawing opened now.
-        P.art = s ? fromSaved(s) : fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap();
+        P.art = fromSaved(s); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap();
         // "Start from a copy": every frame of that one, as a new unsaved drawing.
-        if (s && kind === 'copy') { delete P.art.slug; P.art.name = s.name + ' copy'; P.saved = ''; }
+        if (copy) { delete P.art.slug; P.art.name = s.name + ' copy'; P.saved = ''; }
+        P.gal.open = false;
         draw();
-      }}, [h('option', {value: '', text: 'New drawing'}),
-        P.list.length ? h('optgroup', {label: 'Open'}, P.list.map((s) => h('option', {value: 'open:' + s.slug, text: s.name, selected: s.slug === a.slug}))) : null,
-        P.list.length ? h('optgroup', {label: 'Start a new one from a copy of'}, P.list.map((s) => h('option', {value: 'copy:' + s.slug, text: s.name + ' (all frames)'}))) : null]);
+      };
+      const startNew = () => {
+        if (dirty() && !confirm('Leave this drawing without saving?')) return;
+        P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); draw();
+      };
+      const pick = window.SpriteGallery.build({items: P.list, state: P.gal, current: a.slug, noun: 'drawing', onNew: startNew, onToggle: draw, onOpen: openSaved,
+        onFavorite: async (slug, on) => {
+          try { const d = await post('/api/sprite/favorite', {slug, on}); P.list = d.sprites.filter((x) => x.kind !== 'sketch'); draw(); } catch (e) { alert('Couldn’t change the favorite: ' + e.message); }
+        }});
       const size = h('select', {'aria-label': 'Size', disabled: !!a.slug || a.frames.some((f) => f.some(Boolean)), onchange: (e) => {
         const [w, hgt] = e.target.value.split('x').map(Number); P.art = {...fresh(w, hgt), name: a.name, fps: a.fps}; P.frame = 0; draw();
       }}, SIZES.map(([w, hgt]) => h('option', {value: `${w}x${hgt}`, text: `${w} × ${hgt}${w !== hgt ? ' (wide scene)' : ''}`, selected: a.width === w && a.height === hgt})));
@@ -547,7 +553,8 @@ window.PixelTab = (() => {
       const selecting = !!(P.sel || P.float);
 
       body.replaceChildren(...[
-        h('div', {class: 'row', style: {gap: '8px'}}, [pick, size,
+        pick,
+        h('div', {class: 'row', style: {gap: '8px'}}, [size,
           h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         name,
@@ -570,7 +577,7 @@ window.PixelTab = (() => {
           btn('Flip ↔', () => flip('h'), {title: selecting ? 'Flip the selection left to right' : 'Flip left to right'}),
           btn('Flip ↕', () => flip('v'), {title: selecting ? 'Flip the selection upside down' : 'Flip upside down'}),
           h('label', {class: 'small', title: 'Moving, cutting, flipping and clearing work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
-            onchange: (e) => { P.every = e.target.checked; }}), ' Move, cut, flip and clear in every frame']),
+            onchange: (e) => { P.every = e.target.checked; }}), ' Fill, move, cut, flip and clear in every frame']),
           btn('Clear this frame', () => { letGo(); remember(); a.frames[P.frame] = blank(a.width, a.height); draw(); markDirty(); }),
           h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
           a.slug ? btn('Delete this drawing', remove) : null,
