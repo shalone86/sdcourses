@@ -19,7 +19,7 @@ import {icons as LUCIDE} from 'lucide-react';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import * as esbuild from 'esbuild';
-import {importImage, searchImages, sourceList} from './images.mjs';
+import {importImage, importUpload, searchImages, sourceList} from './images.mjs';
 import {deleteSprite, listSprites, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
@@ -570,7 +570,7 @@ async function handle(req, res) {
     if (p === '/api/images/search') {
       const q = (url.searchParams.get('q') ?? '').trim();
       if (!q) throw httpError(400, 'Type something to search for');
-      return json(res, 200, await searchImages(q.slice(0, 120), url.searchParams.get('source') ?? 'all'));
+      return json(res, 200, await searchImages(q.slice(0, 120), url.searchParams.get('source') ?? 'all', Math.max(0, Math.min(40, Number(url.searchParams.get('page')) || 0))));
     }
     if (p === '/player.js') return sendFile(req, res, path.join(ROOT, 'studio/player/player.js'));
     if (p === '/timing.js') return sendFile(req, res, path.join(ROOT, 'studio/timing.js'));
@@ -680,6 +680,11 @@ async function handle(req, res) {
       const {timing} = await readJson(req);
       saveTiming(id, timing);
       return json(res, 200, timingData(id));
+    }
+    if (p === '/api/images/upload') {
+      // A picture from her Mac, sent as the raw file.
+      const buf = await readBody(req, 60e6);
+      return json(res, 200, importUpload(lessonPath(id), Buffer.from(buf), url.searchParams.get('name') ?? 'picture'));
     }
     if (p === '/api/images/import') {
       // Download a picked image into the lesson (with its credit); the page then adds the scene.

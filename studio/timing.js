@@ -363,6 +363,19 @@
       T.body.replaceChildren(...kids.filter(Boolean));
       box.scrollLeft = keep;
       window.scrollTo(0, y);
+      syncHead();
+    }
+
+    // The red playhead is rebuilt with every redraw: put it back where the video is
+    // (otherwise it jumps to the start, or is gone, until the next frame plays).
+    function syncHead() {
+      if (!T.player) return;
+      const f = T.player.frame(), s0 = segStart(T.seg);
+      if (T.bar) { T.bar.max = String(Math.max(1, T.props.segments.reduce((n, x) => n + x.durationInFrames, 0) - 1)); if (document.activeElement !== T.bar) T.bar.value = String(f); }
+      const head = root.querySelector('[data-playhead]');
+      if (head) head.style.left = 20 + (f - s0) * (T.zoom / FPS) + 'px';
+      const t = root.querySelector('[data-time]');
+      if (t) t.textContent = f >= s0 && f < s0 + seg().durationInFrames ? fmt(secOf(f - s0)) + ' into the recording' : '';
     }
 
     /** Options for a picture already in the lesson: framing, which part stays when cropped, caption. */
@@ -457,9 +470,15 @@
           let scene;
           if (!old && T.addType === 'image') {
             if (!T.picked) { alert('Pick a picture first.'); return; }
-            const credit = await post('/api/images/import?id=' + encodeURIComponent(T.id), {img: T.picked});
-            const line = [credit.creator && credit.creator !== 'Unknown' ? credit.creator : '', credit.source, credit.license].filter(Boolean).join(' · ');
-            scene = {type: 'image', src: credit.file, aspect: credit.aspect, credit: line, ...(T.caption ? {caption: T.caption} : {}), ...(T.fit && T.fit !== 'contain' ? {fit: T.fit} : {}), ...(T.focus && T.focus !== 'center' ? {focus: T.focus} : {})};
+            let credit;
+            if (T.picked.upload) {
+              const r = await fetch('/api/images/upload?id=' + encodeURIComponent(T.id) + '&name=' + encodeURIComponent(T.picked.file.name), {method: 'POST', body: T.picked.file});
+              const j = await r.json().catch(() => ({}));
+              if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status);
+              credit = j;
+            } else credit = await post('/api/images/import?id=' + encodeURIComponent(T.id), {img: T.picked});
+            const line = credit.own ? '' : [credit.creator && credit.creator !== 'Unknown' ? credit.creator : '', credit.source, credit.license].filter(Boolean).join(' · ');
+            scene = {type: 'image', src: credit.file, aspect: credit.aspect, ...(line ? {credit: line} : {}), ...(T.caption ? {caption: T.caption} : {}), ...(T.fit && T.fit !== 'contain' ? {fit: T.fit} : {}), ...(T.focus && T.focus !== 'center' ? {focus: T.focus} : {})};
             T.picked = null;
           } else scene = ADD[old ? kind : T.addType].make(v, old);
           const d = old
@@ -517,17 +536,40 @@
           title: `${r.title} — ${r.creator} (${r.license})`, onclick: () => { T.picked = r; show(); }}, [
           h('img', {src: r.thumb, alt: r.title, loading: 'lazy'}), h('span', {text: r.title}), h('small', {text: `${r.creator} · ${r.license}`})])));
       };
+      const more = h('button', {class: 'btn', type: 'button', text: 'Load more', hidden: true});
+      // page 0 starts a new search; later pages add to the grid.
+      const fetchPage = async (page) => {
+        const d = await api('/api/images/search?id=' + encodeURIComponent(T.id) + '&q=' + encodeURIComponent(T.imageQ) + '&source=' + encodeURIComponent(T.imageSrc) + '&page=' + page);
+        const have = new Set((page ? T.imageResults : []).map((r) => r.source + ':' + r.id));
+        const fresh = d.results.filter((r) => !have.has(r.source + ':' + r.id));
+        T.imageResults = (page ? T.imageResults : []).concat(fresh);
+        T.imagePage = page;
+        more.hidden = !fresh.length;
+        const total = T.imageResults.length;
+        status.textContent = (total ? total + ' found. Pick one' + (fresh.length ? ', or load more.' : '. That’s all there is.') : 'Nothing found; try other words.') + (d.errors.length ? ' (' + d.errors.join('; ') + ')' : '');
+        show();
+      };
+      more.addEventListener('click', async () => {
+        more.disabled = true; status.textContent = 'Loading more…';
+        try { await fetchPage((T.imagePage || 0) + 1); } catch (e) { status.textContent = 'Couldn’t load more: ' + e.message; }
+        more.disabled = false;
+      });
       const go = async () => {
         if (!q.value.trim()) return;
         T.imageQ = q.value; T.imageSrc = src.value;
-        status.textContent = 'Searching…'; grid.replaceChildren();
-        try {
-          const d = await api('/api/images/search?id=' + encodeURIComponent(T.id) + '&q=' + encodeURIComponent(q.value) + '&source=' + encodeURIComponent(src.value));
-          T.imageResults = d.results;
-          status.textContent = (d.results.length ? d.results.length + ' found. Pick one.' : 'Nothing found; try other words.') + (d.errors.length ? ' (' + d.errors.join('; ') + ')' : '');
-          show();
-        } catch (e) { status.textContent = 'Search failed: ' + e.message; }
+        status.textContent = 'Searching…'; grid.replaceChildren(); more.hidden = true;
+        try { await fetchPage(0); } catch (e) { status.textContent = 'Search failed: ' + e.message; }
       };
+      // Her own picture from the Mac: shown as the pick; sent when she presses Add.
+      const mine = h('input', {type: 'file', accept: 'image/*', hidden: true, onchange: (e) => {
+        const f = e.target.files[0]; e.target.value = '';
+        if (!f) return;
+        const url = URL.createObjectURL(f);
+        const img = new Image();
+        img.onload = () => { T.picked = {upload: true, file: f, title: f.name, creator: 'Shalone Cason', source: 'My own picture', license: '', thumb: url, width: img.naturalWidth, height: img.naturalHeight}; show(); };
+        img.onerror = () => { alert('The studio can’t show that file. Try a JPG, PNG or WebP picture.'); };
+        img.src = url;
+      }});
       q.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
       const caption = h('input', {type: 'text', placeholder: 'Caption (optional)', value: T.caption || '', oninput: (e) => { T.caption = e.target.value; }});
       const fit = h('select', {onchange: (e) => { T.fit = e.target.value; }}, FITS.map(([v, l]) => h('option', {value: v, text: l, selected: (T.fit || 'contain') === v})));
@@ -535,7 +577,8 @@
       show();
       return h('div', {class: 'stack', style: {gap: '8px'}}, [
         h('div', {class: 'row', style: {gap: '8px', flexWrap: 'nowrap'}}, [q, src, h('button', {class: 'btn', type: 'button', text: 'Search', onclick: go})]),
-        status, grid, preview,
+        h('div', {class: 'row', style: {gap: '8px', justifyContent: 'flex-start'}}, [h('label', {class: 'btn', title: 'A picture from your Mac (JPG, PNG, WebP)'}, ['Upload my own picture…', mine])]),
+        status, grid, more, preview,
         h('div', {class: 'row', style: {gap: '8px'}}, [h('label', {class: 'tl-field', style: {flex: '1'}}, [h('span', {text: 'Caption'}), caption]),
           h('label', {class: 'tl-field'}, [h('span', {text: 'Framing'}), fit]), h('label', {class: 'tl-field'}, [h('span', {text: 'If it’s cropped, keep'}), focus])]),
         h('div', {class: 'small muted', text: 'The picture is saved into the lesson with its credit; the credit shows small on the video and in the post’s Image credits.'}),

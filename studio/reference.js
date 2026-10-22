@@ -60,19 +60,25 @@ window.DrawReference = (() => {
       // The studio's free picture search (her gallery, Wikimedia Commons, museums).
       const q = h('input', {type: 'search', class: 'read-line', placeholder: 'Or search free pictures, e.g. Hagia Sophia', style: 'flex:1'});
       const results = h('div', {class: 'ref-results'});
-      const search = async () => {
-        if (!q.value.trim()) return;
-        status.textContent = 'Searching…'; results.replaceChildren();
+      const more = h('button', {class: 'btn', type: 'button', text: 'Load more', hidden: true});
+      let found = [], page = 0, term = '';
+      const search = async (next) => {
+        if (!next) { if (!q.value.trim()) return; term = q.value; page = 0; found = []; results.replaceChildren(); more.hidden = true; } else page++;
+        status.textContent = next ? 'Loading more…' : 'Searching…';
         try {
-          const d = await (await fetch('/api/images/search?q=' + encodeURIComponent(q.value) + '&source=all')).json();
-          status.textContent = d.results.length ? 'Pick one.' : 'Nothing found; try other words.';
-          results.replaceChildren(...d.results.slice(0, 18).map((r) => h('button', {class: 'ref-pick', type: 'button', title: r.title, onclick: () => {
+          const d = await (await fetch('/api/images/search?q=' + encodeURIComponent(term) + '&source=all&page=' + page)).json();
+          const have = new Set(found.map((r) => r.source + ':' + r.id));
+          const fresh = d.results.filter((r) => !have.has(r.source + ':' + r.id));
+          found = found.concat(fresh); more.hidden = !fresh.length;
+          status.textContent = found.length ? 'Pick one' + (fresh.length ? ', or load more.' : '. That’s all there is.') : 'Nothing found; try other words.';
+          results.replaceChildren(...found.map((r) => h('button', {class: 'ref-pick', type: 'button', title: r.title, onclick: () => {
             // A big-enough copy (Wikimedia originals can be huge).
             fromLink(r.source === 'wikimedia' && r.thumb ? r.thumb.replace(/\/\d+px-/, '/1280px-') : r.full || r.thumb);
           }}, [h('img', {src: r.thumb, alt: r.title, loading: 'lazy'})])));
         } catch (e) { status.textContent = 'Search failed: ' + e.message; }
       };
-      q.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); search(); } });
+      q.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); search(false); } });
+      more.addEventListener('click', () => search(true));
       const slider = (label, key, min, max, step) => h('label', {class: 'tl-field'}, [h('span', {text: label}),
         h('input', {type: 'range', min, max, step, value: R[key], oninput: (e) => { R[key] = +e.target.value; onChange(); }})]);
       box.replaceChildren(
@@ -81,8 +87,8 @@ window.DrawReference = (() => {
           h('label', {class: 'small'}, [R.img ? 'Choose another from your Mac: ' : 'Choose a picture from your Mac: ', file]),
           paste,
           h('div', {class: 'small muted', text: 'From Google or DuckDuckGo: right-click a picture → Copy Image (or Copy Image Address), then paste it above.'}),
-          h('div', {class: 'row', style: 'gap:8px;flex-wrap:nowrap'}, [q, h('button', {class: 'btn', type: 'button', text: 'Search', onclick: search})]),
-          results, status,
+          h('div', {class: 'row', style: 'gap:8px;flex-wrap:nowrap'}, [q, h('button', {class: 'btn', type: 'button', text: 'Search', onclick: () => search(false)})]),
+          results, more, status,
           R.img ? h('div', {class: 'row', style: {gap: '10px', flexWrap: 'wrap'}}, [
             slider('How faint', 'opacity', 0.05, 1, 0.05), slider('Size', 'size', 0.2, 3, 0.05),
             slider('Left ↔ right', 'x', -0.6, 0.6, 0.01), slider('Up ↕ down', 'y', -0.6, 0.6, 0.01)]) : null,
