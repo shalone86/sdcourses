@@ -1028,6 +1028,15 @@ function stopPlayback() { S.player.pause(); S.playing = null; }
 function holdScreen() { try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then((w) => { S.wake = w; }, () => {}); } catch {} }
 function releaseScreen() { try { if (S.wake) S.wake.release(); } catch {} S.wake = null; }
 
+// F17 / F18: previous / next slide (during a one take, F18 is the Next tap; Back is off while recording).
+document.addEventListener('keydown', (e) => {
+  const prev = e.code === 'F17' || e.key === 'F17', next = e.code === 'F18' || e.key === 'F18';
+  if (!(prev || next) || e.repeat || S.tab !== 'script' || !S.L || S.busy || S.failed) return;
+  e.preventDefault();
+  if (S.rec) { if (next) takeNext(); return; }
+  goTo(S.slide + (next ? 1 : -1));
+});
+
 // R (or Option+R while typing in a box) starts and stops recording. F19 does too, anywhere.
 document.addEventListener('keydown', (e) => {
   const f19 = e.code === 'F19' || e.key === 'F19';
