@@ -1,0 +1,425 @@
+{
+ "stamp": "2:4095438:1792685040705",
+ "words": [
+  {
+   "w": "So,",
+   "start": 0.15,
+   "end": 0.3
+  },
+  {
+   "w": "why",
+   "start": 0.3,
+   "end": 0.54
+  },
+  {
+   "w": "do",
+   "start": 0.54,
+   "end": 0.67
+  },
+  {
+   "w": "Byzantine",
+   "start": 0.67,
+   "end": 1.34
+  },
+  {
+   "w": "Catholic",
+   "start": 1.34,
+   "end": 1.94
+  },
+  {
+   "w": "babies",
+   "start": 1.94,
+   "end": 2.38
+  },
+  {
+   "w": "receive",
+   "start": 2.38,
+   "end": 2.91
+  },
+  {
+   "w": "Communion?",
+   "start": 2.91,
+   "end": 3.84
+  },
+  {
+   "w": "It's",
+   "start": 3.84,
+   "end": 4.12
+  },
+  {
+   "w": "because",
+   "start": 4.12,
+   "end": 4.61
+  },
+  {
+   "w": "the",
+   "start": 4.61,
+   "end": 4.82
+  },
+  {
+   "w": "Byzantine",
+   "start": 4.82,
+   "end": 5.45
+  },
+  {
+   "w": "tradition",
+   "start": 5.45,
+   "end": 6.11
+  },
+  {
+   "w": "believes",
+   "start": 6.11,
+   "end": 6.92
+  },
+  {
+   "w": "that",
+   "start": 6.92,
+   "end": 7.2
+  },
+  {
+   "w": "all",
+   "start": 7.2,
+   "end": 7.68
+  },
+  {
+   "w": "the",
+   "start": 7.68,
+   "end": 7.75
+  },
+  {
+   "w": "mysteries",
+   "start": 7.75,
+   "end": 8.16
+  },
+  {
+   "w": "of",
+   "start": 8.16,
+   "end": 8.34
+  },
+  {
+   "w": "initiation",
+   "start": 8.34,
+   "end": 9.04
+  },
+  {
+   "w": "arrive",
+   "start": 9.04,
+   "end": 9.28
+  },
+  {
+   "w": "together,",
+   "start": 9.28,
+   "end": 10.26
+  },
+  {
+   "w": "just",
+   "start": 10.26,
+   "end": 10.65
+  },
+  {
+   "w": "like",
+   "start": 10.65,
+   "end": 11.03
+  },
+  {
+   "w": "when",
+   "start": 11.03,
+   "end": 11.43
+  },
+  {
+   "w": "a",
+   "start": 11.43,
+   "end": 11.52
+  },
+  {
+   "w": "baby",
+   "start": 11.52,
+   "end": 11.92
+  },
+  {
+   "w": "is",
+   "start": 11.92,
+   "end": 12.11
+  },
+  {
+   "w": "born,",
+   "start": 12.11,
+   "end": 12.69
+  },
+  {
+   "w": "life,",
+   "start": 12.69,
+   "end": 13.4
+  },
+  {
+   "w": "breath,",
+   "start": 13.4,
+   "end": 14.05
+  },
+  {
+   "w": "and",
+   "start": 14.05,
+   "end": 14.32
+  },
+  {
+   "w": "food",
+   "start": 14.32,
+   "end": 14.67
+  },
+  {
+   "w": "arrive",
+   "start": 14.67,
+   "end": 15.2
+  },
+  {
+   "w": "together",
+   "start": 15.2,
+   "end": 15.9
+  },
+  {
+   "w": "to",
+   "start": 15.9,
+   "end": 16.29
+  },
+  {
+   "w": "sustain",
+   "start": 16.29,
+   "end": 16.72
+  },
+  {
+   "w": "the",
+   "start": 16.72,
+   "end": 17.04
+  },
+  {
+   "w": "child.",
+   "start": 17.04,
+   "end": 17.92
+  },
+  {
+   "w": "This",
+   "start": 17.92,
+   "end": 18.23
+  },
+  {
+   "w": "process",
+   "start": 18.23,
+   "end": 18.78
+  },
+  {
+   "w": "is",
+   "start": 18.78,
+   "end": 18.93
+  },
+  {
+   "w": "quite",
+   "start": 18.93,
+   "end": 19.32
+  },
+  {
+   "w": "different",
+   "start": 19.32,
+   "end": 20.02
+  },
+  {
+   "w": "from",
+   "start": 20.02,
+   "end": 20.33
+  },
+  {
+   "w": "Roman",
+   "start": 20.33,
+   "end": 20.74
+  },
+  {
+   "w": "Catholics",
+   "start": 20.74,
+   "end": 21.42
+  },
+  {
+   "w": "who",
+   "start": 21.42,
+   "end": 21.83
+  },
+  {
+   "w": "wait",
+   "start": 21.83,
+   "end": 21.96
+  },
+  {
+   "w": "years",
+   "start": 21.96,
+   "end": 22.43
+  },
+  {
+   "w": "for",
+   "start": 22.43,
+   "end": 22.59
+  },
+  {
+   "w": "First",
+   "start": 22.59,
+   "end": 22.97
+  },
+  {
+   "w": "Communion",
+   "start": 22.97,
+   "end": 23.76
+  },
+  {
+   "w": "and",
+   "start": 23.76,
+   "end": 24.03
+  },
+  {
+   "w": "then",
+   "start": 24.03,
+   "end": 24.4
+  },
+  {
+   "w": "even",
+   "start": 24.4,
+   "end": 24.77
+  },
+  {
+   "w": "more",
+   "start": 24.77,
+   "end": 25.14
+  },
+  {
+   "w": "years",
+   "start": 25.14,
+   "end": 25.62
+  },
+  {
+   "w": "for",
+   "start": 25.62,
+   "end": 25.87
+  },
+  {
+   "w": "Confirmation.",
+   "start": 25.87,
+   "end": 27.28
+  },
+  {
+   "w": "But",
+   "start": 27.45,
+   "end": 27.54
+  },
+  {
+   "w": "these",
+   "start": 27.54,
+   "end": 27.98
+  },
+  {
+   "w": "traditions",
+   "start": 27.98,
+   "end": 28.88
+  },
+  {
+   "w": "are",
+   "start": 28.88,
+   "end": 29.14
+  },
+  {
+   "w": "equally",
+   "start": 29.14,
+   "end": 29.73
+  },
+  {
+   "w": "valid.",
+   "start": 29.73,
+   "end": 30.48
+  },
+  {
+   "w": "Thanks",
+   "start": 30.48,
+   "end": 30.71
+  },
+  {
+   "w": "for",
+   "start": 30.71,
+   "end": 30.82
+  },
+  {
+   "w": "learning",
+   "start": 30.82,
+   "end": 31.12
+  },
+  {
+   "w": "with",
+   "start": 31.12,
+   "end": 31.27
+  },
+  {
+   "w": "us.",
+   "start": 31.27,
+   "end": 31.48
+  },
+  {
+   "w": "I've",
+   "start": 31.48,
+   "end": 31.73
+  },
+  {
+   "w": "been",
+   "start": 31.73,
+   "end": 32.02
+  },
+  {
+   "w": "your",
+   "start": 32.02,
+   "end": 32.25
+  },
+  {
+   "w": "host,",
+   "start": 32.25,
+   "end": 32.64
+  },
+  {
+   "w": "Shalone,",
+   "start": 32.64,
+   "end": 33.22
+  },
+  {
+   "w": "and",
+   "start": 33.22,
+   "end": 33.42
+  },
+  {
+   "w": "until",
+   "start": 33.42,
+   "end": 33.75
+  },
+  {
+   "w": "next",
+   "start": 33.75,
+   "end": 34.05
+  },
+  {
+   "w": "time,",
+   "start": 34.05,
+   "end": 34.54
+  },
+  {
+   "w": "stay",
+   "start": 34.54,
+   "end": 34.78
+  },
+  {
+   "w": "holy,",
+   "start": 34.78,
+   "end": 35.38
+  },
+  {
+   "w": "my",
+   "start": 35.38,
+   "end": 35.39
+  },
+  {
+   "w": "friend.",
+   "start": 35.39,
+   "end": 36.08
+  }
+ ]
+}

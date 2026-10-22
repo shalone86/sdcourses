@@ -58,7 +58,7 @@ points:
         items:
           - Baptism
           - Chrismation
-          - Holy Communion
+          - Eucharist
         caption: One celebration of Christian initiation
     quiz:
       type: choice
@@ -93,6 +93,22 @@ points:
         term: Baptism
         origin: Greek baptizein
         meaning: to immerse
+      - type: image
+        src: images/sdcason-baptism-of-christ-ethiopian-biblical-man-003da31bbd.jpg
+        aspect: 0.76
+        credit: The Free Catholic Gallery · The Free Catholic Gallery (sdcason.com) · Public domain (per the gallery)
+      - type: image
+        src: images/sdcason-icon-of-the-resurrection-of-christ-19th--0001e54c57.jpg
+        aspect: 0.733
+        credit: The Free Catholic Gallery · The Free Catholic Gallery (sdcason.com) · Public domain (per the gallery)
+        with: side
+        fit: cover
+      - type: image
+        src: images/wikimedia-holy-baptism-of-syriac-orthodox-church-188322043.jpg
+        aspect: 0.75
+        credit: Ronyrajan95 · Wikimedia Commons · CC BY-SA 4.0
+        fit: cover
+        focus: bottom
     quiz:
       type: blank
       question: Baptism immerses a person into the mystery of Christ's Death and ____.
@@ -201,7 +217,13 @@ points:
 outro:
   # Shalone writes the start of the outro before this; it always ends with these words (hers).
   text: >-
-    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+    So why do Byzantine Catholic babies receive communion? It's because the
+    Byzantine traditions believes all the mysteries arrive together, just like
+    life, breath, and food arrives to babies when they are born. This process
+    is quite different from Roman Catholics who wait years for First Communion
+    and Confirmation, but they are equally valid traditions. Thanks for
+    learning with us. I've been your host Shalone, and until next time, stay
+    holy, my friends.
   notes:
     - "Recap: three mysteries, one celebration · Baptism, the new birth · Chrismation, the seal of the Spirit · Holy Communion for the newly baptized · how the Latin Church does it."
     - "Coming later in this course: The Sign of the Cross, Right to Left; The Church Year and the Great Feasts."
