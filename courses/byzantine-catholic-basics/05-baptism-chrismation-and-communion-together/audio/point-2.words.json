@@ -1,0 +1,450 @@
+{
+ "stamp": "2:3767118:1792684311108",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.28
+  },
+  {
+   "w": "first",
+   "start": 0.28,
+   "end": 0.7
+  },
+  {
+   "w": "mystery",
+   "start": 0.7,
+   "end": 1.31
+  },
+  {
+   "w": "is",
+   "start": 1.31,
+   "end": 1.48
+  },
+  {
+   "w": "baptism.",
+   "start": 1.48,
+   "end": 2.38
+  },
+  {
+   "w": "Baptism",
+   "start": 2.38,
+   "end": 3.01
+  },
+  {
+   "w": "immerses",
+   "start": 3.01,
+   "end": 3.81
+  },
+  {
+   "w": "a",
+   "start": 3.81,
+   "end": 3.83
+  },
+  {
+   "w": "person",
+   "start": 3.83,
+   "end": 4.4
+  },
+  {
+   "w": "into",
+   "start": 4.4,
+   "end": 4.79
+  },
+  {
+   "w": "the",
+   "start": 4.79,
+   "end": 4.89
+  },
+  {
+   "w": "mystery",
+   "start": 4.89,
+   "end": 5.2
+  },
+  {
+   "w": "of",
+   "start": 5.2,
+   "end": 5.32
+  },
+  {
+   "w": "Christ's",
+   "start": 5.32,
+   "end": 5.74
+  },
+  {
+   "w": "death",
+   "start": 5.74,
+   "end": 6.26
+  },
+  {
+   "w": "and",
+   "start": 6.26,
+   "end": 6.52
+  },
+  {
+   "w": "resurrection.",
+   "start": 6.52,
+   "end": 7.62
+  },
+  {
+   "w": "In",
+   "start": 7.62,
+   "end": 7.72
+  },
+  {
+   "w": "the",
+   "start": 7.72,
+   "end": 7.9
+  },
+  {
+   "w": "Byzantine",
+   "start": 7.9,
+   "end": 8.31
+  },
+  {
+   "w": "tradition,",
+   "start": 8.31,
+   "end": 8.88
+  },
+  {
+   "w": "the",
+   "start": 8.88,
+   "end": 9.16
+  },
+  {
+   "w": "person",
+   "start": 9.16,
+   "end": 9.76
+  },
+  {
+   "w": "is",
+   "start": 9.76,
+   "end": 10.13
+  },
+  {
+   "w": "traditionally",
+   "start": 10.13,
+   "end": 10.96
+  },
+  {
+   "w": "immersed",
+   "start": 10.96,
+   "end": 11.62
+  },
+  {
+   "w": "in",
+   "start": 11.62,
+   "end": 11.99
+  },
+  {
+   "w": "water,",
+   "start": 11.99,
+   "end": 12.92
+  },
+  {
+   "w": "going",
+   "start": 12.92,
+   "end": 13.31
+  },
+  {
+   "w": "down",
+   "start": 13.31,
+   "end": 13.62
+  },
+  {
+   "w": "into",
+   "start": 13.62,
+   "end": 13.93
+  },
+  {
+   "w": "the",
+   "start": 13.93,
+   "end": 14.16
+  },
+  {
+   "w": "font",
+   "start": 14.16,
+   "end": 14.47
+  },
+  {
+   "w": "as",
+   "start": 14.47,
+   "end": 14.61
+  },
+  {
+   "w": "Christ",
+   "start": 14.61,
+   "end": 15.39
+  },
+  {
+   "w": "went",
+   "start": 15.39,
+   "end": 15.43
+  },
+  {
+   "w": "into",
+   "start": 15.43,
+   "end": 15.71
+  },
+  {
+   "w": "death",
+   "start": 15.71,
+   "end": 16.12
+  },
+  {
+   "w": "and",
+   "start": 16.12,
+   "end": 16.42
+  },
+  {
+   "w": "arising",
+   "start": 16.42,
+   "end": 17.13
+  },
+  {
+   "w": "as",
+   "start": 17.13,
+   "end": 17.42
+  },
+  {
+   "w": "he",
+   "start": 17.42,
+   "end": 17.53
+  },
+  {
+   "w": "rose.",
+   "start": 17.53,
+   "end": 18.28
+  },
+  {
+   "w": "This",
+   "start": 18.28,
+   "end": 18.58
+  },
+  {
+   "w": "is",
+   "start": 18.58,
+   "end": 18.73
+  },
+  {
+   "w": "the",
+   "start": 18.73,
+   "end": 18.94
+  },
+  {
+   "w": "birth",
+   "start": 18.94,
+   "end": 19.48
+  },
+  {
+   "w": "to",
+   "start": 19.48,
+   "end": 19.48
+  },
+  {
+   "w": "new",
+   "start": 19.48,
+   "end": 19.71
+  },
+  {
+   "w": "life",
+   "start": 19.71,
+   "end": 20
+  },
+  {
+   "w": "in",
+   "start": 20,
+   "end": 20.15
+  },
+  {
+   "w": "Christ.",
+   "start": 20.15,
+   "end": 20.88
+  },
+  {
+   "w": "It",
+   "start": 20.88,
+   "end": 21.16
+  },
+  {
+   "w": "is",
+   "start": 21.16,
+   "end": 21.32
+  },
+  {
+   "w": "received",
+   "start": 21.32,
+   "end": 22.19
+  },
+  {
+   "w": "only",
+   "start": 22.19,
+   "end": 22.63
+  },
+  {
+   "w": "once,",
+   "start": 22.63,
+   "end": 23.39
+  },
+  {
+   "w": "because",
+   "start": 23.39,
+   "end": 23.72
+  },
+  {
+   "w": "having",
+   "start": 23.72,
+   "end": 24.23
+  },
+  {
+   "w": "been",
+   "start": 24.23,
+   "end": 24.56
+  },
+  {
+   "w": "born",
+   "start": 24.56,
+   "end": 24.91
+  },
+  {
+   "w": "in",
+   "start": 24.91,
+   "end": 25.08
+  },
+  {
+   "w": "Christ",
+   "start": 25.08,
+   "end": 25.62
+  },
+  {
+   "w": "through",
+   "start": 25.62,
+   "end": 26.08
+  },
+  {
+   "w": "the",
+   "start": 26.08,
+   "end": 26.29
+  },
+  {
+   "w": "Holy",
+   "start": 26.29,
+   "end": 26.56
+  },
+  {
+   "w": "Spirit,",
+   "start": 26.56,
+   "end": 26.96
+  },
+  {
+   "w": "we",
+   "start": 27.05,
+   "end": 27.24
+  },
+  {
+   "w": "remain",
+   "start": 27.24,
+   "end": 27.68
+  },
+  {
+   "w": "children",
+   "start": 27.68,
+   "end": 28.4
+  },
+  {
+   "w": "of",
+   "start": 28.4,
+   "end": 28.65
+  },
+  {
+   "w": "the",
+   "start": 28.65,
+   "end": 28.85
+  },
+  {
+   "w": "Father",
+   "start": 28.85,
+   "end": 29.47
+  },
+  {
+   "w": "forever.",
+   "start": 29.47,
+   "end": 30.32
+  },
+  {
+   "w": "The",
+   "start": 30.32,
+   "end": 30.6
+  },
+  {
+   "w": "newly",
+   "start": 30.6,
+   "end": 30.99
+  },
+  {
+   "w": "baptized",
+   "start": 30.99,
+   "end": 31.75
+  },
+  {
+   "w": "are",
+   "start": 31.75,
+   "end": 32.01
+  },
+  {
+   "w": "then",
+   "start": 32.01,
+   "end": 32.25
+  },
+  {
+   "w": "clothed",
+   "start": 32.25,
+   "end": 32.85
+  },
+  {
+   "w": "in",
+   "start": 32.85,
+   "end": 33.09
+  },
+  {
+   "w": "bright",
+   "start": 33.09,
+   "end": 33.53
+  },
+  {
+   "w": "garments,",
+   "start": 33.53,
+   "end": 34.47
+  },
+  {
+   "w": "a",
+   "start": 34.47,
+   "end": 34.58
+  },
+  {
+   "w": "sign",
+   "start": 34.58,
+   "end": 35.05
+  },
+  {
+   "w": "of",
+   "start": 35.05,
+   "end": 35.28
+  },
+  {
+   "w": "joy",
+   "start": 35.28,
+   "end": 35.78
+  },
+  {
+   "w": "in",
+   "start": 35.78,
+   "end": 35.86
+  },
+  {
+   "w": "Christ.",
+   "start": 35.86,
+   "end": 36.96
+  }
+ ]
+}

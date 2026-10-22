@@ -1,0 +1,505 @@
+{
+ "stamp": "2:4095438:1792684227938",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.2
+  },
+  {
+   "w": "Byzantine",
+   "start": 0.2,
+   "end": 0.8
+  },
+  {
+   "w": "catechism",
+   "start": 0.8,
+   "end": 1.41
+  },
+  {
+   "w": "names",
+   "start": 1.41,
+   "end": 1.75
+  },
+  {
+   "w": "the",
+   "start": 1.75,
+   "end": 1.95
+  },
+  {
+   "w": "three",
+   "start": 1.95,
+   "end": 2.29
+  },
+  {
+   "w": "mysteries",
+   "start": 2.29,
+   "end": 3.04
+  },
+  {
+   "w": "of",
+   "start": 3.04,
+   "end": 3.21
+  },
+  {
+   "w": "initiation",
+   "start": 3.21,
+   "end": 4.5
+  },
+  {
+   "w": "and",
+   "start": 4.5,
+   "end": 4.64
+  },
+  {
+   "w": "says",
+   "start": 4.64,
+   "end": 4.91
+  },
+  {
+   "w": "how",
+   "start": 4.91,
+   "end": 5.12
+  },
+  {
+   "w": "they",
+   "start": 5.12,
+   "end": 5.2
+  },
+  {
+   "w": "are",
+   "start": 5.2,
+   "end": 5.35
+  },
+  {
+   "w": "celebrated.",
+   "start": 5.35,
+   "end": 6.6
+  },
+  {
+   "w": "In",
+   "start": 6.6,
+   "end": 6.75
+  },
+  {
+   "w": "the",
+   "start": 6.75,
+   "end": 6.98
+  },
+  {
+   "w": "tradition",
+   "start": 6.98,
+   "end": 7.7
+  },
+  {
+   "w": "of",
+   "start": 7.7,
+   "end": 7.84
+  },
+  {
+   "w": "the",
+   "start": 7.84,
+   "end": 8.07
+  },
+  {
+   "w": "Eastern",
+   "start": 8.07,
+   "end": 8.77
+  },
+  {
+   "w": "Church,",
+   "start": 8.77,
+   "end": 9.24
+  },
+  {
+   "w": "these",
+   "start": 9.24,
+   "end": 9.64
+  },
+  {
+   "w": "three",
+   "start": 9.64,
+   "end": 10.02
+  },
+  {
+   "w": "holy",
+   "start": 10.02,
+   "end": 10.32
+  },
+  {
+   "w": "mysteries",
+   "start": 10.32,
+   "end": 11.11
+  },
+  {
+   "w": "are",
+   "start": 11.11,
+   "end": 11.27
+  },
+  {
+   "w": "celebrated",
+   "start": 11.27,
+   "end": 12.05
+  },
+  {
+   "w": "together.",
+   "start": 12.05,
+   "end": 13.04
+  },
+  {
+   "w": "The",
+   "start": 13.04,
+   "end": 13.27
+  },
+  {
+   "w": "three",
+   "start": 13.27,
+   "end": 13.65
+  },
+  {
+   "w": "mysteries",
+   "start": 13.65,
+   "end": 14.34
+  },
+  {
+   "w": "are",
+   "start": 14.34,
+   "end": 14.57
+  },
+  {
+   "w": "Baptism,",
+   "start": 14.57,
+   "end": 15.25
+  },
+  {
+   "w": "Chrismation,",
+   "start": 15.25,
+   "end": 16.24
+  },
+  {
+   "w": "and",
+   "start": 16.24,
+   "end": 16.47
+  },
+  {
+   "w": "the",
+   "start": 16.47,
+   "end": 16.72
+  },
+  {
+   "w": "Eucharist.",
+   "start": 16.72,
+   "end": 17.68
+  },
+  {
+   "w": "The",
+   "start": 17.68,
+   "end": 17.92
+  },
+  {
+   "w": "catechism",
+   "start": 17.92,
+   "end": 18.62
+  },
+  {
+   "w": "compares",
+   "start": 18.62,
+   "end": 19.24
+  },
+  {
+   "w": "them",
+   "start": 19.24,
+   "end": 19.62
+  },
+  {
+   "w": "to",
+   "start": 19.62,
+   "end": 19.85
+  },
+  {
+   "w": "life",
+   "start": 19.85,
+   "end": 20.04
+  },
+  {
+   "w": "itself.",
+   "start": 20.04,
+   "end": 20.8
+  },
+  {
+   "w": "A",
+   "start": 20.8,
+   "end": 20.89
+  },
+  {
+   "w": "baby",
+   "start": 20.89,
+   "end": 21.25
+  },
+  {
+   "w": "is",
+   "start": 21.25,
+   "end": 21.43
+  },
+  {
+   "w": "born,",
+   "start": 21.43,
+   "end": 21.97
+  },
+  {
+   "w": "begins",
+   "start": 21.97,
+   "end": 22.51
+  },
+  {
+   "w": "to",
+   "start": 22.51,
+   "end": 22.74
+  },
+  {
+   "w": "breathe,",
+   "start": 22.74,
+   "end": 23.63
+  },
+  {
+   "w": "and",
+   "start": 23.63,
+   "end": 23.84
+  },
+  {
+   "w": "then",
+   "start": 23.84,
+   "end": 24.14
+  },
+  {
+   "w": "is",
+   "start": 24.14,
+   "end": 24.35
+  },
+  {
+   "w": "fed.",
+   "start": 24.35,
+   "end": 24.92
+  },
+  {
+   "w": "In",
+   "start": 25.01,
+   "end": 25.07
+  },
+  {
+   "w": "the",
+   "start": 25.07,
+   "end": 25.29
+  },
+  {
+   "w": "same",
+   "start": 25.29,
+   "end": 25.59
+  },
+  {
+   "w": "way,",
+   "start": 25.59,
+   "end": 26.02
+  },
+  {
+   "w": "the",
+   "start": 26.02,
+   "end": 26.18
+  },
+  {
+   "w": "newly",
+   "start": 26.18,
+   "end": 26.56
+  },
+  {
+   "w": "baptised",
+   "start": 26.56,
+   "end": 27.16
+  },
+  {
+   "w": "is",
+   "start": 27.16,
+   "end": 27.31
+  },
+  {
+   "w": "born",
+   "start": 27.31,
+   "end": 27.61
+  },
+  {
+   "w": "in",
+   "start": 27.61,
+   "end": 27.76
+  },
+  {
+   "w": "the",
+   "start": 27.76,
+   "end": 27.99
+  },
+  {
+   "w": "baptismal",
+   "start": 27.99,
+   "end": 28.66
+  },
+  {
+   "w": "font,",
+   "start": 28.66,
+   "end": 29.42
+  },
+  {
+   "w": "breathes",
+   "start": 29.42,
+   "end": 29.72
+  },
+  {
+   "w": "by",
+   "start": 29.72,
+   "end": 29.95
+  },
+  {
+   "w": "the",
+   "start": 29.95,
+   "end": 30.1
+  },
+  {
+   "w": "Holy",
+   "start": 30.1,
+   "end": 30.48
+  },
+  {
+   "w": "Spirit,",
+   "start": 30.48,
+   "end": 31.16
+  },
+  {
+   "w": "and",
+   "start": 31.16,
+   "end": 31.37
+  },
+  {
+   "w": "receives",
+   "start": 31.37,
+   "end": 31.94
+  },
+  {
+   "w": "the",
+   "start": 31.94,
+   "end": 32.15
+  },
+  {
+   "w": "nourishment",
+   "start": 32.15,
+   "end": 32.93
+  },
+  {
+   "w": "of",
+   "start": 32.93,
+   "end": 33.1
+  },
+  {
+   "w": "Holy",
+   "start": 33.1,
+   "end": 33.35
+  },
+  {
+   "w": "Communion",
+   "start": 33.35,
+   "end": 34.04
+  },
+  {
+   "w": "in",
+   "start": 34.04,
+   "end": 34.2
+  },
+  {
+   "w": "order",
+   "start": 34.2,
+   "end": 34.57
+  },
+  {
+   "w": "to",
+   "start": 34.57,
+   "end": 34.72
+  },
+  {
+   "w": "grow",
+   "start": 34.72,
+   "end": 35.02
+  },
+  {
+   "w": "in",
+   "start": 35.02,
+   "end": 35.17
+  },
+  {
+   "w": "Christ.",
+   "start": 35.17,
+   "end": 35.88
+  },
+  {
+   "w": "They",
+   "start": 35.88,
+   "end": 36.21
+  },
+  {
+   "w": "are",
+   "start": 36.21,
+   "end": 36.41
+  },
+  {
+   "w": "not",
+   "start": 36.41,
+   "end": 36.66
+  },
+  {
+   "w": "three",
+   "start": 36.66,
+   "end": 37.02
+  },
+  {
+   "w": "separate",
+   "start": 37.02,
+   "end": 37.63
+  },
+  {
+   "w": "events,",
+   "start": 37.63,
+   "end": 38.24
+  },
+  {
+   "w": "they",
+   "start": 38.24,
+   "end": 38.54
+  },
+  {
+   "w": "are",
+   "start": 38.54,
+   "end": 38.77
+  },
+  {
+   "w": "one",
+   "start": 38.77,
+   "end": 39
+  },
+  {
+   "w": "action",
+   "start": 39,
+   "end": 39.56
+  },
+  {
+   "w": "of",
+   "start": 39.56,
+   "end": 39.61
+  },
+  {
+   "w": "God's",
+   "start": 39.61,
+   "end": 39.99
+  },
+  {
+   "w": "grace.",
+   "start": 39.99,
+   "end": 40.68
+  }
+ ]
+}
