@@ -835,7 +835,7 @@ function dock(s) {
       el('span', {class: 'live', text: r.kind === 'take' ? 'One take' : 'Recording'}),
       el('span', {class: 'time', 'data-time': '', text: fmt((performance.now() - r.t0) / 1000)}),
       el('div', {class: 'meter', 'data-meter': ''}, el('i')),
-      el('button', {class: 'btn big stop', onclick: () => stopRecording(true)}, [el('span', {class: 'sq'}), r.kind === 'take' ? 'Stop take' : 'Stop']),
+      el('button', {class: 'btn big stop', onclick: () => stopRecording(true)}, [el('span', {class: 'sq'}), (r.kind === 'take' ? 'Stop take' : 'Stop') + ' (R)']),
     );
     if (inTake) center.append(el('div', {class: 'hint', text: last ? 'Last section. Tap Finish when you’re done (or press the space bar).' : 'Finish the section, pause a breath, then tap Next (or press the space bar).'}));
   } else if (S.mode === 'each') {
@@ -843,14 +843,14 @@ function dock(s) {
       const playing = S.playing === s.key;
       center.append(
         el('button', {class: 'btn big', onclick: () => togglePlay(s)}, playing ? '❚❚ Pause' : '▶ Play ' + fmt(s.audio.seconds)),
-        el('button', {class: 'btn big rec', onclick: () => startRecording('each')}, [el('span', {class: 'dot'}), 'Re-record']),
+        el('button', {class: 'btn big rec', onclick: () => startRecording('each')}, [el('span', {class: 'dot'}), 'Re-record (R)']),
       );
     } else {
-      center.append(el('button', {class: 'btn big rec', onclick: () => startRecording('each')}, [el('span', {class: 'dot'}), 'Record ' + sectionName(s)]));
+      center.append(el('button', {class: 'btn big rec', onclick: () => startRecording('each')}, [el('span', {class: 'dot'}), 'Record ' + sectionName(s) + ' (R)']));
     }
   } else {
     center.append(
-      el('button', {class: 'btn big rec', onclick: () => startRecording('take')}, [el('span', {class: 'dot'}), S.slide === 0 ? 'Start one take' : 'One take from ' + sectionName(s)]),
+      el('button', {class: 'btn big rec', onclick: () => startRecording('take')}, [el('span', {class: 'dot'}), (S.slide === 0 ? 'Start one take' : 'One take from ' + sectionName(s)) + ' (R)']),
       el('div', {class: 'hint', text: 'Records from this slide to the end in one go. You tap Next between sections; that’s where it’s cut.'}),
     );
     if (s.audio) center.prepend(el('button', {class: 'btn big', onclick: () => togglePlay(s)}, S.playing === s.key ? '❚❚ Pause' : '▶ Play ' + fmt(s.audio.seconds)));
@@ -1027,6 +1027,16 @@ function stopPlayback() { S.player.pause(); S.playing = null; }
 // Keep the screen awake while recording (best effort).
 function holdScreen() { try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then((w) => { S.wake = w; }, () => {}); } catch {} }
 function releaseScreen() { try { if (S.wake) S.wake.release(); } catch {} S.wake = null; }
+
+// R (or Option+R while typing in a box) starts and stops recording.
+document.addEventListener('keydown', (e) => {
+  if (e.code !== 'KeyR' || e.repeat || e.metaKey || e.ctrlKey || S.tab !== 'script' || !S.L || S.busy || S.failed) return;
+  const t = e.target, typing = t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
+  if (typing && !e.altKey) return;
+  if (!S.rec && document.querySelector('dialog[open]')) return;
+  e.preventDefault();
+  if (S.rec) { if (!S.rec.stopping) stopRecording(true); } else startRecording(S.mode === 'take' ? 'take' : 'each');
+});
 
 document.addEventListener('keydown', (e) => {
   if (S.rec && S.rec.kind === 'take' && (e.code === 'Space' || e.code === 'ArrowRight') && !e.repeat) { e.preventDefault(); takeNext(); }
