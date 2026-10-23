@@ -110,6 +110,11 @@ If it's already running, `npm start` just opens the page.
 - **Recording:** per slide, or one take with Next taps as the cut points.
   Each section ends up as `audio/<section>.wav`, with the browser's original
   beside it (`.webm`, or `.m4a` from Safari; a one take keeps `take.webm`).
+- **Prompter** (`studio/index.html`, Script tab → Prompter, or P): fullscreen big
+  text in a narrow column at the top of the screen (the Iriun phone sits above
+  the lens), in speaking order; it scrolls by itself while recording (speed in
+  words per minute, text size and column width are saved in the browser). R/F19
+  record, F17/F18 change slide, Space practises the scroll, Esc closes it.
 - **Camera:** "Record my video too" (in the Microphone panel) records her
   webcam with the voice. Clips go to `<lesson>/camera/` (gitignored: her
   face stays off the public repo, so it exists only on this Mac); a
