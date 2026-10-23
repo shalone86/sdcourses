@@ -8,6 +8,10 @@ point-1:
       start: 18.8
 point-2:
   scenes:
+    "0":
+      start: 3.5
+      cues:
+        start: 3.73
     "2":
       start: 17.2
 point-3:
