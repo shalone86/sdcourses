@@ -112,9 +112,10 @@ details.notes ul{margin:6px 0 0;padding-left:1.2em}
 
 /* Prompter: big text in a narrow column at the top of the screen, close to the camera lens */
 .prompter{position:fixed;inset:0;z-index:50;background:#0b0b10;color:#f4efe4;display:flex;flex-direction:column}
-.prompter .pt-box{flex:1;overflow-y:scroll;scrollbar-width:none;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 12%,#000 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 12%,#000 100%)}
-.prompter .pt-box::-webkit-scrollbar{display:none}
-.prompter .pt-text{margin:0 auto;padding:9vh 0 70vh;font-family:var(--serif);line-height:1.45}
+.prompter .pt-box{flex:1;overflow:hidden;position:relative}
+.prompter .pt-fade{position:absolute;left:0;right:0;top:0;height:12vh;background:linear-gradient(#0b0b10,rgba(11,11,16,0));pointer-events:none;z-index:1}
+body.prompting .campreview{display:none}
+.prompter .pt-text{margin:0 auto;padding:9vh 0 70vh;will-change:transform;font-family:var(--serif);line-height:1.45}
 .prompter .pt-text p{margin:0 0 .9em}
 .prompter .pt-lead{font-style:italic;opacity:.8}
 .prompter .pt-quote{font-weight:600;color:#ffd98a}
@@ -1105,15 +1106,22 @@ function ptParts(s) {
 
 function ptScrolling() { return !!(S.rec && !S.rec.stopping) || PT.rehearse; }
 
+// Scrolling moves the text with a transform (cheap for the browser), and the words-to-pixels
+// ratio is worked out once per slide, so the camera recording isn't competing with the page.
+function ptMeasure() {
+  if (!PT.box || !PT.box.isConnected) return;
+  const text = PT.box.firstChild;
+  const words = Math.max(1, (text.textContent || '').trim().split(/\s+/).length);
+  PT.pxPerWord = Math.max(10, text.offsetHeight - window.innerHeight * 0.79) / words;
+  PT.max = Math.max(0, text.offsetHeight - PT.box.clientHeight);
+}
+
 function ptTick(now) {
   PT.raf = requestAnimationFrame(ptTick);
   const dt = Math.min(0.1, (now - (PT.last || now)) / 1000); PT.last = now;
   if (!PT.box || !PT.box.isConnected || !ptScrolling()) return;
-  const text = PT.box.firstChild;
-  const words = Math.max(1, (text.textContent || '').trim().split(/\s+/).length);
-  const pxPerWord = Math.max(10, text.scrollHeight - window.innerHeight * 0.79) / words;
-  PT.y += (PT.wpm / 60) * pxPerWord * dt;
-  PT.box.scrollTop = PT.y;
+  PT.y = Math.min(PT.max || 1e9, PT.y + (PT.wpm / 60) * (PT.pxPerWord || 30) * dt);
+  PT.box.firstChild.style.transform = `translate3d(0,${-PT.y.toFixed(1)}px,0)`;
 }
 
 function ptBar() {
@@ -1126,7 +1134,7 @@ function ptBar() {
     el('button', {class: 'btn', text: '›', title: 'Next slide (F18)', disabled: S.slide >= sections().length - 1 || (!!r && r.kind !== 'take'), onclick: () => (r ? takeNext() : goTo(S.slide + 1))}),
     r ? el('button', {class: 'btn rec', onclick: () => stopRecording(true)}, ['■ Stop ', el('span', {class: 'time', 'data-time': '', text: fmt((performance.now() - r.t0) / 1000)})])
       : el('button', {class: 'btn rec', onclick: () => startRecording(S.mode === 'take' ? 'take' : 'each'), text: '● Record (R)'}),
-    el('button', {class: 'btn', text: PT.rehearse ? '❚❚ Scroll' : '▶ Scroll', title: 'Try the scrolling without recording (space bar)', disabled: !!r, onclick: () => { PT.rehearse = !PT.rehearse; if (PT.rehearse) PT.y = PT.box.scrollTop; syncPrompter(); }}),
+    el('button', {class: 'btn', text: PT.rehearse ? '❚❚ Scroll' : '▶ Scroll', title: 'Try the scrolling without recording (space bar)', disabled: !!r, onclick: () => { PT.rehearse = !PT.rehearse; syncPrompter(); }}),
     el('span', {class: 'pt-lab', text: 'Speed'}), step('−', 'Slower', () => { PT.wpm = Math.max(60, PT.wpm - 10); ptSave(); syncPrompter(); }), el('span', {text: PT.wpm}), step('+', 'Faster', () => { PT.wpm = Math.min(260, PT.wpm + 10); ptSave(); syncPrompter(); }),
     el('span', {class: 'pt-lab', text: 'Size'}), step('−', 'Smaller text', () => { PT.size = Math.max(24, PT.size - 4); ptSave(); redo(); }), step('+', 'Bigger text', () => { PT.size = Math.min(96, PT.size + 4); ptSave(); redo(); }),
     el('span', {class: 'pt-lab', text: 'Width'}), step('−', 'Narrower', () => { PT.width = Math.max(24, PT.width - 6); ptSave(); redo(); }), step('+', 'Wider', () => { PT.width = Math.min(90, PT.width + 6); ptSave(); redo(); }),
@@ -1138,6 +1146,7 @@ function ptBar() {
 function syncPrompter() {
   const on = S.prompter && S.tab === 'script' && S.L && sec();
   let root = document.getElementById('prompter');
+  document.body.classList.toggle('prompting', !!on);
   if (!on) { if (root) root.remove(); PT.box = null; PT.rehearse = false; return; }
   const s = sec();
   const sig = [S.id, S.slide, S.rec ? S.rec.t0 : 0, PT.size, PT.width, ptParts(s).map((p) => p[1]).join('|')].join('~');
@@ -1147,8 +1156,10 @@ function syncPrompter() {
     const text = el('div', {class: 'pt-text', style: `font-size:${PT.size}px;width:${PT.width}vw;max-width:100%`},
       ptParts(s).map(([cls, t]) => el('p', {class: cls, text: t})));
     if (!ptParts(s).length) text.append(el('p', {class: 'pt-lead', text: 'Nothing written for this slide yet.'}));
-    PT.box = el('div', {class: 'pt-box'}, text);
+    PT.box = el('div', {class: 'pt-box'}, [text, el('div', {class: 'pt-fade'})]);
+    PT.box.addEventListener('wheel', (e) => { PT.y = Math.max(0, Math.min(PT.max || 1e9, PT.y + e.deltaY)); PT.box.firstChild.style.transform = `translate3d(0,${-PT.y}px,0)`; }, {passive: true});
     root.replaceChildren(PT.box, ptBar());
+    requestAnimationFrame(ptMeasure);
   } else root.lastChild.replaceWith(ptBar());
   if (!PT.raf) PT.raf = requestAnimationFrame(ptTick);
 }
@@ -1159,7 +1170,7 @@ document.addEventListener('keydown', (e) => {
   if (e.code === 'KeyP' && !typing && !S.rec && !S.busy) { e.preventDefault(); S.prompter = !S.prompter; syncPrompter(); }
   else if (S.prompter && e.code === 'Escape' && !S.rec) { S.prompter = false; syncPrompter(); }
   // In the prompter the space bar starts and stops the practice scroll (the Next tap during a one take still wins).
-  else if (S.prompter && e.code === 'Space' && !S.rec && !typing) { e.preventDefault(); e.stopImmediatePropagation(); PT.rehearse = !PT.rehearse; if (PT.rehearse && PT.box) PT.y = PT.box.scrollTop; syncPrompter(); }
+  else if (S.prompter && e.code === 'Space' && !S.rec && !typing) { e.preventDefault(); e.stopImmediatePropagation(); PT.rehearse = !PT.rehearse; syncPrompter(); }
 }, true);
 
 // ---------- ask Claude ----------
