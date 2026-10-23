@@ -23,7 +23,10 @@ sources:
 intro:
   # Shalone writes the start of the intro before this; it always ends with these words (hers).
   text: >-
-    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+    What does it look like inside Byzantine Churches? Do they look just like
+    Roman Cathothic churches and why do they take communion with a spoon?
+    Let's find out with today's lesson. I'm your host Shalone Cason, and let's
+    begin in the name of the Father and of the Son and of the Holy Spirit.
   notes:
     - Kids version of lesson 3 of The Byzantine Rite. Aim for about 40–50 words.
     - "A question to open with: have you ever seen a church with a wall of pictures in front of the altar? Today we step inside a Byzantine church!"
@@ -54,6 +57,15 @@ points:
       - type: iconostasis
         highlight: [wall]
         caption: Heaven behind, earth in front
+      - type: image
+        src: images/wikimedia-n-o-kolmainu-kiriku-ikonostaasi-kuningli-82626774.jpg
+        aspect: 0.773
+        credit: Evlper · Wikimedia Commons · CC BY-SA 4.0
+      - type: image
+        src: images/wikimedia-left-part-of-the-orthodox-iconostasis-150775005.jpg
+        aspect: 0.75
+        credit: Wikivorker · Wikimedia Commons · CC0
+        with: side
     quiz:
       type: choice
       question: What is the wall of icons called?
@@ -83,6 +95,11 @@ points:
         highlight: [doors]
         open: true
         caption: The Royal Doors open during the Divine Liturgy
+      - type: image
+        src: images/wikimedia-2019-90946367.jpg
+        aspect: 1.5
+        credit: Дмитрий Резван (Dmitriy Rezvan) · Wikimedia Commons · CC BY-SA 4.0
+        fit: screen
     quiz:
       type: blank
       question: The doors in the middle of the iconostasis are called the ____ Doors.
@@ -106,6 +123,11 @@ points:
       - type: iconostasis
         highlight: [icons, supper]
         caption: Christ on the right, his Mother on the left
+      - type: image
+        src: images/sdcason-russian-orthodox-iconostasis-in-deventer-00018b5967.jpg
+        aspect: 1.333
+        credit: The Free Catholic Gallery · The Free Catholic Gallery (sdcason.com) · Public domain (per the gallery)
+        fit: screen
     quiz:
       type: truefalse
       question: In an icon of Mary, she points us to Jesus.
@@ -179,7 +201,12 @@ points:
 outro:
   # Shalone writes the start of the outro before this; it always ends with these words (hers).
   text: >-
-    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+    In a nutshell, Byzantine Churches have a wall of icons called an
+    iconostasis, with royal or Holy doors in the middle. They take communion
+    with a spoon, and the differences between Eastern and Western catholic
+    churches reveal other ways we can worship Christ. Thanks for learning with
+    us. I've been your host, Shalone, and until next time, stay holy, my
+    friends.
   notes:
     - "Recap: a wall of icons · the doors to the Kingdom · icons point to Christ · Communion with a spoon · different, but equal."
     - "Next lesson idea: Why Is the Divine Liturgy So Different?"

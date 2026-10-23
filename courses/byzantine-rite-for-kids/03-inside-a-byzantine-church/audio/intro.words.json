@@ -1,0 +1,295 @@
+{
+ "stamp": "2:2016078:1792789337647",
+ "words": [
+  {
+   "w": "What",
+   "start": 0.09,
+   "end": 0.3
+  },
+  {
+   "w": "does",
+   "start": 0.3,
+   "end": 0.54
+  },
+  {
+   "w": "it",
+   "start": 0.54,
+   "end": 0.67
+  },
+  {
+   "w": "look",
+   "start": 0.67,
+   "end": 0.94
+  },
+  {
+   "w": "like",
+   "start": 0.94,
+   "end": 1.21
+  },
+  {
+   "w": "inside",
+   "start": 1.21,
+   "end": 1.62
+  },
+  {
+   "w": "a",
+   "start": 1.62,
+   "end": 1.68
+  },
+  {
+   "w": "Byzantine",
+   "start": 1.68,
+   "end": 2.29
+  },
+  {
+   "w": "Catholic",
+   "start": 2.29,
+   "end": 2.85
+  },
+  {
+   "w": "Church?",
+   "start": 2.85,
+   "end": 3.52
+  },
+  {
+   "w": "Do",
+   "start": 3.52,
+   "end": 3.64
+  },
+  {
+   "w": "they",
+   "start": 3.64,
+   "end": 3.89
+  },
+  {
+   "w": "look",
+   "start": 3.89,
+   "end": 4.14
+  },
+  {
+   "w": "just",
+   "start": 4.14,
+   "end": 4.39
+  },
+  {
+   "w": "like",
+   "start": 4.39,
+   "end": 4.64
+  },
+  {
+   "w": "Roman",
+   "start": 4.64,
+   "end": 4.95
+  },
+  {
+   "w": "Catholic",
+   "start": 4.95,
+   "end": 5.46
+  },
+  {
+   "w": "Churches?",
+   "start": 5.46,
+   "end": 5.96
+  },
+  {
+   "w": "And",
+   "start": 5.96,
+   "end": 6.26
+  },
+  {
+   "w": "why",
+   "start": 6.26,
+   "end": 6.42
+  },
+  {
+   "w": "do",
+   "start": 6.42,
+   "end": 6.57
+  },
+  {
+   "w": "they",
+   "start": 6.57,
+   "end": 6.88
+  },
+  {
+   "w": "take",
+   "start": 6.88,
+   "end": 7.19
+  },
+  {
+   "w": "communion",
+   "start": 7.19,
+   "end": 7.9
+  },
+  {
+   "w": "with",
+   "start": 7.9,
+   "end": 8.21
+  },
+  {
+   "w": "the",
+   "start": 8.21,
+   "end": 8.42
+  },
+  {
+   "w": "spoon?",
+   "start": 8.42,
+   "end": 9.12
+  },
+  {
+   "w": "Let's",
+   "start": 9.12,
+   "end": 9.46
+  },
+  {
+   "w": "find",
+   "start": 9.46,
+   "end": 9.74
+  },
+  {
+   "w": "out",
+   "start": 9.74,
+   "end": 9.95
+  },
+  {
+   "w": "with",
+   "start": 9.95,
+   "end": 10.23
+  },
+  {
+   "w": "today's",
+   "start": 10.23,
+   "end": 10.71
+  },
+  {
+   "w": "lesson.",
+   "start": 10.71,
+   "end": 11.36
+  },
+  {
+   "w": "I'm",
+   "start": 11.36,
+   "end": 11.66
+  },
+  {
+   "w": "your",
+   "start": 11.66,
+   "end": 11.85
+  },
+  {
+   "w": "host,",
+   "start": 11.85,
+   "end": 12.27
+  },
+  {
+   "w": "Shalone",
+   "start": 12.27,
+   "end": 12.79
+  },
+  {
+   "w": "Cason,",
+   "start": 12.79,
+   "end": 13.21
+  },
+  {
+   "w": "and",
+   "start": 13.21,
+   "end": 13.35
+  },
+  {
+   "w": "let's",
+   "start": 13.35,
+   "end": 13.6
+  },
+  {
+   "w": "begin,",
+   "start": 13.6,
+   "end": 14.17
+  },
+  {
+   "w": "as",
+   "start": 14.17,
+   "end": 14.3
+  },
+  {
+   "w": "always,",
+   "start": 14.3,
+   "end": 14.72
+  },
+  {
+   "w": "in",
+   "start": 14.72,
+   "end": 14.83
+  },
+  {
+   "w": "the",
+   "start": 14.83,
+   "end": 15.02
+  },
+  {
+   "w": "name",
+   "start": 15.02,
+   "end": 15.21
+  },
+  {
+   "w": "of",
+   "start": 15.21,
+   "end": 15.32
+  },
+  {
+   "w": "the",
+   "start": 15.32,
+   "end": 15.52
+  },
+  {
+   "w": "Father",
+   "start": 15.52,
+   "end": 15.84
+  },
+  {
+   "w": "and",
+   "start": 15.84,
+   "end": 16.11
+  },
+  {
+   "w": "of",
+   "start": 16.11,
+   "end": 16.21
+  },
+  {
+   "w": "the",
+   "start": 16.21,
+   "end": 16.43
+  },
+  {
+   "w": "Son",
+   "start": 16.43,
+   "end": 16.68
+  },
+  {
+   "w": "and",
+   "start": 16.68,
+   "end": 16.98
+  },
+  {
+   "w": "of",
+   "start": 16.98,
+   "end": 17.03
+  },
+  {
+   "w": "the",
+   "start": 17.03,
+   "end": 17.24
+  },
+  {
+   "w": "Holy",
+   "start": 17.24,
+   "end": 17.52
+  },
+  {
+   "w": "Spirit.",
+   "start": 17.52,
+   "end": 18.16
+  }
+ ]
+}
