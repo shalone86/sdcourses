@@ -74,4 +74,9 @@ she records, publish, tick it off. Course pictures: `npm run cover`, set
    features. She started it in another chat and will bring it here; plan
    for it to reuse the studio, scenes and Timing tab.
 
+6. **Keyboard puppet (idea stage):** a character she plays with the keyboard
+   while the video runs, recorded on the timeline so the timing is exact.
+   Design, her drawing checklist and the build order are in `PUPPET.md`.
+   Nothing is built yet; she is drawing the sprites herself.
+
 Commit and push to `main` as you go.
