@@ -13,6 +13,7 @@ import {MapView} from './Map';
 import {Quote} from './Quote';
 import {Recap} from './Recap';
 import {Sprite} from './Sprite';
+import {Puppet} from './Puppet';
 import {IconsView} from './Icons';
 import {Timeline} from './Timeline';
 import {Term} from './Term';
@@ -41,6 +42,7 @@ const registry: Record<string, React.FC<SceneProps<any>>> = {
   iconostasis: Iconostasis,
   trinity: Trinity,
   sprite: Sprite,
+  puppet: Puppet,
   icons: IconsView,
 };
 

@@ -154,6 +154,9 @@ If it's already running, `npm start` just opens the page.
   separate boxes (no `|`). **Icons** (`type: icons`): 1–4 lucide.dev icons
   that draw themselves in, each with an optional word (cued when said); the
   form has an icon search with previews (`/api/icons`).
+- **Puppet** (`type: puppet`, PUPPET.md): a character she draws as
+  `<name>-<action>` drawings, played with the keys while the video runs on the
+  Timing tab; recorded in timing.yml (`scenes.<i>.puppet`).
 - **Nudging:** clicking any scene block shows Move ← ↑ ↓ → / Smaller / Bigger
   (Shift moves further), saved in timing.yml as `scenes.<i>.nudge: {x, y, size}`
   (pixels of 1920×1080, %), e.g. to lift a scene off the progress bar.

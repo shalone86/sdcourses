@@ -6,7 +6,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
 import {detectBeats} from './beats.mjs';
-import {loadSprite, publishSketch} from './sprites.mjs';
+import {loadSprite, publishSketch, puppetArt} from './sprites.mjs';
 import {phraseSpan, phraseTime, transcribe, trimLead, trimVoice, whisperAvailable} from './voice.mjs';
 
 const FPS = 30;
@@ -66,6 +66,8 @@ export function prepare(arg) {
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'image' && sc.src && !sc.src.startsWith(id + '/')) sc.src = path.posix.join(id, sc.src);
   // Pixel animations: the drawing itself goes into the props (sprites/<name>.json).
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'sprite') sc.art = publishSketch(loadSprite(sc.sprite), publicDir, id);
+  // The keyboard puppet: every drawing named <character>-<action>, and the items it can hold.
+  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'puppet') Object.assign(sc, puppetArt(sc));
 
   // The host scene's photo (site.yml host_photo); without one it shows initials.
   const site = loadSite();
@@ -315,7 +317,7 @@ function snapToBeats(segments, beats) {
 }
 
 const pixelArtCredit = (segments, site) =>
-  segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite')) ? `Pixel art drawn by hand by ${site.author || 'the host'}` : '';
+  segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite' || sc?.type === 'puppet')) ? `Pixel art drawn by hand by ${site.author || 'the host'}` : '';
 
 // Her video's layouts on a slide; "full" was the first name for the floating card.
 export const LAYOUTS = {off: 'off', bubble: 'bubble', card: 'card', full: 'card', side: 'side', lower: 'lower', only: 'only'};
@@ -348,6 +350,8 @@ export function applyTiming(props, timing) {
       if (typeof o.end === 'number') sc.until = toFrame(o.end); else delete sc.until;
       // Moved or resized a little in the Timing tab (pixels of 1920×1080, size in %).
       if (o.nudge) sc.nudge = o.nudge;
+      // The puppet's key presses (seconds into the recording) → frames from the scene's start.
+      if (Array.isArray(o.puppet)) sc.puppet = o.puppet.map(([t, k, d]) => [toFrame(t) - sc.from, k, d]);
       // Cues are relative to the scene's start: keep automatic ones in place on the timeline.
       const cues = {};
       for (const [k, v] of Object.entries(sc.cues ?? {})) cues[k] = Math.max(4, oldFrom + v - sc.from);

@@ -1,7 +1,21 @@
-# Handoff: the keyboard puppet (idea stage, 2026-10-24)
+# Handoff: the keyboard puppet (v1 built, 2026-10-24)
 
-Nothing is built yet. This is the design Shalone and Claude agreed on in chat,
-so the next session can start building. Read CLAUDE.md first for the rules.
+**Built (steps 1–6, v1):** a `puppet` scene (`video/scenes/Puppet.tsx`, logic in
+`video/puppet.ts`, shared by the studio preview and the render). Timing tab →
++ Add a picture here → Puppet: character (every `<name>-<action>` drawing;
+missing poses fall back to the nearest one and are listed), item, size, where
+it stands first. Click its block → **● Play it from here** / From the start of
+this picture: the video plays and her keys are kept against the playhead
+(timing.yml `scenes.<i>.puppet: [[seconds, key, 1|0], …]`; playing again from a
+point keeps what came before it). Keys: ← → walk, Shift run, P point, ↑ point
+up, T talk, A pray, X sign of the cross (plays once), ↓ bow (once), H hold the
+item up / lower it, I next item, Esc stops. Tested with stand-in drawings
+(deleted); **waiting on her real drawings**. Not done yet: a turn frame,
+walking while holding, layered outfits, sketch-mode characters (pixel only).
+Each key press re-sends the props to the preview; if playback stutters while
+recording, batch those updates.
+
+The design below is what Shalone and Claude agreed on in chat. Read CLAUDE.md first for the rules.
 Keep messages short and plain.
 
 ## What she wants

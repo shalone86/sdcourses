@@ -119,3 +119,34 @@ export function saveSprite(s) {
   fs.writeFileSync(path.join(SPRITES, `${slug}.json`), JSON.stringify(out, null, 1) + '\n');
   return slug;
 }
+
+// ---------- the keyboard puppet (PUPPET.md) ----------
+// A character is every drawing named <character>-<action>; items are item-<name>.
+export const PUPPET_ACTIONS = ['idle-front', 'point-up', 'idle', 'walk', 'run', 'point', 'talk', 'hold', 'pray', 'cross', 'bow'];
+const ACTION_RE = new RegExp(`^(.+?)-(${PUPPET_ACTIONS.join('|')})$`);
+
+/** Characters and items for the Timing tab: [{name, actions: [...], missing: [...]}], [item names]. */
+export function puppetCast() {
+  const chars = {};
+  const items = [];
+  for (const s of listSprites()) {
+    if (s.kind === 'sketch') continue;
+    if (s.slug.startsWith('item-')) { items.push(s.slug.slice(5)); continue; }
+    const m = ACTION_RE.exec(s.slug);
+    if (m && m[1] !== 'item') (chars[m[1]] ??= []).push(m[2]);
+  }
+  const need = ['idle', 'walk'];
+  return {characters: Object.entries(chars).map(([name, actions]) => ({name, actions, missing: PUPPET_ACTIONS.filter((a) => !actions.includes(a)), ready: need.every((a) => actions.includes(a))})), items};
+}
+
+/** A puppet scene's drawings: {actions: {walk: art, …}, items: [{name, art}]} (its own item first). */
+export function puppetArt(sc) {
+  const actions = {};
+  for (const a of PUPPET_ACTIONS) {
+    const f = path.join(SPRITES, `${spriteSlug(`${sc.character}-${a}`)}.json`);
+    if (fs.existsSync(f)) { const art = JSON.parse(fs.readFileSync(f, 'utf8')); if (art.kind !== 'sketch') actions[a] = art; }
+  }
+  const names = puppetCast().items;
+  const order = sc.item && names.includes(sc.item) ? [sc.item, ...names.filter((n) => n !== sc.item)] : names;
+  return {actions, items: order.map((name) => ({name, art: loadSprite(`item-${name}`)}))};
+}

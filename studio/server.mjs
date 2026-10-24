@@ -20,7 +20,7 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import * as esbuild from 'esbuild';
 import {importImage, importUpload, searchImages, sourceList} from './images.mjs';
-import {deleteSprite, listSprites, saveSprite, setFavorite} from '../scripts/sprites.mjs';
+import {deleteSprite, listSprites, puppetCast, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
 
@@ -292,6 +292,13 @@ function saveTiming(id, timing) {
       const n = o.nudge ?? {};
       const nx = Math.round(Number(n.x) || 0), ny = Math.round(Number(n.y) || 0), size = Math.min(200, Math.max(30, Math.round(Number(n.size) || 100)));
       if (nx || ny || size !== 100) out.nudge = {x: nx, y: ny, size};
+      // The keyboard puppet's recording: [seconds into the recording, key, down 1/0].
+      const KEYS = ['left', 'right', 'shift', 'up', 'down', 'p', 't', 'a', 'x', 'h', 'i'];
+      if (Array.isArray(o.puppet)) {
+        const ev = o.puppet.filter((e) => Array.isArray(e) && Number.isFinite(e[0]) && KEYS.includes(e[1])).slice(0, 4000)
+          .map(([t, k, d]) => [Math.round(Math.max(0, t) * 100) / 100, k, d ? 1 : 0]);
+        if (ev.length) out.puppet = ev;
+      }
       if (Object.keys(out).length) scenes[i] = out;
     }
     const keep = {};
@@ -303,7 +310,14 @@ function saveTiming(id, timing) {
   }
   const f = path.join(dir, 'timing.yml');
   if (!Object.keys(clean).length) { fs.rmSync(f, {force: true}); return; }
-  fs.writeFileSync(f, '# Hand-tuned timing from the studio\'s Timing tab, in seconds into each\n# section\'s recording. Scenes not listed keep their automatic timing.\n' + YAML.stringify(clean));
+  fs.writeFileSync(f, '# Hand-tuned timing from the studio\'s Timing tab, in seconds into each\n# section\'s recording. Scenes not listed keep their automatic timing.\n' + compactYaml(clean));
+}
+
+/** YAML with each puppet key press on one line ([2.5, left, 1]) instead of four. */
+function compactYaml(obj) {
+  const doc = new YAML.Document(obj);
+  YAML.visit(doc, {Seq(_, node) { if (node.items.length === 3 && node.items.every((x) => YAML.isScalar(x))) node.flow = true; }});
+  return doc.toString();
 }
 
 // ---------- quote check ----------
@@ -553,6 +567,7 @@ async function handle(req, res) {
     if (p === '/api/timing') return json(res, 200, timingData(id));
     if (p === '/api/images/sources') return json(res, 200, sourceList());
     if (p === '/api/sprites') return json(res, 200, listSprites());
+    if (p === '/api/puppet-cast') return json(res, 200, puppetCast());
     if (p === '/api/icons') {
       // Lucide icons whose name matches, with a small drawing of each, for the Icons picker.
       const q = (url.searchParams.get('q') ?? '').trim().toLowerCase().replace(/\s+/g, '-');

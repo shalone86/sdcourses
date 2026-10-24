@@ -5,7 +5,7 @@
 'use strict';
 (function () {
   const FPS = 30;
-  const LABELS = {icons: 'Icons', image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
+  const LABELS = {puppet: 'Puppet', icons: 'Icons', image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
     recap: 'Lesson summary', union: 'Union', partners: 'Partners', title: 'Title card', host: 'Your photo', trinity: 'Trinity', term: 'Word', keys: 'Keys', college: 'College', iconostasis: 'Iconostasis'};
 
   function h(tag, attrs, kids) {
@@ -82,6 +82,11 @@
       make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
         return {type: 'sprite', sprite: v.sprite, ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
       read: (sc) => ({sprite: sc.sprite || '', move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
+    puppet: {label: 'Puppet (a character you play with the keys)', fields: [['character', 'Which character', 'character'], ['item', 'The item it holds up (H)', 'item'],
+      ['size', 'Size', 'select', ['medium', 'small', 'big']], ['start', 'Stands at first', 'select', ['center', 'left', 'right']]],
+      make: (v) => { if (!v.character) throw new Error('Draw a character first: <name>-idle and <name>-walk on the Pixel art tab');
+        return {type: 'puppet', character: v.character, ...(v.item ? {item: v.item} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.start && v.start !== 'center' ? {start: v.start} : {})}; },
+      read: (sc) => ({character: sc.character || '', item: sc.item || '', size: sc.size || 'medium', start: sc.start || 'center'})},
     term: {label: 'A word', fields: [['term', 'The word', 'text'], ['origin', 'From (e.g. Greek …)', 'text'], ['meaning', 'Meaning', 'text']],
       make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning}),
       read: (sc) => ({term: sc.term || '', origin: sc.origin || '', meaning: sc.meaning || ''})},
@@ -134,6 +139,8 @@
         sc.from = from;
         if (typeof o.end === 'number') sc.until = Math.round(seg.audioOffsetInFrames + o.end * FPS); else delete sc.until;
         if (o.nudge) sc.nudge = o.nudge; else delete sc.nudge;
+        // The puppet's key presses (seconds into the recording) → frames from the scene's start.
+        if (Array.isArray(o.puppet)) sc.puppet = o.puppet.map(([t, k, d]) => [Math.round(seg.audioOffsetInFrames + t * FPS) - from, k, d]); else delete sc.puppet;
         if (Object.keys(cues).length) sc.cues = cues; else delete sc.cues;
       });
       // Pictures can pass each other; the heading settles when the first one (by time) begins.
@@ -362,12 +369,13 @@
       ]) : null;
       const adder = T.editing && T.editing.seg === T.seg && s.scenes[T.editing.i] && ADD[s.scenes[T.editing.i].type]?.read ? addForm(T.editing.i) : T.adding ? addForm() : null;
       const nudger = T.nudge && T.nudge.seg === T.seg && s.scenes[T.nudge.i] ? nudgeRow(T.nudge.i) : null;
+      const puppeteer = T.nudge && T.nudge.seg === T.seg && s.scenes[T.nudge.i]?.type === 'puppet' ? puppetRow(T.nudge.i) : null;
       const picOpts = T.editPic && T.editPic.seg === T.seg && s.scenes[T.editPic.i]?.type === 'image' ? pictureOptions(T.editPic.i) : null;
       const tl = timeline();
       const box = root.querySelector('.tl-scroll') || h('div', {class: 'tl-scroll'});
       const keep = box.scrollLeft;
       box.replaceChildren(tl);
-      const kids = [strip, controls, camRow, nudger, adder, picOpts, box,
+      const kids = [strip, controls, camRow, nudger, puppeteer, adder, picOpts, box,
         h('div', {class: 'small muted', text: 'Drag a scene block to change when it starts, or a diamond to change when an item appears. Click a word or the ruler to jump there. Then Save timing, and Make the video on the Video & Ghost tab.'})];
       // Only the part below the video is redrawn, so the page doesn't jump.
       const y = window.scrollY;
@@ -387,6 +395,79 @@
       if (head) head.style.left = 20 + (f - s0) * (T.zoom / FPS) + 'px';
       const t = root.querySelector('[data-time]');
       if (t) t.textContent = f >= s0 && f < s0 + seg().durationInFrames ? fmt(secOf(f - s0)) + ' into the recording' : '';
+    }
+
+    // ---------- the keyboard puppet (PUPPET.md) ----------
+    // Keys while recording → the names saved in timing.yml (and read by video/puppet.ts).
+    const PUPPET_KEYS = {ArrowLeft: 'left', ArrowRight: 'right', Shift: 'shift', ArrowUp: 'up', ArrowDown: 'down', p: 'p', t: 't', a: 'a', x: 'x', h: 'h', i: 'i'};
+    const PUPPET_HELP = '← → walk (hold Shift to run) · P point · ↑ point up · T talk · A pray · X sign of the cross · ↓ bow · H hold the item up / lower it · I next item · Esc stops';
+
+    /**
+     * Play the puppet while the video runs: key presses are kept against the playhead (seconds
+     * into this section's recording), from where she starts; anything after that is replaced.
+     */
+    function puppetRow(i) {
+      const s = seg(), sc = s.scenes[i];
+      const o = () => (((T.timing[s.name] ||= {}).scenes ||= {})[i] ||= {});
+      const rec = T.puppetRec && T.puppetRec.i === i && T.puppetRec.seg === T.seg;
+      const count = (((T.timing[s.name] || {}).scenes || {})[i]?.puppet || []).filter((e) => e[2]).length;
+      const start = (fromScene) => {
+        if (fromScene) T.player.seek(segStart(T.seg) + (sc.from || 0));
+        const t0 = Math.max(0, secOf(T.player.frame() - segStart(T.seg)));
+        // Keep what was played before here; keys still held then are let go there.
+        const kept = (o().puppet || []).filter((e) => e[0] < t0);
+        const down = new Set();
+        for (const [, k, d] of kept) d ? down.add(k) : down.delete(k);
+        o().puppet = [...kept, ...[...down].map((k) => [t0, k, 0])];
+        T.puppetRec = {i, seg: T.seg, held: new Set()};
+        document.addEventListener('keydown', onPuppetKey, true);
+        document.addEventListener('keyup', onPuppetKey, true);
+        updatePlayer(); draw(); setDirty();
+        T.player.play();
+      };
+      return h('div', {class: 'stack', style: {gap: '6px'}}, [
+        h('div', {class: 'row', style: {gap: '8px', justifyContent: 'flex-start'}}, [
+          h('b', {text: 'Puppet:'}),
+          rec ? h('button', {class: 'btn rec', text: '■ Stop (Esc)', onclick: stopPuppet})
+            : h('button', {class: 'btn primary', text: '● Play it from here', title: 'Starts the video where the playhead is; your keys from here on replace what was there', onclick: () => start(false)}),
+          rec ? null : h('button', {class: 'btn', text: 'From the start of this picture', onclick: () => start(true)}),
+          !rec && count ? h('button', {class: 'btn', text: 'Clear it', onclick: async () => {
+            if (!(await ask('Clear the puppet’s moves in this slide?'))) return;
+            delete o().puppet; updatePlayer(); draw(); setDirty();
+          }}) : null,
+          h('span', {class: 'small muted', text: rec ? 'Recording your keys…' : count ? count + ' key presses · Save timing to keep them' : 'Nothing played yet'}),
+        ]),
+        h('div', {class: 'small muted', text: PUPPET_HELP}),
+      ]);
+    }
+    function onPuppetKey(e) {
+      const r = T.puppetRec;
+      if (!r) return;
+      if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); if (e.type === 'keydown') stopPuppet(); return; }
+      const k = PUPPET_KEYS[e.key.length === 1 ? e.key.toLowerCase() : e.key];
+      if (!k) return;
+      e.preventDefault(); e.stopImmediatePropagation();
+      const down = e.type === 'keydown' ? 1 : 0;
+      if (down && (e.repeat || r.held.has(k))) return;
+      if (down) r.held.add(k); else r.held.delete(k);
+      const s = T.props.segments[r.seg];
+      const sc = ((T.timing[s.name] ||= {}).scenes ||= {});
+      const t = Math.max(0, Math.round(((T.player.frame() - segStart(r.seg) - s.audioOffsetInFrames) / FPS) * 100) / 100);
+      ((sc[r.i] ||= {}).puppet ||= []).push([t, k, down]);
+      updatePlayer();
+    }
+    function stopPuppet() {
+      const r = T.puppetRec;
+      if (!r) return;
+      document.removeEventListener('keydown', onPuppetKey, true);
+      document.removeEventListener('keyup', onPuppetKey, true);
+      T.player.pause();
+      const s = T.props.segments[r.seg];
+      const t = Math.max(0, Math.round(((T.player.frame() - segStart(r.seg) - s.audioOffsetInFrames) / FPS) * 100) / 100);
+      const list = (((T.timing[s.name] ||= {}).scenes ||= {})[r.i] ||= {}).puppet ||= [];
+      for (const k of r.held) list.push([t, k, 0]);
+      T.puppetRec = null;
+      updatePlayer(); draw(); setDirty();
     }
 
     /** The small credit shown on the video. Her gallery needs only its name. */
@@ -532,6 +613,22 @@
               if (type === 'icon') input.value = n;
               else input.value = (input.value.trim() ? input.value.trim() + '\n' : '') + n;
             })]);
+          }
+          else if (type === 'character' || type === 'item') {
+            // Her puppet characters (drawings named <name>-<action>) and items (item-<name>).
+            input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);
+            const note = h('div', {class: 'small muted'});
+            api('/api/puppet-cast').then((cast) => {
+              if (type === 'item') input.replaceChildren(h('option', {value: '', text: cast.items.length ? 'None' : 'None yet (draw item-<name>, 16×16)'}), ...cast.items.map((n) => h('option', {value: n, text: n, selected: n === value})));
+              else {
+                input.replaceChildren(...(cast.characters.length ? cast.characters.map((c) => h('option', {value: c.name, text: c.name + (c.ready ? '' : ' (needs idle and walk)'), selected: c.name === value}))
+                  : [h('option', {value: '', text: 'None yet: draw <name>-idle and <name>-walk'})]));
+                const show = () => { const c = cast.characters.find((x) => x.name === input.value); note.textContent = c && c.missing.length ? 'Not drawn yet (it uses the nearest pose instead): ' + c.missing.map((a) => c.name + '-' + a).join(', ') : ''; };
+                input.addEventListener('change', show); show();
+              }
+            });
+            vals[name] = input;
+            return h('label', {class: 'tl-field'}, [h('span', {text: label}), input, note]);
           }
           else if (type === 'sprite') {
             // Her saved pixel animations and sketches.
@@ -711,6 +808,8 @@
       if (!window.StudioPlayer) { top.replaceChildren(h('div', {class: 'notice error', text: 'The video preview didn’t load. Restart the studio.'})); return; }
       T.player = window.StudioPlayer.mount(top.firstChild, T.props);
       T.player.onFrame((f) => {
+        // Playing the puppet stops at the end of its slide.
+        if (T.puppetRec && (f < segStart(T.puppetRec.seg) || f >= segStart(T.puppetRec.seg) + T.props.segments[T.puppetRec.seg].durationInFrames - 1)) stopPuppet();
         if (T.bar) { T.bar.max = String(total() - 1); if (document.activeElement !== T.bar) T.bar.value = String(f); }
         if (T.player.playing()) {
           let si = 0;

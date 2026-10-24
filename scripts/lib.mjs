@@ -60,7 +60,7 @@ export function loadLesson(dir) {
   for (const s of segments) s.scenes ??= [];
   // Kids lessons (style: kids) post differently; pixel art (sprite scenes) is credited to her.
   const kids = (lesson.style ?? course.style) === 'kids';
-  const pixelArt = segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite'));
+  const pixelArt = segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite' || sc?.type === 'puppet'));
   return {lesson, course, segments, points, kids, pixelArt, id: `${course.slug}/${path.basename(dir)}`};
 }
 
