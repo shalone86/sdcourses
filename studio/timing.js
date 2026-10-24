@@ -133,6 +133,7 @@
         for (const [k, v] of Object.entries(o.cues || {})) cues[k] = Math.max(4, Math.round(seg.audioOffsetInFrames + v * FPS) - from);
         sc.from = from;
         if (typeof o.end === 'number') sc.until = Math.round(seg.audioOffsetInFrames + o.end * FPS); else delete sc.until;
+        if (o.nudge) sc.nudge = o.nudge; else delete sc.nudge;
         if (Object.keys(cues).length) sc.cues = cues; else delete sc.cues;
       });
       // Pictures can pass each other; the heading settles when the first one (by time) begins.
@@ -257,9 +258,11 @@
         // A click (no drag) jumps there; on a picture it also opens its options.
         drag(block, sc.from, (f) => { setStart(i, f); }, () => {
           T.player.seek(segStart(T.seg) + Math.max(0, sc.from - 10));
-          if (sc.type === 'image') { T.editPic = {seg: T.seg, i}; T.editing = null; draw(); }
+          T.nudge = {seg: T.seg, i};
+          if (sc.type === 'image') { T.editPic = {seg: T.seg, i}; T.swapPic = false; T.editing = null; draw(); }
           // Any other kind the form knows: open it to change.
           else if (ADD[sc.type]?.read) { T.editing = {seg: T.seg, i}; T.adding = false; T.editPic = null; draw(); }
+          else { T.editPic = null; T.editing = null; draw(); }
         });
         // Right edge: drag left to end this picture sooner (double-click to undo).
         const trim = h('div', {class: 'tl-trim' + (touched && touched.end != null ? ' moved' : ''), title: 'Drag to end this picture sooner · double-click to undo',
@@ -358,12 +361,13 @@
         })) : null,
       ]) : null;
       const adder = T.editing && T.editing.seg === T.seg && s.scenes[T.editing.i] && ADD[s.scenes[T.editing.i].type]?.read ? addForm(T.editing.i) : T.adding ? addForm() : null;
+      const nudger = T.nudge && T.nudge.seg === T.seg && s.scenes[T.nudge.i] ? nudgeRow(T.nudge.i) : null;
       const picOpts = T.editPic && T.editPic.seg === T.seg && s.scenes[T.editPic.i]?.type === 'image' ? pictureOptions(T.editPic.i) : null;
       const tl = timeline();
       const box = root.querySelector('.tl-scroll') || h('div', {class: 'tl-scroll'});
       const keep = box.scrollLeft;
       box.replaceChildren(tl);
-      const kids = [strip, controls, camRow, adder, picOpts, box,
+      const kids = [strip, controls, camRow, nudger, adder, picOpts, box,
         h('div', {class: 'small muted', text: 'Drag a scene block to change when it starts, or a diamond to change when an item appears. Click a word or the ruler to jump there. Then Save timing, and Make the video on the Video & Ghost tab.'})];
       // Only the part below the video is redrawn, so the page doesn't jump.
       const y = window.scrollY;
@@ -385,15 +389,74 @@
       if (t) t.textContent = f >= s0 && f < s0 + seg().durationInFrames ? fmt(secOf(f - s0)) + ' into the recording' : '';
     }
 
-    /** Options for a picture already in the lesson: framing, which part stays when cropped, caption. */
+    /** The small credit shown on the video. Her gallery needs only its name. */
+    function creditLine(c) {
+      if (c.own) return '';
+      if (/sdcason\.com/.test(c.source || '')) return 'The Free Catholic Gallery (sdcason.com)';
+      return [c.creator && c.creator !== 'Unknown' ? c.creator : '', c.source, c.license].filter(Boolean).join(' · ');
+    }
+
+    /**
+     * Move a scene's contents a little (e.g. off the progress bar) or resize it: saved with the
+     * timing as `scenes.<i>.nudge: {x, y, size}` (pixels of the 1920×1080 video, size in %).
+     */
+    function nudgeRow(i) {
+      const s = seg(), sc = s.scenes[i];
+      const cur = () => ((T.timing[s.name] || {}).scenes || {})[i]?.nudge || {x: 0, y: 0, size: 100};
+      const set = (fn) => {
+        const o = (((T.timing[s.name] ||= {}).scenes ||= {})[i] ||= {});
+        const n = fn({x: 0, y: 0, size: 100, ...o.nudge});
+        if (!n.x && !n.y && n.size === 100) delete o.nudge; else o.nudge = n;
+        if (!Object.keys(o).length) delete T.timing[s.name].scenes[i];
+        updatePlayer(); draw(); setDirty();
+        T.player.seek(segStart(T.seg) + Math.max(sc.from || 0, Math.min(T.player.frame() - segStart(T.seg), s.durationInFrames - 1)));
+      };
+      // Shift+click moves further.
+      const step = (e) => (e.shiftKey ? 60 : 15);
+      const n = cur();
+      const btn = (text, title, fn) => h('button', {class: 'btn', title, text, onclick: (e) => set((v) => fn(v, step(e)))});
+      return h('div', {class: 'row', style: {gap: '6px', justifyContent: 'flex-start'}}, [
+        h('b', {text: 'Move ' + (LABELS[sc.type] || sc.type).toLowerCase() + ':'}),
+        btn('←', 'Left (Shift: further)', (v, d) => ({...v, x: v.x - d})),
+        btn('↑', 'Up (Shift: further)', (v, d) => ({...v, y: v.y - d})),
+        btn('↓', 'Down (Shift: further)', (v, d) => ({...v, y: v.y + d})),
+        btn('→', 'Right (Shift: further)', (v, d) => ({...v, x: v.x + d})),
+        btn('Smaller', 'Smaller', (v) => ({...v, size: Math.max(30, v.size - 5)})),
+        btn('Bigger', 'Bigger', (v) => ({...v, size: Math.min(200, v.size + 5)})),
+        h('span', {class: 'small muted', text: n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made'}),
+        n.x || n.y || n.size !== 100 ? btn('Reset', 'Put it back', () => ({x: 0, y: 0, size: 100})) : null,
+        h('button', {class: 'btn', text: 'Close', onclick: () => { T.nudge = null; draw(); }}),
+      ]);
+    }
+
+    /** Options for a picture already in the lesson: framing, which part stays when cropped, caption, credit, or a different picture. */
     function pictureOptions(i) {
       const s = seg(), sc = s.scenes[i];
+      if (T.swapPic) {
+        // Change the whole picture: the search (or her own), keeping its place, timing, framing and caption.
+        const apply = async () => {
+          if (!T.picked) { alert('Pick a picture first.'); return; }
+          try {
+            await persist();
+            const credit = await importPicked();
+            const line = creditLine(credit);
+            const scene = {type: 'image', src: credit.file, aspect: credit.aspect, ...(line ? {credit: line} : {}), ...(T.caption ? {caption: T.caption} : {}),
+              ...(T.fit && T.fit !== 'contain' ? {fit: T.fit} : {}), ...(T.focus && T.focus !== 'center' ? {focus: T.focus} : {})};
+            const d = await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'replace', section: s.name, index: i, scene});
+            T.picked = null; T.swapPic = false; T.editPic = null; reload(d);
+          } catch (e) { alert('Couldn’t change it: ' + e.message); }
+        };
+        return h('div', {class: 'card', style: {gap: '10px'}}, [h('b', {text: 'Pick a different picture'}), imagePicker(),
+          h('div', {class: 'row'}, [h('span', {class: 'small muted', text: 'Its place and timing stay as they are.'}),
+            h('span', {}, [h('button', {class: 'btn', text: 'Cancel', onclick: () => { T.swapPic = false; T.picked = null; draw(); }}), ' ', h('button', {class: 'btn primary', text: 'Use this picture', onclick: apply})])])]);
+      }
       const fit = h('select', {}, FITS.map(([v, l]) => h('option', {value: v, text: l, selected: (sc.fit || 'contain') === v})));
       const focus = h('select', {}, FOCI.map(([v, l]) => h('option', {value: v, text: l, selected: (sc.focus || 'center') === v})));
       const caption = h('input', {type: 'text', value: sc.caption || '', placeholder: 'Caption (optional)', style: {minWidth: '16em'}});
+      const credit = h('input', {type: 'text', value: sc.credit || '', placeholder: 'No credit shown', style: {minWidth: '20em'}});
       const save = async () => {
         await persist();
-        const want = {fit: fit.value === 'contain' ? null : fit.value, focus: focus.value === 'center' ? null : focus.value, caption: caption.value.trim() || null};
+        const want = {fit: fit.value === 'contain' ? null : fit.value, focus: focus.value === 'center' ? null : focus.value, caption: caption.value.trim() || null, credit: credit.value.trim() || null};
         try {
           let d;
           for (const [key, value] of Object.entries(want)) if ((sc[key] ?? null) !== value) d = await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'set', section: s.name, index: i, key, value});
@@ -406,9 +469,26 @@
         h('label', {class: 'tl-field'}, [h('span', {text: 'Framing'}), fit]),
         h('label', {class: 'tl-field'}, [h('span', {text: 'If it’s cropped, keep'}), focus]),
         h('label', {class: 'tl-field'}, [h('span', {text: 'Caption'}), caption]),
+        h('label', {class: 'tl-field'}, [h('span', {text: 'Credit (small, on the video)'}), credit]),
         h('button', {class: 'btn primary', text: 'Apply', onclick: save}),
+        h('button', {class: 'btn', text: 'Change the picture…', onclick: () => {
+          T.swapPic = true; T.picked = null;
+          T.caption = sc.caption || ''; T.fit = sc.fit || 'contain'; T.focus = sc.focus || 'center';
+          draw();
+        }}),
         h('button', {class: 'btn', text: 'Close', onclick: () => { T.editPic = null; draw(); }}),
       ]);
+    }
+
+    /** Save the picked picture into the lesson (downloaded from its source, or her upload); returns its credit. */
+    async function importPicked() {
+      if (T.picked.upload) {
+        const r = await fetch('/api/images/upload?id=' + encodeURIComponent(T.id) + '&name=' + encodeURIComponent(T.picked.file.name), {method: 'POST', headers: {'X-Studio': '1'}, body: T.picked.file});
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status);
+        return j;
+      }
+      return post('/api/images/import?id=' + encodeURIComponent(T.id), {img: T.picked});
     }
 
     /**
@@ -477,14 +557,8 @@
           let scene;
           if (!old && T.addType === 'image') {
             if (!T.picked) { alert('Pick a picture first.'); return; }
-            let credit;
-            if (T.picked.upload) {
-              const r = await fetch('/api/images/upload?id=' + encodeURIComponent(T.id) + '&name=' + encodeURIComponent(T.picked.file.name), {method: 'POST', headers: {'X-Studio': '1'}, body: T.picked.file});
-              const j = await r.json().catch(() => ({}));
-              if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status);
-              credit = j;
-            } else credit = await post('/api/images/import?id=' + encodeURIComponent(T.id), {img: T.picked});
-            const line = credit.own ? '' : [credit.creator && credit.creator !== 'Unknown' ? credit.creator : '', credit.source, credit.license].filter(Boolean).join(' · ');
+            const credit = await importPicked();
+            const line = creditLine(credit);
             scene = {type: 'image', src: credit.file, aspect: credit.aspect, ...(line ? {credit: line} : {}), ...(T.caption ? {caption: T.caption} : {}), ...(T.fit && T.fit !== 'contain' ? {fit: T.fit} : {}), ...(T.focus && T.focus !== 'center' ? {focus: T.focus} : {})};
             T.picked = null;
           } else scene = ADD[old ? kind : T.addType].make(v, old);
@@ -593,7 +667,7 @@
     }
 
     async function removeScene(i, label) {
-      if (!confirm('Remove the ' + label + ' picture from this section?')) return;
+      if (!(await ask('Remove the ' + label + ' picture from this section?'))) return;
       try {
         await persist();
         reload(await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'remove', section: seg().name, index: i}));

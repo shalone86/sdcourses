@@ -346,6 +346,8 @@ export function applyTiming(props, timing) {
       if (typeof o.start === 'number') sc.from = Math.max(0, toFrame(o.start));
       // A picture trimmed to end early (`end`), else it stays until the next one.
       if (typeof o.end === 'number') sc.until = toFrame(o.end); else delete sc.until;
+      // Moved or resized a little in the Timing tab (pixels of 1920×1080, size in %).
+      if (o.nudge) sc.nudge = o.nudge;
       // Cues are relative to the scene's start: keep automatic ones in place on the timeline.
       const cues = {};
       for (const [k, v] of Object.entries(sc.cues ?? {})) cues[k] = Math.max(4, oldFrom + v - sc.from);

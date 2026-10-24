@@ -7,12 +7,32 @@
 // across drawings (the copy is kept in this browser). Flip the selection, the
 // frame, or every frame.
 'use strict';
+
+// Export a drawing (both modes use it): one frame as a PNG, or every frame as an animated GIF
+// (made by the studio with ffmpeg). Goes to the browser's Downloads.
+window.ArtExport = {
+  async save(name, canvases, fps, gif) {
+    const base = (String(name || 'drawing').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'drawing');
+    let blob;
+    if (!gif) blob = await new Promise((ok) => canvases[0].toBlob(ok, 'image/png'));
+    else {
+      const r = await fetch('/api/sprite/gif', {method: 'POST', headers: {'Content-Type': 'application/json', 'X-Studio': '1'},
+        body: JSON.stringify({fps, frames: canvases.map((c) => c.toDataURL('image/png'))})});
+      if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'HTTP ' + r.status);
+      blob = await r.blob();
+    }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = base + (gif ? '.gif' : '.png');
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  },
+};
 window.PixelTab = (() => {
   const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
   const MAX_FRAMES = 8;
   // Small palettes on purpose (a handheld-game look); "Any color" is still there.
   const PALETTES = {
-    video: {label: 'Video colors (12)', colors: ['#2B2350', '#FFFFFF', '#FFF6E0', '#FF4F6D', '#FF8A3D', '#FFB300', '#18B7A6', '#2F8CFF', '#7B5CFF', '#F2C6A0', '#A86B3C', '#5A3825']},
+    video: {label: 'Video colors (11)', colors: ['#2B2350', '#FFFFFF', '#FF4F6D', '#FF8A3D', '#FFB300', '#18B7A6', '#2F8CFF', '#7B5CFF', '#F2C6A0', '#A86B3C', '#5A3825']},
     gbc: {label: 'Game Boy Color (16)', colors: ['#000000', '#FFFFFF', '#888888', '#F8E8C8', '#E0A070', '#A05030', '#503018', '#F83838',
       '#F878B8', '#F8A800', '#F8F858', '#38B838', '#186818', '#58A8F8', '#2038A8', '#A858F8']},
     gb: {label: 'Game Boy (4 greens)', colors: ['#0F380F', '#306230', '#8BAC0F', '#9BBC0F']},
@@ -244,6 +264,19 @@ window.PixelTab = (() => {
       P.float = null;
     }
     function letGo() { commit(); P.sel = null; }
+    /** This frame (or all of them) enlarged with sharp pixels, about 512 across, to a PNG or GIF. */
+    async function exportArt(gif) {
+      letGo(); draw();
+      const a = P.art, k = Math.max(1, Math.floor(512 / Math.max(a.width, a.height)));
+      const cv = (pixels) => {
+        const c = document.createElement('canvas'); c.width = a.width * k; c.height = a.height * k;
+        const g = c.getContext('2d');
+        pixels.forEach((col, i) => { if (col) { g.fillStyle = col; g.fillRect((i % a.width) * k, Math.floor(i / a.width) * k, k, k); } });
+        return c;
+      };
+      try { await window.ArtExport.save(a.name, gif ? a.frames.map(cv) : [cv(a.frames[P.frame])], a.fps, gif); }
+      catch (e) { alert('Couldn’t export it: ' + e.message); }
+    }
     /** The selection (or the whole picture) from this frame, or from all of them: {x, y, w, h, frames: [px, …]}. */
     function grab(all) {
       const f = P.float;
@@ -480,6 +513,21 @@ window.PixelTab = (() => {
       else if (cmd && k === 'v') { e.preventDefault(); paste(false); }
       else if (cmd && k === 'a') { e.preventDefault(); commit(); P.sel = {x: 0, y: 0, w: W(), h: H()}; P.tool = 'select'; draw(); }
       else if ((k === 'delete' || k === 'backspace') && (P.sel || P.float)) { e.preventDefault(); if (P.float) P.float = null; else { remember(); clearArea(); } P.sel = null; draw(); markDirty(); }
+      // Hotkeys: B cycles pencil/eraser/fill, S cycles the shapes, C (Shift+C back) the colors, I picks a color, M selects.
+      else if (!cmd && !e.altKey && ['b', 's', 'c', 'i', 'm'].includes(k)) {
+        e.preventDefault();
+        const next = (list) => list[(list.indexOf(P.tool) + 1) % list.length];
+        if (k === 'c') {
+          const cols = PALETTES[P.pal].colors, at = cols.findIndex((x) => x.toUpperCase() === P.color.toUpperCase());
+          P.color = cols[((at < 0 ? -1 : at) + (e.shiftKey ? cols.length - 1 : 1)) % cols.length];
+          if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen';
+        } else {
+          const t = k === 'b' ? next(['pen', 'erase', 'fill']) : k === 's' ? next(SHAPES) : k === 'i' ? 'pick' : 'select';
+          if (t !== 'select') letGo();
+          P.tool = t;
+        }
+        draw();
+      }
       else if (k === 'escape' || k === 'enter') { letGo(); draw(); markDirty(); }
       else if (k.startsWith('arrow') && (P.sel || P.float)) {
         e.preventDefault();
@@ -498,8 +546,8 @@ window.PixelTab = (() => {
     function draw() {
       const a = P.art;
       const btn = (text, onclick, attrs = {}) => h('button', {class: 'btn', text, onclick, ...attrs});
-      const openSaved = (s, copy) => {
-        if (dirty() && !confirm('Leave this drawing without saving?')) return;
+      const openSaved = async (s, copy) => {
+        if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
         // The copied pixels stay, so they can be pasted into the drawing opened now.
         P.art = fromSaved(s); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap();
         // "Start from a copy": every frame of that one, as a new unsaved drawing.
@@ -507,8 +555,8 @@ window.PixelTab = (() => {
         P.gal.open = false;
         draw();
       };
-      const startNew = () => {
-        if (dirty() && !confirm('Leave this drawing without saving?')) return;
+      const startNew = async () => {
+        if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
         P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); draw();
       };
       const pick = window.SpriteGallery.build({items: P.list, state: P.gal, current: a.slug, noun: 'drawing', onNew: startNew, onToggle: draw, onOpen: openSaved,
@@ -521,7 +569,7 @@ window.PixelTab = (() => {
       const paletteSel = h('select', {'aria-label': 'Colors', onchange: (e) => { P.pal = e.target.value; store.set('studio.pixelPalette', P.pal); draw(); }},
         Object.entries(PALETTES).map(([k, v]) => h('option', {value: k, text: v.label, selected: k === P.pal})));
       const remove = async () => {
-        if (!confirm(`Delete "${a.name}"? It's kept in sprites/.deleted, so Claude can bring it back.`)) return;
+        if (!(await ask(`Delete "${a.name}"? It's kept in sprites/.deleted, so Claude can bring it back.`))) return;
         try {
           const d = await post('/api/sprite/delete', {slug: a.slug});
           P.list = d.sprites.filter((s) => s.kind !== 'sketch'); P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); draw();
@@ -559,6 +607,7 @@ window.PixelTab = (() => {
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         name,
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
+        h('div', {class: 'small muted', text: 'Keys: B pencil → eraser → fill · S line → box → circle · C next color (Shift+C back) · I pick a color · M select'}),
         SHAPES.includes(P.tool) && P.tool !== 'line'
           ? h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
         h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
@@ -581,6 +630,8 @@ window.PixelTab = (() => {
           btn('Clear this frame', () => { letGo(); remember(); a.frames[P.frame] = blank(a.width, a.height); draw(); markDirty(); }),
           h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
           a.slug ? btn('Delete this drawing', remove) : null,
+          btn('Export frame (PNG)', () => exportArt(false), {title: 'This frame as a picture, enlarged with sharp pixels'}),
+          a.frames.length > 1 ? btn('Export animation (GIF)', () => exportArt(true), {title: 'All the frames as an animated GIF, at the preview speed'}) : null,
           selecting ? btn('Done moving', () => { letGo(); draw(); markDirty(); }) : null,
         ]),
         h('div', {class: 'small muted', 'data-note': '', text: (selecting ? 'Drag inside the box to move it. Copy, Cut and Flip use the selection.' : 'Copy, Cut and Flip use the whole picture when nothing is selected.')
@@ -592,7 +643,7 @@ window.PixelTab = (() => {
         h('div', {class: 'small muted', text: 'Frames (2 to 8 make it move):'}),
         h('div', {class: 'px-frames'}, [...frames,
           a.frames.length < MAX_FRAMES ? btn('+ Copy this frame', () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, [...px()]); P.frame++; draw(); markDirty(); }) : null,
-          a.frames.length > 1 ? btn('Delete this frame', () => { if (!confirm('Delete frame ' + (P.frame + 1) + '?')) return; letGo(); remember(); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); draw(); markDirty(); }) : null]),
+          a.frames.length > 1 ? btn('Delete this frame', async () => { if (!(await ask('Delete frame ' + (P.frame + 1) + '?'))) return; letGo(); remember(); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); draw(); markDirty(); }) : null]),
         h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; startPreview(); markDirty(); }})])]),

@@ -6,7 +6,7 @@
 window.SketchTab = (() => {
   const MAX_FRAMES = 8;
   const PALETTES = {
-    video: {label: 'Video colors (12)', colors: ['#2B2350', '#FFFFFF', '#FFF6E0', '#FF4F6D', '#FF8A3D', '#FFB300', '#18B7A6', '#2F8CFF', '#7B5CFF', '#F2C6A0', '#A86B3C', '#5A3825']},
+    video: {label: 'Video colors (11)', colors: ['#2B2350', '#FFFFFF', '#FF4F6D', '#FF8A3D', '#FFB300', '#18B7A6', '#2F8CFF', '#7B5CFF', '#F2C6A0', '#A86B3C', '#5A3825']},
     gbc: {label: 'Game Boy Color (16)', colors: ['#000000', '#FFFFFF', '#888888', '#F8E8C8', '#E0A070', '#A05030', '#503018', '#F83838',
       '#F878B8', '#F8A800', '#F8F858', '#38B838', '#186818', '#58A8F8', '#2038A8', '#A858F8']},
     gb: {label: 'Game Boy (4 greens)', colors: ['#0F380F', '#306230', '#8BAC0F', '#9BBC0F']},
@@ -317,6 +317,21 @@ window.SketchTab = (() => {
       else if (cmd && k === 'v') { e.preventDefault(); paste(false); }
       else if (cmd && k === 'a') { e.preventDefault(); commit(); P.sel = {x: 0, y: 0, w: W(), h: H()}; P.tool = 'select'; draw(); }
       else if ((k === 'delete' || k === 'backspace') && (P.sel || P.float)) { e.preventDefault(); if (P.float) P.float = null; else { remember(); clearArea(); } P.sel = null; P.changed = true; draw(); }
+      // Hotkeys: B cycles pencil/eraser/fill, S cycles the shapes, C (Shift+C back) the colors, I picks a color, M selects.
+      else if (!cmd && !e.altKey && ['b', 's', 'c', 'i', 'm'].includes(k)) {
+        e.preventDefault();
+        const next = (list) => list[(list.indexOf(P.tool) + 1) % list.length];
+        if (k === 'c') {
+          const cols = PALETTES[P.pal].colors, at = cols.findIndex((x) => x.toUpperCase() === P.color.toUpperCase());
+          P.color = cols[((at < 0 ? -1 : at) + (e.shiftKey ? cols.length - 1 : 1)) % cols.length];
+          if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen';
+        } else {
+          const t = k === 'b' ? next(['pen', 'erase', 'fill']) : k === 's' ? next(SHAPES) : k === 'i' ? 'pick' : 'select';
+          if (t !== 'select') letGo();
+          P.tool = t;
+        }
+        draw();
+      }
       else if (k === 'escape' || k === 'enter') { letGo(); draw(); }
       else if (k.startsWith('arrow') && (P.sel || P.float)) {
         e.preventDefault(); lift();
@@ -327,6 +342,12 @@ window.SketchTab = (() => {
     };
     document.addEventListener('keydown', onKey);
 
+    async function exportArt(gif) {
+      letGo(); draw();
+      const a = P.art;
+      try { await window.ArtExport.save(a.name, gif ? a.frames : [a.frames[P.frame]], a.fps, gif); }
+      catch (e) { alert('Couldn’t export it: ' + e.message); }
+    }
     function note(text) { const n = body.querySelector('[data-note]'); if (n) n.textContent = text; }
     function markDirty() { const b = body.querySelector('[data-save]'); if (b) { b.disabled = !dirty(); b.textContent = dirty() ? 'Save' : 'Saved'; } }
 
@@ -343,12 +364,12 @@ window.SketchTab = (() => {
       const a = P.art;
       const btn = (text, onclick, attrs = {}) => h('button', {class: 'btn', text, onclick, ...attrs});
       const mine = P.list.filter((s) => s.kind === 'sketch');
-      const startNew = () => {
-        if (dirty() && !confirm('Leave this sketch without saving?')) return;
+      const startNew = async () => {
+        if (dirty() && !(await ask('Leave this sketch without saving?'))) return;
         P.art = fresh(a.width, a.height); P.frame = 0; P.undo = []; P.changed = false; draw();
       };
       const pick = window.SpriteGallery.build({items: mine, state: P.gal, current: a.slug, noun: 'sketch', onNew: startNew, onToggle: draw,
-        onOpen: (s, copy) => { if (dirty() && !confirm('Leave this sketch without saving?')) return; P.gal.open = false; openSaved(s, copy); },
+        onOpen: async (s, copy) => { if (dirty() && !(await ask('Leave this sketch without saving?'))) return; P.gal.open = false; openSaved(s, copy); },
         onFavorite: async (slug, on) => {
           try { const d = await post('/api/sprite/favorite', {slug, on}); P.list = d.sprites; draw(); } catch (e) { alert('Couldn’t change the favorite: ' + e.message); }
         }});
@@ -375,7 +396,7 @@ window.SketchTab = (() => {
         } catch (e) { alert('Couldn’t save it: ' + e.message); }
       };
       const remove = async () => {
-        if (!confirm(`Delete "${a.name}"? It's kept in sprites/.deleted, so Claude can bring it back.`)) return;
+        if (!(await ask(`Delete "${a.name}"? It's kept in sprites/.deleted, so Claude can bring it back.`))) return;
         try { const d = await post('/api/sprite/delete', {slug: a.slug}); P.list = d.sprites; P.art = fresh(a.width, a.height); P.frame = 0; P.undo = []; P.changed = false; draw(); }
         catch (e) { alert('Couldn’t delete it: ' + e.message); }
       };
@@ -387,6 +408,7 @@ window.SketchTab = (() => {
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         name,
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
+        h('div', {class: 'small muted', text: 'Keys: B brush → eraser → fill · S line → box → circle · C next color (Shift+C back) · I pick a color · M select'}),
         h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Brush size:'}), brushes]),
         SHAPES.includes(P.tool) && P.tool !== 'line' ? h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
         h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
@@ -401,6 +423,8 @@ window.SketchTab = (() => {
           btn('Clear this frame', () => { letGo(); remember([P.frame]); cur().getContext('2d').clearRect(0, 0, W(), H()); P.changed = true; draw(); }),
           h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
           a.slug ? btn('Delete this sketch', remove) : null,
+          btn('Export frame (PNG)', () => exportArt(false), {title: 'This frame as a picture'}),
+          a.frames.length > 1 ? btn('Export animation (GIF)', () => exportArt(true), {title: 'All the frames as an animated GIF, at the preview speed'}) : null,
           selecting ? btn('Done moving', () => { letGo(); draw(); }) : null,
         ]),
         h('div', {class: 'small muted', 'data-note': '', text: selecting ? 'Drag inside the box to move it; drag its corner square to resize (Shift keeps the shape).' : 'Copy, Cut and Flip use the whole picture when nothing is selected.'}),
@@ -411,7 +435,7 @@ window.SketchTab = (() => {
         h('div', {class: 'small muted', text: 'Frames (2 to 8 make it move):'}),
         h('div', {class: 'px-frames'}, [...frames,
           a.frames.length < MAX_FRAMES ? btn('+ Copy this frame', () => { letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame + 1, 0, copyOf(cur())); P.frame++; P.changed = true; draw(); }) : null,
-          a.frames.length > 1 ? btn('Delete this frame', () => { if (!confirm('Delete frame ' + (P.frame + 1) + '?')) return; letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); P.changed = true; draw(); }) : null]),
+          a.frames.length > 1 ? btn('Delete this frame', async () => { if (!(await ask('Delete frame ' + (P.frame + 1) + '?'))) return; letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); P.changed = true; draw(); }) : null]),
         h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; P.changed = true; startPreview(); markDirty(); }})])]),

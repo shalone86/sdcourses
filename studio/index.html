@@ -40,6 +40,9 @@ select{font:inherit;color:inherit;background:var(--paper);border:1px solid var(-
 button:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .btn{font:600 15px/1 var(--sans);border-radius:8px;padding:11px 16px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer;white-space:nowrap}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.ask-pop{position:fixed;z-index:1000;max-width:min(380px,calc(100vw - 16px));background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:12px;padding:14px;box-shadow:0 12px 36px rgba(0,0,0,.22);display:flex;flex-direction:column;gap:12px}
+.ask-text{white-space:pre-line;font-size:15px}
+.ask-row{display:flex;gap:8px;justify-content:flex-end}
 .btn.rec{background:var(--rec);border-color:var(--rec);color:#fff}
 .btn.stop{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .btn.big{padding:15px 22px;font-size:17px;border-radius:10px}
@@ -110,20 +113,6 @@ details.notes ul{margin:6px 0 0;padding-left:1.2em}
 .check ul{margin:6px 0 0;padding-left:1.2em}
 
 
-/* Prompter: big text in a narrow column at the top of the screen, close to the camera lens */
-.prompter{position:fixed;inset:0;z-index:50;background:#0b0b10;color:#f4efe4;display:flex;flex-direction:column}
-.prompter .pt-box{flex:1;overflow:hidden;position:relative}
-.prompter .pt-fade{position:absolute;left:0;right:0;top:0;height:12vh;background:linear-gradient(#0b0b10,rgba(11,11,16,0));pointer-events:none;z-index:1}
-body.prompting .campreview{display:none}
-.prompter .pt-text{margin:0 auto;padding:9vh 0 70vh;will-change:transform;font-family:var(--serif);line-height:1.45}
-.prompter .pt-text p{margin:0 0 .9em}
-.prompter .pt-lead{font-style:italic;opacity:.8}
-.prompter .pt-quote{font-weight:600;color:#ffd98a}
-.prompter .pt-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;padding:8px 12px;background:#17171f;border-top:1px solid #2a2a36;font:600 14px/1 var(--sans)}
-.prompter .pt-bar .btn{background:#25252f;color:#f4efe4;border-color:#3a3a48;padding:8px 12px}
-.prompter .pt-bar .btn.rec{background:var(--rec);border-color:var(--rec);color:#fff}
-.prompter .pt-bar .pt-lab{color:#a7a3b5;font-weight:500;margin-left:6px}
-.prompter .pt-bar .time{font-variant-numeric:tabular-nums}
 
 /* Recording dock */
 .dock{position:sticky;bottom:0;z-index:3;background:var(--bg);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));margin-top:14px;display:flex;gap:10px;align-items:center;border-top:1px solid var(--rule)}
@@ -272,6 +261,7 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
 </div>
 
 <script src="/player.js"></script>
+<script src="/ask.js"></script>
 <script src="/timing.js"></script>
 <script src="/reference.js"></script>
 <script src="/pixels.js"></script>
@@ -392,7 +382,6 @@ function render() {
   else if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : S.tab === 'pixels' ? pixelsView() : videoView());
   view.replaceChildren(...kids);
   for (const t of view.querySelectorAll('textarea.read')) grow(t);
-  syncPrompter();
   watchListening();
 }
 
@@ -435,8 +424,8 @@ function archiveView() {
 async function switchTab(tab) {
   if (S.tab === tab) return;
   await saveAll();
-  if (S.timing && S.timing.dirty() && !confirm('You have timing changes that aren’t saved. Leave them?')) return;
-  if (S.tab === 'pixels' && S.pixels && S.pixels.dirty() && !confirm('Your drawing isn’t saved. Leave it?')) return;
+  if (S.timing && S.timing.dirty() && !(await ask('You have timing changes that aren’t saved. Leave them?'))) return;
+  if (S.tab === 'pixels' && S.pixels && S.pixels.dirty() && !(await ask('Your drawing isn’t saved. Leave it?'))) return;
   if (S.timing) S.timing.pause();
   S.tab = tab; S.notice = null;
   stopPlayback();
@@ -507,9 +496,9 @@ function pixelsView() {
     const inner = el('div', {class: 'stack'});
     S.pixels = (mode === 'sketch' ? window.SketchTab : window.PixelTab).open(inner, api, post, window.DrawReference);
     S.pixelsMode = mode;
-    const pick = (m, label) => el('button', {'aria-pressed': mode === m ? 'true' : 'false', text: label, onclick: () => {
+    const pick = (m, label) => el('button', {'aria-pressed': mode === m ? 'true' : 'false', text: label, onclick: async () => {
       if (mode === m) return;
-      if (S.pixels && S.pixels.dirty() && !confirm('Your drawing isn’t saved. Leave it?')) return;
+      if (S.pixels && S.pixels.dirty() && !(await ask('Your drawing isn’t saved. Leave it?'))) return;
       store.set('drawMode', m); S.pixelsRoot = null; render();
     }});
     S.pixelsRoot = el('div', {class: 'stack'}, [el('div', {class: 'seg', role: 'group', 'aria-label': 'Kind of drawing'}, [pick('pixel', 'Pixel art (on a grid)'), pick('sketch', 'Sketch (free drawing)')]), inner]);
@@ -523,7 +512,7 @@ function scriptView() {
   const s = sec();
   return el('div', {}, [
     strip(),
-    el('div', {class: 'toolbar'}, [modeSwitch(), el('button', {class: 'btn', text: 'Prompter (P)', title: 'Big scrolling text near the camera, for reading while you record', disabled: !!(S.rec || S.busy), onclick: () => { S.prompter = true; syncPrompter(); }}), micPanel()]),
+    el('div', {class: 'toolbar'}, [modeSwitch(), micPanel()]),
     camPreview(),
     slideEl(s),
     dock(s),
@@ -707,7 +696,7 @@ function slideTools(s) {
   const last = S.slide === sections().length - 1;
   const hasClosing = sections().some((x) => x.kind === 'outro');
   const change = async (op, section, ask) => {
-    if (ask && !confirm(ask)) return;
+    if (ask && !(await window.ask(ask))) return;
     await saveAll();
     try {
       const r = await post('/api/slide?id=' + enc(S.id), {op, section});
@@ -954,10 +943,10 @@ const recType = () => (S.camera
 
 async function startRecording(kind) {
   const s = sec();
-  if (kind === 'each' && s.audio && !confirm('Replace your recording of ' + sectionName(s) + '?')) return;
+  if (kind === 'each' && s.audio && !(await ask('Replace your recording of ' + sectionName(s) + '?'))) return;
   if (kind === 'take') {
     const replaced = sections().slice(S.slide).filter((x) => x.audio).map(sectionName);
-    if (replaced.length && !confirm('This one take replaces your recordings of ' + replaced.join(', ') + ' as you go. Start?')) return;
+    if (replaced.length && !(await ask('This one take replaces your recordings of ' + replaced.join(', ') + ' as you go. Start?'))) return;
   }
   await saveAll();
   stopPlayback();
@@ -988,12 +977,12 @@ function takeNext() {
   scrollTo({top: 0});
 }
 
-function stopRecording(asked) {
+async function stopRecording(asked) {
   const r = S.rec;
   if (!r) return;
   if (r.stopping) return;
   if (asked && r.kind === 'take' && S.slide < sections().length - 1) {
-    if (!confirm('Stop the take here? ' + sections().slice(r.start, S.slide + 1).map(sectionName).join(', ') + ' will be saved; you can record the rest later.')) return;
+    if (!(await ask('Stop the take here? ' + sections().slice(r.start, S.slide + 1).map(sectionName).join(', ') + ' will be saved; you can record the rest later.'))) return;
   }
   // Keep listening a moment: people often tap Stop on their last syllable.
   r.stopping = true;
@@ -1086,92 +1075,6 @@ document.addEventListener('keydown', (e) => {
   if (S.rec && S.rec.kind === 'take' && (e.code === 'Space' || e.code === 'ArrowRight') && !e.repeat) { e.preventDefault(); takeNext(); }
 });
 
-
-// ---------- the prompter ----------
-// Fullscreen big text for reading to the camera (the Iriun phone clipped above the screen).
-// The text scrolls by itself while recording; the slide's text comes in speaking order.
-const PT = {sig: '', box: null, y: 0, last: 0, raf: 0, rehearse: false,
-  size: Number(store.get('ptSize')) || 46, width: Number(store.get('ptWidth')) || 46, wpm: Number(store.get('ptWpm')) || 140};
-const ptSave = () => { store.set('ptSize', String(PT.size)); store.set('ptWidth', String(PT.width)); store.set('ptWpm', String(PT.wpm)); };
-
-function ptParts(s) {
-  const parts = [];
-  if (s.kind === 'point') {
-    if (value(s, 'lead')) parts.push(['pt-lead', value(s, 'lead')]);
-    if (value(s, 'quote')) parts.push(['pt-quote', value(s, 'quote')]);
-    if (value(s, 'text')) parts.push(['', value(s, 'text')]);
-  } else if (value(s, 'text')) parts.push(['', value(s, 'text')]);
-  return parts;
-}
-
-function ptScrolling() { return !!(S.rec && !S.rec.stopping) || PT.rehearse; }
-
-// Scrolling moves the text with a transform (cheap for the browser), and the words-to-pixels
-// ratio is worked out once per slide, so the camera recording isn't competing with the page.
-function ptMeasure() {
-  if (!PT.box || !PT.box.isConnected) return;
-  const text = PT.box.firstChild;
-  const words = Math.max(1, (text.textContent || '').trim().split(/\s+/).length);
-  PT.pxPerWord = Math.max(10, text.offsetHeight - window.innerHeight * 0.79) / words;
-  PT.max = Math.max(0, text.offsetHeight - PT.box.clientHeight);
-}
-
-function ptTick(now) {
-  PT.raf = requestAnimationFrame(ptTick);
-  const dt = Math.min(0.1, (now - (PT.last || now)) / 1000); PT.last = now;
-  if (!PT.box || !PT.box.isConnected || !ptScrolling()) return;
-  PT.y = Math.min(PT.max || 1e9, PT.y + (PT.wpm / 60) * (PT.pxPerWord || 30) * dt);
-  PT.box.firstChild.style.transform = `translate3d(0,${-PT.y.toFixed(1)}px,0)`;
-}
-
-function ptBar() {
-  const r = S.rec, s = sec();
-  const step = (label, title, f) => el('button', {class: 'btn', title, 'aria-label': title, text: label, onclick: f});
-  const redo = () => { PT.sig = ''; syncPrompter(); };
-  return el('div', {class: 'pt-bar'}, [
-    el('button', {class: 'btn', text: '‹', title: 'Previous slide (F17)', disabled: S.slide === 0 || !!r, onclick: () => goTo(S.slide - 1)}),
-    el('span', {class: 'pt-lab', text: sectionName(s) + ' of ' + sections().length}),
-    el('button', {class: 'btn', text: '›', title: 'Next slide (F18)', disabled: S.slide >= sections().length - 1 || (!!r && r.kind !== 'take'), onclick: () => (r ? takeNext() : goTo(S.slide + 1))}),
-    r ? el('button', {class: 'btn rec', onclick: () => stopRecording(true)}, ['■ Stop ', el('span', {class: 'time', 'data-time': '', text: fmt((performance.now() - r.t0) / 1000)})])
-      : el('button', {class: 'btn rec', onclick: () => startRecording(S.mode === 'take' ? 'take' : 'each'), text: '● Record (R)'}),
-    el('button', {class: 'btn', text: PT.rehearse ? '❚❚ Scroll' : '▶ Scroll', title: 'Try the scrolling without recording (space bar)', disabled: !!r, onclick: () => { PT.rehearse = !PT.rehearse; syncPrompter(); }}),
-    el('span', {class: 'pt-lab', text: 'Speed'}), step('−', 'Slower', () => { PT.wpm = Math.max(60, PT.wpm - 10); ptSave(); syncPrompter(); }), el('span', {text: PT.wpm}), step('+', 'Faster', () => { PT.wpm = Math.min(260, PT.wpm + 10); ptSave(); syncPrompter(); }),
-    el('span', {class: 'pt-lab', text: 'Size'}), step('−', 'Smaller text', () => { PT.size = Math.max(24, PT.size - 4); ptSave(); redo(); }), step('+', 'Bigger text', () => { PT.size = Math.min(96, PT.size + 4); ptSave(); redo(); }),
-    el('span', {class: 'pt-lab', text: 'Width'}), step('−', 'Narrower', () => { PT.width = Math.max(24, PT.width - 6); ptSave(); redo(); }), step('+', 'Wider', () => { PT.width = Math.min(90, PT.width + 6); ptSave(); redo(); }),
-    el('button', {class: 'btn', text: 'Close (Esc)', disabled: !!r, onclick: () => { S.prompter = false; syncPrompter(); }}),
-  ]);
-}
-
-/** Show, update or remove the prompter to match the studio's state (called after every render). */
-function syncPrompter() {
-  const on = S.prompter && S.tab === 'script' && S.L && sec();
-  let root = document.getElementById('prompter');
-  document.body.classList.toggle('prompting', !!on);
-  if (!on) { if (root) root.remove(); PT.box = null; PT.rehearse = false; return; }
-  const s = sec();
-  const sig = [S.id, S.slide, S.rec ? S.rec.t0 : 0, PT.size, PT.width, ptParts(s).map((p) => p[1]).join('|')].join('~');
-  if (!root) { root = el('div', {id: 'prompter', class: 'prompter', role: 'dialog', 'aria-label': 'Prompter'}); document.body.append(root); PT.sig = ''; }
-  if (sig !== PT.sig) {
-    PT.sig = sig; PT.y = 0;
-    const text = el('div', {class: 'pt-text', style: `font-size:${PT.size}px;width:${PT.width}vw;max-width:100%`},
-      ptParts(s).map(([cls, t]) => el('p', {class: cls, text: t})));
-    if (!ptParts(s).length) text.append(el('p', {class: 'pt-lead', text: 'Nothing written for this slide yet.'}));
-    PT.box = el('div', {class: 'pt-box'}, [text, el('div', {class: 'pt-fade'})]);
-    PT.box.addEventListener('wheel', (e) => { PT.y = Math.max(0, Math.min(PT.max || 1e9, PT.y + e.deltaY)); PT.box.firstChild.style.transform = `translate3d(0,${-PT.y}px,0)`; }, {passive: true});
-    root.replaceChildren(PT.box, ptBar());
-    requestAnimationFrame(ptMeasure);
-  } else root.lastChild.replaceWith(ptBar());
-  if (!PT.raf) PT.raf = requestAnimationFrame(ptTick);
-}
-
-document.addEventListener('keydown', (e) => {
-  if (S.tab !== 'script' || !S.L || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
-  const t = e.target, typing = t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
-  if (e.code === 'KeyP' && !typing && !S.rec && !S.busy) { e.preventDefault(); S.prompter = !S.prompter; syncPrompter(); }
-  else if (S.prompter && e.code === 'Escape' && !S.rec) { S.prompter = false; syncPrompter(); }
-  // In the prompter the space bar starts and stops the practice scroll (the Next tap during a one take still wins).
-  else if (S.prompter && e.code === 'Space' && !S.rec && !typing) { e.preventDefault(); e.stopImmediatePropagation(); PT.rehearse = !PT.rehearse; syncPrompter(); }
-}, true);
 
 // ---------- ask Claude ----------
 
@@ -1301,7 +1204,16 @@ async function approve() {
   const warn = [];
   if (L.sections.some((s) => !s.audio)) warn.push('Some sections have no recording, so the video is silent there.');
   if (L.video && L.video.stale) warn.push('The video is older than your latest changes.');
-  if (!confirm((warn.length ? warn.join(' ') + '\n\n' : '') + 'Approve “' + L.title + '” and save it to Ghost as a draft?\n\nNothing goes live until you press Publish in Ghost.')) return;
+  // Kids lessons: a reminder to pick the drawing for the kids-site thumbnail.
+  if (L.kids && !L.kids.thumb) {
+    const list = await api('/api/sprites').catch(() => []);
+    const sel = el('select', {'aria-label': 'Drawing for the thumbnail'}, [...list].sort((x, y) => (y.favorite ? 1 : 0) - (x.favorite ? 1 : 0) || (y.at || 0) - (x.at || 0))
+      .map((x) => el('option', {value: x.slug, text: (x.favorite ? '★ ' : '') + x.name, selected: x.slug === L.kids.fallback})));
+    if (!list.length) { S.notice = {error: true, text: 'Draw a pixel art for the thumbnail first (Pixel art tab).'}; render(); return; }
+    if (!(await ask('Pick the pixel art for this lesson’s thumbnail on the kids site.', {yes: 'Use this one', extra: sel}))) return;
+    try { S.L = await post('/api/thumb?id=' + enc(S.id), {sprite: sel.value}); } catch (e) { S.notice = {error: true, text: 'Couldn’t set the thumbnail: ' + e.message}; render(); return; }
+  }
+  if (!(await ask((warn.length ? warn.join(' ') + '\n\n' : '') + 'Approve “' + L.title + '” and save it to Ghost as a draft?\n\nNothing goes live until you press Publish in Ghost.', {yes: 'Approve and send'}))) return;
   try { S.job = await post('/api/publish?id=' + enc(S.id)); await refresh(); }
   catch (e) { S.notice = {error: true, text: e.message}; }
   render(); poll();

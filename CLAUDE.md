@@ -92,7 +92,7 @@ the meaning) over long ones. On the Mac they go in
 cloud, in the environment settings. Never ask Shalone to paste the key
 into chat; she types it into the file herself.
 
-## Lesson Studio (her editor, teleprompter and recorder)
+## Lesson Studio (her editor and recorder)
 
 A local page on her Mac: `npm start` (or double-click `Lesson Studio.command`)
 runs `studio/server.mjs` and opens http://localhost:5178 (`studio/index.html`).
@@ -110,11 +110,8 @@ If it's already running, `npm start` just opens the page.
 - **Recording:** per slide, or one take with Next taps as the cut points.
   Each section ends up as `audio/<section>.wav`, with the browser's original
   beside it (`.webm`, or `.m4a` from Safari; a one take keeps `take.webm`).
-- **Prompter** (`studio/index.html`, Script tab → Prompter, or P): fullscreen big
-  text in a narrow column at the top of the screen (the Iriun phone sits above
-  the lens), in speaking order; it scrolls by itself while recording (speed in
-  words per minute, text size and column width are saved in the browser). R/F19
-  record, F17/F18 change slide, Space practises the scroll, Esc closes it.
+- **Keys:** R/F19 record, F17/F18 change slide. (A prompter mode was tried
+  and removed at her request; don't bring it back unasked.)
 - **Camera:** "Record my video too" (in the Microphone panel) records her
   webcam with the voice. Clips go to `<lesson>/camera/` (gitignored: her
   face stays off the public repo, so it exists only on this Mac); a
@@ -125,7 +122,9 @@ If it's already running, `npm start` just opens the page.
 - **Pixel art tab** (`studio/pixels.js`): she draws 1–8 frame pixel
   animations, 1–8 frames (16/24/32/48/64 px; pencil, dither, eraser, fill, line, box, circle,
   select & move, color picker; copy/cut/paste across drawings; flips; mirror, onion
-  skin, speed). Saved to `sprites/<name>.json` (shared by all lessons;
+  skin, speed; keys: B pencil/eraser/fill, S line/box/circle, C/Shift+C colors,
+  I pick, M select; Export frame (PNG, enlarged) or animation (GIF, made by
+  ffmpeg at `/api/sprite/gif`)). Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
   Pixel animation, a `sprite` scene (`move: stay | hop | across`, `size`);
   prepare.mjs copies the drawing into the props. With `motion: dance` it
@@ -148,10 +147,16 @@ If it's already running, `npm start` just opens the page.
   them). Slides without a quotation are allowed.
 - **Changing a picture:** clicking any picture's block on the Timing tab opens
   its form with its boxes filled in (op `replace`, same place and timing);
-  pictures from the search open their framing options instead. Forms use
+  pictures from the search open their options instead: framing, crop, caption,
+  the credit line shown on the video (editable), and **Change the picture…**
+  (same place, timing and framing). Her gallery's credit is just "The Free
+  Catholic Gallery (sdcason.com)". Forms use
   separate boxes (no `|`). **Icons** (`type: icons`): 1–4 lucide.dev icons
   that draw themselves in, each with an optional word (cued when said); the
   form has an icon search with previews (`/api/icons`).
+- **Nudging:** clicking any scene block shows Move ← ↑ ↓ → / Smaller / Bigger
+  (Shift moves further), saved in timing.yml as `scenes.<i>.nudge: {x, y, size}`
+  (pixels of 1920×1080, %), e.g. to lift a scene off the progress bar.
 - **Stacking:** in the Timing tab, a picture's ◫/⧉ button shows it beside or
   over the picture before (`with: side | over` on the scene).
 - **Trimming:** in the Timing tab, a picture's right edge ends it sooner
@@ -189,9 +194,13 @@ If it's already running, `npm start` just opens the page.
   few minutes after her last change to it, and right after she sends it to
   Ghost (drawings too); the Video & Ghost tab shows the last backup. Commit
   messages start "Studio backup:". Pull before working elsewhere.
+- **"Are you sure?"** questions open beside the button she clicked
+  (`studio/ask.js`, `ask(message)`), not the browser's box; use it for new ones.
 - **Video & Ghost:** "Make the video" runs `scripts/render.mjs`. "Approve and
   send to Ghost" is her approval: it sets `status: reviewed`, then runs
   `scripts/publish.mjs` (gates unchanged) and shows the draft link.
+  For a kids lesson without its own `thumb:` it first asks which drawing goes
+  on the kids-site thumbnail (saved as `thumb: {sprite}` in lesson.yml).
 
 The older cloud artifact (https://claude.ai/artifact/6psc9GJ9d1VuHeS8RW85vG,
 `studio/studio.html`, `npm run studio-export` / `studio-import`) can edit but

@@ -1,3 +1,4 @@
+import {AbsoluteFill} from 'remotion';
 import type {LessonProps, Scene} from '../types';
 import {Chain} from './Chain';
 import {College} from './College';
@@ -48,5 +49,12 @@ export const sceneTypes = Object.keys(registry);
 export const SceneView: React.FC<SceneProps> = (props) => {
   const View = registry[props.scene.type];
   if (!View) throw new Error(`Unknown scene type "${props.scene.type}". Known: ${sceneTypes.join(', ')}`);
-  return <View {...props} />;
+  // Nudged in the Timing tab (timing.yml `nudge`): moved by x/y pixels (of 1920×1080) and resized.
+  const n = (props.scene as {nudge?: {x?: number; y?: number; size?: number}}).nudge;
+  if (!n || (!n.x && !n.y && (n.size ?? 100) === 100)) return <View {...props} />;
+  return (
+    <AbsoluteFill style={{transform: `translate(${n.x ?? 0}px, ${n.y ?? 0}px) scale(${(n.size ?? 100) / 100})`}}>
+      <View {...props} />
+    </AbsoluteFill>
+  );
 };

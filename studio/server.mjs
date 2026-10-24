@@ -105,7 +105,7 @@ function summary(id) {
 
 function detail(id) {
   const dir = lessonPath(id);
-  const {lesson, course, segments} = loadLesson(dir);
+  const {lesson, course, segments, kids} = loadLesson(dir);
   const sections = segments.map((s) => {
     const file = audioFile(dir, s.name);
     const audio = file ? {seconds: ffprobeDuration(file), at: mtime(file), ext: path.extname(file)} : null;
@@ -124,6 +124,8 @@ function detail(id) {
     id, course: course.title, number: lesson.number, title: lesson.title, status: lesson.status,
     backup: backup.last, // the studio's last backup to GitHub (any lesson)
     sections, video, requests: openRequests(dir),
+    // Kids lessons: the drawing on the kids-site thumbnail (`thumb:` in lesson.yml), else what it falls back to.
+    kids: kids ? {thumb: lesson.thumb?.sprite ?? null, fallback: course.thumb?.sprite ?? segments.flatMap((x) => x.scenes).find((sc) => sc?.type === 'sprite')?.sprite ?? null} : null,
   };
 }
 
@@ -286,6 +288,10 @@ function saveTiming(id, timing) {
       if (Number.isFinite(o.end)) out.end = Math.round(o.end * 100) / 100;
       const cues = Object.fromEntries(Object.entries(o.cues ?? {}).filter(([, t]) => Number.isFinite(t)).map(([k, t]) => [k, Math.round(t * 100) / 100]));
       if (Object.keys(cues).length) out.cues = cues;
+      // Moved/resized in the Timing tab (pixels of 1920×1080, size in %).
+      const n = o.nudge ?? {};
+      const nx = Math.round(Number(n.x) || 0), ny = Math.round(Number(n.y) || 0), size = Math.min(200, Math.max(30, Math.round(Number(n.size) || 100)));
+      if (nx || ny || size !== 100) out.nudge = {x: nx, y: ny, size};
       if (Object.keys(out).length) scenes[i] = out;
     }
     const keep = {};
@@ -566,6 +572,7 @@ async function handle(req, res) {
     if (p === '/pixels.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
     if (p === '/sketch.js') return sendFile(req, res, path.join(ROOT, 'studio/sketch.js'));
     if (p === '/reference.js') return sendFile(req, res, path.join(ROOT, 'studio/reference.js'));
+    if (p === '/ask.js') return sendFile(req, res, path.join(ROOT, 'studio/ask.js'));
     if (/^\/sprites\/[a-z0-9-]+\/\d+\.png$/.test(p)) return sendFile(req, res, path.join(ROOT, p.slice(1)));
     if (p === '/api/images/search') {
       const q = (url.searchParams.get('q') ?? '').trim();
@@ -628,6 +635,15 @@ async function handle(req, res) {
       }
       catch (e) { throw httpError(400, e.message); }
     }
+    if (p === '/api/thumb') {
+      // A kids lesson's thumbnail drawing (`thumb: {sprite}` in lesson.yml).
+      const dir = lessonPath(id);
+      const {sprite} = await readJson(req);
+      if (!listSprites().some((x) => x.slug === sprite)) throw httpError(400, 'No drawing by that name');
+      const old = loadLesson(dir).lesson.thumb ?? {};
+      setValue(dir, ['thumb'], {...old, sprite});
+      return json(res, 200, detail(id));
+    }
     if (p === '/api/quiz') {
       // A slide's quiz questions (her own slides), checked the same way the post checks them.
       const dir = lessonPath(id);
@@ -675,6 +691,21 @@ async function handle(req, res) {
       // (a sketch's frames are pictures, so this can be a few megabytes)
       const slug = saveSprite(JSON.parse(String(await readBody(req, 60e6)) || '{}'));
       return json(res, 200, {slug, sprites: listSprites()});
+    }
+    if (p === '/api/sprite/gif') {
+      // A drawing as an animated GIF (frames come as PNG pictures, already enlarged): made with ffmpeg.
+      const {frames, fps} = JSON.parse(String(await readBody(req, 60e6)) || '{}');
+      if (!Array.isArray(frames) || !frames.length || frames.length > 8) throw httpError(400, 'No frames');
+      const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'sd-gif-'));
+      try {
+        frames.forEach((f, i) => fs.writeFileSync(path.join(tmp, `${i}.png`), Buffer.from(String(f).replace(/^data:image\/png;base64,/, ''), 'base64')));
+        const rate = Math.min(30, Math.max(1, Number(fps) || 6));
+        await run('ffmpeg', ['-y', '-v', 'error', '-framerate', String(rate), '-i', path.join(tmp, '%d.png'),
+          '-filter_complex', 'split[a][b];[a]palettegen=reserve_transparent=1:stats_mode=full[p];[b][p]paletteuse=dither=none:alpha_threshold=128', '-loop', '0', path.join(tmp, 'out.gif')]);
+        const gif = fs.readFileSync(path.join(tmp, 'out.gif'));
+        res.writeHead(200, {'Content-Type': 'image/gif', 'Content-Length': gif.length});
+        return res.end(gif);
+      } finally { fs.rmSync(tmp, {recursive: true, force: true}); }
     }
     if (p === '/api/timing') {
       const {timing} = await readJson(req);
@@ -732,14 +763,14 @@ async function handle(req, res) {
         setStatus(dir, 'draft');
         return json(res, 200, timingData(id));
       } else if (op === 'set') {
-        // A picture's framing, crop focus or caption (null removes it).
+        // A picture's framing, crop focus, caption or credit line (null removes it).
         const {key} = lastBody;
         const ok = {fit: ['cover', 'screen'], focus: ['top', 'bottom']};
         if (!Number.isInteger(index) || index < sceneList(section, dir).first) throw httpError(400, 'No such picture');
-        if (!['fit', 'focus', 'caption'].includes(key)) throw httpError(400, 'That can\'t be changed here');
+        if (!['fit', 'focus', 'caption', 'credit'].includes(key)) throw httpError(400, 'That can\'t be changed here');
         if (seg.scenes[index]?.type !== 'image') throw httpError(400, 'Only a picture has these options');
-        if (value != null && (key === 'caption' ? typeof value !== 'string' || value.length > 200 : !ok[key].includes(value))) throw httpError(400, 'Bad choice');
-        editScenes(dir, section, 'set', index, null, key, value == null ? null : key === 'caption' ? JSON.stringify(value) : value);
+        if (value != null && (ok[key] ? !ok[key].includes(value) : typeof value !== 'string' || value.length > 200)) throw httpError(400, 'Bad choice');
+        editScenes(dir, section, 'set', index, null, key, value == null ? null : ok[key] ? value : JSON.stringify(value));
         setStatus(dir, 'draft');
         return json(res, 200, timingData(id));
       } else if (op !== 'remove' || !Number.isInteger(index) || index < sceneList(section, dir).first) throw httpError(400, 'That picture can\'t be removed here');
@@ -801,7 +832,7 @@ const server = http.createServer((req, res) => {
 // http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
 // Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
 const DRAW_PORT = 5179;
-const DRAW_PATHS = /^(\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
+const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
 const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
 const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
 
@@ -810,7 +841,7 @@ function drawPage(res, signedIn, message = '') {
   const style = (/<style>[\s\S]*?<\/style>/.exec(html) ?? [''])[0];
   const body = signedIn
     ? `<main class="draw-only"><h1 class="draw-title">Pixel art</h1><div id="draw"></div></main>
-<script src="/reference.js"></script><script src="/pixels.js"></script><script src="/sketch.js"></script>
+<script src="/ask.js"></script><script src="/reference.js"></script><script src="/pixels.js"></script><script src="/sketch.js"></script>
 <script>
 'use strict';
 const api = (p, o = {}) => fetch(p, {...o, headers: {...(o.headers || {}), 'X-Studio': '1'}}).then((r) => r.json().catch(() => ({})).then((j) => { if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status); return j; }));
