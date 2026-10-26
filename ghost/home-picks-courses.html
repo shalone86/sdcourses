@@ -21,10 +21,12 @@ window.SD_PICKS = {
   gridClass: 'sd-picks-grid',
   buttonClass: 'cc-btn cc-btn-quiet',
   lists: [
-    // Lessons: posts with a picture that aren't a course page (#book), blog post or cover.
-    {label: 'Lesson of the day', button: 'Surprise me with a lesson', filter: 'tag:-hash-book+tag:-hash-blog+tag:-hash-cover+feature_image:-null'},
+    // Lessons: posts with a picture that aren't a course page (#book), blog post or cover,
+    // and not the Advent ones (the Jesse Tree weeks and What is Advent?), which only fit Advent.
+    {label: 'Lesson of the day', button: 'Surprise me with a lesson',
+      filter: 'tag:-hash-book+tag:-hash-blog+tag:-hash-cover+tag:-[jesse-tree,jesse-tree_week-1,jesse-tree_week-2,jesse-tree_week-3,jesse-tree_week-4,what-is-advent]+feature_image:-null'},
   ],
-  skip: /^(sources|congratulations!?|.*downloads?)$/i,
+  skip: /^(sources|congratulations!?|.*downloads?)$|advent/i,
   card: function (p, label, esc) {
     // (an automatic excerpt can start with the video player's "0:00 /1:23 1×")
     var text = (p.custom_excerpt || p.excerpt || '').replace(/^[\s\d:\/×.]+(?=\S)/, '');

@@ -14,6 +14,9 @@ const file = path.join(ROOT, 'courses', slug ?? '', 'course.yml');
 if (!slug || !fs.existsSync(file)) throw new Error('Usage: npm run publish-course -- <course-slug>  (needs courses/<slug>/course.yml)');
 const course = YAML.parse(fs.readFileSync(file, 'utf8'));
 const g = ghost();
+// Lessons join the course by its name, so a tag Ghost already made from the name (e.g.
+// "the-byzantine-rite-for-kids") is the course, even when its slug isn't course.yml's.
+const byName = (await g.call('GET', `/tags/?filter=${encodeURIComponent(`name:'${course.title.replace(/'/g, "\\'")}'`)}&limit=1`)).tags?.[0];
 const cover = await g.upload('images', renderCover(slug), 'image/jpeg');
-const tag = await g.saveTag({name: course.title, slug: course.slug, description: course.summary.trim().slice(0, 500), feature_image: cover});
+const tag = await g.saveTag({name: course.title, slug: byName?.slug ?? course.slug, description: course.summary.trim().slice(0, 500), feature_image: cover});
 console.log(`Course tag ready: ${tag.name} (${tag.url ?? tag.slug})`);
