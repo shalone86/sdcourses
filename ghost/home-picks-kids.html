@@ -1,0 +1,94 @@
+<!-- Homepage picks of the day (sdcourses: scripts/home-picks.mjs). Paste into Settings → Code injection → Site footer. -->
+<style>
+.sd-picks .project-feed{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.sd-picks .sd-pick-label{display:inline-block;font-weight:700;font-size:.85em;letter-spacing:.04em;text-transform:uppercase;margin-bottom:.35em;opacity:.75}
+.sd-picks .project-card__img{width:100%;height:auto;display:block}
+.sd-picks{margin-bottom:32px}
+.sd-picks-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.sd-picks-actions button{font:inherit;font-weight:700;font-size:1.05em;padding:12px 22px;border-radius:999px;border:0;cursor:pointer;background:#FFB300;color:#2B2350;box-shadow:0 4px 0 #c98a00}
+.sd-picks-actions button:active{transform:translateY(2px);box-shadow:0 2px 0 #c98a00}
+.sd-picks-actions button:disabled{opacity:.6}
+</style>
+<script>
+window.SD_PICKS = {
+  title: "Today's picks",
+  before: 'section.projects',
+  sectionClass: 'container wrapper section projects sd-picks',
+  titleClass: 'section__title',
+  gridClass: 'grid project-feed',
+  buttonClass: 'sd-pick-btn',
+  lists: [
+    {label: "Today's video", button: '🎲 Surprise me: a video', filter: 'tag:catholic-kids-video-lessons'},
+    {label: "Today's song", button: '🎲 Surprise me: a song', filter: 'tag:catholic-kids-songs'},
+  ],
+  card: function (p, label, esc) {
+    return '<article class="project-card">' +
+      (p.feature_image ? '<a class="project-card__media" href="' + esc(p.url) + '"><img class="project-card__img" src="' + esc(p.feature_image) + '" alt="' + esc(p.title) + '" loading="lazy"></a>' : '') +
+      '<div class="project-card__content"><span class="sd-pick-label">' + esc(label) + '</span>' +
+      '<h3 class="project-card__title"><a href="' + esc(p.url) + '">' + esc(p.title) + '</a></h3></div></article>';
+  },
+};
+// Homepage "picks of the day" for her Ghost sites (pasted into Code injection → Site footer,
+// built into ghost/home-picks-<site>.html by scripts/home-picks.mjs). Each pick changes once a
+// day (everyone sees the same one that day) and a button opens a random one. Runs in the
+// visitor's browser because Ghost serves cached pages. Uses the Content API key the site
+// already publishes for its search box.
+(function () {
+  var cfg = window.SD_PICKS;
+  if (!cfg || location.pathname !== '/') return;
+  var keyEl = document.querySelector('[data-key][data-api]');
+  if (!keyEl) return;
+  var api = keyEl.getAttribute('data-api').replace(/\/$/, '') + '/posts/';
+  var key = keyEl.getAttribute('data-key');
+  var day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+  // Spread the days over the list (a fixed shuffle, not just "the next one").
+  var spot = function (n, salt) { return ((day + salt) * 2654435761 >>> 0) % n; };
+  var esc = function (s) { return String(s || '').replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); };
+  var get = function (filter, page, limit) {
+    return fetch(api + '?key=' + key + '&filter=' + encodeURIComponent(filter) + '&limit=' + limit + '&page=' + page +
+      '&fields=title,url,feature_image,custom_excerpt,excerpt').then(function (r) { return r.json(); });
+  };
+  // One post from a list: the day's (seeded) or a random one.
+  var pick = function (filter, salt, random) {
+    return get(filter, 1, 1).then(function (d) {
+      var n = d.meta && d.meta.pagination ? d.meta.pagination.total : 0;
+      if (!n) return null;
+      var i = random ? Math.floor(Math.random() * n) : spot(n, salt);
+      // Posts that aren't lessons (a course's "Sources" or "Congratulations!" page): try the next one.
+      var tries = 0;
+      var at = function (j) {
+        return get(filter, (j % n) + 1, 1).then(function (x) {
+          var p = x.posts && x.posts[0];
+          if (p && cfg.skip && cfg.skip.test(p.title) && ++tries < 8) return at(j + 1);
+          return p;
+        });
+      };
+      return at(i);
+    });
+  };
+  var anchor = document.querySelector(cfg.before);
+  if (!anchor) return;
+  var box = document.createElement('section');
+  box.className = cfg.sectionClass;
+  var inner = box;
+  if (cfg.innerClass) { inner = document.createElement('div'); inner.className = cfg.innerClass; box.appendChild(inner); }
+  inner.innerHTML = '<h2 class="' + cfg.titleClass + '">' + esc(cfg.title) + '</h2><div class="' + cfg.gridClass + '"></div><div class="sd-picks-actions"></div>';
+  anchor.parentNode.insertBefore(box, anchor);
+  var grid = inner.children[1], actions = inner.children[2];
+  Promise.all(cfg.lists.map(function (l, i) { return pick(l.filter, i * 101 + 7, false); })).then(function (posts) {
+    posts.forEach(function (p, i) { if (p) grid.insertAdjacentHTML('beforeend', cfg.card(p, cfg.lists[i].label, esc)); });
+    if (!grid.children.length) { box.remove(); return; }
+    cfg.lists.forEach(function (l, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = cfg.buttonClass;
+      b.textContent = l.button;
+      b.addEventListener('click', function () {
+        b.disabled = true;
+        pick(l.filter, i * 101 + 7, true).then(function (p) { if (p) location.href = p.url; else b.disabled = false; }, function () { b.disabled = false; });
+      });
+      actions.appendChild(b);
+    });
+  }, function () { box.remove(); });
+})();
+</script>
