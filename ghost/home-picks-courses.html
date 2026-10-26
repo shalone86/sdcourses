@@ -26,7 +26,8 @@ window.SD_PICKS = {
   ],
   skip: /^(sources|congratulations!?|.*downloads?)$/i,
   card: function (p, label, esc) {
-    var text = p.custom_excerpt || p.excerpt || '';
+    // (an automatic excerpt can start with the video player's "0:00 /1:23 1×")
+    var text = (p.custom_excerpt || p.excerpt || '').replace(/^[\s\d:\/×.]+(?=\S)/, '');
     return '<a class="sd-pick" href="' + esc(p.url) + '">' + (p.feature_image ? '<img src="' + esc(p.feature_image) + '" alt="" loading="lazy">' : '') +
       '<div><h3>' + esc(p.title) + '</h3>' + (text ? '<p>' + esc(text) + '</p>' : '') + '</div></a>';
   },
