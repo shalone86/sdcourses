@@ -42,11 +42,11 @@ const sites = {
   courses: {
     css: `.sd-picks{padding-top:8px;padding-bottom:8px}
 .sd-picks .gh-inner{max-width:900px}
-.sd-picks h2{font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px}
+.sd-picks h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px}
 .sd-pick{display:flex;gap:20px;align-items:center;text-decoration:none;color:inherit;border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:14px;background:rgba(255,255,255,.55)}
 .sd-pick img{width:min(240px,38%);aspect-ratio:16/9;object-fit:cover;border-radius:8px;flex:none}
-.sd-pick h3{margin:0 0 6px;font-size:1.35rem;line-height:1.2}
-.sd-pick p{margin:0;opacity:.8;font-size:.95rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.sd-pick h3{margin:0 0 8px;font-size:24px;line-height:1.2}
+.sd-pick p{margin:0;opacity:.8;font-size:16px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .sd-pick:hover h3{text-decoration:underline}
 .sd-picks-actions{margin-top:14px}
 @media (max-width:600px){.sd-pick{flex-direction:column;align-items:stretch}.sd-pick img{width:100%}}`,
