@@ -1,0 +1,405 @@
+{
+ "stamp": "2:3271758:1793058453515",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.24
+  },
+  {
+   "w": "Catechism",
+   "start": 0.24,
+   "end": 1.12
+  },
+  {
+   "w": "describes",
+   "start": 1.12,
+   "end": 1.69
+  },
+  {
+   "w": "the",
+   "start": 1.69,
+   "end": 1.93
+  },
+  {
+   "w": "motion",
+   "start": 1.93,
+   "end": 2.44
+  },
+  {
+   "w": "of",
+   "start": 2.44,
+   "end": 2.58
+  },
+  {
+   "w": "the",
+   "start": 2.58,
+   "end": 2.77
+  },
+  {
+   "w": "hand",
+   "start": 2.77,
+   "end": 3.36
+  },
+  {
+   "w": "from",
+   "start": 3.36,
+   "end": 3.54
+  },
+  {
+   "w": "the",
+   "start": 3.54,
+   "end": 3.93
+  },
+  {
+   "w": "forehead",
+   "start": 3.93,
+   "end": 4.62
+  },
+  {
+   "w": "to",
+   "start": 4.62,
+   "end": 4.62
+  },
+  {
+   "w": "the",
+   "start": 4.62,
+   "end": 4.84
+  },
+  {
+   "w": "breast,",
+   "start": 4.84,
+   "end": 6.06
+  },
+  {
+   "w": "from",
+   "start": 6.06,
+   "end": 6.24
+  },
+  {
+   "w": "the",
+   "start": 6.24,
+   "end": 6.55
+  },
+  {
+   "w": "right",
+   "start": 6.55,
+   "end": 7.07
+  },
+  {
+   "w": "shoulder",
+   "start": 7.07,
+   "end": 7.91
+  },
+  {
+   "w": "to",
+   "start": 7.91,
+   "end": 8.12
+  },
+  {
+   "w": "the",
+   "start": 8.12,
+   "end": 8.43
+  },
+  {
+   "w": "left.",
+   "start": 8.43,
+   "end": 9.2
+  },
+  {
+   "w": "Byzantine",
+   "start": 9.2,
+   "end": 9.72
+  },
+  {
+   "w": "Catholics",
+   "start": 9.72,
+   "end": 10.32
+  },
+  {
+   "w": "touch",
+   "start": 10.32,
+   "end": 10.54
+  },
+  {
+   "w": "the",
+   "start": 10.54,
+   "end": 10.83
+  },
+  {
+   "w": "forehead,",
+   "start": 10.83,
+   "end": 11.29
+  },
+  {
+   "w": "then",
+   "start": 11.29,
+   "end": 11.52
+  },
+  {
+   "w": "the",
+   "start": 11.52,
+   "end": 11.69
+  },
+  {
+   "w": "breast,",
+   "start": 11.69,
+   "end": 12.15
+  },
+  {
+   "w": "then",
+   "start": 12.15,
+   "end": 12.54
+  },
+  {
+   "w": "the",
+   "start": 12.54,
+   "end": 12.56
+  },
+  {
+   "w": "right",
+   "start": 12.56,
+   "end": 12.89
+  },
+  {
+   "w": "shoulder,",
+   "start": 12.89,
+   "end": 13.42
+  },
+  {
+   "w": "and",
+   "start": 13.42,
+   "end": 13.86
+  },
+  {
+   "w": "last",
+   "start": 13.86,
+   "end": 14.32
+  },
+  {
+   "w": "the",
+   "start": 14.32,
+   "end": 14.81
+  },
+  {
+   "w": "left.",
+   "start": 14.81,
+   "end": 15.68
+  },
+  {
+   "w": "The",
+   "start": 15.68,
+   "end": 15.88
+  },
+  {
+   "w": "Catechism",
+   "start": 15.88,
+   "end": 16.4
+  },
+  {
+   "w": "says",
+   "start": 16.4,
+   "end": 16.8
+  },
+  {
+   "w": "that",
+   "start": 16.8,
+   "end": 16.9
+  },
+  {
+   "w": "by",
+   "start": 16.9,
+   "end": 17.02
+  },
+  {
+   "w": "signing",
+   "start": 17.02,
+   "end": 17.45
+  },
+  {
+   "w": "ourselves",
+   "start": 17.45,
+   "end": 18.01
+  },
+  {
+   "w": "crosswise",
+   "start": 18.01,
+   "end": 18.54
+  },
+  {
+   "w": "like",
+   "start": 18.54,
+   "end": 19.04
+  },
+  {
+   "w": "this,",
+   "start": 19.04,
+   "end": 19.19
+  },
+  {
+   "w": "we",
+   "start": 19.19,
+   "end": 19.31
+  },
+  {
+   "w": "profess",
+   "start": 19.31,
+   "end": 19.74
+  },
+  {
+   "w": "the",
+   "start": 19.74,
+   "end": 19.92
+  },
+  {
+   "w": "Paschal",
+   "start": 19.92,
+   "end": 20.44
+  },
+  {
+   "w": "Mystery",
+   "start": 20.44,
+   "end": 21.01
+  },
+  {
+   "w": "of",
+   "start": 21.01,
+   "end": 21.17
+  },
+  {
+   "w": "Christ,",
+   "start": 21.17,
+   "end": 21.82
+  },
+  {
+   "w": "His",
+   "start": 21.82,
+   "end": 22.07
+  },
+  {
+   "w": "dying",
+   "start": 22.07,
+   "end": 22.45
+  },
+  {
+   "w": "and",
+   "start": 22.45,
+   "end": 22.73
+  },
+  {
+   "w": "rising.",
+   "start": 22.73,
+   "end": 23.48
+  },
+  {
+   "w": "Every",
+   "start": 23.48,
+   "end": 23.87
+  },
+  {
+   "w": "time",
+   "start": 23.87,
+   "end": 24.19
+  },
+  {
+   "w": "we",
+   "start": 24.19,
+   "end": 24.35
+  },
+  {
+   "w": "confess",
+   "start": 24.35,
+   "end": 24.9
+  },
+  {
+   "w": "that",
+   "start": 24.9,
+   "end": 25.22
+  },
+  {
+   "w": "our",
+   "start": 25.22,
+   "end": 25.46
+  },
+  {
+   "w": "salvation",
+   "start": 25.46,
+   "end": 26.17
+  },
+  {
+   "w": "accomplished",
+   "start": 26.17,
+   "end": 27.12
+  },
+  {
+   "w": "on",
+   "start": 27.12,
+   "end": 27.41
+  },
+  {
+   "w": "the",
+   "start": 27.41,
+   "end": 27.52
+  },
+  {
+   "w": "cross",
+   "start": 27.52,
+   "end": 27.91
+  },
+  {
+   "w": "by",
+   "start": 27.91,
+   "end": 28.11
+  },
+  {
+   "w": "Jesus",
+   "start": 28.11,
+   "end": 28.47
+  },
+  {
+   "w": "Christ",
+   "start": 28.47,
+   "end": 29.06
+  },
+  {
+   "w": "is",
+   "start": 29.06,
+   "end": 29.51
+  },
+  {
+   "w": "the",
+   "start": 29.51,
+   "end": 29.54
+  },
+  {
+   "w": "work",
+   "start": 29.54,
+   "end": 29.96
+  },
+  {
+   "w": "of",
+   "start": 29.96,
+   "end": 29.96
+  },
+  {
+   "w": "of",
+   "start": 30.05,
+   "end": 30.21
+  },
+  {
+   "w": "the",
+   "start": 30.21,
+   "end": 30.58
+  },
+  {
+   "w": "Holy",
+   "start": 30.58,
+   "end": 31.08
+  },
+  {
+   "w": "Trinity.",
+   "start": 31.08,
+   "end": 31.96
+  }
+ ]
+}

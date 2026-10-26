@@ -1,0 +1,350 @@
+{
+ "stamp": "2:2770638:1793058993554",
+ "words": [
+  {
+   "w": "Have",
+   "start": 0.09,
+   "end": 0.21
+  },
+  {
+   "w": "you",
+   "start": 0.21,
+   "end": 0.37
+  },
+  {
+   "w": "noticed",
+   "start": 0.37,
+   "end": 0.74
+  },
+  {
+   "w": "that",
+   "start": 0.74,
+   "end": 0.95
+  },
+  {
+   "w": "Byzantine",
+   "start": 0.95,
+   "end": 1.43
+  },
+  {
+   "w": "Catholics",
+   "start": 1.43,
+   "end": 1.92
+  },
+  {
+   "w": "make",
+   "start": 1.92,
+   "end": 2.2
+  },
+  {
+   "w": "the",
+   "start": 2.2,
+   "end": 2.36
+  },
+  {
+   "w": "sign",
+   "start": 2.36,
+   "end": 2.56
+  },
+  {
+   "w": "of",
+   "start": 2.56,
+   "end": 2.8
+  },
+  {
+   "w": "the",
+   "start": 2.8,
+   "end": 2.83
+  },
+  {
+   "w": "cross",
+   "start": 2.83,
+   "end": 3.24
+  },
+  {
+   "w": "from",
+   "start": 3.24,
+   "end": 3.91
+  },
+  {
+   "w": "right",
+   "start": 3.91,
+   "end": 4.26
+  },
+  {
+   "w": "to",
+   "start": 4.26,
+   "end": 4.36
+  },
+  {
+   "w": "left?",
+   "start": 4.36,
+   "end": 5.42
+  },
+  {
+   "w": "The",
+   "start": 5.42,
+   "end": 5.65
+  },
+  {
+   "w": "opposite",
+   "start": 5.65,
+   "end": 6.27
+  },
+  {
+   "w": "of",
+   "start": 6.27,
+   "end": 6.45
+  },
+  {
+   "w": "Roman",
+   "start": 6.45,
+   "end": 6.81
+  },
+  {
+   "w": "Catholics",
+   "start": 6.81,
+   "end": 7.51
+  },
+  {
+   "w": "who",
+   "start": 7.51,
+   "end": 7.75
+  },
+  {
+   "w": "make",
+   "start": 7.75,
+   "end": 8.05
+  },
+  {
+   "w": "the",
+   "start": 8.05,
+   "end": 8.28
+  },
+  {
+   "w": "sign",
+   "start": 8.28,
+   "end": 8.66
+  },
+  {
+   "w": "of",
+   "start": 8.66,
+   "end": 8.74
+  },
+  {
+   "w": "the",
+   "start": 8.74,
+   "end": 9.33
+  },
+  {
+   "w": "cross",
+   "start": 9.33,
+   "end": 9.36
+  },
+  {
+   "w": "from",
+   "start": 9.36,
+   "end": 9.72
+  },
+  {
+   "w": "left",
+   "start": 9.72,
+   "end": 9.98
+  },
+  {
+   "w": "to",
+   "start": 9.98,
+   "end": 10.12
+  },
+  {
+   "w": "right.",
+   "start": 10.12,
+   "end": 10.82
+  },
+  {
+   "w": "Let's",
+   "start": 10.82,
+   "end": 11.27
+  },
+  {
+   "w": "have",
+   "start": 11.27,
+   "end": 11.64
+  },
+  {
+   "w": "a",
+   "start": 11.64,
+   "end": 11.73
+  },
+  {
+   "w": "look",
+   "start": 11.73,
+   "end": 12.1
+  },
+  {
+   "w": "at",
+   "start": 12.1,
+   "end": 12.28
+  },
+  {
+   "w": "the",
+   "start": 12.28,
+   "end": 12.55
+  },
+  {
+   "w": "two",
+   "start": 12.55,
+   "end": 12.82
+  },
+  {
+   "w": "different",
+   "start": 12.82,
+   "end": 13.65
+  },
+  {
+   "w": "traditions",
+   "start": 13.65,
+   "end": 14.73
+  },
+  {
+   "w": "with",
+   "start": 14.73,
+   "end": 14.92
+  },
+  {
+   "w": "this",
+   "start": 14.92,
+   "end": 15.2
+  },
+  {
+   "w": "lesson.",
+   "start": 15.2,
+   "end": 15.86
+  },
+  {
+   "w": "I'm",
+   "start": 15.86,
+   "end": 16.07
+  },
+  {
+   "w": "your",
+   "start": 16.07,
+   "end": 16.36
+  },
+  {
+   "w": "host,",
+   "start": 16.36,
+   "end": 16.79
+  },
+  {
+   "w": "Shalone",
+   "start": 16.79,
+   "end": 17.3
+  },
+  {
+   "w": "Cason,",
+   "start": 17.3,
+   "end": 17.86
+  },
+  {
+   "w": "and",
+   "start": 17.86,
+   "end": 18.06
+  },
+  {
+   "w": "let's",
+   "start": 18.06,
+   "end": 18.34
+  },
+  {
+   "w": "begin,",
+   "start": 18.34,
+   "end": 18.8
+  },
+  {
+   "w": "as",
+   "start": 18.8,
+   "end": 19.1
+  },
+  {
+   "w": "always,",
+   "start": 19.1,
+   "end": 19.71
+  },
+  {
+   "w": "in",
+   "start": 19.71,
+   "end": 19.77
+  },
+  {
+   "w": "the",
+   "start": 19.77,
+   "end": 19.85
+  },
+  {
+   "w": "name",
+   "start": 19.85,
+   "end": 20.12
+  },
+  {
+   "w": "of",
+   "start": 20.12,
+   "end": 20.12
+  },
+  {
+   "w": "the",
+   "start": 20.12,
+   "end": 20.26
+  },
+  {
+   "w": "Father,",
+   "start": 20.26,
+   "end": 20.7
+  },
+  {
+   "w": "and",
+   "start": 20.7,
+   "end": 20.74
+  },
+  {
+   "w": "of",
+   "start": 20.74,
+   "end": 20.85
+  },
+  {
+   "w": "the",
+   "start": 20.85,
+   "end": 21.02
+  },
+  {
+   "w": "Son,",
+   "start": 21.02,
+   "end": 21.3
+  },
+  {
+   "w": "and",
+   "start": 21.3,
+   "end": 21.47
+  },
+  {
+   "w": "of",
+   "start": 21.47,
+   "end": 21.58
+  },
+  {
+   "w": "the",
+   "start": 21.58,
+   "end": 21.77
+  },
+  {
+   "w": "Holy",
+   "start": 21.77,
+   "end": 21.98
+  },
+  {
+   "w": "Spirit.",
+   "start": 21.98,
+   "end": 22.56
+  }
+ ]
+}

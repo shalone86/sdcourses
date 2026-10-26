@@ -1,0 +1,455 @@
+{
+ "stamp": "2:3525198:1793058594410",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.26
+  },
+  {
+   "w": "Catechism",
+   "start": 0.26,
+   "end": 1.03
+  },
+  {
+   "w": "also",
+   "start": 1.03,
+   "end": 1.37
+  },
+  {
+   "w": "explains",
+   "start": 1.37,
+   "end": 2.06
+  },
+  {
+   "w": "the",
+   "start": 2.06,
+   "end": 2.32
+  },
+  {
+   "w": "Fingers.",
+   "start": 2.32,
+   "end": 3
+  },
+  {
+   "w": "Joining",
+   "start": 3,
+   "end": 3.48
+  },
+  {
+   "w": "the",
+   "start": 3.48,
+   "end": 3.63
+  },
+  {
+   "w": "first",
+   "start": 3.63,
+   "end": 4
+  },
+  {
+   "w": "three",
+   "start": 4,
+   "end": 4.26
+  },
+  {
+   "w": "fingers",
+   "start": 4.26,
+   "end": 4.69
+  },
+  {
+   "w": "of",
+   "start": 4.69,
+   "end": 4.81
+  },
+  {
+   "w": "our",
+   "start": 4.81,
+   "end": 5.02
+  },
+  {
+   "w": "hand",
+   "start": 5.02,
+   "end": 5.28
+  },
+  {
+   "w": "is",
+   "start": 5.28,
+   "end": 5.47
+  },
+  {
+   "w": "a",
+   "start": 5.47,
+   "end": 5.63
+  },
+  {
+   "w": "sign",
+   "start": 5.63,
+   "end": 6.08
+  },
+  {
+   "w": "of",
+   "start": 6.08,
+   "end": 6.11
+  },
+  {
+   "w": "our",
+   "start": 6.11,
+   "end": 6.24
+  },
+  {
+   "w": "profession",
+   "start": 6.24,
+   "end": 6.9
+  },
+  {
+   "w": "of",
+   "start": 6.9,
+   "end": 7
+  },
+  {
+   "w": "faith",
+   "start": 7,
+   "end": 7.38
+  },
+  {
+   "w": "in",
+   "start": 7.38,
+   "end": 7.49
+  },
+  {
+   "w": "the",
+   "start": 7.49,
+   "end": 7.72
+  },
+  {
+   "w": "Holy",
+   "start": 7.72,
+   "end": 7.95
+  },
+  {
+   "w": "Trinity.",
+   "start": 7.95,
+   "end": 8.7
+  },
+  {
+   "w": "The",
+   "start": 8.7,
+   "end": 8.92
+  },
+  {
+   "w": "thumb,",
+   "start": 8.92,
+   "end": 9.37
+  },
+  {
+   "w": "the",
+   "start": 9.37,
+   "end": 9.7
+  },
+  {
+   "w": "forefinger,",
+   "start": 9.7,
+   "end": 10.38
+  },
+  {
+   "w": "and",
+   "start": 10.38,
+   "end": 10.57
+  },
+  {
+   "w": "the",
+   "start": 10.57,
+   "end": 10.85
+  },
+  {
+   "w": "middle",
+   "start": 10.85,
+   "end": 11.15
+  },
+  {
+   "w": "finger",
+   "start": 11.15,
+   "end": 11.8
+  },
+  {
+   "w": "are",
+   "start": 11.8,
+   "end": 12.06
+  },
+  {
+   "w": "joined",
+   "start": 12.06,
+   "end": 12.83
+  },
+  {
+   "w": "for",
+   "start": 12.83,
+   "end": 12.97
+  },
+  {
+   "w": "the",
+   "start": 12.97,
+   "end": 13.14
+  },
+  {
+   "w": "three",
+   "start": 13.14,
+   "end": 13.42
+  },
+  {
+   "w": "persons",
+   "start": 13.42,
+   "end": 13.93
+  },
+  {
+   "w": "of",
+   "start": 13.93,
+   "end": 14.06
+  },
+  {
+   "w": "the",
+   "start": 14.06,
+   "end": 14.1
+  },
+  {
+   "w": "Trinity.",
+   "start": 14.1,
+   "end": 14.7
+  },
+  {
+   "w": "The",
+   "start": 14.7,
+   "end": 14.95
+  },
+  {
+   "w": "last",
+   "start": 14.95,
+   "end": 15.29
+  },
+  {
+   "w": "two",
+   "start": 15.29,
+   "end": 15.55
+  },
+  {
+   "w": "fingers",
+   "start": 15.55,
+   "end": 16.14
+  },
+  {
+   "w": "are",
+   "start": 16.14,
+   "end": 16.39
+  },
+  {
+   "w": "bent",
+   "start": 16.39,
+   "end": 16.73
+  },
+  {
+   "w": "to",
+   "start": 16.73,
+   "end": 16.9
+  },
+  {
+   "w": "the",
+   "start": 16.9,
+   "end": 17.15
+  },
+  {
+   "w": "palm.",
+   "start": 17.15,
+   "end": 17.8
+  },
+  {
+   "w": "The",
+   "start": 17.8,
+   "end": 18.02
+  },
+  {
+   "w": "Catechism",
+   "start": 18.02,
+   "end": 18.52
+  },
+  {
+   "w": "says",
+   "start": 18.52,
+   "end": 18.8
+  },
+  {
+   "w": "this",
+   "start": 18.8,
+   "end": 19.06
+  },
+  {
+   "w": "signifies",
+   "start": 19.06,
+   "end": 19.54
+  },
+  {
+   "w": "our",
+   "start": 19.54,
+   "end": 19.81
+  },
+  {
+   "w": "confession",
+   "start": 19.81,
+   "end": 20.43
+  },
+  {
+   "w": "of",
+   "start": 20.43,
+   "end": 20.85
+  },
+  {
+   "w": "two",
+   "start": 20.85,
+   "end": 20.91
+  },
+  {
+   "w": "natures,",
+   "start": 20.91,
+   "end": 21.5
+  },
+  {
+   "w": "divine",
+   "start": 21.5,
+   "end": 22.06
+  },
+  {
+   "w": "and",
+   "start": 22.06,
+   "end": 22.5
+  },
+  {
+   "w": "human,",
+   "start": 22.5,
+   "end": 23.05
+  },
+  {
+   "w": "in",
+   "start": 23.05,
+   "end": 23.19
+  },
+  {
+   "w": "the",
+   "start": 23.19,
+   "end": 23.52
+  },
+  {
+   "w": "Incarnate",
+   "start": 23.52,
+   "end": 24.56
+  },
+  {
+   "w": "Son",
+   "start": 24.56,
+   "end": 24.61
+  },
+  {
+   "w": "of",
+   "start": 24.61,
+   "end": 24.78
+  },
+  {
+   "w": "God.",
+   "start": 24.78,
+   "end": 25.4
+  },
+  {
+   "w": "So",
+   "start": 25.49,
+   "end": 25.63
+  },
+  {
+   "w": "even",
+   "start": 25.63,
+   "end": 26.09
+  },
+  {
+   "w": "the",
+   "start": 26.09,
+   "end": 26.44
+  },
+  {
+   "w": "hand",
+   "start": 26.44,
+   "end": 26.94
+  },
+  {
+   "w": "tells",
+   "start": 26.94,
+   "end": 27.56
+  },
+  {
+   "w": "the",
+   "start": 27.56,
+   "end": 27.83
+  },
+  {
+   "w": "faith,",
+   "start": 27.83,
+   "end": 28.64
+  },
+  {
+   "w": "one",
+   "start": 28.64,
+   "end": 29.05
+  },
+  {
+   "w": "God",
+   "start": 29.05,
+   "end": 29.34
+  },
+  {
+   "w": "in",
+   "start": 29.34,
+   "end": 29.57
+  },
+  {
+   "w": "three",
+   "start": 29.57,
+   "end": 30.15
+  },
+  {
+   "w": "persons,",
+   "start": 30.15,
+   "end": 31.13
+  },
+  {
+   "w": "and",
+   "start": 31.13,
+   "end": 31.33
+  },
+  {
+   "w": "Christ,",
+   "start": 31.33,
+   "end": 31.95
+  },
+  {
+   "w": "true",
+   "start": 31.95,
+   "end": 32.32
+  },
+  {
+   "w": "God",
+   "start": 32.32,
+   "end": 32.63
+  },
+  {
+   "w": "and",
+   "start": 32.63,
+   "end": 32.94
+  },
+  {
+   "w": "true",
+   "start": 32.94,
+   "end": 33.44
+  },
+  {
+   "w": "man.",
+   "start": 33.44,
+   "end": 34
+  }
+ ]
+}
