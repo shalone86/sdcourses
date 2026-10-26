@@ -1,0 +1,190 @@
+# Quote-anchored lesson. Draft by Claude; Shalone writes the intro and outro.
+status: draft
+course: byzantine-catholic-basics
+number: 6
+slug: the-sign-of-the-cross-right-to-left
+title: The Sign of the Cross, Right to Left
+excerpt: >-
+  Why Byzantine Catholics touch the right shoulder before the left, what the
+  three fingers mean, and how this differs from the Latin Church.
+
+sources:
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 626"
+    file: sources-local/ugcc-catechism.txt
+    url: https://ukrcatholic.org/fileadmin/user_upload/PDFs/Our_Faith/Christ-our-Pascha-Catechism-of-the-Ukrainian-Catholic-Church-by-Comission-for-the-Catehism-z-lib.org_.pdf
+  - id: ce-cross
+    label: Catholic Encyclopedia, Sign of the Cross
+    url: https://www.newadvent.org/cathen/13785a.htm
+  - id: ccc-liturgy
+    label: Catechism of the Catholic Church, 1203
+    url: https://www.vatican.va/archive/ENG0015/__P3C.HTM
+
+intro:
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - "A question to open with: have you noticed that Byzantine Catholics make the Sign of the Cross from right to left, the opposite of Roman Catholics?"
+    - Five points, from what the sign professes to how the two traditions compare.
+  scenes:
+    - type: title
+    - type: host
+      at: I'm your host
+    - type: trinity
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: A prayer of faith
+    quote:
+      lead: The Byzantine catechism says what the Sign of the Cross is.
+      text: >-
+        By the sign of the holy Cross, the Christian professes faith in the
+        Most Holy Trinity
+      source: ugcc
+      cite: Christ – Our Pascha 626
+      highlight: professes faith in the Most Holy Trinity
+    text: >-
+      The Sign of the Cross is a prayer made with the whole body. As we say,
+      "In the name of the Father, and of the Son, and of the Holy Spirit,"
+      we name the Trinity. The catechism adds that we also profess the
+      Incarnation, that God's Son became man. The words are short, but they
+      hold the heart of the faith. The catechism asks us to make the sign
+      with the right hand, devoutly and without haste.
+    visuals:
+      - type: chain
+        items: [Father, Son, Holy Spirit]
+        caption: One Cross, three Persons
+    quiz:
+      type: choice
+      question: What does the Christian profess by the Sign of the Cross?
+      options:
+        - Faith in the Most Holy Trinity
+        - Faith in the saints only
+        - Nothing, it is only a habit
+      answer: 0
+      why: >-
+        Christ – Our Pascha 626: the Christian "professes faith in the Most
+        Holy Trinity."
+
+  - heading: Right shoulder, then left
+    quote:
+      lead: The catechism describes the motion of the hand.
+      text: >-
+        from the forehead to the breast and from the right shoulder to the left
+      source: ugcc
+      cite: Christ – Our Pascha 626
+      highlight: from the right shoulder to the left
+    text: >-
+      Byzantine Catholics touch the forehead, then the breast, then the right
+      shoulder, and last the left. The catechism says that by signing
+      ourselves crosswise like this, we profess the Paschal Mystery of
+      Christ, his dying and rising. Every time, we confess that our salvation,
+      accomplished on the cross by Jesus Christ, is the work of the Holy
+      Trinity.
+    visuals:
+      - type: chain
+        items: [Forehead, Breast, Right shoulder, Left shoulder]
+        caption: The Byzantine order
+    quiz:
+      type: choice
+      question: Which shoulder do Byzantine Catholics touch first?
+      options:
+        - The right
+        - The left
+        - Neither
+      answer: 0
+      why: >-
+        Christ – Our Pascha 626: "from the right shoulder to the left."
+
+  - heading: Three fingers and two
+    quote:
+      lead: The catechism explains the fingers.
+      text: >-
+        Joining the first three fingers of our hand is a sign of our
+        profession of faith in the Holy Trinity
+      source: ugcc
+      cite: Christ – Our Pascha 626
+      highlight: first three fingers
+    text: >-
+      The thumb, forefinger and middle finger are joined for the three Persons
+      of the Trinity. The last two fingers are bent to the palm. The catechism
+      says this signifies our confession of two natures, divine and human,
+      in the incarnate Son of God. So even the hand tells the faith: one God
+      in three Persons, and Christ true God and true man.
+    visuals:
+      - type: compare
+        left: { kicker: Three fingers joined, title: The Trinity, note: Father, Son and Holy Spirit, icon: triangle }
+        right: { kicker: Two fingers bent, title: Two natures, note: Divine and human in Christ, icon: heart-handshake }
+        emphasis: left
+    quiz:
+      type: blank
+      question: The first three fingers joined stand for the Holy ____.
+      accept: [Trinity]
+      why: >-
+        Christ – Our Pascha 626: joining the first three fingers is "a sign of
+        our profession of faith in the Holy Trinity."
+
+  - heading: How the West does it
+    quote:
+      lead: The Catholic Encyclopedia describes the Western habit.
+      text: >-
+        the large sign of the cross was more commonly made in the West with
+        the open hand and that the bar of the cross was traced from left to
+        right
+      source: ce-cross
+      cite: Catholic Encyclopedia, Sign of the Cross
+      highlight: traced from left to right
+    text: >-
+      In the Roman tradition the hand goes from the left shoulder to the
+      right. The same article says that in earlier centuries the West may have
+      used the Eastern way, three fingers and right to left, but it admits
+      that this point is not entirely clear. What we can say is that, by the
+      end of the Middle Ages, the Western habit was left to right.
+    visuals:
+      - type: compare
+        left: { kicker: Byzantine, title: Right to left, note: Three fingers joined, icon: arrow-left }
+        right: { kicker: Roman, title: Left to right, note: Often the open hand, icon: arrow-right }
+        emphasis: left
+    quiz:
+      type: truefalse
+      question: In the Roman tradition, the cross is traced from left to right.
+      answer: true
+      why: >-
+        True. The Catholic Encyclopedia says the bar of the cross was traced
+        "from left to right" in the West.
+
+  - heading: Different, but equal
+    quote:
+      lead: The Church says every lawful way of praying is...
+      text: >-
+        of equal right and dignity
+      source: ccc-liturgy
+      cite: Catechism 1203
+      highlight: equal right and dignity
+    text: >-
+      Neither way is a mistake. It is the same cross, the same Trinity, and
+      the same Lord. The Church receives both with equal respect, and each
+      shows something of the faith. When a Byzantine Catholic and a Roman
+      Catholic stand side by side and bless themselves in different
+      directions, they are praying the same prayer.
+    visuals:
+      - type: union
+        center: One Cross
+        items: [Right to left, Left to right]
+        caption: Different, but equal
+    quiz:
+      type: truefalse
+      question: The Church holds all lawful rites to be of equal right and dignity.
+      answer: true
+      why: >-
+        True. Catechism 1203: all lawful rites are "of equal right and
+        dignity."
+
+outro:
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: a prayer of faith · right shoulder, then left · three fingers and two · how the West does it · different, but equal."
+  scenes:
+    - type: recap
