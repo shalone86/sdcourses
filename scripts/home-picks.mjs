@@ -16,8 +16,8 @@ const sites = {
 .sd-picks .project-card__img{width:100%;height:auto;display:block}
 .sd-picks{margin-bottom:32px}
 .sd-picks-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px}
-.sd-picks-actions button{font:inherit;font-weight:700;font-size:1.05em;padding:12px 22px;border-radius:999px;border:0;cursor:pointer;background:#FFB300;color:#2B2350;box-shadow:0 4px 0 #c98a00}
-.sd-picks-actions button:active{transform:translateY(2px);box-shadow:0 2px 0 #c98a00}
+.sd-picks-actions button{font:inherit;font-weight:700;font-size:1.05em;padding:12px 22px;border-radius:999px;border:0;cursor:pointer;background:var(--ghost-accent-color,#1ab2ff);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.22)}
+.sd-picks-actions button:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.22)}
 .sd-picks-actions button:disabled{opacity:.6}`,
     config: `{
   title: "Today's picks",
@@ -28,7 +28,7 @@ const sites = {
   buttonClass: 'sd-pick-btn',
   lists: [
     {label: "Today's video", button: '🎲 Surprise me: a video', filter: 'tag:catholic-kids-video-lessons'},
-    {label: "Today's song", button: '🎲 Surprise me: a song', filter: 'tag:catholic-kids-songs'},
+    {label: "Today's song", button: '🎵 Surprise me: a song', filter: 'tag:catholic-kids-songs'},
   ],
   card: function (p, label, esc) {
     return '<article class="project-card">' +
