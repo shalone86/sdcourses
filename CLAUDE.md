@@ -26,6 +26,8 @@ HANDOFF.md.**
   source: Scripture (NABRE, bible.usccb.org), the Catechism (vatican.va), the
   Catholic Encyclopedia (newadvent.org), or another source she approves.
   Wikipedia is `reference: true`: background only, never quoted.
+- Christ – Our Pascha (the Ukrainian Catholic catechism) is free online; every source entry for it carries both
+  `file: sources-local/ugcc-catechism.txt` (the check reads this) and `url: https://ukrcatholic.org/fileadmin/user_upload/PDFs/Our_Faith/Christ-our-Pascha-Catechism-of-the-Ukrainian-Catholic-Church-by-Comission-for-the-Catehism-z-lib.org_.pdf` (the post links to it).
 - Copy quotations exactly. `npm run check -- <course>/<lesson>` must pass.
 - Explanations: 60–100 words, plain, no flourishes. Whole lesson ~550–650 words.
 - Quizzes: one or more per point, mixing `choice`, `truefalse`, and `blank`.

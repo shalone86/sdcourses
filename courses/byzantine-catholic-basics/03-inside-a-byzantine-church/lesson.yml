@@ -13,6 +13,7 @@ sources:
   - id: ugcc
     label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 600–604, 646"
     file: sources-local/ugcc-catechism.txt
+    url: https://ukrcatholic.org/fileadmin/user_upload/PDFs/Our_Faith/Christ-our-Pascha-Catechism-of-the-Ukrainian-Catholic-Church-by-Comission-for-the-Catehism-z-lib.org_.pdf
   - id: ccc-images
     label: Catechism of the Catholic Church, 1159–1162
     url: https://www.vatican.va/archive/ENG0015/__P38.HTM
