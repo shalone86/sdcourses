@@ -11,11 +11,11 @@ const js = fs.readFileSync(path.join(ROOT, 'ghost/home-picks.js'), 'utf8');
 const sites = {
   // Kids: today's video and today's song above "Latest work", in the theme's own cards.
   kids: {
-    css: `.sd-picks .project-feed{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    css: `.sd-picks .project-feed{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-bottom:0}
 .sd-picks .sd-pick-label{display:inline-block;font-weight:700;font-size:.85em;letter-spacing:.04em;text-transform:uppercase;margin-bottom:.35em;opacity:.75}
 .sd-picks .project-card__img{width:100%;height:auto;display:block}
 .sd-picks{margin-bottom:32px}
-.sd-picks-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.sd-picks-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 .sd-picks-actions button{font:inherit;font-weight:700;font-size:1.05em;padding:12px 22px;border-radius:999px;border:0;cursor:pointer;background:var(--ghost-accent-color,#1ab2ff);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.22)}
 .sd-picks-actions button:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.22)}
 .sd-picks-actions button:disabled{opacity:.6}`,
