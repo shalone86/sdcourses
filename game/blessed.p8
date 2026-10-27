@@ -4,82 +4,239 @@ __lua__
 -- blessed! a priest survivors game
 -- arrows walk. you bless anyone
 -- near you on your own.
--- level up: left/right choose,
--- x or z take it.
+-- level up / gift box: left/right
+-- choose, x or z take it.
 
--- sprite slots (game/sprites.json)
-s_priest=0 s_deacon=2 s_helper=4
+-- sprite slots: game/sprites.json
+-- says which drawing goes where.
+-- a slot with no drawing yet shows
+-- as a dot or a plain shape.
+s_priest=0 s_bishop=2
+s_deacon=4 s_helper=6
 s_people={16,18,20,22,24}
+s_grace=32 s_chest=33
+s_rosary=34 s_bucket=35
+s_coffee=36 s_car=37
+s_decor={40,41,42,43,44,45}
+-- 16x16 buildings
+s_house=48 s_church=50 s_hosp=52
 
-day_len=180 -- seconds in a day
+world=512   -- town size in pixels
+day_len=300 -- seconds in a day
+
+-- @parts (npm run pico8 writes this from game/sprites.json)
+parts={[1]="clothes",[4]="skin",[5]="hair",[15]="eyes"}
+-- @end
+
+-- random looks for the people:
+-- each part's color is swapped
+-- for one of these colors
+looks={
+ hair={1,2,4,5,6,7,9,10},
+ shirt={1,2,3,8,9,11,12,13,14},
+ pants={1,2,3,5,12,13},
+ shoes={1,2,4,5},
+ clothes={1,2,3,8,9,11,12,13,14},
+}
+skins={{4,15},{15,1},{9,1},{4,1}} -- skin, eyes
+
+cartdata("sdcason_blessed")
 
 function _init()
- p={x=64,y=64,spd=1,r=14,cd=0,rate=45,fl=false}
+ make_town()
+ p={x=256,y=272,spd=1,r=14,cd=0,
+  rate=45,fl=false,fast=0,mag=14}
  people={} fx={} helpers={}
- deacons=0 church=0 chap=false
+ graces={} items={}
+ deacons=0 church=0
+ chap=false bishop=false
+ lv={} -- level of each upgrade
  score=0 xp=0 need=3 lvl=1
- t=0 missed=0
+ t=0 missed=0 msg="" msg_t=0
  state="play"
- church_x,church_y=40,40
- hosp_x,hosp_y=180,90
+ for i=1,8 do drop_item(rnd(world),rnd(world)) end
 end
 
--- upgrades: name, what it does
+-- upgrades: name, what it does,
+-- most times you can take it
 ups={
- {n="holy water",d="bless farther",f=function() p.r+=6 end},
- {n="quick hands",d="bless faster",f=function() p.rate=max(10,p.rate-8) end},
- {n="a car",d="go faster",f=function() p.spd+=0.4 end},
- {n="a deacon",d="blesses with you",f=function() deacons+=1 end},
- {n="bishop!",d="priests bless for you",f=function() add(helpers,{x=p.x,y=p.y,cd=0}) end},
- {n="fix the church",d="more people come",f=function() church+=1 end},
- {n="chaplain",d="hospital blesses itself",f=function() chap=true end},
+ {n="holy water",d="bless farther",max=5,
+  f=function() p.r+=5 end},
+ {n="quick hands",d="bless faster",max=5,
+  f=function() p.rate=max(12,p.rate-7) end},
+ {n="a car",d="drive faster",max=3,
+  f=function() p.spd+=0.4 end},
+ {n="guardian angel",d="grace flies to you",max=4,
+  f=function() p.mag+=10 end},
+ {n="a deacon",d="blesses beside you",max=4,
+  f=function() deacons+=1 end},
+ {n="bishop",d="a priest blesses for you",max=5,
+  f=function() bishop=true add(helpers,{x=p.x,y=p.y,cd=0}) end},
+ {n="fix the church",d="the church blesses too",max=5,
+  f=function() church+=1 end},
+ {n="chaplain",d="the hospital is blessed",max=1,
+  f=function() chap=true end},
 }
 
-function drawn(n)
- for y=0,7 do for x=0,7 do
-  if sget((n%16)*8+x,flr(n/16)*8+y)!=0 then return true end
- end end
- return false
-end
+-->8
+-- the town
 
-function sprite(n,x,y,fl,c)
- -- her drawing, or a dot until she draws it
- if drawn(n) then
-  spr(n+flr(t/15)%2,x-4,y-8,1,1,fl)
- else
-  circfill(x,y-4,3,c)
+function make_town()
+ bldg={}
+ add(bldg,{x=248,y=232,s=s_church,k="church"})
+ add(bldg,{x=380,y=120,s=s_hosp,k="hosp"})
+ -- doors she paints in the map
+ -- editor (sprite flag 1) send
+ -- people out too
+ for my=0,63 do for mx=0,63 do
+  if fget(mget(mx,my),1) then
+   add(bldg,{x=mx*8,y=my*8,k="door"})
+  end
+ end end
+ for i=1,40 do
+  local x,y=16+rnd(world-48),16+rnd(world-48)
+  if free(x,y) then
+   add(bldg,{x=x,y=y,s=s_house,k="house"})
+  end
+ end
+ decor={}
+ for i=1,150 do
+  add(decor,{x=rnd(world),y=rnd(world),s=rnd(s_decor)})
  end
 end
 
-function spawn()
- local a=rnd(1)
- local sx,sy=p.x+cos(a)*80,p.y+sin(a)*80
- if rnd(4)<church then sx,sy=church_x+rnd(16),church_y+rnd(16) end
- add(people,{x=sx,y=sy,s=rnd(s_people),
-  wait=600+rnd(300),dx=rnd(0.6)-0.3,dy=rnd(0.6)-0.3})
+function free(x,y)
+ if abs(x-256)<40 and abs(y-260)<40 then return false end
+ for b in all(bldg) do
+  if abs(b.x-x)<28 and abs(b.y-y)<28 then return false end
+ end
+ return true
+end
+
+-- walls stop the priest: buildings,
+-- the town's edge, and map tiles
+-- with sprite flag 0
+function solid(x,y)
+ if x<4 or y<8 or x>world-4 or y>world then return true end
+ if fget(mget(x\8,y\8),0) then return true end
+ for b in all(bldg) do
+  if b.s and x>b.x and x<b.x+16
+   and y>b.y+6 and y<b.y+17 then
+   return true
+  end
+ end
+ return false
+end
+
+function near(ax,ay,bx,by,r)
+ local dx,dy=ax-bx,ay-by
+ return abs(dx)<r and abs(dy)<r
+  and dx*dx+dy*dy<r*r
+end
+
+-->8
+-- people, blessings, things
+
+function new_look()
+ local sk,l=rnd(skins),{}
+ for c,k in pairs(parts) do
+  if k=="skin" then l[c]=sk[1]
+  elseif k=="eyes" then l[c]=sk[2]
+  elseif looks[k] then l[c]=rnd(looks[k]) end
+ end
+ return l
+end
+
+function spawn(big)
+ -- out of a house near you,
+ -- or from off the screen
+ local x,y
+ local close={}
+ for b in all(bldg) do
+  if abs(b.x-p.x)<100 and abs(b.y-p.y)<100 then
+   add(close,b)
+  end
+ end
+ if #close>0 and rnd(1)<0.7 then
+  local b=rnd(close)
+  x,y=b.x+8,b.y+18
+ else
+  local a=rnd(1)
+  x,y=p.x+cos(a)*90,p.y+sin(a)*90
+ end
+ local q={x=x,y=y,s=rnd(s_people),
+  look=new_look(),need=1,hit=0,
+  wait=900+rnd(300),spd=.2+rnd(.2)}
+ if big then
+  q.big=true q.need=10+lvl\2
+  q.spd=.15 q.wait=3600
+ end
+ add(people,q)
 end
 
 function bless(x,y,r)
  for q in all(people) do
-  if (q.x-x)^2+(q.y-y)^2<r*r then
-   del(people,q)
-   score+=1 xp+=1
-   add(fx,{x=q.x,y=q.y,t=20})
+  if near(q.x,q.y-4,x,y,r) then
+   q.need-=1 q.hit=4
+   if q.need<=0 then
+    del(people,q) score+=1
+    add(graces,{x=q.x,y=q.y-4,v=q.big and 10 or 1})
+    if q.big then add(items,{x=q.x,y=q.y,k="chest"}) end
+    add(fx,{x=q.x,y=q.y,t=20})
+    sfx(0)
+   end
   end
+ end
+end
+
+function drop_item(x,y)
+ add(items,{x=mid(16,x,world-16),y=mid(16,y,world-16),
+  k=rnd({"rosary","bucket","coffee"})})
+end
+
+function use(k)
+ sfx(1)
+ if k=="chest" then
+  sfx(3) offer("a gift box!")
+ elseif k=="rosary" then
+  for g in all(graces) do g.pull=true end
+  say("rosary: all grace comes")
+ elseif k=="bucket" then
+  for q in all(people) do
+   if not q.big then q.need=1 end
+  end
+  bless(p.x,p.y,90)
+  say("holy water for everyone!")
+ elseif k=="coffee" then
+  p.fast=300 say("coffee! go go go")
+ end
+end
+
+function say(s) msg=s msg_t=90 end
+
+function offer(title)
+ local pool={}
+ for u in all(ups) do
+  if (lv[u.n] or 0)<u.max then add(pool,u) end
+ end
+ choices={}
+ for i=1,min(3,#pool) do
+  local u=rnd(pool) del(pool,u) add(choices,u)
+ end
+ if #choices>0 then
+  pick=1 pick_title=title state="pick"
  end
 end
 
 function levelup()
  xp-=need lvl+=1
- need=flr(need*1.4)+1
- choices={}
- local pool={}
- for u in all(ups) do add(pool,u) end
- for i=1,3 do
-  local u=rnd(pool) del(pool,u) add(choices,u)
- end
- pick=1 state="pick"
+ need=flr(need*1.3)+1
+ sfx(2)
+ offer("level "..lvl.."! choose one")
 end
+
+-->8
+-- update
 
 function _update()
  if state=="over" then
@@ -87,29 +244,55 @@ function _update()
   return
  end
  if state=="pick" then
-  if btnp(0) then pick=max(1,pick-1) end
-  if btnp(1) then pick=min(3,pick+1) end
+  if btnp(0) or btnp(2) then pick=max(1,pick-1) end
+  if btnp(1) or btnp(3) then pick=min(#choices,pick+1) end
   if btnp(4) or btnp(5) then
-   choices[pick].f() state="play"
+   local u=choices[pick]
+   lv[u.n]=(lv[u.n] or 0)+1
+   u.f() state="play"
   end
   return
  end
 
  t+=1
- if t>=day_len*30 then state="over" return end
+ if t>=day_len*30 then
+  state="over"
+  best=dget(0)
+  if score>best then dset(0,score) end
+  return
+ end
 
- -- walk
+ -- walk (coffee doubles it)
  local dx,dy=0,0
  if btn(0) then dx-=1 p.fl=true end
  if btn(1) then dx+=1 p.fl=false end
  if btn(2) then dy-=1 end
  if btn(3) then dy+=1 end
- p.x+=dx*p.spd p.y+=dy*p.spd
+ local sp=p.spd
+ if p.fast>0 then sp*=2 p.fast-=1 end
+ if not solid(p.x+dx*sp,p.y) then p.x+=dx*sp end
+ if not solid(p.x,p.y+dy*sp) then p.y+=dy*sp end
 
- -- people come asking
- if t%max(8,30-church*4-flr(t/600))==0 then spawn() end
+ -- more and more people ask
+ if t%max(6,30-church*3-t\900)==0 then spawn() end
+ -- every minute, a sad neighbor
+ -- who needs lots of blessings
+ if t%1800==900 then
+  spawn(true) say("a sad neighbor needs you!")
+ end
+ -- now and then, a gift lands
+ if t%450==0 then
+  drop_item(p.x+rnd(160)-80,p.y+rnd(160)-80)
+ end
+
+ -- they come to you
  for q in all(people) do
-  q.x+=q.dx q.y+=q.dy q.wait-=1
+  local a=atan2(p.x-q.x,p.y-q.y)
+  if not near(q.x,q.y,p.x,p.y,6) then
+   q.x+=cos(a)*q.spd q.y+=sin(a)*q.spd
+  end
+  q.fl=cos(a)<0
+  q.wait-=1
   if q.wait<=0 then del(people,q) missed+=1 end
  end
 
@@ -117,15 +300,17 @@ function _update()
  p.cd-=1
  if p.cd<=0 then
   p.cd=p.rate
-  bless(p.x,p.y,p.r)
+  bless(p.x,p.y-4,p.r)
   for i=1,deacons do
    local a=t/90+i/deacons
-   bless(p.x+cos(a)*18,p.y+sin(a)*18,8)
+   bless(p.x+cos(a)*18,p.y-4+sin(a)*18,9)
   end
-  if chap then bless(hosp_x+8,hosp_y+8,30) end
+  if church>0 then bless(256,248,16+church*8) end
+  if chap then bless(388,128,36) end
  end
 
- -- your priests go to whoever waits
+ -- your priests go to whoever
+ -- has waited longest
  for h in all(helpers) do
   local q=people[1]
   if q then
@@ -133,39 +318,139 @@ function _update()
    h.x+=cos(a)*0.8 h.y+=sin(a)*0.8
   end
   h.cd-=1
-  if h.cd<=0 then h.cd=40 bless(h.x,h.y,10) end
+  if h.cd<=0 then h.cd=40 bless(h.x,h.y-4,10) end
  end
 
- for f in all(fx) do f.t-=1 if f.t<=0 then del(fx,f) end end
- if xp>=need then levelup() end
+ -- grace: walk near it to pick it up
+ for g in all(graces) do
+  if g.pull or near(g.x,g.y,p.x,p.y-4,p.mag) then
+   local a=atan2(p.x-g.x,p.y-4-g.y)
+   g.x+=cos(a)*3 g.y+=sin(a)*3
+  end
+  if near(g.x,g.y,p.x,p.y-4,5) then
+   del(graces,g) xp+=g.v sfx(1)
+  end
+ end
+
+ for it in all(items) do
+  if near(it.x,it.y,p.x,p.y-4,8) then
+   del(items,it) use(it.k)
+   if state=="pick" then break end
+  end
+ end
+
+ for f in all(fx) do
+  f.t-=1 if f.t<=0 then del(fx,f) end
+ end
+ msg_t=max(0,msg_t-1)
+ if xp>=need and state=="play" then levelup() end
+end
+
+-->8
+-- draw
+
+dc={}
+function drawn(n)
+ if dc[n]==nil then
+  dc[n]=false
+  for y=0,7 do for x=0,7 do
+   if sget(n%16*8+x,n\16*8+y)!=0 then dc[n]=true end
+  end end
+ end
+ return dc[n]
+end
+
+function sprite(n,x,y,fl,c)
+ -- her drawing (2 frames), or a dot
+ if drawn(n) then
+  spr(n+flr(t/15)%2,x-4,y-8,1,1,fl)
+ else
+  circfill(x,y-4,3,c)
+ end
+end
+
+function thing(n,x,y,c)
+ if drawn(n) then spr(n,x-4,y-4) else circfill(x,y,2,c) end
+end
+
+function shape(b)
+ local x,y=b.x,b.y
+ if b.k=="church" then
+  rectfill(x,y+4,x+15,y+15,7)
+  rectfill(x+7,y-5,x+8,y+4,7)
+  line(x+5,y-3,x+10,y-3,7)
+  rectfill(x+6,y+10,x+9,y+15,4)
+ elseif b.k=="hosp" then
+  rectfill(x,y+2,x+15,y+15,7)
+  rectfill(x+7,y+4,x+8,y+11,8)
+  rectfill(x+4,y+7,x+11,y+8,8)
+ else
+  rectfill(x+1,y+7,x+14,y+15,15)
+  for i=0,7 do line(x+7-i,y+i,x+8+i,y+i,8) end
+  rectfill(x+6,y+11,x+9,y+15,4)
+ end
+end
+
+function draw_person(q)
+ for c,n in pairs(q.look) do pal(c,n) end
+ if q.hit>0 then
+  for i=1,15 do pal(i,7) end
+  q.hit-=1
+ end
+ if q.big then
+  local n=q.s+flr(t/15)%2
+  if drawn(q.s) then
+   sspr(n%16*8,n\16*8,8,8,q.x-8,q.y-16,16,16,q.fl)
+  else circfill(q.x,q.y-7,6,12) end
+ else
+  sprite(q.s,q.x,q.y,q.fl,12)
+ end
+ pal()
+ -- "+" asks for a blessing; a sad
+ -- neighbor shows how many more
+ if q.wait>120 or t%8<4 then
+  if q.big then print(q.need,q.x-3,q.y-23,12)
+  else print("+",q.x-1,q.y-15,7) end
+ end
 end
 
 function _draw()
  cls(3)
  camera(p.x-64,p.y-64)
- -- church grows as you fix it
- rectfill(church_x,church_y,church_x+16+church*4,church_y+14,7)
- rectfill(church_x+6,church_y-6,church_x+8,church_y,7)
- line(church_x+4,church_y-4,church_x+10,church_y-4,7)
- if chap then
-  rectfill(hosp_x,hosp_y,hosp_x+16,hosp_y+12,7)
-  rectfill(hosp_x+7,hosp_y+2,hosp_x+9,hosp_y+10,8)
-  rectfill(hosp_x+4,hosp_y+5,hosp_x+12,hosp_y+7,8)
- end
- circ(p.x,p.y-4,p.r,10)
- for q in all(people) do
-  sprite(q.s,q.x,q.y,q.dx<0,12)
-  -- the asking bubble blinks when time runs short
-  if q.wait>120 or t%8<4 then
-   print("+",q.x-1,q.y-15,7)
+ map(0,0,0,0,64,64)
+ for d in all(decor) do spr(d.s,d.x,d.y) end
+ for b in all(bldg) do
+  if b.s then
+   if drawn(b.s) then spr(b.s,b.x,b.y,2,2)
+   else shape(b) end
   end
  end
+ if church>0 then circ(256,248,16+church*8,7) end
+ if chap then circ(388,128,36,8) end
+ circ(p.x,p.y-4,p.r,10)
+
+ for it in all(items) do
+  local s,c=s_chest,9
+  if it.k=="rosary" then s,c=s_rosary,13
+  elseif it.k=="bucket" then s,c=s_bucket,12
+  elseif it.k=="coffee" then s,c=s_coffee,4 end
+  thing(s,it.x,it.y+sin(t/40),c)
+ end
+ for g in all(graces) do thing(s_grace,g.x,g.y,10) end
+ for q in all(people) do draw_person(q) end
  for i=1,deacons do
   local a=t/90+i/deacons
   sprite(s_deacon,p.x+cos(a)*18,p.y+sin(a)*18,false,9)
  end
- for h in all(helpers) do sprite(s_helper,h.x,h.y,false,13) end
- sprite(s_priest,p.x,p.y,p.fl,0)
+ for h in all(helpers) do
+  sprite(s_helper,h.x,h.y,false,13)
+ end
+ if (lv["a car"] or 0)>0 and drawn(s_car) then
+  spr(s_car,p.x-4,p.y-6,1,1,p.fl)
+ end
+ local me=s_priest
+ if bishop and drawn(s_bishop) then me=s_bishop end
+ sprite(me,p.x,p.y,p.fl,0)
  for f in all(fx) do
   print("\143",f.x-3,f.y-12-(20-f.t)/2,10)
  end
@@ -174,28 +459,35 @@ function _draw()
  -- top bar
  rectfill(0,0,127,7,1)
  print("blessed "..score,2,1,7)
- local left=day_len-flr(t/30)
- print(flr(left/60)..":"..sub("0"..left%60,-2),108,1,10)
+ print("lv "..lvl,64,1,6)
+ local left=day_len-t\30
+ print(left\60 ..":"..sub("0"..left%60,-2),108,1,10)
  rectfill(0,8,127,9,0)
- rectfill(0,8,127*xp/need,9,10)
+ rectfill(0,8,127*min(1,xp/need),9,10)
+ if msg_t>0 then
+  print(msg,64-#msg*2,14,7)
+ end
 
  if state=="pick" then
-  rectfill(8,30,119,98,1) rect(8,30,119,98,10)
-  print("level "..lvl.."! choose one",20,34,10)
-  for i=1,3 do
+  rectfill(8,28,119,100,1) rect(8,28,119,100,10)
+  print(pick_title,64-#pick_title*2,32,10)
+  for i=1,#choices do
    local u=choices[i]
-   local y=44+(i-1)*17
+   local y=42+(i-1)*17
    if i==pick then rectfill(12,y-2,115,y+12,13) end
-   print(u.n,16,y,7) print(u.d,16,y+6,6)
+   print(u.n,16,y,7)
+   print("lv "..((lv[u.n] or 0)+1),96,y,9)
+   print(u.d,16,y+6,6)
   end
-  print("\139\145 choose  \142 take",26,91,6)
+  print("\139\145 choose  \142 take",28,93,6)
  end
  if state=="over" then
-  rectfill(16,40,111,88,1) rect(16,40,111,88,10)
-  print("the day is done",34,46,10)
-  print("blessed: "..score,34,58,7)
-  print("missed: "..missed,34,66,6)
-  print("press x to play again",22,78,6)
+  rectfill(16,36,111,92,1) rect(16,36,111,92,10)
+  print("the day is done",34,42,10)
+  print("blessed: "..score,34,54,7)
+  print("missed: "..missed,34,62,6)
+  print("best: "..max(best,score),34,70,9)
+  print("press x to play again",22,82,6)
  end
 end
 __gfx__

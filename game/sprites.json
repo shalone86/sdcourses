@@ -1,11 +1,21 @@
 {
-  "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (an 8x8 drawing with 2 frames fills slots N and N+1). Swap a name here when she draws the real one (e.g. priest-idle), then run: npm run pico8",
-  "0": "guy-beard-idle",
-  "2": "thick-guy-idle-beard",
-  "4": "skinny-guy-idle",
-  "16": "skinny-guy-idle",
-  "18": "skinny-woman-idle",
-  "20": "thick-guy-idle",
-  "22": "thick-woman-idle",
-  "24": "thick-guy-idle-beard"
+  "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
+  "_slots": "0 priest, 2 bishop, 4 deacon, 6 priest who works for the bishop, 16-25 people (5 bases, 2 frames each), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 37 car, 40-45 trees/flowers/rocks scattered on the grass (1 frame each), 48 house, 50 church, 52 hospital (16x16, 1 frame)",
+  "slots": {
+    "0": "guy-beard-idle",
+    "16": "skinny-guy-idle",
+    "18": "skinny-woman-idle",
+    "20": "thick-guy-idle",
+    "22": "thick-woman-idle",
+    "24": "thick-guy-idle-beard"
+  },
+  "_parts": "Colors in the people's base drawings that get swapped at random for each person: hair, skin, eyes, shirt, pants, shoes, clothes.",
+  "parts": {
+    "#5A3825": "hair",
+    "#A86B3C": "skin",
+    "#F2C6A0": "eyes",
+    "#2B2350": "clothes"
+  },
+  "_colors": "Force one of her colors onto a PICO-8 color number (0-15) when the nearest match is wrong or two parts land on the same one.",
+  "colors": {}
 }
