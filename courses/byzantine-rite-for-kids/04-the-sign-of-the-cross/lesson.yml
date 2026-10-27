@@ -1,6 +1,6 @@
 # Kids version of byzantine-catholic-basics/06: the same sources, shorter
 # quotations, simpler words, about half as long (explanations ~35 words).
-status: draft
+status: reviewed
 course: byzantine-rite-for-kids
 number: 4
 slug: the-sign-of-the-cross-for-kids
@@ -165,3 +165,5 @@ outro:
     - "Recap: a prayer with your whole body · right shoulder first · three fingers · different, but equal."
   scenes:
     - type: recap
+thumb:
+  sprite: eastern-monk-point
