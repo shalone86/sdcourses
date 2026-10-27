@@ -41,6 +41,11 @@ HANDOFF.md.**
   the pictures, headings and her video bounce, snaps them to the beat, and
   shows the beats as dots in the Timing tab; the default `calm` is for
   explainers.
+- Guide characters: her pixel characters (`sprites/`: idle, walk, run, look up, point; a
+  `sprite` scene can be flipped) are fun guides, like Crash Course or Kurzgesagt, especially
+  for kids. They guide and react; they never stand for a whole idea. Things like a chalice or the
+  Eucharist get a real picture (Wikimedia etc.) or a 2D shape sketch (like the iconostasis). She
+  adjusts everything in the Timing tab.
 - Maps can highlight `areas:`: a country (Natural Earth name or a common one,
   "United States"), a continent, a group of countries (EU, NATO, BRICS…;
   members as of 2025), or an empire (approximate, at about its peak; those
