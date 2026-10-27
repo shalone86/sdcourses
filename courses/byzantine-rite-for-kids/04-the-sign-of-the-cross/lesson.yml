@@ -1,0 +1,147 @@
+# Kids version of byzantine-catholic-basics/06: the same sources, shorter
+# quotations, simpler words, about half as long (explanations ~35 words).
+status: draft
+course: byzantine-rite-for-kids
+number: 4
+slug: the-sign-of-the-cross-for-kids
+title: The Sign of the Cross
+excerpt: >-
+  Why Byzantine Catholics make the Sign of the Cross from the right shoulder to
+  the left, and what the three fingers mean, for kids.
+
+sources:
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 626"
+    file: sources-local/ugcc-catechism.txt
+    url: https://ukrcatholic.org/fileadmin/user_upload/PDFs/Our_Faith/Christ-our-Pascha-Catechism-of-the-Ukrainian-Catholic-Church-by-Comission-for-the-Catehism-z-lib.org_.pdf
+  - id: ccc-liturgy
+    label: Catechism of the Catholic Church, 1203
+    url: https://www.vatican.va/archive/ENG0015/__P3C.HTM
+
+intro:
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - Kids version of lesson 6 of The Byzantine Rite. Aim for about 40–50 words.
+    - "A question to open with: did you know Byzantine Catholics make the Sign of the Cross the other way around? Which shoulder do you touch first?"
+    - Three fingers for the Trinity, two bent for Jesus' two natures; right shoulder first.
+  scenes:
+    - type: title
+    - type: host
+      at: I'm your host
+    - type: trinity
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: A prayer with your whole body
+    quote:
+      lead: The Byzantine catechism says what the Sign of the Cross is.
+      text: >-
+        the Christian professes faith in the Most Holy Trinity
+      source: ugcc
+      cite: Christ – Our Pascha 626
+      highlight: Most Holy Trinity
+    text: >-
+      When we make the Sign of the Cross, we say who God is: Father, Son and
+      Holy Spirit. It is a prayer we say with our words and with our hands.
+    visuals:
+      - type: chain
+        items: [Father, Son, Holy Spirit]
+        caption: One God, three Persons
+      - type: sprite
+        sprite: eastern-monk-point
+        size: small
+        with: over
+    quiz:
+      type: choice
+      question: What do we say with the Sign of the Cross?
+      options:
+        - Who God is: Father, Son and Holy Spirit
+        - Goodbye
+        - Nothing
+      answer: 0
+      why: >-
+        Christ – Our Pascha 626: the Christian "professes faith in the Most Holy
+        Trinity."
+
+  - heading: Right shoulder first
+    quote:
+      lead: The catechism tells us where the hand goes.
+      text: >-
+        from the forehead to the breast and from the right shoulder to the left
+      source: ugcc
+      cite: Christ – Our Pascha 626
+      highlight: right shoulder to the left
+    text: >-
+      Byzantine Catholics touch their forehead, then their chest, then the
+      right shoulder, then the left. We trace the cross of Jesus, who died and
+      rose for us!
+    visuals:
+      - type: chain
+        items: [Forehead, Chest, Right shoulder, Left shoulder]
+        caption: The Byzantine way
+    quiz:
+      type: choice
+      question: Which shoulder do Byzantine Catholics touch first?
+      options: [The right, The left, Neither]
+      answer: 0
+      why: >-
+        Christ – Our Pascha 626: "from the right shoulder to the left."
+
+  - heading: Three fingers
+    quote:
+      lead: The catechism explains the fingers.
+      text: >-
+        Joining the first three fingers of our hand is a sign of our
+        profession of faith in the Holy Trinity
+      source: ugcc
+      cite: Christ – Our Pascha 626
+      highlight: first three fingers
+    text: >-
+      Three fingers together are for the Trinity. The last two fingers bend
+      down to the palm, for Jesus: he is God and also truly human.
+    visuals:
+      - type: compare
+        left: { kicker: Three fingers, title: The Trinity, note: Father, Son and Holy Spirit, icon: triangle }
+        right: { kicker: Two fingers, title: Jesus, note: True God and true man, icon: heart }
+        emphasis: left
+    quiz:
+      type: blank
+      question: Three fingers joined stand for the Holy ____.
+      accept: [Trinity]
+      why: >-
+        Christ – Our Pascha 626: joining the first three fingers is "a sign of
+        our profession of faith in the Holy Trinity."
+
+  - heading: Different, but equal
+    quote:
+      lead: Roman Catholics go left to right. The Church says every lawful way of praying is...
+      text: >-
+        of equal right and dignity
+      source: ccc-liturgy
+      cite: Catechism 1203
+      highlight: equal right and dignity
+    text: >-
+      Roman Catholics touch the left shoulder first. Neither way is wrong. It
+      is the same cross and the same God, and the Church loves both ways.
+    visuals:
+      - type: union
+        center: One Cross
+        items: [Right to left, Left to right]
+        caption: Different, but equal
+    quiz:
+      type: truefalse
+      question: The Church holds all lawfully recognized rites to be of equal right and dignity.
+      answer: true
+      why: >-
+        True! Catechism 1203: all lawful rites are "of equal right and
+        dignity."
+
+outro:
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: a prayer with your whole body · right shoulder first · three fingers · different, but equal."
+  scenes:
+    - type: recap

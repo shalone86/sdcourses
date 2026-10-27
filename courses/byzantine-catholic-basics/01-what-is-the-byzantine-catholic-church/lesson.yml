@@ -25,8 +25,8 @@ sources:
   - id: ugcc
     label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 285, 291"
     file: sources-local/ugcc-catechism.txt
-
     url: https://ukrcatholic.org/fileadmin/user_upload/PDFs/Our_Faith/Christ-our-Pascha-Catechism-of-the-Ukrainian-Catholic-Church-by-Comission-for-the-Catehism-z-lib.org_.pdf
+
 intro:
   text: >-
     What is the Byzantine Catholic Rite? Why do they take communion with a
