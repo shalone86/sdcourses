@@ -1,25 +1,44 @@
 # Quote-anchored lesson. Draft by Claude; Shalone writes the intro and outro.
+# Updated 2026-10-27: current rules (Universi Dominici Gregis) with the old rules as a comparison,
+# plus Pope Francis and Pope Leo XIV.
 status: draft
 course: what-is-the-pope
 number: 2
 slug: how-a-pope-is-chosen
 title: How a Pope Is Chosen
 excerpt: >-
-  How popes have been chosen over the centuries, from the early Roman church to
-  the cardinals and the first conclaves.
+  How a pope is chosen today, how that compares with the early Church, and the
+  last two elections: Pope Francis in 2013 and Pope Leo XIV in 2025.
 
 sources:
+  - id: udg
+    label: "John Paul II, Universi Dominici Gregis (1996), as updated on vatican.va"
+    url: https://www.vatican.va/content/john-paul-ii/en/apost_constitutions/documents/hf_jp-ii_apc_22021996_universi-dominici-gregis.html
   - id: ce-elections
-    label: "Catholic Encyclopedia (1911): Papal Elections"
+    label: "Catholic Encyclopedia (1911): Papal Elections (for the history)"
     url: https://www.newadvent.org/cathen/11456a.htm
+  - id: fran-bio
+    label: "Vatican: Biography of the Holy Father Francis (2013–2025)"
+    url: https://www.vatican.va/content/francesco/en/biography/documents/papa-francesco-biografia-bergoglio.html
+  - id: fran-death
+    label: "Vatican News: Pope Francis has died on Easter Monday aged 88"
+    url: https://www.vaticannews.va/en/pope/news/2025-04/pope-francis-dies-on-easter-monday-aged-88.html
+  - id: leo-bio
+    label: "Vatican: Biography of the Holy Father Leo XIV"
+    url: https://www.vatican.va/content/leo-xiv/en/biography/documents/biografia_leone-xiv.html
+  - id: leo-urbi
+    label: "Leo XIV, First Blessing Urbi et Orbi (8 May 2025)"
+    url: https://www.vatican.va/content/leo-xiv/en/messages/urbi/documents/20250508-prima-benedizione-urbietorbi.html
 
 intro:
   text: >-
     I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
   notes:
-    - "A question to open with: when a pope dies or resigns, who picks the next one, and why are the cardinals locked in a room?"
-    - "The Catholic Encyclopedia (1911) says the method \"has varied considerably at different periods of the history of the Church.\" This lesson follows five steps of that history."
-    - "The article is from 1911. Today's rules come from Pope John Paul II's 1996 constitution Universi Dominici Gregis (the Catholic Encyclopedia itself points to it). Cardinals under 80 vote; two thirds is still the rule. Check before saying more about modern details."
+    - "A question to open with: a conclave just happened. How did the cardinals choose Pope Leo XIV, and how did popes get chosen before?"
+    - "Current rules: Pope John Paul II's 1996 constitution Universi Dominici Gregis (UDG), with later changes by Benedict XVI. The text on vatican.va is the updated one."
+    - "Five points: who votes, the two-thirds rule, accepting the office, Pope Francis in 2013, Pope Leo XIV in 2025."
+    - "Leo XIV was elected 8 May 2025 on the fourth ballot (Vatican News says so; the Vatican biography gives the dates). Cardinal Dominique Mamberti announced \"Habemus Papam\" from the loggia."
+    - "I have not confirmed an official count of electors in a Vatican source. Press reports say 133 cardinals voted; say it only if you check it."
   scenes:
     - type: title
     - type: host
@@ -29,160 +48,170 @@ intro:
       cues: {son: the Son, spirit: the Holy Spirit}
 
 points:
-  - heading: Like any other bishop
+  - heading: The cardinals vote
     quote:
-      lead: The Catholic Encyclopedia says what historians and canonists generally hold about the earliest ages.
+      lead: Today's rules say who elects the pope.
       text: >-
-        the Roman bishopric was filled on its vacancy in the same manner as
-        other bishoprics
-      source: ce-elections
-      cite: Catholic Encyclopedia, "Papal Elections"
-      highlight: in the same manner as other bishoprics
+        The right to elect the Roman Pontiff belongs exclusively to the
+        Cardinals of Holy Roman Church, with the exception of those who have
+        reached their eightieth birthday
+      source: udg
+      cite: Universi Dominici Gregis 33
+      highlight: exclusively to the Cardinals
     text: >-
-      The pope is the Bishop of Rome. In the early centuries, the article
-      says, historians generally hold that the clergy and people of Rome and
-      the neighboring bishops chose him, as they would any other bishop. The
-      sources are thin for the earliest years, so the details are less certain
-      than the general picture. There were no cardinals yet and no special
-      rules.
-    visuals:
-      - type: chain
-        items: [Neighboring bishops, Roman clergy, Faithful of Rome]
-        caption: Who chose a new Bishop of Rome
-    quiz:
-      type: choice
-      question: In the earliest centuries, how was the Bishop of Rome generally chosen?
-      options:
-        - Like other bishops, by clergy and faithful
-        - By the emperor alone
-        - By lot among the cardinals
-      answer: 0
-      why: >-
-        The Catholic Encyclopedia says the Roman bishopric was filled "in the
-        same manner as other bishoprics."
-
-  - heading: Power from Christ, not the emperor
-    quote:
-      lead: After Constantine, emperors often took part. The article explains what that never meant.
-      text: >-
-        the elected candidate receives his power from Christ
-      source: ce-elections
-      cite: Catholic Encyclopedia, "Papal Elections"
-      highlight: receives his power from Christ
-    text: >-
-      After Constantine gave peace to the Church, Roman emperors, and later
-      kings, often influenced who became pope. At times they even named a
-      candidate. But the article stresses that an emperor's confirmation never
-      gave the pope his authority. It only helped keep order. The Church's
-      teaching is that the one elected receives his power from Christ.
-    visuals:
-      - type: compare
-        left: { kicker: The election, title: Who is chosen, note: Church electors choose the man, icon: users }
-        right: { kicker: The office, title: Where power comes from, note: From Christ, icon: key }
-        emphasis: right
-    quiz:
-      type: blank
-      question: The elected pope receives his power from ____.
-      accept: [Christ, Jesus, Jesus Christ]
-      why: >-
-        The Catholic Encyclopedia: "the elected candidate receives his power
-        from Christ."
-
-  - heading: The cardinals take over (1059)
-    quote:
-      lead: A decree of Pope Nicholas II in 1059 was a turning point.
-      text: >-
-        the decree of Pope Nicholas reserves the actual election to the
-        cardinals
-      source: ce-elections
-      cite: Catholic Encyclopedia, "Papal Elections"
-      highlight: reserves the actual election to the cardinals
-    text: >-
-      In 1059 Pope Nicholas II decreed that the cardinal bishops would meet
-      first, and then the other cardinals would join them to elect. The rest
-      of the clergy and the laity were still asked to give their assent. The
-      Catholic Encyclopedia calls this decree epoch-making, because it started
-      the cardinals' role in choosing the pope.
+      Only cardinals vote, and only those under eighty. The same rule limits
+      the electors to one hundred and twenty, and it excludes any lay power
+      from the choice. This was not always so. The Catholic Encyclopedia says
+      historians generally hold that early on the clergy and people of Rome
+      chose their bishop, as in other dioceses. In 1059 the cardinals were
+      given the central role, and they have kept it.
     visuals:
       - type: timeline
         items:
-          - { year: "1059", label: Nicholas II names the cardinals }
-          - { year: "1139", label: Choice limited to cardinals }
-    quiz:
-      type: choice
-      question: Whom did the decree of Nicholas II in 1059 give the actual election?
-      options: [The cardinals, The emperor, The Roman nobles]
-      answer: 0
-      why: >-
-        The Catholic Encyclopedia: the decree "reserves the actual election to
-        the cardinals."
-
-  - heading: A two-thirds majority (1179)
-    quote:
-      lead: In 1179 a Lateran Council under Alexander III made a rule that still matters.
-      text: >-
-        the pope is to be chosen by a two-thirds majority of the electors who
-        are present
-      source: ce-elections
-      cite: Catholic Encyclopedia, "Papal Elections"
-      highlight: two-thirds majority
-    text: >-
-      A bare majority was not enough. In 1179 the Church required two thirds of
-      the electors present, so that the new pope would have broad support. But
-      the rule did not say what to do when no one reached two thirds. That
-      gap led to one of the longest vacancies in history: two years and nine
-      months after the death of Clement IV in 1268.
-    visuals:
-      - type: compare
-        left: { kicker: 1179, title: Two thirds, note: of the electors present, icon: vote }
-        right: { kicker: "1268–1271", title: Two years and nine months, note: The seat stays empty, icon: hourglass }
-        emphasis: left
-    quiz:
-      type: choice
-      question: How many of the electors present were needed, according to the 1179 rule?
-      options: [Two thirds, Just over half, All of them]
-      answer: 0
-      why: >-
-        The Catholic Encyclopedia: "a two-thirds majority of the electors who
-        are present."
-
-  - heading: "Locked in: the first conclave (1274)"
-    quote:
-      lead: To end such long waits, the Second Council of Lyons decreed that the cardinals should assemble and hold their meetings...
-      text: >-
-        entirely shut out from all outside influences
-      source: ce-elections
-      cite: Catholic Encyclopedia, "Papal Elections"
-      highlight: shut out from all outside influences
-    text: >-
-      In 1274 the Second Council of Lyons under Gregory X ordered the
-      cardinals to meet ten days after the pope's death and stay shut in
-      until they chose. If they delayed, their food was reduced. The article
-      says this is the origin of conclaves. The word means "with a key": the
-      room is locked so no one can pressure the electors.
-    visuals:
-      - type: term
-        term: Conclave
-        origin: Latin cum clave
-        meaning: with a key
+          - { year: "Early Church", label: Clergy and people of Rome }
+          - { year: "1059", label: Cardinals take the lead }
+          - { year: "Today", label: Cardinals under 80 vote }
       - type: sprite
         sprite: cardinal-walk
         move: across
         size: small
         with: over
     quiz:
-      type: truefalse
-      question: Conclaves began so that the cardinals could choose a pope without outside pressure.
-      answer: true
+      type: choice
+      question: Who can vote for the pope today?
+      options:
+        - Cardinals who have not reached eighty
+        - Every bishop in the world
+        - The Roman emperor
+      answer: 0
       why: >-
-        True. The cardinals were to hold their meetings "entirely shut out
-        from all outside influences."
+        Universi Dominici Gregis 33: the right belongs "exclusively to the
+        Cardinals," except those who have reached their eightieth birthday.
+
+  - heading: Two thirds of the votes
+    quote:
+      lead: A new pope needs a large majority, as the constitution says.
+      text: >-
+        for the valid election of the Roman Pontiff at least two thirds of the
+        votes are required
+      source: udg
+      cite: Universi Dominici Gregis 62
+      highlight: at least two thirds
+    text: >-
+      The cardinals vote in secret on paper ballots in the Sistine Chapel.
+      After each count the ballots are burned, and the smoke tells the crowd
+      outside: black means no pope yet, white means there is one. The
+      two-thirds rule is old. A Lateran Council set it in 1179. The first
+      conclave, which means "with a key," came in 1274 so that the cardinals
+      could choose without outside pressure.
+    visuals:
+      - type: compare
+        left: { kicker: No pope yet, title: Black smoke, note: No one has two thirds, icon: cloud }
+        right: { kicker: A pope is elected, title: White smoke, note: Two thirds reached, icon: flame }
+        emphasis: right
+    quiz:
+      type: blank
+      question: A new pope needs at least ____ of the votes.
+      accept: [two thirds, two-thirds, 2/3]
+      why: >-
+        Universi Dominici Gregis 62: "at least two thirds of the votes are
+        required."
+
+  - heading: "Yes, and a new name"
+    quote:
+      lead: After the vote, the one elected is asked if he accepts. Then he becomes pope at once.
+      text: >-
+        is immediately Bishop of the Church of Rome, true Pope and Head of the
+        College of Bishops
+      source: udg
+      cite: Universi Dominici Gregis 88
+      highlight: immediately Bishop of the Church of Rome
+    text: >-
+      The Cardinal Dean asks the one elected, "Do you accept your canonical
+      election as Supreme Pontiff?" If he says yes, he is asked, "By what
+      name do you wish to be called?" From that moment he is pope. No
+      emperor or king needs to confirm him, which was once an issue. The
+      Church teaches that the pope's authority comes from Christ.
+    visuals:
+      - type: chain
+        items: [Elected, "Do you accept?", Chooses a name, Is pope]
+        caption: From the vote to the loggia
+    quiz:
+      type: truefalse
+      question: A newly elected pope must wait for an emperor or king to confirm him.
+      answer: false
+      why: >-
+        False. After he accepts, he "is immediately Bishop of the Church of
+        Rome, true Pope" (Universi Dominici Gregis 88).
+
+  - heading: Pope Francis, 2013
+    quote:
+      lead: The Vatican biography tells how Francis was chosen.
+      text: >-
+        on 13 March 2013, at the age of 76, Cardinal Bergoglio was elected the
+        266th Pope of the Catholic Church by the Cardinals gathered in
+        Conclave
+      source: fran-bio
+      cite: Vatican biography of Pope Francis
+      highlight: elected the 266th Pope
+    text: >-
+      Benedict XVI had resigned, so the cardinals met in conclave. They chose
+      Jorge Mario Bergoglio, an Argentine Jesuit and the first pope from the
+      Americas. He took the name Francis after Saint Francis of Assisi. He
+      served twelve years and died on Easter Monday, April 21, 2025, at the
+      age of 88, which began the process that led to the next conclave.
+    visuals:
+      - type: timeline
+        items:
+          - { year: "2013", label: Benedict XVI resigns, Francis elected }
+          - { year: "Apr 21, 2025", label: Pope Francis dies }
+    quiz:
+      type: choice
+      question: What name did Cardinal Bergoglio choose?
+      options: [Francis, Leo, Peter]
+      answer: 0
+      why: >-
+        The Vatican biography: "He took the name Francis in imitation of the
+        Saint of Assisi."
+
+  - heading: Pope Leo XIV, 2025
+    quote:
+      lead: The Vatican biography of the newest pope says it plainly.
+      text: >-
+        In the Conclave which began on 7 May 2025, Cardinal Prevost was elected
+        Supreme Pontiff on 8 May 2025 and chose the name Leo XIV
+      source: leo-bio
+      cite: Vatican biography of Pope Leo XIV
+      highlight: chose the name Leo XIV
+    text: >-
+      Robert Francis Prevost was born in Chicago in 1955. He is an Augustinian,
+      the first pope from the United States and the first Augustinian pope.
+      Pope Francis made him Bishop of Chiclayo in Peru in 2015 and a cardinal
+      in 2023. His first words were "Peace be with you all!" and he thanked
+      Pope Francis.
+    visuals:
+      - type: timeline
+        items:
+          - { year: "May 7, 2025", label: Conclave begins }
+          - { year: "May 8, 2025", label: Leo XIV elected }
+          - { year: "May 18, 2025", label: Inauguration Mass }
+    quiz:
+      type: choice
+      question: Which of these is true of Pope Leo XIV?
+      options:
+        - He is the first pope from the United States
+        - He was born in Rome
+        - He is a Jesuit
+      answer: 0
+      why: >-
+        The Vatican biography: he is "the first Pope from the United States of
+        America, and the first Augustinian Pope."
 
 outro:
   text: >-
     Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
   notes:
-    - "Recap: like any other bishop · power from Christ, not the emperor · the cardinals take over (1059) · a two-thirds majority (1179) · locked in: the first conclave (1274)."
+    - "Recap: the cardinals vote · two thirds of the votes · accepting and choosing a name · Pope Francis, 2013 · Pope Leo XIV, 2025."
     - "Next in the course: What Infallibility Does (and Doesn't) Mean."
   scenes:
     - type: recap
