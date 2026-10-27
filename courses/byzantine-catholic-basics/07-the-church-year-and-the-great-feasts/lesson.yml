@@ -1,0 +1,186 @@
+# Quote-anchored lesson. Draft by Claude; Shalone writes the intro and outro.
+status: draft
+course: byzantine-catholic-basics
+number: 7
+slug: the-church-year-and-the-great-feasts
+title: The Church Year and the Great Feasts
+excerpt: >-
+  How the Byzantine Church year works: two cycles of feasts, Pascha at the
+  center, and the twelve great feasts on the iconostasis.
+
+sources:
+  - id: ugcc
+    label: "Christ – Our Pascha: Catechism of the Ukrainian Catholic Church, 565–567, 574, 605"
+    file: sources-local/ugcc-catechism.txt
+    url: https://ukrcatholic.org/fileadmin/user_upload/PDFs/Our_Faith/Christ-our-Pascha-Catechism-of-the-Ukrainian-Catholic-Church-by-Comission-for-the-Catehism-z-lib.org_.pdf
+
+intro:
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - "A question to open with: when does the Church's year begin? Not January 1, and not Advent: for Byzantine Catholics it begins on September 1."
+    - Five points, from the two cycles of feasts to the Light of Christmas and Theophany.
+    - Dates in the catechism are given in the new (Gregorian) and old (Julian) calendars, 13 days apart now.
+  scenes:
+    - type: title
+    - type: host
+      at: I'm your host
+    - type: trinity
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: Two cycles
+    quote:
+      lead: The Byzantine catechism describes how the year is built.
+      text: >-
+        The services of the liturgical year, or Church year, are built upon
+        the immoveable and movable cycles.
+      source: ugcc
+      cite: Christ – Our Pascha 565
+      highlight: immoveable and movable cycles
+    text: >-
+      The Church year has two cycles that run together. The immoveable cycle
+      is linked to fixed dates, such as Christmas on December 25. The movable
+      cycle is linked to the date of Pascha, which changes every year. Through
+      the services of both, the catechism says, the Church commemorates and
+      experiences all the major events of salvation history.
+    visuals:
+      - type: compare
+        left: { kicker: Fixed dates, title: Immoveable cycle, note: Same day every year, icon: calendar }
+        right: { kicker: Date of Pascha, title: Movable cycle, note: Changes every year, icon: moon }
+        emphasis: left
+    quiz:
+      type: choice
+      question: The two cycles of the Church year are called...
+      options:
+        - Immoveable and movable
+        - Winter and summer
+        - Fasting and feasting
+      answer: 0
+      why: >-
+        Christ – Our Pascha 565: the year is "built upon the immoveable and
+        movable cycles."
+
+  - heading: A new year on September 1
+    quote:
+      lead: The catechism says where the year begins.
+      text: >-
+        The immoveable cycle of the Church Year begins on September 1
+      source: ugcc
+      cite: Christ – Our Pascha 566
+      highlight: September 1
+    text: >-
+      The Byzantine Church year begins on September 1. On the old Julian
+      calendar, which some Churches still follow, that day falls on September
+      14. The catechism explains that the two calendars now differ by thirteen
+      days, and that is also why Pascha is sometimes celebrated on different
+      dates. Many Byzantine Catholics keep the new calendar; others keep the
+      old.
+    visuals:
+      - type: timeline
+        items:
+          - { year: "Sept 1", label: New year (new calendar) }
+          - { year: "Sept 14", label: Same day (old calendar) }
+    quiz:
+      type: blank
+      question: The immoveable cycle of the Church year begins on September ____.
+      accept: ["1", "one", "first"]
+      why: >-
+        Christ – Our Pascha 566: it "begins on September 1."
+
+  - heading: Pascha at the center
+    quote:
+      lead: The catechism names the heart of the movable feasts.
+      text: >-
+        The centre and pivotal point of the liturgical year's movable cycle of
+        feasts is Pascha.
+      source: ugcc
+      cite: Christ – Our Pascha 567
+      highlight: Pascha
+    text: >-
+      Pascha is the Byzantine name for Easter. Its date falls on the first
+      Sunday after the full moon after the spring equinox, so it moves each
+      year. When Pascha moves, so do Great Lent, the Entrance into Jerusalem,
+      the Ascension and Pentecost. Everything in the moving cycle is counted
+      from the Resurrection of Christ.
+    visuals:
+      - type: chain
+        items: [Great Lent, Pascha, Ascension, Pentecost]
+        caption: The movable feasts move with Pascha
+    quiz:
+      type: truefalse
+      question: The date of Pascha is the same every year.
+      answer: false
+      why: >-
+        False. Christ – Our Pascha 567: its date "will move, falling on
+        different calendar dates."
+
+  - heading: The twelve great feasts
+    quote:
+      lead: Look at a Byzantine church, where the feasts hang on the wall.
+      text: >-
+        presents the icons of twelve great feasts of the Lord and Mother of God
+      source: ugcc
+      cite: Christ – Our Pascha 605
+      highlight: twelve great feasts
+    text: >-
+      On the iconostasis, above the main row of icons, is the festal row. It
+      shows twelve great feasts of the Lord and of the Mother of God. The
+      catechism says these icons show not only past events, but the main
+      milestones in the history of salvation. Through the feasts, the
+      community experiences these events anew, receiving the particular grace
+      of Christmas, Theophany or the others.
+    visuals:
+      - type: iconostasis
+        highlight: [feasts]
+        caption: The festal row shows the great feasts
+    quiz:
+      type: choice
+      question: How many great feasts are usually shown in the festal row?
+      options: [Twelve, Three, Fifty]
+      answer: 0
+      why: >-
+        Christ – Our Pascha 605: the festal row "presents the icons of twelve
+        great feasts of the Lord and Mother of God."
+
+  - heading: The Light of Christmas and Theophany
+    quote:
+      lead: Of the fixed feasts, the catechism says Christmas and Theophany share one meaning.
+      text: >-
+        Their meaning lies in the manifestation of Christ, the Light that
+        overcomes the darkness of sin.
+      source: ugcc
+      cite: Christ – Our Pascha 574
+      highlight: the Light that overcomes the darkness of sin
+    text: >-
+      The chief fixed feasts of the Lord are the Birth of Christ, on December
+      25 or January 7, and Theophany, on January 6 or 19. Theophany celebrates
+      the Baptism of Jesus in the Jordan. Both feasts show who Christ is to
+      the world: the Light that overcomes the darkness of sin. The day after
+      each, the Church honors those closest to the event: Mary and John the
+      Baptist.
+    visuals:
+      - type: compare
+        left: { kicker: December 25 / January 7, title: The Birth of Christ, note: Christ shines into the world, icon: star }
+        right: { kicker: January 6 / 19, title: Theophany, note: Christ is baptized in the Jordan, icon: droplets }
+        emphasis: left
+    quiz:
+      type: choice
+      question: What do Christmas and Theophany show us about Christ?
+      options:
+        - He is the Light that overcomes the darkness of sin
+        - He is only a teacher
+        - He is a king of this world
+      answer: 0
+      why: >-
+        Christ – Our Pascha 574: their meaning lies in "the manifestation of
+        Christ, the Light that overcomes the darkness of sin."
+
+outro:
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: two cycles · a new year on September 1 · Pascha at the center · the twelve great feasts · the Light of Christmas and Theophany."
+  scenes:
+    - type: recap
