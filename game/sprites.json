@@ -1,0 +1,11 @@
+{
+  "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (an 8x8 drawing with 2 frames fills slots N and N+1). Swap a name here when she draws the real one (e.g. priest-idle), then run: npm run pico8",
+  "0": "guy-beard-idle",
+  "2": "thick-guy-idle-beard",
+  "4": "skinny-guy-idle",
+  "16": "skinny-guy-idle",
+  "18": "skinny-woman-idle",
+  "20": "thick-guy-idle",
+  "22": "thick-woman-idle",
+  "24": "thick-guy-idle-beard"
+}
