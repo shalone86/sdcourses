@@ -55,6 +55,11 @@ function _init()
  helpers={} graces={} items={}
  deacons=0 church=0 dcd=0
  chap=false bishop=false
+ relics=false garden=0 pow=1
+ -- grace left at the church and
+ -- hospital waits there for you
+ church_pile=0 hosp_pile=0
+ got={} -- combos taken this day
  lv={} -- level of each upgrade
  score=0 xp=0 need=3 lvl=1
  t=0 missed=0 msg="" msg_t=0
@@ -85,6 +90,51 @@ ups={
  {n="hospital priest",d="blesses the sick",max=3,
   ok=function() return bishop and chap end,
   f=function() add_helper(true) end},
+ {n="relics",d="the church heals too",max=1,
+  ok=function() return church>0 end,
+  f=function() relics=true end},
+ {n="marian garden",d="more come to pray",max=3,
+  ok=function() return church>0 end,
+  f=function() garden+=1 end},
+}
+
+function l(n) return lv[n] or 0 end
+
+-- combos: two upgrades that work
+-- together. a combo shows up (gold)
+-- once you have what it needs.
+-- the ones you've ever found are
+-- saved, so players can collect them.
+combos={
+ {n="aspergillum",d="each blessing counts 2",
+  ok=function() return l("holy water")>=3 and l("quick hands")>=3 end,
+  f=function() pow=2 end},
+ {n="parish van",d="priests ride, angel x2",
+  ok=function() return l("a car")>=2 and l("guardian angel")>=2 end,
+  f=function() van=true p.mag*=2 end},
+ {n="cathedral",d="church grace comes to you",
+  ok=function() return church>=3 and bishop end,
+  f=function() cathedral=true end},
+ {n="rosary group",d="all grace comes, often",
+  ok=function() return garden>0 and deacons>=2 end,
+  f=function() rosary_group=true end},
+ {n="healing relics",d="the hospital heals too",
+  ok=function() return relics and chap end,
+  f=function() hosp_relic=true end},
+ {n="house calls",d="house blessings take half",
+  ok=function() return l("a car")>0 and l("quick hands")>=2 end,
+  f=function() house_calls=true end},
+}
+
+-- big needs: they stay in one
+-- place; find them (z: map) and
+-- stay until the number is 0
+events={
+ {n="a grieving widow",at="house",need=12},
+ {n="a new house to bless",at="house",need=8},
+ {n="a wedding",at="church",need=10},
+ {n="a baptism",at="church",need=6},
+ {n="a sick child",at="hosp",need=8},
 }
 
 function add_helper(hosp)
@@ -173,7 +223,7 @@ function person(x,y,k)
  return q
 end
 
-function spawn_walker(big)
+function spawn_walker()
  -- out of a house near you,
  -- or from off the screen
  local x,y
@@ -190,11 +240,7 @@ function spawn_walker(big)
   local a=rnd(1)
   x,y=p.x+cos(a)*90,p.y+sin(a)*90
  end
- local q=person(x,y,"walk")
- if big then
-  q.big=true q.need=10+lvl\2
-  q.spd=.15 q.wait=3600
- end
+ person(x,y,"walk")
 end
 
 -- a house blessing takes more:
@@ -204,7 +250,32 @@ function spawn_home()
  if b.k!="house" or b.who then return end
  local q=person(b.x+8,b.y+18,"home")
  q.need=3+lvl\4 q.wait=1500+rnd(450)
+ if house_calls then q.need=ceil(q.need/2) end
  q.b=b b.who=q
+end
+
+function spawn_event()
+ local e=rnd(events)
+ if e.at=="hosp" and not chap then e=events[1] end
+ local x,y,b
+ if e.at=="house" then
+  for i=1,20 do
+   b=rnd(bldg)
+   if b.k=="house" and not b.who then break end
+   b=nil
+  end
+  if not b then return end
+  x,y=b.x+8,b.y+18
+ elseif e.at=="church" then
+  x,y=church_x+2+rnd(12),church_y+30
+ else
+  x,y=hosp_x+2+rnd(12),hosp_y+30
+ end
+ local q=person(x,y,"event")
+ q.need=e.need+lvl\2 q.wait=1800 q.ev=e.n
+ if b then q.b=b b.who=q end
+ say(e.n.."! (z: map)")
+ sfx(5)
 end
 
 function spawn_church()
@@ -221,14 +292,17 @@ end
 
 -- one blessing for one person
 function hit(q)
- q.need-=1 q.hit=4
+ q.need-=pow q.hit=4
  if q.need>0 then return end
  del(people,q) score+=1
  if q.b then q.b.who=nil end
  local v=1
- if q.big then v=10 elseif q.k=="home" then v=3 end
- add(graces,{x=q.x,y=q.y-4,v=v})
- if q.big then add(items,{x=q.x,y=q.y,k="chest"}) end
+ if q.ev then v=10 elseif q.k=="home" then v=3 end
+ drop_grace(q.x,q.y-4,v)
+ if q.ev then
+  add(items,{x=q.x,y=q.y+4,k="chest"})
+  say(q.ev.." blessed!")
+ end
  add(fx,{x=q.x,y=q.y-12,t=20,s="\143",c=10})
  sfx(0)
 end
@@ -248,9 +322,24 @@ end
 function miss(q)
  del(people,q) missed+=1
  if q.b then q.b.who=nil end
- t+=miss_cost*30
- add(fx,{x=q.x,y=q.y-12,t=30,s="-"..miss_cost.."s",c=8})
+ -- a big need missed costs 3x
+ local c=miss_cost
+ if q.ev then c*=3 end
+ t+=c*30
+ add(fx,{x=q.x,y=q.y-12,t=30,s="-"..c.."s",c=8})
  sfx(4)
+end
+
+-- grace near the church or the
+-- hospital piles up there
+function drop_grace(x,y,v)
+ if near(x,y,church_x+8,church_y+24,40) then
+  church_pile+=v
+ elseif near(x,y,hosp_x+8,hosp_y+24,40) then
+  hosp_pile+=v
+ else
+  add(graces,{x=x,y=y,v=v})
+ end
 end
 
 function splash(x,y,r)
@@ -277,7 +366,7 @@ function use(k)
   say("rosary: all grace comes")
  elseif k=="bucket" then
   for q in all(people) do
-   if not q.big then q.need=1 end
+   if not q.ev then q.need=1 end
   end
   splash(p.x,p.y-4,70)
   bless(p.x,p.y,90)
@@ -298,7 +387,13 @@ function offer(title)
   end
  end
  choices={}
- for i=1,min(3,#pool) do
+ -- a combo that's ready comes first
+ for c in all(combos) do
+  if not got[c.n] and c.ok() and #choices==0 then
+   c.combo=true add(choices,c)
+  end
+ end
+ while #choices<3 and #pool>0 do
   local u=rnd(pool) del(pool,u) add(choices,u)
  end
  if #choices>0 then
@@ -330,7 +425,15 @@ function _update()
   if btnp(1) or btnp(3) then pick=min(#choices,pick+1) end
   if btnp(4) or btnp(5) then
    local u=choices[pick]
-   lv[u.n]=(lv[u.n] or 0)+1
+   lv[u.n]=l(u.n)+1
+   if u.combo then
+    got[u.n]=true
+    -- remember it for good
+    for i=1,#combos do
+     if combos[i]==u then dset(1,dget(1)|(1<<i)) end
+    end
+    say("combo: "..u.n.."!")
+   end
    u.f() state="play"
   end
   return
@@ -359,11 +462,10 @@ function _update()
  -- who asks, and how often
  if t%max(10,40-t\900)==0 then spawn_walker() end
  if t%240==0 then spawn_home() end
- if t%max(30,150-church*24)==0 then spawn_church() end
+ if t%max(20,150-church*20-garden*20)==0 then spawn_church() end
  if chap and t%180==0 then spawn_sick() end
- if t%1800==900 then
-  spawn_walker(true) say("a sad neighbor needs you!")
- end
+ -- a big need about every 45 s
+ if t%1350==600 then spawn_event() end
  if t%450==0 then
   drop_item(p.x+rnd(160)-80,p.y+rnd(160)-80)
  end
@@ -405,6 +507,25 @@ function _update()
    splash(church_x+8,church_y+22,22)
    bless(church_x+8,church_y+22,24,"church")
   end
+ end
+
+ -- relics: the church (and with
+ -- the combo, the hospital) heals
+ if t%120==0 then
+  if relics then bless(church_x+8,church_y+22,24,"church") end
+  if hosp_relic then bless(hosp_x+8,hosp_y+22,24,"sick") end
+ end
+ if rosary_group and t%900==0 then
+  for g in all(graces) do g.pull=true end
+  say("rosary group: grace comes")
+ end
+
+ -- piles: go there to collect them
+ if cathedral or near(p.x,p.y,church_x+8,church_y+24,22) then
+  if church_pile>0 then xp+=church_pile church_pile=0 sfx(1) end
+ end
+ if hosp_relic or near(p.x,p.y,hosp_x+8,hosp_y+24,22) then
+  if hosp_pile>0 then xp+=hosp_pile hosp_pile=0 sfx(1) end
  end
 
  for h in all(helpers) do helper(h) end
@@ -466,6 +587,7 @@ function helper(h)
  if not near(h.x,h.y,tx,ty,4) then
   -- left behind? hurry back
   local sp=1
+  if van then sp=2 end
   if not h.hosp and not near(h.x,h.y,p.x,p.y,64) then sp=3 end
   local a=atan2(tx-h.x,ty-h.y)
   h.x+=cos(a)*sp h.y+=sin(a)*sp
@@ -533,21 +655,16 @@ function draw_person(q)
   for i=1,15 do pal(i,7) end
   q.hit-=1
  end
- if q.big then
-  local n=q.s+flr(t/15)%2
-  if drawn(q.s) then
-   sspr(n%16*8,n\16*8,8,8,q.x-8,q.y-16,16,16,q.fl)
-  else circfill(q.x,q.y-7,6,12) end
- else
-  sprite(q.s,q.x,q.y,q.fl,12)
- end
+ sprite(q.s,q.x,q.y,q.fl,12)
  pal()
+ -- a big need glows
+ if q.ev and t%16<10 then circ(q.x,q.y-4,7,9) end
  -- "+" asks for a blessing; a number
  -- is how many more it needs
  if q.wait>150 or t%8<4 then
   local y=q.y-15
-  if q.big then y=q.y-23 end
-  if q.need>1 then print(q.need,q.x-3,y,12)
+  if q.ev then print(q.need,q.x-3,y-2,9)
+  elseif q.need>1 then print(q.need,q.x-3,y,12)
   else print("+",q.x-1,y,7) end
  end
 end
@@ -565,19 +682,24 @@ function draw_map()
  end
  for it in all(items) do pset(it.x/4,it.y/4,9) end
  for q in all(people) do
-  if q.k!="walk" then
+  if q.ev then
+   circfill(q.x/4,q.y/4,1,t%10<5 and 9 or 7)
+  elseif q.k!="walk" then
    pset(q.x/4,q.y/4,t%10<5 and 10 or 7)
   end
  end
  print("church",church_x/4-10,church_y/4-7,7)
  print("hospital",hosp_x/4-14,hosp_y/4-7,8)
+ -- grace waiting at each
+ if church_pile>0 then print(church_pile,church_x/4+5,church_y/4,10) end
+ if hosp_pile>0 then print(hosp_pile,hosp_x/4+5,hosp_y/4,10) end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  rectfill(0,120,127,127,1)
  print("you",2,122,12)
  print("asking",18,122,10)
- print("gifts",44,122,9)
- print("\142 back",98,122,6)
-end
+ print("big need",44,122,9)
+ print("gifts",80,122,9)
+ end
 
 function _draw()
  if state=="map" then draw_map() return end
@@ -590,6 +712,21 @@ function _draw()
    if drawn(b.s) then spr(b.s,b.x,b.y,2,2)
    else shape(b) end
   end
+ end
+ -- the marian garden grows
+ for i=1,garden*6 do
+  local fx_,fy=church_x+20+i%6*3,church_y+8+i\6*4
+  pset(fx_,fy,({14,7,12})[i%3+1])
+ end
+ if garden>0 then rect(church_x+18,church_y+6,church_x+37,church_y+8+garden*4,15) end
+ -- grace piled up, waiting for you
+ if church_pile>0 then
+  thing(s_grace,church_x+8,church_y+26,10)
+  print(church_pile,church_x+12,church_y+24,10)
+ end
+ if hosp_pile>0 then
+  thing(s_grace,hosp_x+8,hosp_y+26,10)
+  print(hosp_pile,hosp_x+12,hosp_y+24,10)
  end
  circ(p.x,p.y-4,p.r,11)
 
@@ -626,11 +763,12 @@ function _draw()
  -- off the screen: who's waiting
  -- at home or at the hospital
  for q in all(people) do
-  if q.k=="home" or q.k=="sick" then
+  if q.k!="walk" and q.k!="church" then
    local sx,sy=q.x-p.x+64,q.y-p.y+60
    if sx<0 or sx>127 or sy<10 or sy>127 then
-    circfill(mid(2,sx,125),mid(13,sy,125),1,
-     q.k=="sick" and 8 or 10)
+    local c=10
+    if q.ev then c=9 elseif q.k=="sick" then c=8 end
+    circfill(mid(2,sx,125),mid(13,sy,125),1,c)
    end
   end
  end
@@ -654,19 +792,28 @@ function _draw()
    local u=choices[i]
    local y=42+(i-1)*17
    if i==pick then rectfill(12,y-2,115,y+12,13) end
-   print(u.n,16,y,7)
-   print("lv "..((lv[u.n] or 0)+1),96,y,9)
+   if u.combo then
+    print("\146 "..u.n,16,y,10)
+   else
+    print(u.n,16,y,7)
+    print("lv "..(l(u.n)+1),96,y,9)
+   end
    print(u.d,16,y+6,6)
   end
   print("\148\131 choose  \142 take",28,93,6)
  end
  if state=="over" then
-  rectfill(16,36,111,92,1) rect(16,36,111,92,10)
+  rectfill(16,36,111,94,1) rect(16,36,111,94,10)
   print("the day is done",34,42,10)
   print("blessed: "..score,34,54,7)
   print("missed: "..missed,34,62,6)
   print("best: "..max(best,score),34,70,9)
-  print("press x to play again",22,82,6)
+  local f=0
+  for i=1,#combos do
+   if dget(1)&(1<<i)>0 then f+=1 end
+  end
+  print("combos found: "..f.."/"..#combos,26,76,10)
+  print("press x to play again",22,85,6)
  end
 end
 __gfx__
