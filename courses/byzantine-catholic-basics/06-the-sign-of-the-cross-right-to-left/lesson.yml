@@ -150,6 +150,18 @@ points:
         left: { kicker: Byzantine, title: Right to left, note: Three fingers joined, icon: arrow-left }
         right: { kicker: Roman, title: Left to right, note: Often the open hand, icon: arrow-right }
         emphasis: left
+      - type: compare
+        left:
+          kicker: Byzantine
+          title: Right to left
+          note: Three fingers joined
+          icon: arrow-left
+        right:
+          kicker: Roman
+          title: Left to right
+          note: Often the open hand
+          icon: arrow-right
+        emphasis: right
     quiz:
       type: truefalse
       question: In the Roman tradition, the cross is traced from left to right.

@@ -1,0 +1,31 @@
+# Hand-tuned timing from the studio's Timing tab, in seconds into each
+# section's recording. Scenes not listed keep their automatic timing.
+intro:
+  camera: card
+  end: 22.93
+point-1:
+  camera: side
+point-2:
+  camera: lower
+  end: 32.4
+  scenes:
+    "0":
+      cues:
+        end: 7.7
+    "1":
+      start: 8.73
+point-3:
+  camera: only
+point-4:
+  camera: card
+  side: right
+  scenes:
+    "2":
+      start: 34.5
+      cues:
+        decide: 36.67
+point-5:
+  camera: bubble
+outro:
+  camera: only
+  end: 28.77
