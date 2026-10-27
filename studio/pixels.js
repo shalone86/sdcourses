@@ -43,7 +43,7 @@ window.PixelTab = (() => {
   };
   const store = {get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* fine */ } }};
   // Square sizes for characters; the wide one for a scene with several characters in it.
-  const SIZES = [[16, 16], [24, 24], [32, 32], [48, 48], [64, 64], [64, 36]];
+  const SIZES = [[8, 8], [16, 16], [24, 24], [32, 32], [48, 48], [64, 64], [64, 36]];
   const TOOLS = [['pen', 'Pencil'], ['dither', 'Dither'], ['erase', 'Eraser'], ['fill', 'Fill'],
     ['line', 'Line'], ['box', 'Box'], ['circle', 'Circle'], ['select', 'Select & move'], ['pick', 'Pick a color']];
   const SHAPES = ['line', 'box', 'circle'];
