@@ -160,7 +160,8 @@ If it's already running, `npm start` just opens the page.
   base is a character with `-idle`, `-point`, `-look-up`, `-walk`, `-run` (hers:
   thick-beard-guy, thick-guy, skinny-guy, guy-beard, vestment-guy, thick-woman,
   skinny-woman). She picks one, names the new character, recolors only its idle
-  ("change a color everywhere" boxes), and Save makes all five poses with the
+  (one color box per part of the base, with "Same as…", so parts can share a color
+  and still be changed apart), and Save makes all five poses with the
   same color swaps (`colorVersion` in `scripts/sprites.mjs`; `sprites/.versions.json`
   remembers each one's base). Bases are never changed.
 - **Puppet** (`type: puppet`, PUPPET.md): an 8 × 8 character she draws as

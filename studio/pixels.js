@@ -651,11 +651,38 @@ window.PixelTab = (() => {
           h('input', {type: 'text', value: P.bases.name, placeholder: 'New character’s name (e.g. St Joseph)', 'aria-label': 'New character’s name', oninput: (e) => { P.bases.name = e.target.value; }}),
           btn('Start coloring', startVersion, {class: 'btn primary'})]),
       ]) : null;
+      // One box per area of the base (each of the base's colors), so two areas can share a color
+      // and still be changed apart later.
+      const baseArt = P.version && P.bases.list.find((b) => b.name === P.version.base);
+      const basePx = baseArt ? fromSaved(baseArt.idle).frames : null;
+      const areas = basePx && basePx[0].length === a.width * a.height ? [...new Set(basePx.flat().filter(Boolean).map((c) => c.toUpperCase()))] : [];
+      const squares = (area) => basePx.flatMap((fr, f) => (a.frames[f] ? fr.map((c, i) => (c && c.toUpperCase() === area && a.frames[f][i] ? [f, i] : null)).filter(Boolean) : []));
+      const nowColor = (area) => {
+        const n = {};
+        for (const [f, i] of squares(area)) { const c = a.frames[f][i].toUpperCase(); n[c] = (n[c] ?? 0) + 1; }
+        return Object.entries(n).sort((x, y) => y[1] - x[1])[0]?.[0] ?? area;
+      };
+      const setArea = (area, to) => {
+        remember();
+        for (const [f, i] of squares(area)) a.frames[f][i] = to.toUpperCase();
+        draw(); markDirty();
+      };
+      const current = areas.map(nowColor);
+      const areaBox = (area, k) => h('div', {style: {display: 'flex', gap: '6px', alignItems: 'center', minWidth: '0'}}, [
+        h('span', {title: 'This part was ' + area + ' in ' + P.version.base, style: {width: '16px', height: '16px', borderRadius: '4px', background: area, border: '1px solid var(--rule)', flex: 'none'}}),
+        h('span', {class: 'small muted', text: '→'}),
+        h('input', {type: 'color', value: current[k].toLowerCase(), 'aria-label': 'New color for the part that was ' + area, onchange: (e) => setArea(area, e.target.value)}),
+        h('select', {class: 'small', style: {flex: '1', minWidth: '0', width: 'auto'}, 'aria-label': 'Same color as another part', onchange: (e) => { if (e.target.value) setArea(area, e.target.value); }},
+          [h('option', {value: '', text: 'Same as…'}), ...[...new Set(current)].filter((c) => c !== current[k]).map((c) =>
+            h('option', {value: c, text: '■ ' + c, style: {color: c}}))]),
+      ]);
       const versionBox = P.version ? h('div', {class: 'px-version', style: {display: 'grid', gap: '6px', padding: '8px 10px', borderRadius: '8px', background: 'var(--panel-2, rgba(127,127,127,.12))'}}, [
         h('div', {class: 'small'}, [h('b', {text: P.version.name}), ` from ${P.version.base}: change the colors on this idle drawing. Saving makes point, look up, walk and run in the same colors.`]),
-        h('div', {class: 'small muted', text: 'Change a color everywhere (every square and frame):'}),
-        h('div', {class: 'px-palette'}, [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].map((c) =>
-          h('label', {class: 'px-any', title: 'Change ' + c}, [h('input', {type: 'color', value: c.toLowerCase(), onchange: (e) => swapColor(c, e.target.value)}), h('span', {text: c})]))),
+        areas.length ? h('div', {class: 'small muted', text: 'Each part of the base (its old color on the left) and its color now. Two parts can share a color (Same as…) and still be changed apart later.'})
+          : h('div', {class: 'small muted', text: 'Change a color everywhere (every square and frame):'}),
+        areas.length ? h('div', {style: {display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '6px 12px'}}, areas.map(areaBox))
+          : h('div', {class: 'px-palette'}, [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].map((c) =>
+            h('label', {class: 'px-any', title: 'Change ' + c}, [h('input', {type: 'color', value: c.toLowerCase(), onchange: (e) => swapColor(c, e.target.value)}), h('span', {text: c})]))),
       ]) : null;
       const selecting = !!(P.sel || P.float);
 
