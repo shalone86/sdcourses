@@ -122,7 +122,7 @@ export function saveSprite(s) {
 
 // ---------- the keyboard puppet (PUPPET.md) ----------
 // A character is every drawing named <character>-<action>; items are item-<name>.
-export const PUPPET_ACTIONS = ['idle-front', 'point-up', 'idle', 'walk', 'run', 'point', 'talk', 'hold', 'pray', 'cross', 'bow'];
+export const PUPPET_ACTIONS = ['idle-front', 'look-up', 'idle', 'walk', 'run', 'point', 'talk', 'pray', 'cross', 'bow'];
 const ACTION_RE = new RegExp(`^(.+?)-(${PUPPET_ACTIONS.join('|')})$`);
 
 /** Characters and items for the Timing tab: [{name, actions: [...], missing: [...]}], [item names]. */

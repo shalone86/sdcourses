@@ -3,26 +3,26 @@
 // Puppet scene, so the studio preview and the render agree exactly.
 //
 // A recording is a list of [frame, key, down] (frame from the scene's start, down 1/0).
-// Keys: left, right (walk; shift held = run), up (point up), down (bow, once), p (point),
-// t (talk), a (pray), x (sign of the cross, once), h (hold the item up / lower it, a toggle),
+// Keys: left, right (walk; shift held = run), up (look up), down (bow, once), p (point; the
+// item appears beside the character), t (talk), a (pray), x (sign of the cross, once),
 // i (next item).
 import type {Art} from './scenes/Sprite';
 
 export type PuppetEvent = [number, string, 0 | 1];
 
 // Drawings are `<character>-<action>`; side views face left (right is a flip).
-export const ACTIONS = ['idle', 'idle-front', 'walk', 'run', 'point', 'point-up', 'talk', 'hold', 'pray', 'cross', 'bow'] as const;
+export const ACTIONS = ['idle', 'idle-front', 'walk', 'run', 'point', 'look-up', 'talk', 'pray', 'cross', 'bow'] as const;
 export type Action = (typeof ACTIONS)[number];
-const SIDE: Action[] = ['idle', 'walk', 'run', 'point', 'point-up'];
+const SIDE: Action[] = ['idle', 'walk', 'run', 'point', 'look-up'];
 const ONCE: Record<string, Action> = {x: 'cross', down: 'bow'};
-const HELD: Record<string, Action> = {p: 'point', up: 'point-up', t: 'talk', a: 'pray'};
+const HELD: Record<string, Action> = {p: 'point', up: 'look-up', t: 'talk', a: 'pray'};
 // What to show when a drawing is missing.
 const FALLBACK: Partial<Record<Action, Action[]>> = {
-  'idle-front': ['idle'], run: ['walk', 'idle'], walk: ['idle'], 'point-up': ['point', 'idle'], point: ['idle'],
-  talk: ['idle-front', 'idle'], hold: ['idle-front', 'idle'], pray: ['idle-front', 'idle'], cross: ['pray', 'idle-front', 'idle'], bow: ['idle-front', 'idle'],
+  'idle-front': ['idle'], run: ['walk', 'idle'], walk: ['idle'], 'look-up': ['idle'], point: ['idle'],
+  talk: ['idle-front', 'idle'], pray: ['idle-front', 'idle'], cross: ['pray', 'idle-front', 'idle'], bow: ['idle-front', 'idle'],
 };
 
-export type PuppetState = {action: Action; frame: number; x: number; facing: -1 | 1; flip: boolean; item: number; holding: boolean};
+export type PuppetState = {action: Action; frame: number; x: number; facing: -1 | 1; flip: boolean; item: number; showItem: boolean; since: number};
 
 /** Which drawing stands in for an action (its own, else the nearest one she has drawn). */
 export function pick(actions: Partial<Record<Action, Art>>, a: Action): Action | null {
@@ -38,7 +38,7 @@ export function pick(actions: Partial<Record<Action, Art>>, a: Action): Action |
 export function puppetAt(events: PuppetEvent[], f: number, fps: number, actions: Partial<Record<Action, Art>>,
   {x0, minX, maxX, walk = 260, run = 560}: {x0: number; minX: number; maxX: number; walk?: number; run?: number}): PuppetState {
   const held = new Map<string, number>(); // key → frame pressed
-  let x = x0, facing: -1 | 1 = -1, moved = false, holding = false, item = 0;
+  let x = x0, facing: -1 | 1 = -1, moved = false, item = 0;
   let once: {a: Action; at: number} | null = null;
   let last = 0;
   const lenOf = (a: Action) => { const p = pick(actions, a); const art = p ? actions[p] : null; return art ? Math.max(1, Math.round((art.frames.length / Math.max(1, art.fps)) * fps)) : fps; };
@@ -63,7 +63,6 @@ export function puppetAt(events: PuppetEvent[], f: number, fps: number, actions:
       held.set(k, at);
       if (k === 'left') facing = -1;
       if (k === 'right') facing = 1;
-      if (k === 'h') holding = !holding;
       if (k === 'i') item++;
       if (ONCE[k]) once = {a: ONCE[k], at};
     } else held.delete(k);
@@ -77,7 +76,7 @@ export function puppetAt(events: PuppetEvent[], f: number, fps: number, actions:
   else if (d) action = held.has('shift') ? 'run' : 'walk';
   else {
     const pose = [...held.entries()].filter(([k]) => HELD[k]).sort((a, b) => b[1] - a[1])[0];
-    action = pose ? HELD[pose[0]] : holding ? 'hold' : moved ? 'idle' : 'idle-front';
+    action = pose ? HELD[pose[0]] : moved ? 'idle' : 'idle-front';
     if (pose) since = pose[1];
   }
   const shown = pick(actions, action) ?? action;
@@ -86,5 +85,5 @@ export function puppetAt(events: PuppetEvent[], f: number, fps: number, actions:
   const t = (f - since) / fps;
   // Once-only actions play through and stop on their last drawing; the rest loop.
   const frame = ONCE.x === action || ONCE.down === action ? Math.min(n - 1, Math.floor(t * (art?.fps ?? 4))) : Math.floor(t * (art?.fps ?? 4)) % n;
-  return {action: shown, frame, x, facing, flip: SIDE.includes(shown) && facing === 1, item, holding: action === 'hold'};
+  return {action: shown, frame, x, facing, flip: SIDE.includes(shown) && facing === 1, item, showItem: action === 'point', since};
 }

@@ -66,7 +66,7 @@ export function prepare(arg) {
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'image' && sc.src && !sc.src.startsWith(id + '/')) sc.src = path.posix.join(id, sc.src);
   // Pixel animations: the drawing itself goes into the props (sprites/<name>.json).
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'sprite') sc.art = publishSketch(loadSprite(sc.sprite), publicDir, id);
-  // The keyboard puppet: every drawing named <character>-<action>, and the items it can hold.
+  // The keyboard puppet: every drawing named <character>-<action>, and the items it points to.
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'puppet') Object.assign(sc, puppetArt(sc));
 
   // The host scene's photo (site.yml host_photo); without one it shows initials.

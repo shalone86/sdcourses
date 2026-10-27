@@ -82,7 +82,7 @@
       make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
         return {type: 'sprite', sprite: v.sprite, ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
       read: (sc) => ({sprite: sc.sprite || '', move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
-    puppet: {label: 'Puppet (a character you play with the keys)', fields: [['character', 'Which character', 'character'], ['item', 'The item it holds up (H)', 'item'],
+    puppet: {label: 'Puppet (a character you play with the keys)', fields: [['character', 'Which character', 'character'], ['item', 'The item it points to (P)', 'item'],
       ['size', 'Size', 'select', ['medium', 'small', 'big']], ['start', 'Stands at first', 'select', ['center', 'left', 'right']]],
       make: (v) => { if (!v.character) throw new Error('Draw a character first: <name>-idle and <name>-walk on the Pixel art tab');
         return {type: 'puppet', character: v.character, ...(v.item ? {item: v.item} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.start && v.start !== 'center' ? {start: v.start} : {})}; },
@@ -399,8 +399,8 @@
 
     // ---------- the keyboard puppet (PUPPET.md) ----------
     // Keys while recording → the names saved in timing.yml (and read by video/puppet.ts).
-    const PUPPET_KEYS = {ArrowLeft: 'left', ArrowRight: 'right', Shift: 'shift', ArrowUp: 'up', ArrowDown: 'down', p: 'p', t: 't', a: 'a', x: 'x', h: 'h', i: 'i'};
-    const PUPPET_HELP = '← → walk (hold Shift to run) · P point · ↑ point up · T talk · A pray · X sign of the cross · ↓ bow · H hold the item up / lower it · I next item · Esc stops';
+    const PUPPET_KEYS = {ArrowLeft: 'left', ArrowRight: 'right', Shift: 'shift', ArrowUp: 'up', ArrowDown: 'down', p: 'p', t: 't', a: 'a', x: 'x', i: 'i'};
+    const PUPPET_HELP = '← → walk (hold Shift to run) · P point (shows the item) · ↑ look up · T talk · A pray · X sign of the cross · ↓ bow · I next item · Esc stops';
 
     /**
      * Play the puppet while the video runs: key presses are kept against the playhead (seconds

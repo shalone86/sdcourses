@@ -7,11 +7,11 @@ missing poses fall back to the nearest one and are listed), item, size, where
 it stands first. Click its block → **● Play it from here** / From the start of
 this picture: the video plays and her keys are kept against the playhead
 (timing.yml `scenes.<i>.puppet: [[seconds, key, 1|0], …]`; playing again from a
-point keeps what came before it). Keys: ← → walk, Shift run, P point, ↑ point
-up, T talk, A pray, X sign of the cross (plays once), ↓ bow (once), H hold the
-item up / lower it, I next item, Esc stops. Tested with stand-in drawings
-(deleted); **waiting on her real drawings**. Not done yet: a turn frame,
-walking while holding, layered outfits, sketch-mode characters (pixel only).
+point keeps what came before it). Keys: ← → walk, Shift run, P point (the item
+shows beside it), ↑ look up, T talk, A pray, X sign of the cross (plays once),
+↓ bow (once), I next item, Esc stops (2026-10-27: hold and point up removed). Tested with stand-in drawings
+(deleted); **waiting on her real drawings**. Not done yet: color versions
+(below), a turn frame, layered outfits, sketch-mode characters (pixel only).
 Each key press re-sends the props to the preview; if playback stutters while
 recording, batch those updates.
 
@@ -30,14 +30,14 @@ recording.
 **Step 2.** The same movements for different people (bishop, priest, man in a
 suit, woman, nun, monk). A scene picks which character to use.
 
-## Decisions already made
+## Decisions already made (the hold pose, point-up and 16×16 items are replaced by the revised checklist below)
 
 - **Walks across like Mario** (moves over the backdrop), not in place.
 - **One drawing per action**, in the existing Pixel art tab, named
   `<character>-<action>`. Separate drawings give each action its own speed and
   frame count. The puppet finds actions **by name**, so the pattern must stay
   exact.
-- **Same grid for every character drawing: 32×32, feet on the same row, same
+- **Same grid for every character drawing: 8 × 8 (was 32×32), feet on the same row, same
   head height.** That keeps the movement identical across characters.
 - **Side views are drawn facing left only.** Right-facing is a flip (the
   editor and renderer already flip). Point-right is a flipped point-left.
@@ -62,41 +62,31 @@ suit, woman, nun, monk). A scene picks which character to use.
   "turn" frame is a nice-to-have.
 - Holding while walking (processions) is out of scope for v1.
 
-## Her drawing checklist
+## Her drawing checklist (revised 2026-10-27: 8 × 8 characters)
 
-Character prefix `guy-` (use `bishop-`, `nun-` ... for the others).
+Her characters are **8 × 8**. That's too small to point up or to hold anything, so:
+**look up** replaces point up (↑), and there's no hold pose: while the
+character **points** (P), the scene's item appears beside it on the side it
+faces. Items are drawn at the characters' pixel size, so an item is a few
+pixels on an 8 × 8 grid (`item-<name>`, 8 × 8).
 
-Side view, facing left (moving):
-- [ ] `guy-idle` (2 frames)
-- [ ] `guy-walk` (4; start from `sprites/man-walk-cycle.json`, which is 32×32, 4 frames)
-- [ ] `guy-run` (4, faster fps)
-- [ ] `guy-point` (1–2; flipped for right)
-- [ ] `guy-point-up` (2)
+**Bases** (body types she draws every pose for; give every part its own color:
+hair, skin, shirt, pants, shoes, eyes, the mustache block):
+`skinny-woman`, `thick-woman`, `beard-guy`, `thick-beard-guy`, `thick-guy`,
+`skinny-guy`, plus a vestment base (e.g. `vested-guy`) for each body type that
+needs a robe (the hem changes the feet, which a recolor can't do).
 
-Front view (standing):
-- [ ] `guy-idle-front` (2)
-- [ ] `guy-talk` (2: mouth closed and open)
-- [ ] `guy-hold` (1–2: both arms raised)
-- [ ] `guy-pray` (2)
-- [ ] `guy-cross` (4: sign of the cross)
-- [ ] `guy-bow` (3)
+Poses per base: `-idle`, `-walk`, `-run`, `-point`, `-pray`, `-look-up`
+(optional: `-idle-front`, `-talk`, `-cross`, `-bow`).
 
-Items, shared by everyone (16×16, 1 frame; censer 2 so it swings):
-- [ ] `item-icon`
-- [ ] `item-gospel`
-- [ ] `item-chalice`
-- [ ] `item-bread`
-- [ ] `item-candle`
-- [ ] `item-censer`
-
-About 26 body frames per character, drawn once; items drawn once for all.
-
-Why these actions: counting words across all nine lessons, "icon" (33),
-"pray" (21), "points" (19), "gospel" (8), "holds" (6), "chalice" (6) and
-"sign of the cross" (2) come up most.
-
-**Test before drawing the rest:** put the first item next to the finished
-`guy-hold` pose. If the scale is off, fix it, then size the other items to match.
+**To build next (when her bases are drawn): color versions.** She recolors one
+pose of a base (usually idle) and saves it as a new character
+(`st-joseph-idle`); the tool compares it with the base pixel by pixel, learns
+the color swaps, and writes every other pose of that base with the same
+swaps (`st-joseph-walk` …). Never changes her base drawings. It warns when one
+base color became two colors (two parts shared a color) and lists base colors
+that appear only in poses she didn't recolor. A mustache that isn't wanted is
+recolored to skin.
 
 ## What to build (suggested order)
 

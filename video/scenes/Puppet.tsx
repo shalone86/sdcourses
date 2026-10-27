@@ -7,8 +7,8 @@ import type {SceneProps} from '.';
 
 // The keyboard puppet (PUPPET.md): one of her characters (drawings `<character>-<action>`,
 // put in `actions` by prepare.mjs) doing what she played on the Timing tab (`puppet`, frames
-// from the scene's start). Items (`item-<name>`) float above the raised hands when it holds one.
-//   character: guy | bishop | …   item: the first item it holds (`i` switches)
+// from the scene's start). Items (`item-<name>`) appear beside it while it points.
+//   character: guy | bishop | …   item: the first item it points to (`i` switches)
 //   size: small | medium (default) | big     start: left | center (default) | right
 type PuppetScene = {character: string; actions: Partial<Record<Action, Art>>; items?: {name: string; art: Art}[]; puppet?: PuppetEvent[];
   size?: 'small' | 'medium' | 'big'; start?: 'left' | 'center' | 'right'};
@@ -42,10 +42,12 @@ export const Puppet: React.FC<SceneProps<PuppetScene>> = ({scene}) => {
         style={{position: 'absolute', left: s.x - w / 2, top: stage.h - bottom - hgt, transform: s.flip ? 'scaleX(-1)' : undefined, overflow: 'visible'}}>
         <Frame art={art} rows={rows} />
       </svg>
-      {s.holding && item && (
-        // Zelda style: the item floats just above the raised hands (the top of the drawing), at the same pixel size.
+      {s.showItem && item && (
+        // While it points, the item appears beside the character on the side it faces (at 8 × 8 it can't
+        // hold one), at the same pixel size, its middle level with the character's.
         <svg width={item.art.width * px} height={item.art.height * px} viewBox={`0 0 ${item.art.width} ${item.art.height}`} shapeRendering="crispEdges"
-          style={{position: 'absolute', left: s.x - (item.art.width * px) / 2, top: stage.h - bottom - hgt + topRow(rows) * px - item.art.height * px - px}}>
+          style={{position: 'absolute', left: s.facing === 1 ? s.x + w / 2 + px : s.x - w / 2 - px - item.art.width * px,
+            top: stage.h - bottom - hgt / 2 - (item.art.height * px) / 2, opacity: ramp(f - s.since, 0, 4)}}>
           <Frame art={item.art} rows={item.art.frames[Math.floor((f / fps) * item.art.fps) % item.art.frames.length] as string[]} />
         </svg>
       )}
@@ -53,8 +55,3 @@ export const Puppet: React.FC<SceneProps<PuppetScene>> = ({scene}) => {
   );
 };
 
-/** The first row with anything drawn in it (the raised hands, for the hold pose). */
-function topRow(rows: string[]) {
-  const i = rows.findIndex((r) => /[^.]/.test(r));
-  return i < 0 ? 0 : i;
-}
