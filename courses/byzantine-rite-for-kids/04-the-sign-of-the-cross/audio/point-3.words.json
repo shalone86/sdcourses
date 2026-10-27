@@ -1,0 +1,320 @@
+{
+ "stamp": "2:2793678:1793138807811",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.25
+  },
+  {
+   "w": "Catechism",
+   "start": 0.25,
+   "end": 0.99
+  },
+  {
+   "w": "also",
+   "start": 0.99,
+   "end": 1.35
+  },
+  {
+   "w": "explains",
+   "start": 1.35,
+   "end": 1.99
+  },
+  {
+   "w": "the",
+   "start": 1.99,
+   "end": 2.24
+  },
+  {
+   "w": "Fingers.",
+   "start": 2.24,
+   "end": 3.29
+  },
+  {
+   "w": "Joining",
+   "start": 3.29,
+   "end": 3.6
+  },
+  {
+   "w": "the",
+   "start": 3.6,
+   "end": 3.94
+  },
+  {
+   "w": "first",
+   "start": 3.94,
+   "end": 4.27
+  },
+  {
+   "w": "three",
+   "start": 4.27,
+   "end": 4.61
+  },
+  {
+   "w": "fingers",
+   "start": 4.61,
+   "end": 4.88
+  },
+  {
+   "w": "of",
+   "start": 4.88,
+   "end": 5.07
+  },
+  {
+   "w": "our",
+   "start": 5.07,
+   "end": 5.2
+  },
+  {
+   "w": "hand",
+   "start": 5.2,
+   "end": 5.92
+  },
+  {
+   "w": "is",
+   "start": 5.92,
+   "end": 6.13
+  },
+  {
+   "w": "a",
+   "start": 6.13,
+   "end": 6.17
+  },
+  {
+   "w": "sign",
+   "start": 6.17,
+   "end": 6.51
+  },
+  {
+   "w": "of",
+   "start": 6.51,
+   "end": 6.8
+  },
+  {
+   "w": "our",
+   "start": 6.8,
+   "end": 6.94
+  },
+  {
+   "w": "profession",
+   "start": 6.94,
+   "end": 7.8
+  },
+  {
+   "w": "of",
+   "start": 7.8,
+   "end": 7.97
+  },
+  {
+   "w": "faith",
+   "start": 7.97,
+   "end": 8.4
+  },
+  {
+   "w": "in",
+   "start": 8.4,
+   "end": 8.57
+  },
+  {
+   "w": "the",
+   "start": 8.57,
+   "end": 9.16
+  },
+  {
+   "w": "Holy",
+   "start": 9.16,
+   "end": 9.21
+  },
+  {
+   "w": "Trinity.",
+   "start": 9.21,
+   "end": 10.19
+  },
+  {
+   "w": "Three",
+   "start": 10.19,
+   "end": 10.53
+  },
+  {
+   "w": "fingers",
+   "start": 10.53,
+   "end": 10.89
+  },
+  {
+   "w": "together",
+   "start": 10.89,
+   "end": 11.44
+  },
+  {
+   "w": "are",
+   "start": 12.48,
+   "end": 12.48
+  },
+  {
+   "w": "for",
+   "start": 12.48,
+   "end": 12.52
+  },
+  {
+   "w": "the",
+   "start": 12.52,
+   "end": 12.57
+  },
+  {
+   "w": "Trinity.",
+   "start": 12.57,
+   "end": 13.7
+  },
+  {
+   "w": "The",
+   "start": 13.7,
+   "end": 14.05
+  },
+  {
+   "w": "last",
+   "start": 14.05,
+   "end": 14.56
+  },
+  {
+   "w": "two",
+   "start": 14.56,
+   "end": 14.9
+  },
+  {
+   "w": "fingers",
+   "start": 14.9,
+   "end": 15.77
+  },
+  {
+   "w": "bend",
+   "start": 15.77,
+   "end": 16.19
+  },
+  {
+   "w": "down",
+   "start": 16.19,
+   "end": 16.75
+  },
+  {
+   "w": "to",
+   "start": 16.75,
+   "end": 16.83
+  },
+  {
+   "w": "the",
+   "start": 16.83,
+   "end": 17.15
+  },
+  {
+   "w": "palm",
+   "start": 17.15,
+   "end": 17.6
+  },
+  {
+   "w": "and",
+   "start": 17.6,
+   "end": 17.83
+  },
+  {
+   "w": "represent",
+   "start": 17.83,
+   "end": 18.52
+  },
+  {
+   "w": "Jesus.",
+   "start": 18.52,
+   "end": 19.12
+  },
+  {
+   "w": "He",
+   "start": 19.12,
+   "end": 19.36
+  },
+  {
+   "w": "is",
+   "start": 19.36,
+   "end": 19.7
+  },
+  {
+   "w": "God",
+   "start": 19.7,
+   "end": 20.4
+  },
+  {
+   "w": "and",
+   "start": 20.4,
+   "end": 20.64
+  },
+  {
+   "w": "also",
+   "start": 20.64,
+   "end": 20.96
+  },
+  {
+   "w": "human.",
+   "start": 20.96,
+   "end": 21.6
+  },
+  {
+   "w": "Three",
+   "start": 21.6,
+   "end": 22
+  },
+  {
+   "w": "fingers",
+   "start": 22,
+   "end": 22.6
+  },
+  {
+   "w": "for",
+   "start": 22.6,
+   "end": 22.8
+  },
+  {
+   "w": "the",
+   "start": 22.8,
+   "end": 23.04
+  },
+  {
+   "w": "Trinity.",
+   "start": 23.04,
+   "end": 23.84
+  },
+  {
+   "w": "Two",
+   "start": 23.84,
+   "end": 24.08
+  },
+  {
+   "w": "fingers",
+   "start": 24.08,
+   "end": 24.66
+  },
+  {
+   "w": "for",
+   "start": 24.66,
+   "end": 24.88
+  },
+  {
+   "w": "the",
+   "start": 24.88,
+   "end": 25.12
+  },
+  {
+   "w": "natures",
+   "start": 25.12,
+   "end": 25.68
+  },
+  {
+   "w": "of",
+   "start": 25.68,
+   "end": 25.84
+  },
+  {
+   "w": "Jesus.",
+   "start": 25.84,
+   "end": 26.56
+  }
+ ]
+}

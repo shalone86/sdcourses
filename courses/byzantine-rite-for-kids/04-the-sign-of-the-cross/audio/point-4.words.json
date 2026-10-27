@@ -1,0 +1,330 @@
+{
+ "stamp": "2:2471118:1793138853230",
+ "words": [
+  {
+   "w": "When",
+   "start": 0.09,
+   "end": 0.22
+  },
+  {
+   "w": "Roman",
+   "start": 0.22,
+   "end": 0.49
+  },
+  {
+   "w": "Catholics",
+   "start": 0.49,
+   "end": 0.98
+  },
+  {
+   "w": "do",
+   "start": 0.98,
+   "end": 1.15
+  },
+  {
+   "w": "the",
+   "start": 1.15,
+   "end": 1.25
+  },
+  {
+   "w": "sign",
+   "start": 1.25,
+   "end": 1.47
+  },
+  {
+   "w": "of",
+   "start": 1.47,
+   "end": 1.58
+  },
+  {
+   "w": "the",
+   "start": 1.58,
+   "end": 1.74
+  },
+  {
+   "w": "cross,",
+   "start": 1.74,
+   "end": 2.25
+  },
+  {
+   "w": "they",
+   "start": 2.25,
+   "end": 2.45
+  },
+  {
+   "w": "leave",
+   "start": 2.45,
+   "end": 2.81
+  },
+  {
+   "w": "the",
+   "start": 2.81,
+   "end": 3.03
+  },
+  {
+   "w": "hand",
+   "start": 3.03,
+   "end": 3.39
+  },
+  {
+   "w": "open",
+   "start": 3.39,
+   "end": 4.17
+  },
+  {
+   "w": "and",
+   "start": 4.17,
+   "end": 4.33
+  },
+  {
+   "w": "go",
+   "start": 4.33,
+   "end": 4.56
+  },
+  {
+   "w": "from",
+   "start": 4.56,
+   "end": 4.96
+  },
+  {
+   "w": "left",
+   "start": 4.96,
+   "end": 5.5
+  },
+  {
+   "w": "to",
+   "start": 5.5,
+   "end": 5.6
+  },
+  {
+   "w": "right.",
+   "start": 5.6,
+   "end": 6.64
+  },
+  {
+   "w": "But",
+   "start": 6.64,
+   "end": 6.9
+  },
+  {
+   "w": "the",
+   "start": 6.9,
+   "end": 7.16
+  },
+  {
+   "w": "Catechism",
+   "start": 7.16,
+   "end": 7.93
+  },
+  {
+   "w": "says",
+   "start": 7.93,
+   "end": 8.27
+  },
+  {
+   "w": "that",
+   "start": 8.27,
+   "end": 8.61
+  },
+  {
+   "w": "every",
+   "start": 8.61,
+   "end": 9.04
+  },
+  {
+   "w": "lawful",
+   "start": 9.04,
+   "end": 9.56
+  },
+  {
+   "w": "way",
+   "start": 9.56,
+   "end": 9.82
+  },
+  {
+   "w": "of",
+   "start": 9.82,
+   "end": 10.03
+  },
+  {
+   "w": "prayer",
+   "start": 10.03,
+   "end": 10.55
+  },
+  {
+   "w": "is",
+   "start": 10.55,
+   "end": 10.78
+  },
+  {
+   "w": "of",
+   "start": 10.78,
+   "end": 10.82
+  },
+  {
+   "w": "equal",
+   "start": 10.82,
+   "end": 11.16
+  },
+  {
+   "w": "right",
+   "start": 11.16,
+   "end": 11.5
+  },
+  {
+   "w": "and",
+   "start": 11.5,
+   "end": 11.7
+  },
+  {
+   "w": "dignity.",
+   "start": 11.7,
+   "end": 12.4
+  },
+  {
+   "w": "Roman",
+   "start": 12.4,
+   "end": 12.81
+  },
+  {
+   "w": "Catholics",
+   "start": 12.81,
+   "end": 13.56
+  },
+  {
+   "w": "touch",
+   "start": 13.56,
+   "end": 13.97
+  },
+  {
+   "w": "the",
+   "start": 13.97,
+   "end": 14.32
+  },
+  {
+   "w": "left",
+   "start": 14.32,
+   "end": 14.65
+  },
+  {
+   "w": "shoulder",
+   "start": 14.65,
+   "end": 15.22
+  },
+  {
+   "w": "first,",
+   "start": 15.22,
+   "end": 15.84
+  },
+  {
+   "w": "but",
+   "start": 15.84,
+   "end": 16.07
+  },
+  {
+   "w": "neither",
+   "start": 16.07,
+   "end": 16.58
+  },
+  {
+   "w": "way",
+   "start": 16.58,
+   "end": 16.81
+  },
+  {
+   "w": "is",
+   "start": 16.81,
+   "end": 16.91
+  },
+  {
+   "w": "wrong.",
+   "start": 16.91,
+   "end": 17.52
+  },
+  {
+   "w": "It",
+   "start": 17.52,
+   "end": 17.7
+  },
+  {
+   "w": "is",
+   "start": 17.7,
+   "end": 17.88
+  },
+  {
+   "w": "the",
+   "start": 17.88,
+   "end": 18.16
+  },
+  {
+   "w": "same",
+   "start": 18.16,
+   "end": 18.67
+  },
+  {
+   "w": "cross",
+   "start": 18.67,
+   "end": 18.99
+  },
+  {
+   "w": "and",
+   "start": 18.99,
+   "end": 19.27
+  },
+  {
+   "w": "the",
+   "start": 19.27,
+   "end": 19.55
+  },
+  {
+   "w": "same",
+   "start": 19.55,
+   "end": 19.92
+  },
+  {
+   "w": "God",
+   "start": 19.92,
+   "end": 20.26
+  },
+  {
+   "w": "and",
+   "start": 20.26,
+   "end": 20.48
+  },
+  {
+   "w": "the",
+   "start": 20.48,
+   "end": 20.91
+  },
+  {
+   "w": "Church",
+   "start": 20.91,
+   "end": 21.32
+  },
+  {
+   "w": "loves",
+   "start": 21.32,
+   "end": 21.78
+  },
+  {
+   "w": "both",
+   "start": 21.78,
+   "end": 22.14
+  },
+  {
+   "w": "ways",
+   "start": 22.14,
+   "end": 22.52
+  },
+  {
+   "w": "of",
+   "start": 22.52,
+   "end": 22.7
+  },
+  {
+   "w": "prayer.",
+   "start": 22.7,
+   "end": 23.6
+  }
+ ]
+}

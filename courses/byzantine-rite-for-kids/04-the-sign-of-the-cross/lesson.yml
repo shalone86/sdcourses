@@ -110,6 +110,18 @@ points:
         left: { kicker: Three fingers, title: The Trinity, note: Father, Son and Holy Spirit, icon: triangle }
         right: { kicker: Two fingers, title: Jesus, note: True God and true man, icon: heart }
         emphasis: left
+      - type: compare
+        left:
+          kicker: Three fingers
+          title: The Trinity
+          note: Father
+          icon: triangle
+        right:
+          kicker: Two fingers
+          title: Jesus
+          note: True God and true man
+          icon: heart
+        emphasis: right
     quiz:
       type: blank
       question: Three fingers joined stand for the Holy ____.
