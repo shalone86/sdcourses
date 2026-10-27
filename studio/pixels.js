@@ -108,6 +108,8 @@ window.PixelTab = (() => {
     const pal = PALETTES[store.get('studio.pixelPalette')] ? store.get('studio.pixelPalette') : 'video';
     const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false, gal: {open: false, q: ''},
       undo: [], saved: '', timer: null,
+      bases: {open: false, list: [], versions: {}, pick: null, name: ''},
+      version: null, // coloring a new character from a base: {base, name}
       sel: null,    // selected box {x, y, w, h}
       float: null,  // lifted pixels being moved or pasted {x, y, w, h, layers: [{frame, px}]} (one layer per frame)
       shape: null}; // a shape being dragged: its preview squares
@@ -538,7 +540,7 @@ window.PixelTab = (() => {
 
     function markDirty() {
       const b = body.querySelector('[data-save]');
-      if (b) { b.disabled = !dirty(); b.textContent = dirty() ? 'Save' : 'Saved'; }
+      if (b) { b.disabled = !dirty(); b.textContent = dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved'; }
     }
     function note(text) { const n = body.querySelector('[data-note]'); if (n) n.textContent = text; }
 
@@ -552,12 +554,14 @@ window.PixelTab = (() => {
         P.art = fromSaved(s); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap();
         // "Start from a copy": every frame of that one, as a new unsaved drawing.
         if (copy) { delete P.art.slug; P.art.name = s.name + ' copy'; P.saved = ''; }
+        const v = !copy && /-idle$/.test(s.slug) && s.slug.slice(0, -5);
+        P.version = v && P.bases.versions[v] ? {base: P.bases.versions[v].base, name: v} : null;
         P.gal.open = false;
         draw();
       };
       const startNew = async () => {
         if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
-        P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); draw();
+        P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); P.version = null; draw();
       };
       const pick = window.SpriteGallery.build({items: P.list, state: P.gal, current: a.slug, noun: 'drawing', onNew: startNew, onToggle: draw, onOpen: openSaved,
         onFavorite: async (slug, on) => {
@@ -591,6 +595,7 @@ window.PixelTab = (() => {
         [h('canvas', {width: 64, height: 64, 'data-thumb': i}), h('span', {text: String(i + 1)})]));
 
       const save = async () => {
+        if (P.version) return saveVersion();
         if (!a.name.trim()) { alert('Give it a name first.'); return; }
         letGo();
         try {
@@ -598,14 +603,75 @@ window.PixelTab = (() => {
           P.list = d.sprites.filter((s) => s.kind !== 'sketch'); a.slug = d.slug; P.saved = snap(); draw();
         } catch (e) { alert('Couldn’t save it: ' + e.message); }
       };
+      // A color version: her recolored idle, then the other four poses made from the base with the same swaps.
+      const saveVersion = async () => {
+        letGo();
+        const req = {base: P.version.base, name: P.version.name, idle: toSaved(a)};
+        try {
+          const check = await post('/api/sprite/version', {...req, dry: true});
+          const others = check.exists.filter((x) => x !== a.slug);
+          if (others.length && !(await ask(`${check.slug} already has ${others.length} pose${others.length > 1 ? 's' : ''}. Replace them with new ones in these colors?`))) return;
+          for (const sp of check.split) {
+            if (!(await ask(`One color in ${P.version.base} (${sp.from}) became ${sp.to.length} colors here (${sp.to.join(', ')}). The other poses can only use one: ${sp.to[0]}. Go ahead?`))) return;
+          }
+          const d = await post('/api/sprite/version', req);
+          P.list = d.sprites.filter((x) => x.kind !== 'sketch'); P.bases.list = d.bases; P.bases.versions = d.versions;
+          a.slug = `${d.slug}-idle`; a.name = a.slug; P.saved = snap(); draw();
+          note(`Made ${d.made.join(', ')}.` + (d.shape ? ` ${d.shape} squares you added or erased stay in the idle only (the other poses get the colors, not shape changes).` : ''));
+        } catch (e) { alert('Couldn’t make it: ' + e.message); }
+      };
+      // Every square of one color, in every frame, changed to another.
+      const swapColor = (from, to) => {
+        remember();
+        for (const fr of a.frames) fr.forEach((c, i) => { if (c && c.toUpperCase() === from) fr[i] = to.toUpperCase(); });
+        draw(); markDirty();
+      };
+      const baseThumb = (b) => {
+        const cv = h('canvas', {width: 64, height: 64});
+        const art = fromSaved(b.idle);
+        requestAnimationFrame(() => paint(cv, art.frames[0], art.width, art.height, 64));
+        return h('button', {class: 'px-frame px-base' + (P.bases.pick === b.name ? ' on' : ''), title: b.name, onclick: () => { P.bases.pick = b.name; draw(); }},
+          [cv, h('span', {text: b.name})]);
+      };
+      const startVersion = async () => {
+        const b = P.bases.list.find((x) => x.name === P.bases.pick);
+        const slug = P.bases.name.toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        if (!b) { alert('Pick a base first.'); return; }
+        if (!slug) { alert('Give the new character a name (e.g. St Joseph).'); return; }
+        if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
+        P.art = fromSaved(b.idle); delete P.art.slug; P.art.name = `${slug}-idle`;
+        P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = '';
+        P.version = {base: b.name, name: slug}; P.bases.open = false; P.bases.name = '';
+        draw();
+      };
+      const basesPanel = P.bases.open ? h('div', {class: 'px-bases', style: {display: 'grid', gap: '8px'}}, [
+        h('div', {class: 'small muted', text: 'Pick the body to start from, name the new character, then change the colors on its idle. The other poses are made for you.'}),
+        h('div', {class: 'px-frames'}, P.bases.list.length ? P.bases.list.map(baseThumb) : [h('span', {class: 'small muted', text: 'No bases yet: a base is a character with idle, point, look-up, walk and run drawings.'})]),
+        h('div', {class: 'row', style: {gap: '8px'}}, [
+          h('input', {type: 'text', value: P.bases.name, placeholder: 'New character’s name (e.g. St Joseph)', 'aria-label': 'New character’s name', oninput: (e) => { P.bases.name = e.target.value; }}),
+          btn('Start coloring', startVersion, {class: 'btn primary'})]),
+      ]) : null;
+      const versionBox = P.version ? h('div', {class: 'px-version', style: {display: 'grid', gap: '6px', padding: '8px 10px', borderRadius: '8px', background: 'var(--panel-2, rgba(127,127,127,.12))'}}, [
+        h('div', {class: 'small'}, [h('b', {text: P.version.name}), ` from ${P.version.base}: change the colors on this idle drawing. Saving makes point, look up, walk and run in the same colors.`]),
+        h('div', {class: 'small muted', text: 'Change a color everywhere (every square and frame):'}),
+        h('div', {class: 'px-palette'}, [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].map((c) =>
+          h('label', {class: 'px-any', title: 'Change ' + c}, [h('input', {type: 'color', value: c.toLowerCase(), onchange: (e) => swapColor(c, e.target.value)}), h('span', {text: c})]))),
+      ]) : null;
       const selecting = !!(P.sel || P.float);
 
       body.replaceChildren(...[
         pick,
+        h('button', {class: 'btn', 'aria-expanded': P.bases.open ? 'true' : 'false', text: 'New character from a base…', onclick: async () => {
+          P.bases.open = !P.bases.open;
+          if (P.bases.open) { try { const d = await api('/api/puppet-bases'); P.bases.list = d.bases; P.bases.versions = d.versions; } catch {} }
+          draw();
+        }}),
+        basesPanel,
+        versionBox,
         h('div', {class: 'row', style: {gap: '8px'}}, [size,
           h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
-        name,
+        P.version ? null : name,
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
         h('div', {class: 'small muted', text: 'Keys: B pencil → eraser → fill · S line → box → circle · C next color (Shift+C back) · I pick a color · M select'}),
         SHAPES.includes(P.tool) && P.tool !== 'line'
@@ -628,7 +694,7 @@ window.PixelTab = (() => {
           h('label', {class: 'small', title: 'Moving, cutting, flipping and clearing work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
             onchange: (e) => { P.every = e.target.checked; }}), ' Fill, move, cut, flip and clear in every frame']),
           btn('Clear this frame', () => { letGo(); remember(); a.frames[P.frame] = blank(a.width, a.height); draw(); markDirty(); }),
-          h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
+          h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved', onclick: save}),
           a.slug ? btn('Delete this drawing', remove) : null,
           btn('Export frame (PNG)', () => exportArt(false), {title: 'This frame as a picture, enlarged with sharp pixels'}),
           a.frames.length > 1 ? btn('Export animation (GIF)', () => exportArt(true), {title: 'All the frames as an animated GIF, at the preview speed'}) : null,
@@ -656,6 +722,7 @@ window.PixelTab = (() => {
 
     // (sketches have their own mode)
     api('/api/sprites').then((list) => { P.list = list.filter((s) => s.kind !== 'sketch'); draw(); }, () => draw());
+    api('/api/puppet-bases').then((d) => { P.bases.list = d.bases; P.bases.versions = d.versions; }, () => {});
     return {dirty};
   }
 

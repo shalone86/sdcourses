@@ -20,7 +20,7 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import * as esbuild from 'esbuild';
 import {importImage, importUpload, searchImages, sourceList} from './images.mjs';
-import {deleteSprite, listSprites, puppetCast, saveSprite, setFavorite} from '../scripts/sprites.mjs';
+import {colorVersion, deleteSprite, listSprites, puppetBases, puppetCast, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
 
@@ -568,6 +568,7 @@ async function handle(req, res) {
     if (p === '/api/images/sources') return json(res, 200, sourceList());
     if (p === '/api/sprites') return json(res, 200, listSprites());
     if (p === '/api/puppet-cast') return json(res, 200, puppetCast());
+    if (p === '/api/puppet-bases') return json(res, 200, puppetBases());
     if (p === '/api/icons') {
       // Lucide icons whose name matches, with a small drawing of each, for the Icons picker.
       const q = (url.searchParams.get('q') ?? '').trim().toLowerCase().replace(/\s+/g, '-');
@@ -706,6 +707,12 @@ async function handle(req, res) {
       // (a sketch's frames are pictures, so this can be a few megabytes)
       const slug = saveSprite(JSON.parse(String(await readBody(req, 60e6)) || '{}'));
       return json(res, 200, {slug, sprites: listSprites()});
+    }
+    if (p === '/api/sprite/version') {
+      // A color version of a base character: her recolored idle, and the other poses made from it.
+      let out;
+      try { out = colorVersion(await readJson(req)); } catch (e) { throw httpError(409, e.message); }
+      return json(res, 200, {...out, sprites: listSprites(), ...puppetBases()});
     }
     if (p === '/api/sprite/gif') {
       // A drawing as an animated GIF (frames come as PNG pictures, already enlarged): made with ffmpeg.
@@ -847,7 +854,7 @@ const server = http.createServer((req, res) => {
 // http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
 // Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
 const DRAW_PORT = 5179;
-const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
+const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
 const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
 const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
 

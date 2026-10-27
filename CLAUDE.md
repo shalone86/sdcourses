@@ -156,6 +156,13 @@ If it's already running, `npm start` just opens the page.
   separate boxes (no `|`). **Icons** (`type: icons`): 1–4 lucide.dev icons
   that draw themselves in, each with an optional word (cued when said); the
   form has an icon search with previews (`/api/icons`).
+- **Characters from a base** (Pixel art tab → New character from a base…): a
+  base is a character with `-idle`, `-point`, `-look-up`, `-walk`, `-run` (hers:
+  thick-beard-guy, thick-guy, skinny-guy, guy-beard, vestment-guy, thick-woman,
+  skinny-woman). She picks one, names the new character, recolors only its idle
+  ("change a color everywhere" boxes), and Save makes all five poses with the
+  same color swaps (`colorVersion` in `scripts/sprites.mjs`; `sprites/.versions.json`
+  remembers each one's base). Bases are never changed.
 - **Puppet** (`type: puppet`, PUPPET.md): an 8 × 8 character she draws as
   `<name>-<action>` drawings, played with the keys while the video runs on the
   Timing tab; recorded in timing.yml (`scenes.<i>.puppet`).

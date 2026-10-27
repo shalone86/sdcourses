@@ -150,3 +150,63 @@ export function puppetArt(sc) {
   const order = sc.item && names.includes(sc.item) ? [sc.item, ...names.filter((n) => n !== sc.item)] : names;
   return {actions, items: order.map((name) => ({name, art: loadSprite(`item-${name}`)}))};
 }
+
+// ---------- color versions of her base characters (PUPPET.md) ----------
+// A base is a character with all five poses that she drew herself. She recolors only its idle and
+// names the new character; every other pose is made from the base's with the same color swaps.
+// sprites/.versions.json remembers each version's base and swaps: {st-joseph: {base, swaps: {'#old': '#new'}}}.
+export const BASE_POSES = ['idle', 'point', 'look-up', 'walk', 'run'];
+const VERSIONS = path.join(SPRITES, '.versions.json');
+export const readVersions = () => { try { return JSON.parse(fs.readFileSync(VERSIONS, 'utf8')); } catch { return {}; } };
+
+/** The bases she can start from (with their idle drawing), and the versions made so far. */
+export function puppetBases() {
+  const versions = readVersions();
+  const bases = puppetCast().characters.filter((c) => !versions[c.name] && BASE_POSES.every((p) => c.actions.includes(p)))
+    .map((c) => ({name: c.name, idle: loadSprite(`${c.name}-idle`)}));
+  return {bases, versions};
+}
+
+// One color (or null) per pixel, per frame.
+const pixelsOf = (art) => art.frames.map((rows) => rows.join('').split('').map((c) => (c === '.' ? null : art.palette[CODES.indexOf(c)].toUpperCase())));
+
+/**
+ * Make (or, with dry, only check) a color version: `idle` is her recolored idle (saved form) of
+ * `base`, `name` the new character. Returns {slug, swaps, split: [{from, to: [...]}], shape, made: [...], exists: [...]}.
+ * split: a base color that became more than one color (the most used one is copied to the other poses);
+ * shape: how many squares she added or erased (only colors are copied, not shape changes).
+ */
+export function colorVersion({base, name, idle, dry}) {
+  const slug = spriteSlug(name);
+  if (!slug) throw new Error('Give the new character a name');
+  const {bases, versions} = puppetBases();
+  if (!bases.some((b) => b.name === base)) throw new Error(`"${base}" isn't a base character with all five poses`);
+  if (slug === base || (bases.some((b) => b.name === slug))) throw new Error(`"${slug}" is a base; pick another name`);
+  const from = loadSprite(`${base}-idle`);
+  if (idle.width !== from.width || idle.height !== from.height) throw new Error('The idle drawing must stay the same size as the base');
+  const a = pixelsOf(from), b = pixelsOf(idle);
+  const count = {};
+  let shape = 0;
+  for (let f = 0; f < Math.min(a.length, b.length); f++) a[f].forEach((c, i) => {
+    const d = b[f][i];
+    if (c && d) { (count[c] ??= {})[d] = (count[c][d] ?? 0) + 1; } else if (c || d) shape++;
+  });
+  const swaps = {}, split = [];
+  for (const [c, to] of Object.entries(count)) {
+    const ranked = Object.entries(to).sort((x, y) => y[1] - x[1]).map(([k]) => k);
+    if (ranked[0] !== c) swaps[c] = ranked[0];
+    if (ranked.length > 1) split.push({from: c, to: ranked});
+  }
+  const others = BASE_POSES.filter((p) => p !== 'idle');
+  const made = [`${slug}-idle`, ...others.map((p) => `${slug}-${p}`)];
+  const exists = made.filter((s) => fs.existsSync(path.join(SPRITES, `${s}.json`)));
+  if (dry) return {slug, swaps, split, shape, made, exists};
+  saveSprite({...idle, name: `${slug}-idle`});
+  for (const p of others) {
+    const art = loadSprite(`${base}-${p}`);
+    saveSprite({...art, name: `${slug}-${p}`, palette: art.palette.map((c) => swaps[c.toUpperCase()] ?? c)});
+  }
+  versions[slug] = {base, swaps};
+  fs.writeFileSync(VERSIONS, JSON.stringify(versions, null, 1) + '\n');
+  return {slug, swaps, split, shape, made, exists};
+}

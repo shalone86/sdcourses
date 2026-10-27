@@ -79,7 +79,7 @@ needs a robe (the hem changes the feet, which a recolor can't do).
 Poses per base: `-idle`, `-walk`, `-run`, `-point`, `-pray`, `-look-up`
 (optional: `-idle-front`, `-talk`, `-cross`, `-bow`).
 
-**To build next (when her bases are drawn): color versions.** She recolors one
+**Built 2026-10-27: color versions** (Pixel art tab → New character from a base…; her poses are only idle, point, look-up, walk, run). She recolors one
 pose of a base (usually idle) and saves it as a new character
 (`st-joseph-idle`); the tool compares it with the base pixel by pixel, learns
 the color swaps, and writes every other pose of that base with the same
