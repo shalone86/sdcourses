@@ -9,5 +9,29 @@
    "#7B5CFF": "#2B2350",
    "#18B7A6": "#2B2350"
   }
+ },
+ "cardinal": {
+  "base": "thick-guy",
+  "swaps": {
+   "#FFB300": "#FF4F6D",
+   "#5A3825": "#FFFFFF",
+   "#A86B3C": "#F2C6A0",
+   "#F2C6A0": "#2F8CFF",
+   "#FF8A3D": "#F2C6A0",
+   "#7B5CFF": "#2B2350",
+   "#18B7A6": "#2B2350"
+  }
+ },
+ "cardinal-vestment": {
+  "base": "vestment-guy",
+  "swaps": {
+   "#18B7A6": "#FF4F6D",
+   "#5A3825": "#FFFFFF",
+   "#F2C6A0": "#2B2350",
+   "#FFB300": "#A86B3C",
+   "#FF8A3D": "#FF4F6D",
+   "#FFFFFF": "#FF4F6D",
+   "#2B2350": "#FFFFFF"
+  }
  }
 }
