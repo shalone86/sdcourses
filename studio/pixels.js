@@ -208,8 +208,12 @@ window.PixelTab = (() => {
     function set(x, y, col) {
       if (!inBounds(x, y)) return;
       if (P.tool === 'dither' && (x + y) % 2) return;
-      px()[y * W() + x] = col;
-      if (P.mirror) { const mx = W() - 1 - x; if (P.tool !== 'dither' || (mx + y) % 2 === 0) px()[y * W() + mx] = col; }
+      // (with "in every frame" on, every frame gets the same squares)
+      for (const i of targets()) {
+        const p = P.art.frames[i];
+        p[y * W() + x] = col;
+        if (P.mirror) { const mx = W() - 1 - x; if (P.tool !== 'dither' || (mx + y) % 2 === 0) p[y * W() + mx] = col; }
+      }
     }
     function fill(x, y, col) { for (const i of targets()) fillFrame(P.art.frames[i], x, y, col); }
     function fillFrame(p, x, y, col) {
@@ -718,8 +722,8 @@ window.PixelTab = (() => {
           btn('Smaller ÷2', () => scaleBy(0.5), {title: 'Make the selection half the size'}),
           btn('Flip ↔', () => flip('h'), {title: selecting ? 'Flip the selection left to right' : 'Flip left to right'}),
           btn('Flip ↕', () => flip('v'), {title: selecting ? 'Flip the selection upside down' : 'Flip upside down'}),
-          h('label', {class: 'small', title: 'Moving, cutting, flipping and clearing work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
-            onchange: (e) => { P.every = e.target.checked; }}), ' Fill, move, cut, flip and clear in every frame']),
+          h('label', {class: 'small', title: 'Drawing, erasing, shapes, fill, moving, cutting, flipping and clearing work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
+            onchange: (e) => { P.every = e.target.checked; }}), ' Draw in every frame (pencil, eraser, shapes, fill, move, cut, flip, clear)']),
           btn('Clear this frame', () => { letGo(); remember(); a.frames[P.frame] = blank(a.width, a.height); draw(); markDirty(); }),
           h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved', onclick: save}),
           a.slug ? btn('Delete this drawing', remove) : null,

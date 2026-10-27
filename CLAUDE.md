@@ -123,7 +123,7 @@ If it's already running, `npm start` just opens the page.
   (geometry in `video/Camera.tsx`).
 - **Pixel art tab** (`studio/pixels.js`): she draws 1–8 frame pixel
   animations, 1–8 frames (8/16/24/32/48/64 px; pencil, dither, eraser, fill, line, box, circle,
-  select & move, color picker; copy/cut/paste across drawings; flips; saved drawings open from a grid of moving thumbnails; mirror, onion
+  select & move, color picker; copy/cut/paste across drawings; flips; "Draw in every frame" makes pencil, eraser, shapes, fill and moves change all frames; saved drawings open from a grid of moving thumbnails; mirror, onion
   skin, speed; keys: B pencil/eraser/fill, S line/box/circle, C/Shift+C colors,
   I pick, M select; Export frame (PNG, enlarged) or animation (GIF, made by
   ffmpeg at `/api/sprite/gif`)). Saved to `sprites/<name>.json` (shared by all lessons;
