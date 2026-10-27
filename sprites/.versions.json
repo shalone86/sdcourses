@@ -84,5 +84,18 @@
    "#2B2350": "#FFFFFF",
    "#18B7A6": "#FFFFFF"
   }
+ },
+ "eastern-monk": {
+  "base": "thick-beard-guy",
+  "swaps": {
+   "#FF8A3D": "#2B2350",
+   "#5A3825": "#FFFFFF",
+   "#A86B3C": "#F2C6A0",
+   "#F2C6A0": "#7B5CFF",
+   "#7B5CFF": "#2B2350",
+   "#FFB300": "#2B2350",
+   "#FF4F6D": "#2B2350",
+   "#18B7A6": "#2B2350"
+  }
  }
 }
