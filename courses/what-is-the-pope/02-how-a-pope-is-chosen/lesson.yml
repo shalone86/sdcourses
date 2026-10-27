@@ -1,0 +1,188 @@
+# Quote-anchored lesson. Draft by Claude; Shalone writes the intro and outro.
+status: draft
+course: what-is-the-pope
+number: 2
+slug: how-a-pope-is-chosen
+title: How a Pope Is Chosen
+excerpt: >-
+  How popes have been chosen over the centuries, from the early Roman church to
+  the cardinals and the first conclaves.
+
+sources:
+  - id: ce-elections
+    label: "Catholic Encyclopedia (1911): Papal Elections"
+    url: https://www.newadvent.org/cathen/11456a.htm
+
+intro:
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - "A question to open with: when a pope dies or resigns, who picks the next one, and why are the cardinals locked in a room?"
+    - "The Catholic Encyclopedia (1911) says the method \"has varied considerably at different periods of the history of the Church.\" This lesson follows five steps of that history."
+    - "The article is from 1911. Today's rules come from Pope John Paul II's 1996 constitution Universi Dominici Gregis (the Catholic Encyclopedia itself points to it). Cardinals under 80 vote; two thirds is still the rule. Check before saying more about modern details."
+  scenes:
+    - type: title
+    - type: host
+      at: I'm your host
+    - type: trinity
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: Like any other bishop
+    quote:
+      lead: The Catholic Encyclopedia says what historians and canonists generally hold about the earliest ages.
+      text: >-
+        the Roman bishopric was filled on its vacancy in the same manner as
+        other bishoprics
+      source: ce-elections
+      cite: Catholic Encyclopedia, "Papal Elections"
+      highlight: in the same manner as other bishoprics
+    text: >-
+      The pope is the Bishop of Rome. In the early centuries, the article
+      says, historians generally hold that the clergy and people of Rome and
+      the neighboring bishops chose him, as they would any other bishop. The
+      sources are thin for the earliest years, so the details are less certain
+      than the general picture. There were no cardinals yet and no special
+      rules.
+    visuals:
+      - type: chain
+        items: [Neighboring bishops, Roman clergy, Faithful of Rome]
+        caption: Who chose a new Bishop of Rome
+    quiz:
+      type: choice
+      question: In the earliest centuries, how was the Bishop of Rome generally chosen?
+      options:
+        - Like other bishops, by clergy and faithful
+        - By the emperor alone
+        - By lot among the cardinals
+      answer: 0
+      why: >-
+        The Catholic Encyclopedia says the Roman bishopric was filled "in the
+        same manner as other bishoprics."
+
+  - heading: Power from Christ, not the emperor
+    quote:
+      lead: After Constantine, emperors often took part. The article explains what that never meant.
+      text: >-
+        the elected candidate receives his power from Christ
+      source: ce-elections
+      cite: Catholic Encyclopedia, "Papal Elections"
+      highlight: receives his power from Christ
+    text: >-
+      After Constantine gave peace to the Church, Roman emperors, and later
+      kings, often influenced who became pope. At times they even named a
+      candidate. But the article stresses that an emperor's confirmation never
+      gave the pope his authority. It only helped keep order. The Church's
+      teaching is that the one elected receives his power from Christ.
+    visuals:
+      - type: compare
+        left: { kicker: The election, title: Who is chosen, note: Church electors choose the man, icon: users }
+        right: { kicker: The office, title: Where power comes from, note: From Christ, icon: key }
+        emphasis: right
+    quiz:
+      type: blank
+      question: The elected pope receives his power from ____.
+      accept: [Christ, Jesus, Jesus Christ]
+      why: >-
+        The Catholic Encyclopedia: "the elected candidate receives his power
+        from Christ."
+
+  - heading: The cardinals take over (1059)
+    quote:
+      lead: A decree of Pope Nicholas II in 1059 was a turning point.
+      text: >-
+        the decree of Pope Nicholas reserves the actual election to the
+        cardinals
+      source: ce-elections
+      cite: Catholic Encyclopedia, "Papal Elections"
+      highlight: reserves the actual election to the cardinals
+    text: >-
+      In 1059 Pope Nicholas II decreed that the cardinal bishops would meet
+      first, and then the other cardinals would join them to elect. The rest
+      of the clergy and the laity were still asked to give their assent. The
+      Catholic Encyclopedia calls this decree epoch-making, because it started
+      the cardinals' role in choosing the pope.
+    visuals:
+      - type: timeline
+        items:
+          - { year: "1059", label: Nicholas II names the cardinals }
+          - { year: "1139", label: Choice limited to cardinals }
+    quiz:
+      type: choice
+      question: Whom did the decree of Nicholas II in 1059 give the actual election?
+      options: [The cardinals, The emperor, The Roman nobles]
+      answer: 0
+      why: >-
+        The Catholic Encyclopedia: the decree "reserves the actual election to
+        the cardinals."
+
+  - heading: A two-thirds majority (1179)
+    quote:
+      lead: In 1179 a Lateran Council under Alexander III made a rule that still matters.
+      text: >-
+        the pope is to be chosen by a two-thirds majority of the electors who
+        are present
+      source: ce-elections
+      cite: Catholic Encyclopedia, "Papal Elections"
+      highlight: two-thirds majority
+    text: >-
+      A bare majority was not enough. In 1179 the Church required two thirds of
+      the electors present, so that the new pope would have broad support. But
+      the rule did not say what to do when no one reached two thirds. That
+      gap led to one of the longest vacancies in history: two years and nine
+      months after the death of Clement IV in 1268.
+    visuals:
+      - type: compare
+        left: { kicker: 1179, title: Two thirds, note: of the electors present, icon: vote }
+        right: { kicker: "1268–1271", title: Two years and nine months, note: The seat stays empty, icon: hourglass }
+        emphasis: left
+    quiz:
+      type: choice
+      question: How many of the electors present were needed, according to the 1179 rule?
+      options: [Two thirds, Just over half, All of them]
+      answer: 0
+      why: >-
+        The Catholic Encyclopedia: "a two-thirds majority of the electors who
+        are present."
+
+  - heading: "Locked in: the first conclave (1274)"
+    quote:
+      lead: To end such long waits, the Second Council of Lyons decreed that the cardinals should assemble and hold their meetings...
+      text: >-
+        entirely shut out from all outside influences
+      source: ce-elections
+      cite: Catholic Encyclopedia, "Papal Elections"
+      highlight: shut out from all outside influences
+    text: >-
+      In 1274 the Second Council of Lyons under Gregory X ordered the
+      cardinals to meet ten days after the pope's death and stay shut in
+      until they chose. If they delayed, their food was reduced. The article
+      says this is the origin of conclaves. The word means "with a key": the
+      room is locked so no one can pressure the electors.
+    visuals:
+      - type: term
+        term: Conclave
+        origin: Latin cum clave
+        meaning: with a key
+      - type: sprite
+        sprite: cardinal-walk
+        move: across
+        size: small
+        with: over
+    quiz:
+      type: truefalse
+      question: Conclaves began so that the cardinals could choose a pope without outside pressure.
+      answer: true
+      why: >-
+        True. The cardinals were to hold their meetings "entirely shut out
+        from all outside influences."
+
+outro:
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: like any other bishop · power from Christ, not the emperor · the cardinals take over (1059) · a two-thirds majority (1179) · locked in: the first conclave (1274)."
+    - "Next in the course: What Infallibility Does (and Doesn't) Mean."
+  scenes:
+    - type: recap
