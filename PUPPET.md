@@ -8,7 +8,7 @@ it stands first. Click its block → **● Play it from here** / From the start 
 this picture: the video plays and her keys are kept against the playhead
 (timing.yml `scenes.<i>.puppet: [[seconds, key, 1|0], …]`; playing again from a
 point keeps what came before it). Keys: ← → walk, Shift run, P point (the item
-shows beside it), ↑ look up, T talk, A pray, X sign of the cross (plays once),
+shows beside it), ↑ look up, T talk, A pray, X sign of the cross (plays once), B blessing, K kneel (stays down while held),
 ↓ bow (once), I next item, Esc stops (2026-10-27: hold and point up removed). Tested with stand-in drawings
 (deleted); **waiting on her real drawings**. Not done yet: color versions
 (below), a turn frame, layered outfits, sketch-mode characters (pixel only).

@@ -169,8 +169,14 @@ If it's already running, `npm start` just opens the page.
   and still be changed apart), and Save makes all five poses with the
   same color swaps (`colorVersion` in `scripts/sprites.mjs`; `sprites/.versions.json`
   remembers each one's base). Bases are never changed.
+- **Copy a pose to other characters…** (Pixel art tab): a pose she drew once (e.g.
+  eastern-monk-blessing) becomes a draft for every other character, made from its own idle
+  (the changed squares only, lined up with a shift for kneeling; colors from the nearest
+  matching part; `copyPose` in `scripts/sprites.mjs`). She ticks which to make; drafts never
+  replace an existing drawing, and she touches them up. Color versions also get any extra
+  poses their base has.
 - **Puppet** (`type: puppet`, PUPPET.md): an 8 × 8 character she draws as
-  `<name>-<action>` drawings, played with the keys while the video runs on the
+  `<name>-<action>` drawings (actions include blessing, B, and kneel, K), played with the keys while the video runs on the
   Timing tab; recorded in timing.yml (`scenes.<i>.puppet`).
 - **Nudging:** clicking any scene block shows Move ← ↑ ↓ → / Smaller / Bigger
   (Shift moves further), saved in timing.yml as `scenes.<i>.nudge: {x, y, size}`

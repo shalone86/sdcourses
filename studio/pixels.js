@@ -108,7 +108,8 @@ window.PixelTab = (() => {
     const pal = PALETTES[store.get('studio.pixelPalette')] ? store.get('studio.pixelPalette') : 'video';
     const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false, gal: {open: false, q: ''},
       undo: [], saved: '', timer: null,
-      bases: {open: false, list: [], versions: {}, pick: null, name: ''},
+      bases: {open: false, list: [], versions: {}, cast: [], pick: null, name: ''},
+      poses: {open: false, from: '', pose: '', drafts: [], skip: new Set(), busy: false, timer: null},
       version: null, // coloring a new character from a base: {base, name}
       sel: null,    // selected box {x, y, w, h}
       float: null,  // lifted pixels being moved or pasted {x, y, w, h, layers: [{frame, px}]} (one layer per frame)
@@ -626,7 +627,7 @@ window.PixelTab = (() => {
             if (!(await ask(`One color in ${P.version.base} (${sp.from}) became ${sp.to.length} colors here (${sp.to.join(', ')}). The other poses can only use one: ${sp.to[0]}. Go ahead?`))) return;
           }
           const d = await post('/api/sprite/version', req);
-          P.list = d.sprites.filter((x) => x.kind !== 'sketch'); P.bases.list = d.bases; P.bases.versions = d.versions;
+          P.list = d.sprites.filter((x) => x.kind !== 'sketch'); P.bases.list = d.bases; P.bases.versions = d.versions; P.bases.cast = d.cast ?? [];
           a.slug = `${d.slug}-idle`; a.name = a.slug; P.saved = snap(); draw();
           note(`Made ${d.made.join(', ')}.` + (d.shape ? ` ${d.shape} squares you added or erased stay in the idle only (the other poses get the colors, not shape changes).` : ''));
         } catch (e) { alert('Couldn’t make it: ' + e.message); }
@@ -697,14 +698,88 @@ window.PixelTab = (() => {
       ]) : null;
       const selecting = !!(P.sel || P.float);
 
+      // Copy a pose to other characters: drafts made from each one's own idle (copyPose in
+      // scripts/sprites.mjs), shown moving; the ones that already have that pose are left alone.
+      const Q = P.poses;
+      clearInterval(Q.timer);
+      const STANDARD = ['idle', 'point', 'look-up', 'walk', 'run'];
+      const loadDrafts = async () => {
+        Q.drafts = []; Q.skip = new Set();
+        const c = P.bases.cast.find((x) => x.name === Q.from);
+        if (!c || !c.actions.includes(Q.pose)) { draw(); return; }
+        Q.busy = true; draw();
+        try {
+          const to = P.bases.cast.filter((x) => x.name !== Q.from && x.actions.includes('idle')).map((x) => x.name);
+          Q.drafts = (await post('/api/sprite/copy-pose', {from: Q.from, pose: Q.pose, to})).drafts.filter((d) => d.art);
+        } catch (e) { alert(e.message); }
+        Q.busy = false; draw();
+      };
+      const openPoses = () => {
+        Q.open = !Q.open;
+        if (Q.open && !Q.from) {
+          // Start from the drawing that's open if it is a pose (e.g. eastern-monk-blessing).
+          const c = a.slug && P.bases.cast.find((x) => a.slug.startsWith(x.name + '-') && x.actions.includes(a.slug.slice(x.name.length + 1)));
+          const first = P.bases.cast.find((x) => x.actions.some((y) => !STANDARD.includes(y)));
+          Q.from = c ? c.name : first?.name ?? '';
+          const own = c ? a.slug.slice(c.name.length + 1) : null;
+          Q.pose = own ?? (first ? first.actions.find((x) => !STANDARD.includes(x)) : '');
+        }
+        if (Q.open) loadDrafts(); else draw();
+      };
+      const fromChar = P.bases.cast.find((x) => x.name === Q.from);
+      const newOnes = Q.drafts.filter((d) => !d.exists);
+      const draftCards = Q.drafts.map((d) => {
+        const art = fromSaved(d.art);
+        const cv = h('canvas', {width: 64, height: 64});
+        const on = !d.exists && !Q.skip.has(d.character);
+        const card = h('label', {class: 'px-frame px-base' + (on ? ' on' : ''), title: d.exists ? `${d.slug} already exists (kept as it is)` : d.slug, style: {opacity: d.exists ? '.45' : null}}, [cv,
+          h('span', {text: d.character + (d.exists ? ' (has one)' : '')}),
+          d.exists ? null : h('input', {type: 'checkbox', checked: on || null, style: {position: 'absolute', top: '3px', right: '3px'}, 'aria-label': 'Make ' + d.slug,
+            onchange: (e) => { if (e.target.checked) Q.skip.delete(d.character); else Q.skip.add(d.character); draw(); }})]);
+        card._art = art; card._cv = cv;
+        return card;
+      });
+      const makeDrafts = async () => {
+        const to = newOnes.filter((d) => !Q.skip.has(d.character)).map((d) => d.character);
+        if (!to.length) return;
+        try {
+          const d = await post('/api/sprite/copy-pose', {from: Q.from, pose: Q.pose, to, save: true});
+          P.list = d.sprites.filter((x) => x.kind !== 'sketch');
+          const r = await api('/api/puppet-bases'); P.bases.cast = r.cast ?? [];
+          alert(`Made ${d.drafts.filter((x) => x.saved).length} drafts (named like ${to[0]}-${Q.pose}). Open each one to touch it up.`);
+        } catch (e) { alert(e.message); return; }
+        loadDrafts();
+      };
+      const posesPanel = Q.open ? h('div', {class: 'px-bases', style: {display: 'grid', gap: '8px'}}, [
+        h('div', {class: 'small muted', text: 'Draw a new pose once on one character; every other character gets a draft made from its own idle and colors. Drafts never replace a drawing you already have. Check each one and touch it up.'}),
+        h('div', {class: 'row', style: {gap: '8px', flexWrap: 'wrap'}}, [
+          h('select', {'aria-label': 'Character with the pose', onchange: (e) => { Q.from = e.target.value; const c = P.bases.cast.find((x) => x.name === Q.from); Q.pose = c?.actions.find((x) => !STANDARD.includes(x)) ?? c?.actions[0] ?? ''; loadDrafts(); }},
+            P.bases.cast.map((c) => h('option', {value: c.name, text: c.name, selected: c.name === Q.from || null}))),
+          h('select', {'aria-label': 'Pose', onchange: (e) => { Q.pose = e.target.value; loadDrafts(); }},
+            (fromChar?.actions ?? []).filter((x) => x !== 'idle').map((x) => h('option', {value: x, text: x, selected: x === Q.pose || null})))]),
+        Q.busy ? h('div', {class: 'small muted', text: 'Making drafts…'}) : null,
+        h('div', {class: 'px-frames'}, draftCards),
+        newOnes.length ? h('div', {class: 'row', style: {gap: '8px'}}, [
+          btn('All', () => { Q.skip = new Set(); draw(); }), btn('None', () => { Q.skip = new Set(newOnes.map((d) => d.character)); draw(); }),
+          btn(`Make ${newOnes.filter((d) => !Q.skip.has(d.character)).length} drafts`, makeDrafts, {class: 'btn primary'})]) : null,
+      ]) : null;
+      if (Q.open && draftCards.length) {
+        let t = 0;
+        const tick = () => { for (const c of draftCards) paint(c._cv, c._art.frames[t % c._art.frames.length], c._art.width, c._art.height, 64); t++; };
+        requestAnimationFrame(tick);
+        Q.timer = setInterval(tick, 1000 / Math.max(1, Q.drafts[0]?.art.fps ?? 4));
+      }
+
       body.replaceChildren(...[
         pick,
         h('button', {class: 'btn', 'aria-expanded': P.bases.open ? 'true' : 'false', text: 'New character from a base…', onclick: async () => {
           P.bases.open = !P.bases.open;
-          if (P.bases.open) { try { const d = await api('/api/puppet-bases'); P.bases.list = d.bases; P.bases.versions = d.versions; } catch {} }
+          if (P.bases.open) { try { const d = await api('/api/puppet-bases'); P.bases.list = d.bases; P.bases.versions = d.versions; P.bases.cast = d.cast ?? []; } catch {} }
           draw();
         }}),
         basesPanel,
+        h('button', {class: 'btn', 'aria-expanded': P.poses.open ? 'true' : 'false', text: 'Copy a pose to other characters…', onclick: openPoses}),
+        posesPanel,
         versionBox,
         h('div', {class: 'row', style: {gap: '8px'}}, [size,
           h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
@@ -750,7 +825,8 @@ window.PixelTab = (() => {
           a.frames.length < MAX_FRAMES ? btn('+ Empty frame', () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, blank(a.width, a.height)); P.frame++; draw(); markDirty(); }) : null,
           a.frames.length > 1 ? btn('◀ Move left', () => moveFrame(P.frame, P.frame - 1), {disabled: P.frame === 0 || null}) : null,
           a.frames.length > 1 ? btn('Move right ▶', () => moveFrame(P.frame, P.frame + 1), {disabled: P.frame === a.frames.length - 1 || null}) : null,
-          a.frames.length > 1 ? btn('Delete this frame', async () => { if (!(await ask('Delete frame ' + (P.frame + 1) + '?'))) return; letGo(); remember(); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); draw(); markDirty(); }) : null]),
+        ]),
+        a.frames.length > 1 ? h('div', {class: 'row', style: {gap: '8px'}}, [btn('🗑 Delete frame ' + (P.frame + 1), async () => { if (!(await ask('Delete frame ' + (P.frame + 1) + '?'))) return; letGo(); remember(); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); draw(); markDirty(); }, {title: 'Delete the frame that’s showing'})]) : null,
         h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; startPreview(); markDirty(); }})])]),
@@ -763,7 +839,7 @@ window.PixelTab = (() => {
 
     // (sketches have their own mode)
     api('/api/sprites').then((list) => { P.list = list.filter((s) => s.kind !== 'sketch'); draw(); }, () => draw());
-    api('/api/puppet-bases').then((d) => { P.bases.list = d.bases; P.bases.versions = d.versions; }, () => {});
+    api('/api/puppet-bases').then((d) => { P.bases.list = d.bases; P.bases.versions = d.versions; P.bases.cast = d.cast ?? []; }, () => {});
     return {dirty};
   }
 
