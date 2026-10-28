@@ -262,9 +262,8 @@
           block.append(h('button', {class: 'tl-x', title: 'Remove this picture', 'aria-label': 'Remove ' + label,
             onpointerdown: (e) => e.stopPropagation(), onclick: (e) => { e.stopPropagation(); removeScene(i, label); }}, '×'));
         }
-        // A click (no drag) jumps there; on a picture it also opens its options.
+        // A click (no drag) opens its options; the playhead stays where it is.
         drag(block, sc.from, (f) => { setStart(i, f); }, () => {
-          T.player.seek(segStart(T.seg) + Math.max(0, sc.from - 10));
           T.nudge = {seg: T.seg, i};
           if (sc.type === 'image') { T.editPic = {seg: T.seg, i}; T.swapPic = false; T.editing = null; draw(); }
           // Any other kind the form knows: open it to change.
@@ -307,8 +306,11 @@
           const x0 = e.clientX;
           const left0 = parseFloat(node.style.left);
           const width0 = resize ? parseFloat(resize.style.width) : 0;
-          let f = startFrame;
+          let f = startFrame, moved = false;
           const move = (ev) => {
+            // (a click that wobbles a few pixels is still a click)
+            if (!moved && Math.abs(ev.clientX - x0) < 5) return;
+            moved = true;
             f = snap(Math.max(0, Math.min(s.durationInFrames - 5, startFrame + (ev.clientX - x0) / px)));
             if (resize) resize.style.width = Math.max(24, width0 + (f - startFrame) * px) + 'px';
             else node.style.left = left0 + (f - startFrame) * px + 'px';
@@ -317,7 +319,7 @@
           const up = () => {
             node.removeEventListener('pointermove', move);
             node.removeEventListener('pointerup', up);
-            if (Math.abs(f - startFrame) < 1) { after(); return; }
+            if (!moved || Math.abs(f - startFrame) < 1) { after(); return; }
             set(Math.round(f));
             updatePlayer(); draw(); setDirty();
             T.player.seek(segStart(T.seg) + Math.max(0, Math.round(f) - 15));
@@ -375,8 +377,10 @@
       const box = root.querySelector('.tl-scroll') || h('div', {class: 'tl-scroll'});
       const keep = box.scrollLeft;
       box.replaceChildren(tl);
-      const kids = [strip, controls, camRow, nudger, puppeteer, adder, picOpts, box,
-        h('div', {class: 'small muted', text: 'Drag a scene block to change when it starts, or a diamond to change when an item appears. Click a word or the ruler to jump there. Then Save timing, and Make the video on the Video & Ghost tab.'})];
+      // The forms for a clicked block go under the timeline, so it stays where it was.
+      const kids = [strip, controls, camRow, box,
+        h('div', {class: 'small muted', text: 'Drag a scene block to change when it starts, or a diamond to change when an item appears. Click a word or the ruler to jump there. Then Save timing, and Make the video on the Video & Ghost tab.'}),
+        nudger, puppeteer, adder, picOpts];
       // Only the part below the video is redrawn, so the page doesn't jump.
       const y = window.scrollY;
       T.body.replaceChildren(...kids.filter(Boolean));
