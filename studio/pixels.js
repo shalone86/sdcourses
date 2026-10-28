@@ -595,7 +595,14 @@ window.PixelTab = (() => {
       const used = [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].filter((c) => !colors.includes(c));
       const custom = h('input', {type: 'color', value: P.color, 'aria-label': 'Any color', onchange: (e) => { P.color = e.target.value.toUpperCase(); if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen'; draw(); }});
 
-      const frames = a.frames.map((_, i) => h('button', {class: 'px-frame' + (i === P.frame ? ' on' : ''), 'aria-label': 'Frame ' + (i + 1), onclick: () => { letGo(); P.frame = i; draw(); }},
+      // Reorder: drag a frame onto another, or Move left / right.
+      const moveFrame = (from, to) => { if (to < 0 || to >= a.frames.length || to === from) return; letGo(); remember(); a.frames.splice(to, 0, a.frames.splice(from, 1)[0]); P.frame = to; draw(); markDirty(); };
+      const frames = a.frames.map((_, i) => h('button', {class: 'px-frame' + (i === P.frame ? ' on' : ''), 'aria-label': 'Frame ' + (i + 1), draggable: 'true', title: 'Drag to move it',
+        onclick: () => { letGo(); P.frame = i; draw(); },
+        ondragstart: (e) => { e.dataTransfer.setData('text/plain', String(i)); e.dataTransfer.effectAllowed = 'move'; },
+        ondragover: (e) => { e.preventDefault(); e.currentTarget.classList.add('drop'); },
+        ondragleave: (e) => e.currentTarget.classList.remove('drop'),
+        ondrop: (e) => { e.preventDefault(); moveFrame(+e.dataTransfer.getData('text/plain'), i); }},
         [h('canvas', {width: 64, height: 64, 'data-thumb': i}), h('span', {text: String(i + 1)})]));
 
       const save = async () => {
@@ -740,6 +747,9 @@ window.PixelTab = (() => {
         h('div', {class: 'small muted', text: 'Frames (2 to 8 make it move):'}),
         h('div', {class: 'px-frames'}, [...frames,
           a.frames.length < MAX_FRAMES ? btn('+ Copy this frame', () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, [...px()]); P.frame++; draw(); markDirty(); }) : null,
+          a.frames.length < MAX_FRAMES ? btn('+ Empty frame', () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, blank(a.width, a.height)); P.frame++; draw(); markDirty(); }) : null,
+          a.frames.length > 1 ? btn('◀ Move left', () => moveFrame(P.frame, P.frame - 1), {disabled: P.frame === 0 || null}) : null,
+          a.frames.length > 1 ? btn('Move right ▶', () => moveFrame(P.frame, P.frame + 1), {disabled: P.frame === a.frames.length - 1 || null}) : null,
           a.frames.length > 1 ? btn('Delete this frame', async () => { if (!(await ask('Delete frame ' + (P.frame + 1) + '?'))) return; letGo(); remember(); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); draw(); markDirty(); }) : null]),
         h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
