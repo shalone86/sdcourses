@@ -8,12 +8,16 @@
 // name) has no channel of its own (the 4th is for sound effects): its hits
 // go into the part with the most rests at those moments. The lowest drum is
 // a kick (low triangle that drops), the others noise hits.
-// Usage: npm run music -- <file.mid> [<drums.mid>]
+// From bar --part-wins-from (default 8) on, the part keeps its notes and
+// drums only fill its rests.
+// Usage: npm run music -- <file.mid> [<drums.mid>] [--part-wins-from 8]
 //   [--wave melody=3,harmony=0,bass=0] [--no-fx] (no slides, vibrato, fades)
 import fs from 'node:fs';
 
 const args = process.argv.slice(2);
-const files = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--wave');
+const files = args.filter((a, i) => !a.startsWith('--') && !['--wave', '--part-wins-from'].includes(args[i - 1]));
+const pw = args.indexOf('--part-wins-from');
+const partWinsFrom = pw >= 0 ? +args[pw + 1] : 8; // bar number, 1 = first
 const cart = 'game/blessed.p8';
 const FIRST = 8;
 const useFx = !args.includes('--no-fx');
@@ -122,15 +126,18 @@ if (drum) {
   const free = (part) => hits.filter((h) => !part.grid[h.s] || part.grid[h.s].vol === 0).length;
   const choices = parts.filter((p) => p.name !== 'melody');
   const host = choices.sort((a, b) => free(b) - free(a))[0];
-  let covered = 0;
+  let covered = 0, dropped = 0;
   for (const h of hits) {
-    if (host.grid[h.s] && host.grid[h.s].vol > 0) covered++;
+    const busy = host.grid[h.s] && host.grid[h.s].vol > 0;
+    // from that bar on, the part's own notes come first
+    if (busy && h.s >= (partWinsFrom - 1) * 16) { dropped++; continue; }
+    if (busy) covered++;
     const vol = Math.max(1, Math.round(h.vel / 127 * 6));
     host.grid[h.s] = h.key === low
       ? {p: 12, wave: 0, vol: 7, fx: 3} // kick: low triangle, pitch drops
       : {p: 36 + (h.key - low) % 12, wave: 6, vol, fx: 5}; // noise hit, fades
   }
-  drumNote = `drums: ${hits.length} hits, in the ${host.name} (${covered} of its notes give way to a drum)`;
+  drumNote = `drums: ${hits.length} hits, in the ${host.name}: ${covered} of its notes give way to a drum before bar ${partWinsFrom}; from bar ${partWinsFrom} the ${host.name} wins (${dropped} drum hits left out, the rest fill its rests)`;
 }
 
 const hex = (v, w) => v.toString(16).padStart(w, '0');
