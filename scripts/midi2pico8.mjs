@@ -5,12 +5,14 @@
 // sound effects, kept as they are); repeated 2 bars are stored once. The
 // patterns start at music 0 and loop.
 // Usage: npm run music -- <file.mid> [--wave melody=3,harmony=0,bass=0]
+//   [--no-fx] (no vibrato or fades)
 import fs from 'node:fs';
 
 const args = process.argv.slice(2);
 const file = args.find((a) => !a.startsWith('--'));
 const cart = 'game/blessed.p8';
 const FIRST = 8;
+const useFx = !args.includes('--no-fx');
 // PICO-8 waveforms: 0 triangle, 1 tilted saw, 2 saw, 3 square, 4 pulse,
 // 5 organ, 6 noise, 7 phaser
 const waves = {melody: 3, harmony: 0, bass: 0};
@@ -67,7 +69,7 @@ const hex = (v, w) => v.toString(16).padStart(w, '0');
 const sfx = []; const seen = new Map();
 const channels = tracks.slice(0, 3).map((tr, ti) => {
   const wave = waves[tr.name] ?? [3, 0, 0][ti];
-  const quiet = tr.name === 'harmony' ? 1 : 0; // under the melody
+  const quiet = tr.name === 'harmony' ? 2 : 0; // under the melody
   const grid = Array.from({length: steps}, (_, s) => {
     const live = tr.notes.filter((n) => Math.round(n.start / step) <= s && Math.max(Math.round(n.end / step), Math.round(n.start / step) + 1) > s);
     if (!live.length) return null;
@@ -77,11 +79,18 @@ const channels = tracks.slice(0, 3).map((tr, ti) => {
     let p = n.key - 36; // PICO-8 pitch 0 is MIDI C2 (pitch 33 is A 440)
     while (p < 0) p += 12; while (p > 63) p -= 12;
     const vol = Math.max(1, Math.min(7, Math.round(n.vel / 127 * 7) - quiet));
-    return {p, wave, vol};
+    // PICO-8 effects: a long melody note gets vibrato (2) after its
+    // first 2 steps; other parts fade out (5) on a note's last step,
+    // so they ring like a plucked piano
+    const st = Math.round(n.start / step), en = Math.max(Math.round(n.end / step), st + 1);
+    let fx = 0;
+    if (useFx && tr.name === 'melody') { if (en - st >= 4 && s - st >= 2) fx = 2; }
+    else if (useFx && s === en - 1 && en - st >= 2) fx = 5;
+    return {p, wave, vol, fx};
   });
   const ids = [];
   for (let c = 0; c < steps; c += 32) {
-    const body = grid.slice(c, c + 32).map((n) => n ? hex(n.p, 2) + n.wave + n.vol + '0' : '00000').join('');
+    const body = grid.slice(c, c + 32).map((n) => n ? hex(n.p, 2) + n.wave + n.vol + n.fx : '00000').join('');
     if (!seen.has(body)) { seen.set(body, FIRST + sfx.length); sfx.push(body); }
     ids.push(seen.get(body));
   }
