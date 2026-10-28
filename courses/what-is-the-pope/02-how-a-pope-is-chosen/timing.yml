@@ -62,3 +62,21 @@ point-5:
         x: 0
         y: 0
         size: 75
+    "2":
+      start: 21.07
+      nudge:
+        x: -180
+        y: -255
+        size: 55
+    "3":
+      start: 23.4
+      nudge:
+        x: 180
+        y: 210
+        size: 40
+    "4":
+      start: 24.37
+      nudge:
+        x: 555
+        y: -255
+        size: 45

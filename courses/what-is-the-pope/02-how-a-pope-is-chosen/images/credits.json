@@ -58,5 +58,36 @@
     "license": "CC BY-SA 4.0",
     "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
     "page": "https://commons.wikimedia.org/wiki/File:San_Francisco_de_As%C3%ADs,_Juan_Mart%C3%ADnez_Monta%C3%B1%C3%A9s.jpg"
+  },
+  "images/mine-34dbff-96cdf29c74e843669e4eb1b0ff1b9b07--mvsm1p7z.jpg": {
+    "file": "images/mine-34dbff-96cdf29c74e843669e4eb1b0ff1b9b07--mvsm1p7z.jpg",
+    "aspect": 0.795,
+    "title": "34dbff_96cdf29c74e843669e4eb1b0ff1b9b07~mv2.avif",
+    "creator": "Shalone Cason",
+    "source": "Her own picture",
+    "license": "",
+    "license_url": "",
+    "page": "",
+    "own": true
+  },
+  "images/wikimedia-city-lights-of-the-united-states-2012-23047894.jpg": {
+    "file": "images/wikimedia-city-lights-of-the-united-states-2012-23047894.jpg",
+    "aspect": 1.5,
+    "title": "City Lights of the United States 2012",
+    "creator": "NASA Earth Observatory",
+    "source": "Wikimedia Commons",
+    "license": "Public domain",
+    "license_url": "",
+    "page": "https://commons.wikimedia.org/wiki/File:City_Lights_of_the_United_States_2012.jpg"
+  },
+  "images/wikimedia-pope-leo-xiv-on-the-loggia-cropped-164968336.jpg": {
+    "file": "images/wikimedia-pope-leo-xiv-on-the-loggia-cropped-164968336.jpg",
+    "aspect": 1.422,
+    "title": "Pope Leo XIV on the loggia (cropped)",
+    "creator": "Edgar Beltrán / The Pillar",
+    "source": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Pope_Leo_XIV_on_the_loggia_(cropped).jpg"
   }
 }

@@ -229,6 +229,21 @@ points:
             label: Leo XIV elected
           - year: May 18, 2025
             label: Inauguration Mass
+      - type: image
+        src: images/mine-34dbff-96cdf29c74e843669e4eb1b0ff1b9b07--mvsm1p7z.jpg
+        aspect: 0.795
+        caption: "source: https://www.beafriar.org/about-the-augustinians"
+        with: over
+      - type: image
+        src: images/wikimedia-city-lights-of-the-united-states-2012-23047894.jpg
+        aspect: 1.5
+        credit: NASA Earth Observatory · Wikimedia Commons · Public domain
+        with: over
+      - type: image
+        src: images/wikimedia-pope-leo-xiv-on-the-loggia-cropped-164968336.jpg
+        aspect: 1.422
+        credit: Edgar Beltrán / The Pillar · Wikimedia Commons · CC BY-SA 4.0
+        with: over
     quiz:
       type: choice
       question: Which of these is true of Pope Leo XIV?
