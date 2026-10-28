@@ -1,0 +1,130 @@
+{
+ "bishop": {
+  "base": "thick-guy",
+  "swaps": {
+   "#5A3825": "#7B5CFF",
+   "#A86B3C": "#F2C6A0",
+   "#F2C6A0": "#18B7A6",
+   "#FF8A3D": "#F2C6A0",
+   "#7B5CFF": "#2B2350",
+   "#18B7A6": "#2B2350"
+  }
+ },
+ "cardinal": {
+  "base": "thick-guy",
+  "swaps": {
+   "#FFB300": "#FF4F6D",
+   "#5A3825": "#FFFFFF",
+   "#A86B3C": "#F2C6A0",
+   "#F2C6A0": "#2F8CFF",
+   "#FF8A3D": "#F2C6A0",
+   "#7B5CFF": "#2B2350",
+   "#18B7A6": "#2B2350"
+  }
+ },
+ "cardinal-vestment": {
+  "base": "vestment-guy",
+  "swaps": {
+   "#18B7A6": "#FF4F6D",
+   "#5A3825": "#FFFFFF",
+   "#F2C6A0": "#2B2350",
+   "#FFB300": "#A86B3C",
+   "#FF8A3D": "#FF4F6D",
+   "#FFFFFF": "#FF4F6D",
+   "#2B2350": "#FFFFFF"
+  }
+ },
+ "pope": {
+  "base": "thick-guy",
+  "swaps": {
+   "#FFB300": "#FFFFFF",
+   "#A86B3C": "#F2C6A0",
+   "#F2C6A0": "#18B7A6",
+   "#FF8A3D": "#F2C6A0",
+   "#7B5CFF": "#FFFFFF",
+   "#2B2350": "#FFFFFF",
+   "#FF4F6D": "#FFFFFF",
+   "#18B7A6": "#FF4F6D"
+  }
+ },
+ "monk-franciscan": {
+  "base": "skinny-guy",
+  "swaps": {
+   "#2F8CFF": "#FFB300",
+   "#5A3825": "#FFB300",
+   "#A86B3C": "#F2C6A0",
+   "#F2C6A0": "#7B5CFF",
+   "#FFB300": "#F2C6A0",
+   "#7B5CFF": "#5A3825",
+   "#FFFFFF": "#5A3825",
+   "#2B2350": "#5A3825",
+   "#FF4F6D": "#A86B3C",
+   "#18B7A6": "#5A3825"
+  }
+ },
+ "monk-benedictine": {
+  "base": "vestment-guy",
+  "swaps": {
+   "#18B7A6": "#5A3825",
+   "#F2C6A0": "#2B2350",
+   "#FFB300": "#A86B3C",
+   "#FF8A3D": "#2B2350",
+   "#FFFFFF": "#2B2350",
+   "#2B2350": "#5A3825",
+   "#FF4F6D": "#2B2350"
+  }
+ },
+ "monk-dominican": {
+  "base": "guy-beard",
+  "swaps": {
+   "#2F8CFF": "#5A3825",
+   "#A86B3C": "#F2C6A0",
+   "#F2C6A0": "#7B5CFF",
+   "#FFB300": "#FFFFFF",
+   "#2B2350": "#FFFFFF",
+   "#18B7A6": "#FFFFFF"
+  }
+ },
+ "eastern-monk": {
+  "base": "thick-beard-guy",
+  "swaps": {
+   "#FF8A3D": "#2B2350",
+   "#5A3825": "#FFFFFF",
+   "#A86B3C": "#F2C6A0",
+   "#F2C6A0": "#7B5CFF",
+   "#7B5CFF": "#2B2350",
+   "#FFB300": "#2B2350",
+   "#FF4F6D": "#2B2350",
+   "#18B7A6": "#2B2350"
+  }
+ },
+ "priest": {
+  "base": "skinny-guy",
+  "swaps": {
+   "#2F8CFF": "#1D2B53",
+   "#5A3825": "#1D2B53",
+   "#A86B3C": "#FFCCAA",
+   "#F2C6A0": "#008751",
+   "#FFB300": "#FFCCAA",
+   "#7B5CFF": "#000000",
+   "#2B2350": "#000000",
+   "#FF4F6D": "#000000",
+   "#18B7A6": "#000000"
+  }
+ },
+ "deacon": {
+  "base": "thick-guy",
+  "swaps": {
+   "#FFB300": "#C2C3C7",
+   "#5A3825": "#C2C3C7",
+   "#A86B3C": "#FFCCAA",
+   "#F2C6A0": "#AB5236",
+   "#FF8A3D": "#FFCCAA",
+   "#7B5CFF": "#FFF1E8",
+   "#2B2350": "#FFF1E8",
+   "#FFFFFF": "#FFF1E8",
+   "#FF4F6D": "#FFF1E8",
+   "#18B7A6": "#1D2B53"
+  }
+ }
+}

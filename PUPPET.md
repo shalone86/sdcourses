@@ -8,7 +8,7 @@ it stands first. Click its block → **● Play it from here** / From the start 
 this picture: the video plays and her keys are kept against the playhead
 (timing.yml `scenes.<i>.puppet: [[seconds, key, 1|0], …]`; playing again from a
 point keeps what came before it). Keys: ← → walk, Shift run, P point (the item
-shows beside it), ↑ look up, T talk, A pray, X sign of the cross (plays once),
+shows beside it), ↑ look up, T talk, A pray, X sign of the cross (plays once), B blessing, K kneel (stays down while held),
 ↓ bow (once), I next item, Esc stops (2026-10-27: hold and point up removed). Tested with stand-in drawings
 (deleted); **waiting on her real drawings**. Not done yet: color versions
 (below), a turn frame, layered outfits, sketch-mode characters (pixel only).
@@ -79,7 +79,7 @@ needs a robe (the hem changes the feet, which a recolor can't do).
 Poses per base: `-idle`, `-walk`, `-run`, `-point`, `-pray`, `-look-up`
 (optional: `-idle-front`, `-talk`, `-cross`, `-bow`).
 
-**To build next (when her bases are drawn): color versions.** She recolors one
+**Built 2026-10-27: color versions** (Pixel art tab → New character from a base…; her poses are only idle, point, look-up, walk, run). She recolors one
 pose of a base (usually idle) and saves it as a new character
 (`st-joseph-idle`); the tool compares it with the base pixel by pixel, learns
 the color swaps, and writes every other pose of that base with the same

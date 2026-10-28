@@ -1,0 +1,26 @@
+# Hand-tuned timing from the studio's Timing tab, in seconds into each
+# section's recording. Scenes not listed keep their automatic timing.
+intro:
+  camera: card
+  end: 22.67
+point-1:
+  camera: bubble
+  scenes:
+    "2":
+      nudge:
+        x: -405
+        y: 165
+        size: 105
+point-2:
+  camera: side
+  end: 18.57
+  side: right
+point-3:
+  camera: card
+  side: right
+  scenes:
+    "2":
+      start: 15.23
+point-4:
+  camera: side
+  side: right

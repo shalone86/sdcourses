@@ -7,7 +7,10 @@ import './theme'; // loads the fonts
 // her pixel drawings. 1280×720.
 // Everything stays inside the SAFE zone (x 175–1105): the kids site's home page crops
 // thumbnails to about 4:3 from the middle (160px off each side), which cut the text off.
-export type KidsThumbProps = {lead?: string; title: string; art?: Art | null; shapes?: ShapeFile[]; fit?: 'frame' | 'bleed'} // fit is kept for old props; every full-canvas drawing is framed now;
+// pics: drawings she placed herself in the studio's thumbnail maker (up to 3), instead of the
+// automatic one: x, y the middle of the drawing and size its height, in pixels of 1280×720.
+export type ThumbPic = {art: Art; x: number; y: number; size: number; frame?: number; flip?: boolean};
+export type KidsThumbProps = {lead?: string; title: string; art?: Art | null; pics?: ThumbPic[]; shapes?: ShapeFile[]; fit?: 'frame' | 'bleed'; strip?: boolean} // fit is kept for old props; every full-canvas drawing is framed now;
 
 const SAFE_W = 930; // text width inside the 4:3 crop (x 175–1105)
 const INK = '#FFE58A', SHADOW = '#B8862B';
@@ -44,12 +47,50 @@ const Shapes: React.FC<{title: string; files: ShapeFile[]}> = ({title, files}) =
   );
 };
 
-export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = []}) => {
+// A full-canvas scene (a church) touches the edges and would look cut off: it goes in a
+// white-bordered card, like a framed picture (unless it is mostly see-through, like a small person).
+const isFramed = (art: Art) => {
+  if (art.kind === 'sketch') return false;
+  const b = bounds(art);
+  const edges = [b.x === 0, b.y === 0, b.x + b.w === art.width, b.y + b.h === art.height].filter(Boolean).length;
+  const all = (art.frames[0] as string[]).join('');
+  return edges >= 3 && (all.split('.').length - 1) / all.length < 0.4;
+};
+
+/** One placed drawing (pics): its visible part, `size` pixels high, centered on x, y. */
+const Placed: React.FC<{pic: ThumbPic}> = ({pic}) => {
+  const {art, x, y, size} = pic;
+  const i = Math.min(art.frames.length - 1, Math.max(0, pic.frame ?? 0));
+  const flip = pic.flip ? 'scaleX(-1)' : undefined;
+  if (art.kind === 'sketch') {
+    const w = (size * art.width) / art.height;
+    return <Img src={staticFile(art.frames[i] as string)} style={{position: 'absolute', left: x - w / 2, top: y - size / 2, width: w, height: size, transform: flip}} />;
+  }
+  if (isFramed(art)) {
+    const h = size - 28, w = (h * art.width) / art.height;
+    return (
+      <div style={{position: 'absolute', left: x - (w + 28) / 2, top: y - size / 2, padding: 14, background: '#FFFFFF', borderRadius: 30,
+        transform: `rotate(4deg)${flip ? ' ' + flip : ''}`, boxShadow: `0 16px 0 ${SHADOW}55, 0 22px 40px rgba(0,0,0,0.18)`}}>
+        <svg width={w} height={h} viewBox={`0 0 ${art.width} ${art.height}`} shapeRendering="crispEdges" style={{display: 'block', borderRadius: 18}}>
+          <Frame art={art} rows={art.frames[i] as string[]} />
+        </svg>
+      </div>
+    );
+  }
+  const b = bounds(art), w = (size * b.w) / b.h;
+  return (
+    <svg width={w} height={size} viewBox={`${b.x} ${b.y} ${b.w} ${b.h}`} shapeRendering="crispEdges" style={{position: 'absolute', left: x - w / 2, top: y - size / 2, transform: flip}}>
+      <Frame art={art} rows={art.frames[i] as string[]} />
+    </svg>
+  );
+};
+
+export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art: auto, pics, shapes = [], strip}) => {
+  const art = pics?.length ? null : auto;
   const b = art ? bounds(art) : null;
-  // A drawing that fills its canvas (a scene, like a church) touches the edges and would look
-  // cut off: it goes in a white-bordered card instead, like a framed picture.
-  const edges = b && art && art.kind !== 'sketch' ? [b.x === 0, b.y === 0, b.x + b.w === art.width, b.y + b.h === art.height].filter(Boolean).length : 0;
-  const framed = !!art && edges >= 3;
+  const framed = !!art && isFramed(art);
+  // strip: every frame side by side, left to right (like a comic strip), within the safe width.
+  const stripPx = strip && b ? Math.floor(Math.min(SAFE_W / (art!.frames.length * b.w + (art!.frames.length - 1) * 2), 300 / b.h)) : 0;
   // The drawing is big and centered; the title sits over its lower part, centered, as big as fits in
   // the safe width on one or two lines (Fredoka caps ≈ 0.62em per letter, a space ≈ 0.3em).
   const px = framed && art ? Math.floor(Math.min(560 / art.width, 520 / art.height)) : b ? Math.floor(Math.min(640 / b.w, 560 / b.h)) : 0;
@@ -65,16 +106,27 @@ export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = 
   let big = 125, lines = wrap(big);
   while (big > 60 && (lines.length > 2 || Math.max(...lines.map((l) => l.length)) * 0.62 * big > SAFE_W)) { big -= 4; lines = wrap(big); }
   // A narrow drawing (a person) goes to the left so the small "WHAT DOES" line beside the title stays readable.
-  const narrow = !framed && !!b && b.w * px < 520;
+  // (with her own placement: the lead goes right when the first drawing is on the left)
+  const narrow = pics?.length ? pics[0].x < 640 : !framed && !!b && b.w * px < 520;
   const text = (size: number): React.CSSProperties => ({fontFamily: 'Fredoka, sans-serif', fontWeight: 700, fontSize: size, lineHeight: 0.98, color: INK,
     letterSpacing: 2, textTransform: 'uppercase', textShadow: `0 ${size * 0.06}px 0 ${SHADOW}, 0 ${size * 0.09}px ${size * 0.08}px rgba(0,0,0,0.18)`});
   return (
     <AbsoluteFill style={{background: '#6CEBDE', overflow: 'hidden'}}>
       <Shapes title={title} files={shapes} />
+      {pics?.map((p, i) => <Placed key={i} pic={p} />)}
       {art?.kind === 'sketch' && (
         <Img src={staticFile(art.frames[0] as string)} style={{position: 'absolute', left: 640 - 380, width: 760, top: 15, height: 640, objectFit: 'contain', objectPosition: 'center top'}} />
       )}
-      {art?.kind !== 'sketch' && framed && art && (
+      {strip && art && b && art.kind !== 'sketch' && (
+        <div style={{position: 'absolute', left: 640 - SAFE_W / 2, width: SAFE_W, top: 40, display: 'flex', justifyContent: 'center', gap: stripPx * 2}}>
+          {(art.frames as string[][]).map((rows, i) => (
+            <svg key={i} width={b.w * stripPx} height={b.h * stripPx} viewBox={`${b.x} ${b.y} ${b.w} ${b.h}`} shapeRendering="crispEdges">
+              <Frame art={art} rows={rows} />
+            </svg>
+          ))}
+        </div>
+      )}
+      {!strip && art?.kind !== 'sketch' && framed && art && (
         <div style={{position: 'absolute', left: 640 - (art.width * px + 28) / 2, top: 30, padding: 14, background: '#FFFFFF', borderRadius: 30,
           transform: 'rotate(4deg)', boxShadow: `0 16px 0 ${SHADOW}55, 0 22px 40px rgba(0,0,0,0.18)`}}>
           <svg width={art.width * px} height={art.height * px} viewBox={`0 0 ${art.width} ${art.height}`} shapeRendering="crispEdges" style={{display: 'block', borderRadius: 18}}>
@@ -82,7 +134,7 @@ export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = 
           </svg>
         </div>
       )}
-      {art?.kind !== 'sketch' && !framed && art && b && (
+      {!strip && art?.kind !== 'sketch' && !framed && art && b && (
         <svg width={b.w * px} height={b.h * px} viewBox={`${b.x} ${b.y} ${b.w} ${b.h}`} shapeRendering="crispEdges"
           style={{position: 'absolute', left: narrow ? 215 : 640 - (b.w * px) / 2, top: 20}}>
           <Frame art={art} rows={art.frames[0] as string[]} />

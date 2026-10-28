@@ -10,6 +10,7 @@ import path from 'node:path';
 import {spawn, execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {ROOT, ffprobeDuration, loadLesson, words} from '../scripts/lib.mjs';
+import {kidsThumbProps, picAspect} from '../scripts/kids-thumb.mjs';
 import {applyEdits, setStatus, setValue} from '../scripts/studio.mjs';
 import {normalizeQuestion} from '../scripts/build-post.mjs';
 import {cachedWords, compare, whisperAvailable} from '../scripts/voice.mjs';
@@ -20,7 +21,7 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import * as esbuild from 'esbuild';
 import {importImage, importUpload, searchImages, sourceList} from './images.mjs';
-import {deleteSprite, listSprites, puppetCast, saveSprite, setFavorite} from '../scripts/sprites.mjs';
+import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCast, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
 
@@ -127,6 +128,13 @@ function detail(id) {
     // Kids lessons: the drawing on the kids-site thumbnail (`thumb:` in lesson.yml), else what it falls back to.
     kids: kids ? {thumb: lesson.thumb?.sprite ?? null, fallback: course.thumb?.sprite ?? segments.flatMap((x) => x.scenes).find((sc) => sc?.type === 'sprite')?.sprite ?? null} : null,
   };
+}
+
+/** The thumbnail maker's data: the props to draw it, what's saved, and each drawing's width for its height. */
+function kidsThumb(id, pics) {
+  const {props, auto} = kidsThumbProps(lessonPath(id), pics);
+  const saved = loadLesson(lessonPath(id)).lesson.thumb?.pics ?? null;
+  return {props, saved, auto, aspects: props.pics.map((q) => picAspect(q.art)), autoAspect: props.art ? picAspect(props.art) : 1};
 }
 
 // ---------- listening back (Whisper) ----------
@@ -567,7 +575,9 @@ async function handle(req, res) {
     if (p === '/api/timing') return json(res, 200, timingData(id));
     if (p === '/api/images/sources') return json(res, 200, sourceList());
     if (p === '/api/sprites') return json(res, 200, listSprites());
+    if (p === '/api/kids-thumb') return json(res, 200, kidsThumb(id));
     if (p === '/api/puppet-cast') return json(res, 200, puppetCast());
+    if (p === '/api/puppet-bases') return json(res, 200, {...puppetBases(), cast: puppetCast().characters});
     if (p === '/api/icons') {
       // Lucide icons whose name matches, with a small drawing of each, for the Icons picker.
       const q = (url.searchParams.get('q') ?? '').trim().toLowerCase().replace(/\s+/g, '-');
@@ -596,6 +606,7 @@ async function handle(req, res) {
     }
     if (p === '/player.js') return sendFile(req, res, path.join(ROOT, 'studio/player/player.js'));
     if (p === '/timing.js') return sendFile(req, res, path.join(ROOT, 'studio/timing.js'));
+    if (p === '/thumb.js') return sendFile(req, res, path.join(ROOT, 'studio/thumb.js'));
     if (p === '/audio') {
       const section = url.searchParams.get('section');
       if (!/^(intro|outro|point-\d+)$/.test(section ?? '')) throw httpError(400, 'Bad section');
@@ -649,6 +660,23 @@ async function handle(req, res) {
         return json(res, 200, {id: made, lessons: lessonIds().map(summary)});
       }
       catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/kids-thumb') {
+      // The thumbnail maker: {pics: [{sprite, x, y, size, frame, flip}]} (none: back to automatic).
+      const {pics, save} = await readJson(req);
+      if (!Array.isArray(pics) || pics.length > 3) throw httpError(400, 'Up to 3 drawings');
+      const names = new Set(listSprites().map((x) => x.slug));
+      const clean = pics.map((q) => {
+        if (!names.has(q.sprite)) throw httpError(400, 'No drawing called ' + q.sprite);
+        const n = (v, lo, hi) => Math.round(Math.min(hi, Math.max(lo, Number(v) || 0)));
+        return {sprite: q.sprite, x: n(q.x, -200, 1480), y: n(q.y, -200, 920), size: n(q.size, 40, 1400), frame: n(q.frame, 0, 7), ...(q.flip ? {flip: true} : {})};
+      });
+      if (save) {
+        const dir = lessonPath(id);
+        const {pics: _, ...old} = loadLesson(dir).lesson.thumb ?? {};
+        setValue(dir, ['thumb'], clean.length ? {...old, sprite: clean[0].sprite, pics: clean} : old);
+      }
+      return json(res, 200, kidsThumb(id, save ? undefined : clean));
     }
     if (p === '/api/thumb') {
       // A kids lesson's thumbnail drawing (`thumb: {sprite}` in lesson.yml).
@@ -706,6 +734,18 @@ async function handle(req, res) {
       // (a sketch's frames are pictures, so this can be a few megabytes)
       const slug = saveSprite(JSON.parse(String(await readBody(req, 60e6)) || '{}'));
       return json(res, 200, {slug, sprites: listSprites()});
+    }
+    if (p === '/api/sprite/version') {
+      // A color version of a base character: her recolored idle, and the other poses made from it.
+      let out;
+      try { out = colorVersion(await readJson(req)); } catch (e) { throw httpError(409, e.message); }
+      return json(res, 200, {...out, sprites: listSprites(), ...puppetBases()});
+    }
+    if (p === '/api/sprite/copy-pose') {
+      // A pose she drew on one character, as drafts for others ({from, pose, to: [...], save}).
+      let out;
+      try { out = copyPose(await readJson(req)); } catch (e) { throw httpError(409, e.message); }
+      return json(res, 200, {drafts: out, sprites: listSprites()});
     }
     if (p === '/api/sprite/gif') {
       // A drawing as an animated GIF (frames come as PNG pictures, already enlarged): made with ffmpeg.
@@ -847,7 +887,7 @@ const server = http.createServer((req, res) => {
 // http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
 // Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
 const DRAW_PORT = 5179;
-const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
+const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
 const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
 const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
 

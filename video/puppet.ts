@@ -5,21 +5,24 @@
 // A recording is a list of [frame, key, down] (frame from the scene's start, down 1/0).
 // Keys: left, right (walk; shift held = run), up (look up), down (bow, once), p (point; the
 // item appears beside the character), t (talk), a (pray), x (sign of the cross, once),
-// i (next item).
+// b (blessing), k (kneel: stays down while held), i (next item).
 import type {Art} from './scenes/Sprite';
 
 export type PuppetEvent = [number, string, 0 | 1];
 
 // Drawings are `<character>-<action>`; side views face left (right is a flip).
-export const ACTIONS = ['idle', 'idle-front', 'walk', 'run', 'point', 'look-up', 'talk', 'pray', 'cross', 'bow'] as const;
+export const ACTIONS = ['idle', 'idle-front', 'walk', 'run', 'point', 'look-up', 'talk', 'pray', 'cross', 'bow', 'blessing', 'kneel'] as const;
 export type Action = (typeof ACTIONS)[number];
 const SIDE: Action[] = ['idle', 'walk', 'run', 'point', 'look-up'];
 const ONCE: Record<string, Action> = {x: 'cross', down: 'bow'};
-const HELD: Record<string, Action> = {p: 'point', up: 'look-up', t: 'talk', a: 'pray'};
+const HELD: Record<string, Action> = {p: 'point', up: 'look-up', t: 'talk', a: 'pray', b: 'blessing', k: 'kneel'};
+// Held poses that play through and stay on their last drawing (the rest loop).
+const STAY: Action[] = ['kneel'];
 // What to show when a drawing is missing.
 const FALLBACK: Partial<Record<Action, Action[]>> = {
   'idle-front': ['idle'], run: ['walk', 'idle'], walk: ['idle'], 'look-up': ['idle'], point: ['idle'],
   talk: ['idle-front', 'idle'], pray: ['idle-front', 'idle'], cross: ['pray', 'idle-front', 'idle'], bow: ['idle-front', 'idle'],
+  blessing: ['idle-front', 'idle'], kneel: ['idle-front', 'idle'],
 };
 
 export type PuppetState = {action: Action; frame: number; x: number; facing: -1 | 1; flip: boolean; item: number; showItem: boolean; since: number};
@@ -83,7 +86,7 @@ export function puppetAt(events: PuppetEvent[], f: number, fps: number, actions:
   const art = actions[shown];
   const n = art?.frames.length ?? 1;
   const t = (f - since) / fps;
-  // Once-only actions play through and stop on their last drawing; the rest loop.
-  const frame = ONCE.x === action || ONCE.down === action ? Math.min(n - 1, Math.floor(t * (art?.fps ?? 4))) : Math.floor(t * (art?.fps ?? 4)) % n;
+  // Once-only actions (and kneeling) play through and stop on their last drawing; the rest loop.
+  const frame = ONCE.x === action || ONCE.down === action || STAY.includes(action) ? Math.min(n - 1, Math.floor(t * (art?.fps ?? 4))) : Math.floor(t * (art?.fps ?? 4)) % n;
   return {action: shown, frame, x, facing, flip: SIDE.includes(shown) && facing === 1, item, showItem: action === 'point', since};
 }

@@ -105,50 +105,94 @@ window.DrawReference = (() => {
   return {draw, controls};
 })();
 
-// Her saved drawings, for the Pixel art and Sketch tabs: starred favorites, the 10 most
-// recent, and a search for everything else (there will be a lot of them).
+// Her saved drawings, for the Pixel art and Sketch tabs: a grid of small moving thumbnails,
+// starred favorites first, then everything newest first, and a search by name.
 window.SpriteGallery = (() => {
-  const RECENT = 10;
+  const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
+  const SIZE = 64;
   function h(tag, attrs, kids) {
     const e = document.createElement(tag);
     for (const [k, v] of Object.entries(attrs || {})) {
       if (v === null || v === undefined || v === false) continue;
       if (k === 'text') e.textContent = v; else if (k === 'class') e.className = v;
+      else if (k === 'style') Object.assign(e.style, v);
       else if (k.startsWith('on')) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v === true ? '' : v);
     }
     for (const c of [].concat(kids || [])) if (c !== null && c !== undefined && c !== false) e.append(c);
     return e;
   }
-  /** items: saved drawings (name, slug, at, favorite). state: {open, q} kept by the tab between redraws. */
+  // One frame of a saved pixel drawing (palette + rows), centered with sharp squares.
+  function paintPixels(cv, s, i) {
+    const g = cv.getContext('2d');
+    const k = Math.max(1, Math.floor(SIZE / Math.max(s.width, s.height)));
+    const ox = Math.floor((SIZE - s.width * k) / 2), oy = Math.floor((SIZE - s.height * k) / 2);
+    g.clearRect(0, 0, SIZE, SIZE);
+    (s.frames[i] || []).forEach((row, y) => { for (let x = 0; x < row.length; x++) {
+      const c = row[x];
+      if (c !== '.') { g.fillStyle = s.palette[CODES.indexOf(c)]; g.fillRect(ox + x * k, oy + y * k, k, k); }
+    } });
+  }
+  // A thumbnail that plays the drawing at its own speed while it's on the page.
+  function thumb(s) {
+    const n = (s.kind === 'sketch' ? s.urls : s.frames)?.length || 0;
+    let el, show;
+    if (s.kind === 'sketch') {
+      el = h('img', {class: 'sg-thumb', alt: '', loading: 'lazy', src: s.urls?.[0] || ''});
+      show = (i) => { el.src = s.urls[i]; };
+    } else {
+      el = h('canvas', {class: 'sg-thumb', width: SIZE, height: SIZE});
+      show = (i) => paintPixels(el, s, i);
+      show(0);
+    }
+    if (n > 1) el.sgPlay = {n, fps: Math.max(1, s.fps || 4), show, at: 0};
+    return el;
+  }
+  let loop = null;
+  function play(root) {
+    cancelAnimationFrame(loop);
+    const t0 = performance.now();
+    const tick = (now) => {
+      if (!root.isConnected) return;
+      for (const el of root.querySelectorAll('.sg-thumb')) {
+        const p = el.sgPlay;
+        if (!p) continue;
+        const i = Math.floor(((now - t0) / 1000) * p.fps) % p.n;
+        if (i !== p.at) { p.at = i; p.show(i); }
+      }
+      loop = requestAnimationFrame(tick);
+    };
+    loop = requestAnimationFrame(tick);
+  }
+  /** items: saved drawings (name, slug, at, favorite, frames…). state: {open, q} kept by the tab between redraws. */
   function build({items, state, current, noun, onNew, onToggle, onOpen, onFavorite}) {
     const byNew = (a, b) => (b.at || 0) - (a.at || 0);
-    const list = h('div', {class: 'stack', style: {gap: '4px'}});
-    const row = (s) => h('div', {class: 'row', style: {gap: '6px', flexWrap: 'nowrap'}}, [
-      h('button', {class: 'btn', title: s.favorite ? 'Remove from favorites' : 'Add to favorites', 'aria-label': (s.favorite ? 'Unfavorite ' : 'Favorite ') + s.name, 'aria-pressed': s.favorite ? 'true' : 'false',
-        text: s.favorite ? '★' : '☆', onclick: () => onFavorite(s.slug, !s.favorite)}),
-      h('span', {style: {flex: '1', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: s.slug === current ? '700' : '400'}, text: s.name}),
-      h('button', {class: 'btn', text: 'Open', onclick: () => onOpen(s, false)}),
-      h('button', {class: 'btn', title: 'Start a new one from a copy of this (all frames)', text: 'Copy', onclick: () => onOpen(s, true)}),
+    const list = h('div', {class: 'stack', style: {gap: '6px'}});
+    const tile = (s) => h('div', {class: 'sg-tile' + (s.slug === current ? ' on' : ''), title: s.name}, [
+      h('button', {class: 'sg-open', 'aria-label': 'Open ' + s.name, onclick: () => onOpen(s, false)}, [thumb(s), h('span', {class: 'sg-name', text: s.name})]),
+      h('div', {class: 'sg-foot'}, [h('button', {class: 'sg-star', title: s.favorite ? 'Remove from favorites' : 'Add to favorites', 'aria-label': (s.favorite ? 'Unfavorite ' : 'Favorite ') + s.name,
+        'aria-pressed': s.favorite ? 'true' : 'false', text: s.favorite ? '★' : '☆', onclick: () => onFavorite(s.slug, !s.favorite)}),
+      h('button', {class: 'sg-copy', title: 'Start a new one from a copy of this (all frames)', 'aria-label': 'Copy ' + s.name, text: 'Copy', onclick: () => onOpen(s, true)})]),
     ]);
+    const grid = (xs) => h('div', {class: 'sg-grid'}, xs.map(tile));
     const heading = (t) => h('div', {class: 'small muted', text: t});
     const draw = () => {
       const q = state.q.trim().toLowerCase();
       const out = [];
       if (q) {
         const hits = items.filter((s) => q.split(/\s+/).every((w) => s.name.toLowerCase().includes(w))).sort(byNew);
-        out.push(heading(hits.length ? `${hits.length} found` : 'Nothing matches.'), ...hits.map(row));
+        out.push(heading(hits.length ? `${hits.length} found` : 'Nothing matches.'), grid(hits));
       } else {
         const favs = items.filter((s) => s.favorite).sort((a, b) => a.name.localeCompare(b.name));
-        if (favs.length) out.push(heading('★ Favorites'), ...favs.map(row));
-        const recent = [...items].sort(byNew).slice(0, RECENT);
-        out.push(heading(items.length > RECENT ? `Last ${RECENT} (search for the other ${items.length - RECENT})` : 'Your drawings'), ...recent.map(row));
-        if (!items.length) out.push(heading(`No ${noun}s saved yet.`));
+        if (favs.length) out.push(heading('★ Favorites'), grid(favs));
+        if (items.length) out.push(heading(`All ${items.length}, newest first`), grid([...items].sort(byNew)));
+        else out.push(heading(`No ${noun}s saved yet.`));
       }
       list.replaceChildren(...out);
+      play(list);
     };
     const search = h('input', {type: 'search', value: state.q, placeholder: `Search your ${noun}s by name`, 'aria-label': `Search your ${noun}s`, oninput: (e) => { state.q = e.target.value; draw(); }});
-    draw();
-    const panel = h('div', {class: 'stack', style: {gap: '6px', padding: '8px', border: '1px solid currentColor', borderRadius: '8px', maxHeight: '320px', overflowY: 'auto'}}, [search, list]);
+    const panel = h('div', {class: 'stack', style: {gap: '6px', padding: '8px', border: '1px solid currentColor', borderRadius: '8px', maxHeight: '460px', overflowY: 'auto'}}, [search, list]);
+    if (state.open) draw();
     return h('div', {class: 'stack', style: {gap: '6px'}}, [
       h('div', {class: 'row', style: {gap: '8px', justifyContent: 'flex-start'}}, [
         h('button', {class: 'btn', text: 'New ' + noun, onclick: onNew}),

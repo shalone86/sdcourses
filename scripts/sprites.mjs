@@ -122,7 +122,7 @@ export function saveSprite(s) {
 
 // ---------- the keyboard puppet (PUPPET.md) ----------
 // A character is every drawing named <character>-<action>; items are item-<name>.
-export const PUPPET_ACTIONS = ['idle-front', 'look-up', 'idle', 'walk', 'run', 'point', 'talk', 'pray', 'cross', 'bow'];
+export const PUPPET_ACTIONS = ['idle-front', 'look-up', 'idle', 'walk', 'run', 'point', 'talk', 'pray', 'cross', 'bow', 'blessing', 'kneel'];
 const ACTION_RE = new RegExp(`^(.+?)-(${PUPPET_ACTIONS.join('|')})$`);
 
 /** Characters and items for the Timing tab: [{name, actions: [...], missing: [...]}], [item names]. */
@@ -149,4 +149,126 @@ export function puppetArt(sc) {
   const names = puppetCast().items;
   const order = sc.item && names.includes(sc.item) ? [sc.item, ...names.filter((n) => n !== sc.item)] : names;
   return {actions, items: order.map((name) => ({name, art: loadSprite(`item-${name}`)}))};
+}
+
+// ---------- color versions of her base characters (PUPPET.md) ----------
+// A base is a character with all five poses that she drew herself. She recolors only its idle and
+// names the new character; every other pose is made from the base's with the same color swaps.
+// sprites/.versions.json remembers each version's base and swaps: {st-joseph: {base, swaps: {'#old': '#new'}}}.
+export const BASE_POSES = ['idle', 'point', 'look-up', 'walk', 'run'];
+const VERSIONS = path.join(SPRITES, '.versions.json');
+export const readVersions = () => { try { return JSON.parse(fs.readFileSync(VERSIONS, 'utf8')); } catch { return {}; } };
+
+/** The bases she can start from (with their idle drawing), and the versions made so far. */
+export function puppetBases() {
+  const versions = readVersions();
+  const bases = puppetCast().characters.filter((c) => !versions[c.name] && BASE_POSES.every((p) => c.actions.includes(p)))
+    .map((c) => ({name: c.name, idle: loadSprite(`${c.name}-idle`)}));
+  return {bases, versions};
+}
+
+// One color (or null) per pixel, per frame.
+const pixelsOf = (art) => art.frames.map((rows) => rows.join('').split('').map((c) => (c === '.' ? null : art.palette[CODES.indexOf(c)].toUpperCase())));
+
+/**
+ * Make (or, with dry, only check) a color version: `idle` is her recolored idle (saved form) of
+ * `base`, `name` the new character. Returns {slug, swaps, split: [{from, to: [...]}], shape, made: [...], exists: [...]}.
+ * split: a base color that became more than one color (the most used one is copied to the other poses);
+ * shape: how many squares she added or erased (only colors are copied, not shape changes).
+ */
+export function colorVersion({base, name, idle, dry}) {
+  const slug = spriteSlug(name);
+  if (!slug) throw new Error('Give the new character a name');
+  const {bases, versions} = puppetBases();
+  if (!bases.some((b) => b.name === base)) throw new Error(`"${base}" isn't a base character with all five poses`);
+  if (slug === base || (bases.some((b) => b.name === slug))) throw new Error(`"${slug}" is a base; pick another name`);
+  const from = loadSprite(`${base}-idle`);
+  if (idle.width !== from.width || idle.height !== from.height) throw new Error('The idle drawing must stay the same size as the base');
+  const a = pixelsOf(from), b = pixelsOf(idle);
+  const count = {};
+  let shape = 0;
+  for (let f = 0; f < Math.min(a.length, b.length); f++) a[f].forEach((c, i) => {
+    const d = b[f][i];
+    if (c && d) { (count[c] ??= {})[d] = (count[c][d] ?? 0) + 1; } else if (c || d) shape++;
+  });
+  const swaps = {}, split = [];
+  for (const [c, to] of Object.entries(count)) {
+    const ranked = Object.entries(to).sort((x, y) => y[1] - x[1]).map(([k]) => k);
+    if (ranked[0] !== c) swaps[c] = ranked[0];
+    if (ranked.length > 1) split.push({from: c, to: ranked});
+  }
+  // (and any extra poses the base has, like blessing or kneel)
+  const others = PUPPET_ACTIONS.filter((p) => p !== 'idle' && fs.existsSync(path.join(SPRITES, `${base}-${p}.json`)));
+  const made = [`${slug}-idle`, ...others.map((p) => `${slug}-${p}`)];
+  const exists = made.filter((s) => fs.existsSync(path.join(SPRITES, `${s}.json`)));
+  if (dry) return {slug, swaps, split, shape, made, exists};
+  saveSprite({...idle, name: `${slug}-idle`});
+  for (const p of others) {
+    const art = loadSprite(`${base}-${p}`);
+    saveSprite({...art, name: `${slug}-${p}`, palette: art.palette.map((c) => swaps[c.toUpperCase()] ?? c)});
+  }
+  versions[slug] = {base, swaps};
+  fs.writeFileSync(VERSIONS, JSON.stringify(versions, null, 1) + '\n');
+  return {slug, swaps, split, shape, made, exists};
+}
+
+// ---------- copying a pose to other characters ----------
+// She draws a new pose (e.g. eastern-monk-blessing) once; each other character gets a draft of it
+// made from its own idle: the source idle is lined up with each pose frame (the best shift, for
+// poses like kneeling that move the body), and only the squares the pose changed are painted on
+// the target's idle, in the target's colors for those parts (matched square by square between
+// the two idles). Drafts never replace a drawing that exists; she touches them up by hand.
+const shiftPx = (px, w, h, dx, dy) => px.map((_, i) => { const x = (i % w) - dx, y = Math.floor(i / w) - dy; return x >= 0 && x < w && y >= 0 && y < h ? px[y * w + x] : null; });
+const artOfPixels = (name, w, h, fps, frames) => {
+  const palette = [...new Set(frames.flat().filter(Boolean))].slice(0, CODES.length);
+  return {name, width: w, height: h, fps, palette, frames: frames.map((px) => Array.from({length: h}, (_, y) =>
+    px.slice(y * w, y * w + w).map((c) => (c && palette.includes(c) ? CODES[palette.indexOf(c)] : '.')).join('')))};
+};
+
+/** A draft of `<from character>-<pose>` for character `to` (null if it has no idle or a different size). */
+export function poseDraft(fromChar, pose, to) {
+  const src = loadSprite(`${fromChar}-${pose}`), srcIdle = loadSprite(`${fromChar}-idle`);
+  let tgtIdle;
+  try { tgtIdle = loadSprite(`${to}-idle`); } catch { return null; }
+  const {width: w, height: h} = src;
+  if (srcIdle.width !== w || srcIdle.height !== h || tgtIdle.width !== w || tgtIdle.height !== h) return null;
+  const si = pixelsOf(srcIdle)[0], ti = pixelsOf(tgtIdle)[0];
+  // Which of the target's colors each source color stands for (most squares in common).
+  const count = {};
+  si.forEach((c, i) => { if (c && ti[i]) (count[c] ??= {})[ti[i]] = (count[c][ti[i]] ?? 0) + 1; });
+  const map = Object.fromEntries(Object.entries(count).map(([c, n]) => [c, Object.entries(n).sort((a, b) => b[1] - a[1])[0][0]]));
+  const frames = pixelsOf(src).map((fr) => {
+    let best = null;
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) {
+      const s = shiftPx(si, w, h, dx, dy);
+      const miss = s.reduce((n, c, i) => n + (c !== fr[i]), 0) + (Math.abs(dx) + Math.abs(dy)) * 0.5;
+      if (!best || miss < best.miss) best = {dx, dy, miss, s};
+    }
+    const t = shiftPx(ti, w, h, best.dx, best.dy), out = [...t];
+    // A changed square takes the target's color at the nearest square that had the same color in
+    // the source (so a robe's hem matches the target's hem, not its hat), else the overall match.
+    const near = (c, i) => {
+      let at = null, d = Infinity;
+      best.s.forEach((sc, j) => { if (sc === c && t[j]) { const e = Math.hypot((j % w) - (i % w), Math.floor(j / w) - Math.floor(i / w)); if (e < d) { d = e; at = t[j]; } } });
+      return at ?? map[c] ?? c;
+    };
+    fr.forEach((c, i) => { if (c !== best.s[i]) out[i] = c ? near(c, i) : null; });
+    return out;
+  });
+  return artOfPixels(`${to}-${pose}`, w, h, src.fps, frames);
+}
+
+/** Drafts of one pose for several characters; with save, writes the ones that don't exist yet. */
+export function copyPose({from, pose, to, save}) {
+  if (!PUPPET_ACTIONS.includes(pose)) throw new Error(`"${pose}" isn't a pose the puppet knows`);
+  const out = [];
+  for (const t of to ?? []) {
+    const slug = spriteSlug(`${t}-${pose}`);
+    const exists = fs.existsSync(path.join(SPRITES, `${slug}.json`));
+    const art = t === from ? null : poseDraft(from, pose, t);
+    if (!art) { out.push({character: t, slug, skipped: true}); continue; }
+    if (save && !exists) saveSprite(art);
+    out.push({character: t, slug, exists, saved: !!(save && !exists), art});
+  }
+  return out;
 }

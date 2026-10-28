@@ -399,8 +399,8 @@
 
     // ---------- the keyboard puppet (PUPPET.md) ----------
     // Keys while recording → the names saved in timing.yml (and read by video/puppet.ts).
-    const PUPPET_KEYS = {ArrowLeft: 'left', ArrowRight: 'right', Shift: 'shift', ArrowUp: 'up', ArrowDown: 'down', p: 'p', t: 't', a: 'a', x: 'x', i: 'i'};
-    const PUPPET_HELP = '← → walk (hold Shift to run) · P point (shows the item) · ↑ look up · T talk · A pray · X sign of the cross · ↓ bow · I next item · Esc stops';
+    const PUPPET_KEYS = {ArrowLeft: 'left', ArrowRight: 'right', Shift: 'shift', ArrowUp: 'up', ArrowDown: 'down', p: 'p', t: 't', a: 'a', x: 'x', b: 'b', k: 'k', i: 'i'};
+    const PUPPET_HELP = '← → walk (hold Shift to run) · P point (shows the item) · ↑ look up · X sign of the cross · B blessing · K kneel · I next item · Esc stops';
 
     /**
      * Play the puppet while the video runs: key presses are kept against the playhead (seconds

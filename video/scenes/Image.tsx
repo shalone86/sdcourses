@@ -9,8 +9,9 @@ import type {SceneProps} from '.';
 // aspect: width / height (saved at import), so the frame fits the picture.
 // fit: contain (the whole picture, as big as it fits), cover (fills the picture area, cropping),
 //      screen (fills the whole slide behind the heading; beside her video, the whole panel)
+// bare: no card behind it (for drawings with see-through backgrounds)
 // focus: which part stays when it's cropped: top | center (default) | bottom
-type ImageScene = {src: string; aspect?: number; caption?: string; credit?: string; fit?: 'contain' | 'cover' | 'screen'; focus?: 'top' | 'center' | 'bottom'};
+type ImageScene = {src: string; aspect?: number; caption?: string; credit?: string; fit?: 'contain' | 'cover' | 'screen'; bare?: boolean; focus?: 'top' | 'center' | 'bottom'};
 const FOCUS = {top: 'center 15%', center: 'center 40%', bottom: 'center 85%'};
 
 // As big as the room allows (the slide, or the panel beside her video): a tall picture beside
@@ -64,7 +65,7 @@ export const ImageView: React.FC<SceneProps<ImageScene>> = ({scene, duration}) =
   return (
     <Center style={{flexDirection: 'column', gap: 22}}>
       <div style={{position: 'relative', ...frameSize(scene, stage), borderRadius: 18, overflow: 'hidden',
-        background: theme.card, boxShadow: `0 0 0 1px ${theme.rule}`, opacity: ramp(f, 0, 12)}}>
+        ...(scene.bare ? {} : {background: theme.card, boxShadow: `0 0 0 1px ${theme.rule}`}), opacity: ramp(f, 0, 12)}}>
         <Img src={staticFile(scene.src)} style={{width: '100%', height: '100%', objectFit: cover ? 'cover' : 'contain', objectPosition: position, transform: `scale(${zoom})`}} />
         {scene.credit && (
           <div style={{position: 'absolute', right: 12, bottom: 10, maxWidth: '80%', padding: '4px 10px', borderRadius: 6, background: 'rgba(30,39,64,0.62)',

@@ -10,6 +10,8 @@ window.SketchTab = (() => {
     gbc: {label: 'Game Boy Color (16)', colors: ['#000000', '#FFFFFF', '#888888', '#F8E8C8', '#E0A070', '#A05030', '#503018', '#F83838',
       '#F878B8', '#F8A800', '#F8F858', '#38B838', '#186818', '#58A8F8', '#2038A8', '#A858F8']},
     gb: {label: 'Game Boy (4 greens)', colors: ['#0F380F', '#306230', '#8BAC0F', '#9BBC0F']},
+    pico8: {label: 'PICO-8 (16)', colors: ['#000000', '#1D2B53', '#7E2553', '#008751', '#AB5236', '#5F574F', '#C2C3C7', '#FFF1E8',
+      '#FF004D', '#FFA300', '#FFEC27', '#00E436', '#29ADFF', '#83769C', '#FF77A8', '#FFCCAA']},
     all: {label: 'All colors (24)', colors: ['#FF4F6D', '#18B7A6', '#FFB300', '#7B5CFF', '#2F8CFF', '#FF8A3D', '#000000', '#2B2350', '#6A6488', '#C9C3D9', '#FFFFFF',
       '#FBE3CF', '#F2C6A0', '#D9A066', '#A86B3C', '#8D5524', '#5A3825', '#2E1B10', '#FFD36B', '#B8860B', '#7ED957', '#2E7D32', '#9FDFF0', '#7A1F2B']},
   };
@@ -309,7 +311,9 @@ window.SketchTab = (() => {
 
     const onKey = (e) => {
       if (!root.isConnected) return document.removeEventListener('keydown', onKey);
-      if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
+      // (typing in a box or using a list or slider keeps its keys; a checkbox or button doesn't)
+      const f = document.activeElement;
+      if (/TEXTAREA|SELECT/.test(f?.tagName) || (f?.tagName === 'INPUT' && /text|search|number|range/.test(f.type))) return;
       const cmd = e.metaKey || e.ctrlKey, k = e.key.toLowerCase();
       if (cmd && k === 'z') { e.preventDefault(); undo(); }
       else if (cmd && k === 'c') { e.preventDefault(); copy(false); }
@@ -317,16 +321,23 @@ window.SketchTab = (() => {
       else if (cmd && k === 'v') { e.preventDefault(); paste(false); }
       else if (cmd && k === 'a') { e.preventDefault(); commit(); P.sel = {x: 0, y: 0, w: W(), h: H()}; P.tool = 'select'; draw(); }
       else if ((k === 'delete' || k === 'backspace') && (P.sel || P.float)) { e.preventDefault(); if (P.float) P.float = null; else { remember(); clearArea(); } P.sel = null; P.changed = true; draw(); }
-      // Hotkeys: B cycles pencil/eraser/fill, S cycles the shapes, C (Shift+C back) the colors, I picks a color, M selects.
-      else if (!cmd && !e.altKey && ['b', 's', 'c', 'i', 'm'].includes(k)) {
+      // Hotkeys: B pencil, E eraser, F fill, S cycles the shapes, C next color, X (or Shift+C) the color
+      // before, I picks a color, M selects; . and , go to the next and previous frame.
+      else if (!cmd && !e.altKey && (k === '.' || k === ',' || k === '>' || k === '<')) {
+        e.preventDefault(); letGo();
+        const n = P.art.frames.length;
+        P.frame = (P.frame + (k === '.' || k === '>' ? 1 : n - 1)) % n;
+        draw();
+      }
+      else if (!cmd && !e.altKey && ['b', 'e', 'f', 's', 'c', 'x', 'i', 'm'].includes(k)) {
         e.preventDefault();
         const next = (list) => list[(list.indexOf(P.tool) + 1) % list.length];
-        if (k === 'c') {
+        if (k === 'c' || k === 'x') {
           const cols = PALETTES[P.pal].colors, at = cols.findIndex((x) => x.toUpperCase() === P.color.toUpperCase());
-          P.color = cols[((at < 0 ? -1 : at) + (e.shiftKey ? cols.length - 1 : 1)) % cols.length];
+          P.color = cols[((at < 0 ? -1 : at) + (e.shiftKey || k === 'x' ? cols.length - 1 : 1)) % cols.length];
           if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen';
         } else {
-          const t = k === 'b' ? next(['pen', 'erase', 'fill']) : k === 's' ? next(SHAPES) : k === 'i' ? 'pick' : 'select';
+          const t = {b: 'pen', e: 'erase', f: 'fill', i: 'pick', m: 'select'}[k] ?? next(SHAPES);
           if (t !== 'select') letGo();
           P.tool = t;
         }
@@ -385,7 +396,14 @@ window.SketchTab = (() => {
       const custom = h('input', {type: 'color', value: P.color, 'aria-label': 'Any color', onchange: (e) => { P.color = e.target.value.toUpperCase(); if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen'; draw(); }});
       const brushes = h('div', {class: 'seg', role: 'group', 'aria-label': 'Brush size'}, BRUSHES.map((b) => h('button', {'aria-pressed': P.brush === b ? 'true' : 'false', title: b + ' px', 'aria-label': 'Brush ' + b,
         onclick: () => { P.brush = b; store.set('studio.sketchBrush', String(b)); draw(); }}, [h('span', {class: 'sk-dot', style: {width: Math.min(24, Math.max(3, b * 0.6)) + 'px', height: Math.min(24, Math.max(3, b * 0.6)) + 'px'}})])));
-      const frames = a.frames.map((_, i) => h('button', {class: 'px-frame' + (i === P.frame ? ' on' : ''), 'aria-label': 'Frame ' + (i + 1), onclick: () => { letGo(); P.frame = i; draw(); }},
+      // Reorder: drag a frame onto another, or Move left / right.
+      const moveFrame = (from, to) => { if (to < 0 || to >= a.frames.length || to === from) return; letGo(); remember(a.frames.map((_, j) => j)); a.frames.splice(to, 0, a.frames.splice(from, 1)[0]); P.frame = to; P.changed = true; draw(); };
+      const frames = a.frames.map((_, i) => h('button', {class: 'px-frame' + (i === P.frame ? ' on' : ''), 'aria-label': 'Frame ' + (i + 1), draggable: 'true', title: 'Drag to move it',
+        onclick: () => { letGo(); P.frame = i; draw(); },
+        ondragstart: (e) => { e.dataTransfer.setData('text/plain', String(i)); e.dataTransfer.effectAllowed = 'move'; },
+        ondragover: (e) => { e.preventDefault(); e.currentTarget.classList.add('drop'); },
+        ondragleave: (e) => e.currentTarget.classList.remove('drop'),
+        ondrop: (e) => { e.preventDefault(); moveFrame(+e.dataTransfer.getData('text/plain'), i); }},
         [h('canvas', {width: 64, height: 64, 'data-thumb': i}), h('span', {text: String(i + 1)})]));
       const save = async () => {
         if (!a.name.trim()) { alert('Give it a name first.'); return; }
@@ -408,7 +426,7 @@ window.SketchTab = (() => {
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         name,
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
-        h('div', {class: 'small muted', text: 'Keys: B brush → eraser → fill · S line → box → circle · C next color (Shift+C back) · I pick a color · M select'}),
+        h('div', {class: 'small muted', text: 'Keys: B brush · E eraser · F fill · S line → box → circle · C next color · X color before · I pick a color · M select (Delete clears it) · . next frame · , frame before'}),
         h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Brush size:'}), brushes]),
         SHAPES.includes(P.tool) && P.tool !== 'line' ? h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
         h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
@@ -435,6 +453,9 @@ window.SketchTab = (() => {
         h('div', {class: 'small muted', text: 'Frames (2 to 8 make it move):'}),
         h('div', {class: 'px-frames'}, [...frames,
           a.frames.length < MAX_FRAMES ? btn('+ Copy this frame', () => { letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame + 1, 0, copyOf(cur())); P.frame++; P.changed = true; draw(); }) : null,
+          a.frames.length < MAX_FRAMES ? btn('+ Empty frame', () => { letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame + 1, 0, layer(W(), H())); P.frame++; P.changed = true; draw(); }) : null,
+          a.frames.length > 1 ? btn('◀ Move left', () => moveFrame(P.frame, P.frame - 1), {disabled: P.frame === 0 || null}) : null,
+          a.frames.length > 1 ? btn('Move right ▶', () => moveFrame(P.frame, P.frame + 1), {disabled: P.frame === a.frames.length - 1 || null}) : null,
           a.frames.length > 1 ? btn('Delete this frame', async () => { if (!(await ask('Delete frame ' + (P.frame + 1) + '?'))) return; letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); P.changed = true; draw(); }) : null]),
         h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),

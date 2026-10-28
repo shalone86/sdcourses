@@ -36,6 +36,8 @@ window.PixelTab = (() => {
     gbc: {label: 'Game Boy Color (16)', colors: ['#000000', '#FFFFFF', '#888888', '#F8E8C8', '#E0A070', '#A05030', '#503018', '#F83838',
       '#F878B8', '#F8A800', '#F8F858', '#38B838', '#186818', '#58A8F8', '#2038A8', '#A858F8']},
     gb: {label: 'Game Boy (4 greens)', colors: ['#0F380F', '#306230', '#8BAC0F', '#9BBC0F']},
+    pico8: {label: 'PICO-8 (16)', colors: ['#000000', '#1D2B53', '#7E2553', '#008751', '#AB5236', '#5F574F', '#C2C3C7', '#FFF1E8',
+      '#FF004D', '#FFA300', '#FFEC27', '#00E436', '#29ADFF', '#83769C', '#FF77A8', '#FFCCAA']},
     all: {label: 'All colors (24)', colors: ['#FF4F6D', '#18B7A6', '#FFB300', '#7B5CFF', '#2F8CFF', '#FF8A3D',
       '#000000', '#2B2350', '#6A6488', '#C9C3D9', '#FFFFFF',
       '#FBE3CF', '#F2C6A0', '#D9A066', '#A86B3C', '#8D5524', '#5A3825', '#2E1B10',
@@ -108,6 +110,9 @@ window.PixelTab = (() => {
     const pal = PALETTES[store.get('studio.pixelPalette')] ? store.get('studio.pixelPalette') : 'video';
     const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false, gal: {open: false, q: ''},
       undo: [], saved: '', timer: null,
+      bases: {open: false, list: [], versions: {}, cast: [], pick: null, name: ''},
+      poses: {open: false, from: '', pose: '', drafts: [], skip: new Set(), busy: false, timer: null},
+      version: null, // coloring a new character from a base: {base, name}
       sel: null,    // selected box {x, y, w, h}
       float: null,  // lifted pixels being moved or pasted {x, y, w, h, layers: [{frame, px}]} (one layer per frame)
       shape: null}; // a shape being dragged: its preview squares
@@ -206,8 +211,12 @@ window.PixelTab = (() => {
     function set(x, y, col) {
       if (!inBounds(x, y)) return;
       if (P.tool === 'dither' && (x + y) % 2) return;
-      px()[y * W() + x] = col;
-      if (P.mirror) { const mx = W() - 1 - x; if (P.tool !== 'dither' || (mx + y) % 2 === 0) px()[y * W() + mx] = col; }
+      // (with "in every frame" on, every frame gets the same squares)
+      for (const i of targets()) {
+        const p = P.art.frames[i];
+        p[y * W() + x] = col;
+        if (P.mirror) { const mx = W() - 1 - x; if (P.tool !== 'dither' || (mx + y) % 2 === 0) p[y * W() + mx] = col; }
+      }
     }
     function fill(x, y, col) { for (const i of targets()) fillFrame(P.art.frames[i], x, y, col); }
     function fillFrame(p, x, y, col) {
@@ -504,7 +513,9 @@ window.PixelTab = (() => {
 
     const onKey = (e) => {
       if (!root.isConnected) return document.removeEventListener('keydown', onKey);
-      if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
+      // (typing in a box or using a list or slider keeps its keys; a checkbox or button doesn't)
+      const f = document.activeElement;
+      if (/TEXTAREA|SELECT/.test(f?.tagName) || (f?.tagName === 'INPUT' && /text|search|number|range/.test(f.type))) return;
       const cmd = e.metaKey || e.ctrlKey;
       const k = e.key.toLowerCase();
       if (cmd && k === 'z') { e.preventDefault(); undo(); }
@@ -513,16 +524,23 @@ window.PixelTab = (() => {
       else if (cmd && k === 'v') { e.preventDefault(); paste(false); }
       else if (cmd && k === 'a') { e.preventDefault(); commit(); P.sel = {x: 0, y: 0, w: W(), h: H()}; P.tool = 'select'; draw(); }
       else if ((k === 'delete' || k === 'backspace') && (P.sel || P.float)) { e.preventDefault(); if (P.float) P.float = null; else { remember(); clearArea(); } P.sel = null; draw(); markDirty(); }
-      // Hotkeys: B cycles pencil/eraser/fill, S cycles the shapes, C (Shift+C back) the colors, I picks a color, M selects.
-      else if (!cmd && !e.altKey && ['b', 's', 'c', 'i', 'm'].includes(k)) {
+      // Hotkeys: B pencil, E eraser, F fill, S cycles the shapes, C next color, X (or Shift+C) the color
+      // before, I picks a color, M selects; . and , go to the next and previous frame.
+      else if (!cmd && !e.altKey && (k === '.' || k === ',' || k === '>' || k === '<')) {
+        e.preventDefault(); letGo();
+        const n = P.art.frames.length;
+        P.frame = (P.frame + (k === '.' || k === '>' ? 1 : n - 1)) % n;
+        draw();
+      }
+      else if (!cmd && !e.altKey && ['b', 'e', 'f', 's', 'c', 'x', 'i', 'm'].includes(k)) {
         e.preventDefault();
         const next = (list) => list[(list.indexOf(P.tool) + 1) % list.length];
-        if (k === 'c') {
+        if (k === 'c' || k === 'x') {
           const cols = PALETTES[P.pal].colors, at = cols.findIndex((x) => x.toUpperCase() === P.color.toUpperCase());
-          P.color = cols[((at < 0 ? -1 : at) + (e.shiftKey ? cols.length - 1 : 1)) % cols.length];
+          P.color = cols[((at < 0 ? -1 : at) + (e.shiftKey || k === 'x' ? cols.length - 1 : 1)) % cols.length];
           if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen';
         } else {
-          const t = k === 'b' ? next(['pen', 'erase', 'fill']) : k === 's' ? next(SHAPES) : k === 'i' ? 'pick' : 'select';
+          const t = {b: 'pen', e: 'erase', f: 'fill', i: 'pick', m: 'select'}[k] ?? next(SHAPES);
           if (t !== 'select') letGo();
           P.tool = t;
         }
@@ -538,7 +556,7 @@ window.PixelTab = (() => {
 
     function markDirty() {
       const b = body.querySelector('[data-save]');
-      if (b) { b.disabled = !dirty(); b.textContent = dirty() ? 'Save' : 'Saved'; }
+      if (b) { b.disabled = !dirty(); b.textContent = dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved'; }
     }
     function note(text) { const n = body.querySelector('[data-note]'); if (n) n.textContent = text; }
 
@@ -552,12 +570,14 @@ window.PixelTab = (() => {
         P.art = fromSaved(s); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap();
         // "Start from a copy": every frame of that one, as a new unsaved drawing.
         if (copy) { delete P.art.slug; P.art.name = s.name + ' copy'; P.saved = ''; }
+        const v = !copy && /-idle$/.test(s.slug) && s.slug.slice(0, -5);
+        P.version = v && P.bases.versions[v] ? {base: P.bases.versions[v].base, name: v} : null;
         P.gal.open = false;
         draw();
       };
       const startNew = async () => {
         if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
-        P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); draw();
+        P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); P.version = null; draw();
       };
       const pick = window.SpriteGallery.build({items: P.list, state: P.gal, current: a.slug, noun: 'drawing', onNew: startNew, onToggle: draw, onOpen: openSaved,
         onFavorite: async (slug, on) => {
@@ -587,10 +607,18 @@ window.PixelTab = (() => {
       const used = [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].filter((c) => !colors.includes(c));
       const custom = h('input', {type: 'color', value: P.color, 'aria-label': 'Any color', onchange: (e) => { P.color = e.target.value.toUpperCase(); if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen'; draw(); }});
 
-      const frames = a.frames.map((_, i) => h('button', {class: 'px-frame' + (i === P.frame ? ' on' : ''), 'aria-label': 'Frame ' + (i + 1), onclick: () => { letGo(); P.frame = i; draw(); }},
+      // Reorder: drag a frame onto another, or Move left / right.
+      const moveFrame = (from, to) => { if (to < 0 || to >= a.frames.length || to === from) return; letGo(); remember(); a.frames.splice(to, 0, a.frames.splice(from, 1)[0]); P.frame = to; draw(); markDirty(); };
+      const frames = a.frames.map((_, i) => h('button', {class: 'px-frame' + (i === P.frame ? ' on' : ''), 'aria-label': 'Frame ' + (i + 1), draggable: 'true', title: 'Drag to move it',
+        onclick: () => { letGo(); P.frame = i; draw(); },
+        ondragstart: (e) => { e.dataTransfer.setData('text/plain', String(i)); e.dataTransfer.effectAllowed = 'move'; },
+        ondragover: (e) => { e.preventDefault(); e.currentTarget.classList.add('drop'); },
+        ondragleave: (e) => e.currentTarget.classList.remove('drop'),
+        ondrop: (e) => { e.preventDefault(); moveFrame(+e.dataTransfer.getData('text/plain'), i); }},
         [h('canvas', {width: 64, height: 64, 'data-thumb': i}), h('span', {text: String(i + 1)})]));
 
       const save = async () => {
+        if (P.version) return saveVersion();
         if (!a.name.trim()) { alert('Give it a name first.'); return; }
         letGo();
         try {
@@ -598,16 +626,179 @@ window.PixelTab = (() => {
           P.list = d.sprites.filter((s) => s.kind !== 'sketch'); a.slug = d.slug; P.saved = snap(); draw();
         } catch (e) { alert('Couldn’t save it: ' + e.message); }
       };
+      // A color version: her recolored idle, then the other four poses made from the base with the same swaps.
+      const saveVersion = async () => {
+        letGo();
+        const req = {base: P.version.base, name: P.version.name, idle: toSaved(a)};
+        try {
+          const check = await post('/api/sprite/version', {...req, dry: true});
+          const others = check.exists.filter((x) => x !== a.slug);
+          if (others.length && !(await ask(`${check.slug} already has ${others.length} pose${others.length > 1 ? 's' : ''}. Replace them with new ones in these colors?`))) return;
+          for (const sp of check.split) {
+            if (!(await ask(`One color in ${P.version.base} (${sp.from}) became ${sp.to.length} colors here (${sp.to.join(', ')}). The other poses can only use one: ${sp.to[0]}. Go ahead?`))) return;
+          }
+          const d = await post('/api/sprite/version', req);
+          P.list = d.sprites.filter((x) => x.kind !== 'sketch'); P.bases.list = d.bases; P.bases.versions = d.versions; P.bases.cast = d.cast ?? [];
+          a.slug = `${d.slug}-idle`; a.name = a.slug; P.saved = snap(); draw();
+          note(`Made ${d.made.join(', ')}.` + (d.shape ? ` ${d.shape} squares you added or erased stay in the idle only (the other poses get the colors, not shape changes).` : ''));
+        } catch (e) { alert('Couldn’t make it: ' + e.message); }
+      };
+      // Every square of one color, in every frame, changed to another.
+      const swapColor = (from, to) => {
+        remember();
+        for (const fr of a.frames) fr.forEach((c, i) => { if (c && c.toUpperCase() === from) fr[i] = to.toUpperCase(); });
+        draw(); markDirty();
+      };
+      const baseThumb = (b) => {
+        const cv = h('canvas', {width: 64, height: 64});
+        const art = fromSaved(b.idle);
+        requestAnimationFrame(() => paint(cv, art.frames[0], art.width, art.height, 64));
+        return h('button', {class: 'px-frame px-base' + (P.bases.pick === b.name ? ' on' : ''), title: b.name, onclick: () => { P.bases.pick = b.name; draw(); }},
+          [cv, h('span', {text: b.name})]);
+      };
+      const startVersion = async () => {
+        const b = P.bases.list.find((x) => x.name === P.bases.pick);
+        const slug = P.bases.name.toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        if (!b) { alert('Pick a base first.'); return; }
+        if (!slug) { alert('Give the new character a name (e.g. St Joseph).'); return; }
+        if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
+        P.art = fromSaved(b.idle); delete P.art.slug; P.art.name = `${slug}-idle`;
+        P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = '';
+        P.version = {base: b.name, name: slug}; P.bases.open = false; P.bases.name = '';
+        draw();
+      };
+      const basesPanel = P.bases.open ? h('div', {class: 'px-bases', style: {display: 'grid', gap: '8px'}}, [
+        h('div', {class: 'small muted', text: 'Pick the body to start from, name the new character, then change the colors on its idle. The other poses are made for you.'}),
+        h('div', {class: 'px-frames'}, P.bases.list.length ? P.bases.list.map(baseThumb) : [h('span', {class: 'small muted', text: 'No bases yet: a base is a character with idle, point, look-up, walk and run drawings.'})]),
+        h('div', {class: 'row', style: {gap: '8px'}}, [
+          h('input', {type: 'text', value: P.bases.name, placeholder: 'New character’s name (e.g. St Joseph)', 'aria-label': 'New character’s name', oninput: (e) => { P.bases.name = e.target.value; }}),
+          btn('Start coloring', startVersion, {class: 'btn primary'})]),
+      ]) : null;
+      // One box per area of the base (each of the base's colors), so two areas can share a color
+      // and still be changed apart later.
+      const baseArt = P.version && P.bases.list.find((b) => b.name === P.version.base);
+      const basePx = baseArt ? fromSaved(baseArt.idle).frames : null;
+      const areas = basePx && basePx[0].length === a.width * a.height ? [...new Set(basePx.flat().filter(Boolean).map((c) => c.toUpperCase()))] : [];
+      const squares = (area) => basePx.flatMap((fr, f) => (a.frames[f] ? fr.map((c, i) => (c && c.toUpperCase() === area && a.frames[f][i] ? [f, i] : null)).filter(Boolean) : []));
+      const nowColor = (area) => {
+        const n = {};
+        for (const [f, i] of squares(area)) { const c = a.frames[f][i].toUpperCase(); n[c] = (n[c] ?? 0) + 1; }
+        return Object.entries(n).sort((x, y) => y[1] - x[1])[0]?.[0] ?? area;
+      };
+      const setArea = (area, to) => {
+        remember();
+        for (const [f, i] of squares(area)) a.frames[f][i] = to.toUpperCase();
+        draw(); markDirty();
+      };
+      const current = areas.map(nowColor);
+      const areaBox = (area, k) => h('div', {style: {display: 'flex', gap: '6px', alignItems: 'center', minWidth: '0'}}, [
+        h('span', {title: 'This part was ' + area + ' in ' + P.version.base, style: {width: '16px', height: '16px', borderRadius: '4px', background: area, border: '1px solid var(--rule)', flex: 'none'}}),
+        h('span', {class: 'small muted', text: '→'}),
+        h('input', {type: 'color', value: current[k].toLowerCase(), 'aria-label': 'New color for the part that was ' + area, onchange: (e) => setArea(area, e.target.value)}),
+        // (squares, not a list: the Mac can't color a list's options)
+        h('span', {class: 'small muted', text: 'same as'}),
+        h('span', {style: {display: 'flex', gap: '3px', flexWrap: 'wrap', minWidth: '0'}}, [...new Set(current)].filter((c) => c !== current[k]).map((c) =>
+          h('button', {class: 'px-same', title: 'Same as ' + c, 'aria-label': 'Same color as ' + c, style: {background: c}, onclick: () => setArea(area, c)}))),
+      ]);
+      const versionBox = P.version ? h('div', {class: 'px-version', style: {display: 'grid', gap: '6px', padding: '8px 10px', borderRadius: '8px', background: 'var(--panel-2, rgba(127,127,127,.12))'}}, [
+        h('div', {class: 'small'}, [h('b', {text: P.version.name}), ` from ${P.version.base}: change the colors on this idle drawing. Saving makes point, look up, walk and run in the same colors.`]),
+        areas.length ? h('div', {class: 'small muted', text: 'Each part of the base (its old color on the left) and its color now. Click a square after “same as” to give a part the same color as another; they can still be changed apart later.'})
+          : h('div', {class: 'small muted', text: 'Change a color everywhere (every square and frame):'}),
+        areas.length ? h('div', {style: {display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '6px 12px'}}, areas.map(areaBox))
+          : h('div', {class: 'px-palette'}, [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].map((c) =>
+            h('label', {class: 'px-any', title: 'Change ' + c}, [h('input', {type: 'color', value: c.toLowerCase(), onchange: (e) => swapColor(c, e.target.value)}), h('span', {text: c})]))),
+      ]) : null;
       const selecting = !!(P.sel || P.float);
+
+      // Copy a pose to other characters: drafts made from each one's own idle (copyPose in
+      // scripts/sprites.mjs), shown moving; the ones that already have that pose are left alone.
+      const Q = P.poses;
+      clearInterval(Q.timer);
+      const STANDARD = ['idle', 'point', 'look-up', 'walk', 'run'];
+      const loadDrafts = async () => {
+        Q.drafts = []; Q.skip = new Set();
+        const c = P.bases.cast.find((x) => x.name === Q.from);
+        if (!c || !c.actions.includes(Q.pose)) { draw(); return; }
+        Q.busy = true; draw();
+        try {
+          const to = P.bases.cast.filter((x) => x.name !== Q.from && x.actions.includes('idle')).map((x) => x.name);
+          Q.drafts = (await post('/api/sprite/copy-pose', {from: Q.from, pose: Q.pose, to})).drafts.filter((d) => d.art);
+        } catch (e) { alert(e.message); }
+        Q.busy = false; draw();
+      };
+      const openPoses = () => {
+        Q.open = !Q.open;
+        if (Q.open && !Q.from) {
+          // Start from the drawing that's open if it is a pose (e.g. eastern-monk-blessing).
+          const c = a.slug && P.bases.cast.find((x) => a.slug.startsWith(x.name + '-') && x.actions.includes(a.slug.slice(x.name.length + 1)));
+          const first = P.bases.cast.find((x) => x.actions.some((y) => !STANDARD.includes(y)));
+          Q.from = c ? c.name : first?.name ?? '';
+          const own = c ? a.slug.slice(c.name.length + 1) : null;
+          Q.pose = own ?? (first ? first.actions.find((x) => !STANDARD.includes(x)) : '');
+        }
+        if (Q.open) loadDrafts(); else draw();
+      };
+      const fromChar = P.bases.cast.find((x) => x.name === Q.from);
+      const newOnes = Q.drafts.filter((d) => !d.exists);
+      const draftCards = Q.drafts.map((d) => {
+        const art = fromSaved(d.art);
+        const cv = h('canvas', {width: 64, height: 64});
+        const on = !d.exists && !Q.skip.has(d.character);
+        const card = h('label', {class: 'px-frame px-base' + (on ? ' on' : ''), title: d.exists ? `${d.slug} already exists (kept as it is)` : d.slug, style: {opacity: d.exists ? '.45' : null}}, [cv,
+          h('span', {text: d.character + (d.exists ? ' (has one)' : '')}),
+          d.exists ? null : h('input', {type: 'checkbox', checked: on || null, style: {position: 'absolute', top: '3px', right: '3px'}, 'aria-label': 'Make ' + d.slug,
+            onchange: (e) => { if (e.target.checked) Q.skip.delete(d.character); else Q.skip.add(d.character); draw(); }})]);
+        card._art = art; card._cv = cv;
+        return card;
+      });
+      const makeDrafts = async () => {
+        const to = newOnes.filter((d) => !Q.skip.has(d.character)).map((d) => d.character);
+        if (!to.length) return;
+        try {
+          const d = await post('/api/sprite/copy-pose', {from: Q.from, pose: Q.pose, to, save: true});
+          P.list = d.sprites.filter((x) => x.kind !== 'sketch');
+          const r = await api('/api/puppet-bases'); P.bases.cast = r.cast ?? [];
+          alert(`Made ${d.drafts.filter((x) => x.saved).length} drafts (named like ${to[0]}-${Q.pose}). Open each one to touch it up.`);
+        } catch (e) { alert(e.message); return; }
+        loadDrafts();
+      };
+      const posesPanel = Q.open ? h('div', {class: 'px-bases', style: {display: 'grid', gap: '8px'}}, [
+        h('div', {class: 'small muted', text: 'Draw a new pose once on one character; every other character gets a draft made from its own idle and colors. Drafts never replace a drawing you already have. Check each one and touch it up.'}),
+        h('div', {class: 'row', style: {gap: '8px', flexWrap: 'wrap'}}, [
+          h('select', {'aria-label': 'Character with the pose', onchange: (e) => { Q.from = e.target.value; const c = P.bases.cast.find((x) => x.name === Q.from); Q.pose = c?.actions.find((x) => !STANDARD.includes(x)) ?? c?.actions[0] ?? ''; loadDrafts(); }},
+            P.bases.cast.map((c) => h('option', {value: c.name, text: c.name, selected: c.name === Q.from || null}))),
+          h('select', {'aria-label': 'Pose', onchange: (e) => { Q.pose = e.target.value; loadDrafts(); }},
+            (fromChar?.actions ?? []).filter((x) => x !== 'idle').map((x) => h('option', {value: x, text: x, selected: x === Q.pose || null})))]),
+        Q.busy ? h('div', {class: 'small muted', text: 'Making drafts…'}) : null,
+        h('div', {class: 'px-frames'}, draftCards),
+        newOnes.length ? h('div', {class: 'row', style: {gap: '8px'}}, [
+          btn('All', () => { Q.skip = new Set(); draw(); }), btn('None', () => { Q.skip = new Set(newOnes.map((d) => d.character)); draw(); }),
+          btn(`Make ${newOnes.filter((d) => !Q.skip.has(d.character)).length} drafts`, makeDrafts, {class: 'btn primary'})]) : null,
+      ]) : null;
+      if (Q.open && draftCards.length) {
+        let t = 0;
+        const tick = () => { for (const c of draftCards) paint(c._cv, c._art.frames[t % c._art.frames.length], c._art.width, c._art.height, 64); t++; };
+        requestAnimationFrame(tick);
+        Q.timer = setInterval(tick, 1000 / Math.max(1, Q.drafts[0]?.art.fps ?? 4));
+      }
 
       body.replaceChildren(...[
         pick,
+        h('button', {class: 'btn', 'aria-expanded': P.bases.open ? 'true' : 'false', text: 'New character from a base…', onclick: async () => {
+          P.bases.open = !P.bases.open;
+          if (P.bases.open) { try { const d = await api('/api/puppet-bases'); P.bases.list = d.bases; P.bases.versions = d.versions; P.bases.cast = d.cast ?? []; } catch {} }
+          draw();
+        }}),
+        basesPanel,
+        h('button', {class: 'btn', 'aria-expanded': P.poses.open ? 'true' : 'false', text: 'Copy a pose to other characters…', onclick: openPoses}),
+        posesPanel,
+        versionBox,
         h('div', {class: 'row', style: {gap: '8px'}}, [size,
           h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
-        name,
+        P.version ? null : name,
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
-        h('div', {class: 'small muted', text: 'Keys: B pencil → eraser → fill · S line → box → circle · C next color (Shift+C back) · I pick a color · M select'}),
+        h('div', {class: 'small muted', text: 'Keys: B pencil · E eraser · F fill · S line → box → circle · C next color · X color before · I pick a color · M select (Delete clears it) · . next frame · , frame before'}),
         SHAPES.includes(P.tool) && P.tool !== 'line'
           ? h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
         h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
@@ -625,10 +816,10 @@ window.PixelTab = (() => {
           btn('Smaller ÷2', () => scaleBy(0.5), {title: 'Make the selection half the size'}),
           btn('Flip ↔', () => flip('h'), {title: selecting ? 'Flip the selection left to right' : 'Flip left to right'}),
           btn('Flip ↕', () => flip('v'), {title: selecting ? 'Flip the selection upside down' : 'Flip upside down'}),
-          h('label', {class: 'small', title: 'Moving, cutting, flipping and clearing work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
-            onchange: (e) => { P.every = e.target.checked; }}), ' Fill, move, cut, flip and clear in every frame']),
+          h('label', {class: 'small', title: 'Drawing, erasing, shapes, fill, moving, cutting, flipping and clearing work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
+            onchange: (e) => { P.every = e.target.checked; }}), ' Draw in every frame (pencil, eraser, shapes, fill, move, cut, flip, clear)']),
           btn('Clear this frame', () => { letGo(); remember(); a.frames[P.frame] = blank(a.width, a.height); draw(); markDirty(); }),
-          h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
+          h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved', onclick: save}),
           a.slug ? btn('Delete this drawing', remove) : null,
           btn('Export frame (PNG)', () => exportArt(false), {title: 'This frame as a picture, enlarged with sharp pixels'}),
           a.frames.length > 1 ? btn('Export animation (GIF)', () => exportArt(true), {title: 'All the frames as an animated GIF, at the preview speed'}) : null,
@@ -643,7 +834,11 @@ window.PixelTab = (() => {
         h('div', {class: 'small muted', text: 'Frames (2 to 8 make it move):'}),
         h('div', {class: 'px-frames'}, [...frames,
           a.frames.length < MAX_FRAMES ? btn('+ Copy this frame', () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, [...px()]); P.frame++; draw(); markDirty(); }) : null,
-          a.frames.length > 1 ? btn('Delete this frame', async () => { if (!(await ask('Delete frame ' + (P.frame + 1) + '?'))) return; letGo(); remember(); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); draw(); markDirty(); }) : null]),
+          a.frames.length < MAX_FRAMES ? btn('+ Empty frame', () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, blank(a.width, a.height)); P.frame++; draw(); markDirty(); }) : null,
+          a.frames.length > 1 ? btn('◀ Move left', () => moveFrame(P.frame, P.frame - 1), {disabled: P.frame === 0 || null}) : null,
+          a.frames.length > 1 ? btn('Move right ▶', () => moveFrame(P.frame, P.frame + 1), {disabled: P.frame === a.frames.length - 1 || null}) : null,
+        ]),
+        a.frames.length > 1 ? h('div', {class: 'row', style: {gap: '8px'}}, [btn('🗑 Delete frame ' + (P.frame + 1), async () => { if (!(await ask('Delete frame ' + (P.frame + 1) + '?'))) return; letGo(); remember(); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); draw(); markDirty(); }, {title: 'Delete the frame that’s showing'})]) : null,
         h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; startPreview(); markDirty(); }})])]),
@@ -656,6 +851,7 @@ window.PixelTab = (() => {
 
     // (sketches have their own mode)
     api('/api/sprites').then((list) => { P.list = list.filter((s) => s.kind !== 'sketch'); draw(); }, () => draw());
+    api('/api/puppet-bases').then((d) => { P.bases.list = d.bases; P.bases.versions = d.versions; P.bases.cast = d.cast ?? []; }, () => {});
     return {dirty};
   }
 

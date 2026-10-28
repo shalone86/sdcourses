@@ -41,6 +41,11 @@ HANDOFF.md.**
   the pictures, headings and her video bounce, snaps them to the beat, and
   shows the beats as dots in the Timing tab; the default `calm` is for
   explainers.
+- Guide characters: her pixel characters (`sprites/`: idle, walk, run, look up, point; a
+  `sprite` scene can be flipped) are fun guides, like Crash Course or Kurzgesagt, especially
+  for kids. They guide and react; they never stand for a whole idea. Things like a chalice or the
+  Eucharist get a real picture (Wikimedia etc.) or a 2D shape sketch (like the iconostasis). She
+  adjusts everything in the Timing tab.
 - Maps can highlight `areas:`: a country (Natural Earth name or a common one,
   "United States"), a continent, a group of countries (EU, NATO, BRICS…;
   members as of 2025), or an empire (approximate, at about its peak; those
@@ -123,9 +128,9 @@ If it's already running, `npm start` just opens the page.
   (geometry in `video/Camera.tsx`).
 - **Pixel art tab** (`studio/pixels.js`): she draws 1–8 frame pixel
   animations, 1–8 frames (8/16/24/32/48/64 px; pencil, dither, eraser, fill, line, box, circle,
-  select & move, color picker; copy/cut/paste across drawings; flips; mirror, onion
-  skin, speed; keys: B pencil/eraser/fill, S line/box/circle, C/Shift+C colors,
-  I pick, M select; Export frame (PNG, enlarged) or animation (GIF, made by
+  select & move, color picker; copy/cut/paste across drawings; flips; frames can be added empty or as a copy, and moved by dragging or with Move left / right; "Draw in every frame" makes pencil, eraser, shapes, fill and moves change all frames; saved drawings open from a grid of moving thumbnails; mirror, onion
+  skin, speed; keys: B pencil, E eraser, F fill, S line/box/circle, C next / X previous color,
+  I pick, M select (Delete clears it), . / , next / previous frame; Export frame (PNG, enlarged) or animation (GIF, made by
   ffmpeg at `/api/sprite/gif`)). Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
   Pixel animation, a `sprite` scene (`move: stay | hop | across`, `size`);
@@ -156,8 +161,22 @@ If it's already running, `npm start` just opens the page.
   separate boxes (no `|`). **Icons** (`type: icons`): 1–4 lucide.dev icons
   that draw themselves in, each with an optional word (cued when said); the
   form has an icon search with previews (`/api/icons`).
+- **Characters from a base** (Pixel art tab → New character from a base…): a
+  base is a character with `-idle`, `-point`, `-look-up`, `-walk`, `-run` (hers:
+  thick-beard-guy, thick-guy, skinny-guy, guy-beard, vestment-guy, thick-woman,
+  skinny-woman). She picks one, names the new character, recolors only its idle
+  (one color box per part of the base, with "same as" color squares, so parts can share a color
+  and still be changed apart), and Save makes all five poses with the
+  same color swaps (`colorVersion` in `scripts/sprites.mjs`; `sprites/.versions.json`
+  remembers each one's base). Bases are never changed.
+- **Copy a pose to other characters…** (Pixel art tab): a pose she drew once (e.g.
+  eastern-monk-blessing) becomes a draft for every other character, made from its own idle
+  (the changed squares only, lined up with a shift for kneeling; colors from the nearest
+  matching part; `copyPose` in `scripts/sprites.mjs`). She ticks which to make; drafts never
+  replace an existing drawing, and she touches them up. Color versions also get any extra
+  poses their base has.
 - **Puppet** (`type: puppet`, PUPPET.md): an 8 × 8 character she draws as
-  `<name>-<action>` drawings, played with the keys while the video runs on the
+  `<name>-<action>` drawings (actions include blessing, B, and kneel, K), played with the keys while the video runs on the
   Timing tab; recorded in timing.yml (`scenes.<i>.puppet`).
 - **Nudging:** clicking any scene block shows Move ← ↑ ↓ → / Smaller / Bigger
   (Shift moves further), saved in timing.yml as `scenes.<i>.nudge: {x, y, size}`
@@ -206,6 +225,11 @@ If it's already running, `npm start` just opens the page.
   `scripts/publish.mjs` (gates unchanged) and shows the draft link.
   For a kids lesson without its own `thumb:` it first asks which drawing goes
   on the kids-site thumbnail (saved as `thumb: {sprite}` in lesson.yml).
+- **Kids thumbnail maker** (Video & Ghost tab, kids lessons; `studio/thumb.js`): the
+  thumbnail live, with up to 3 of her drawings she drags, resizes by the corner, and
+  gives a frame and flip; dashed lines mark the home page's crop. Saved as
+  `thumb.pics: [{sprite, x, y, size, frame, flip}]` (1280×720 pixels, x/y the middle,
+  size the height); "Back to automatic" removes them. Title and shapes stay automatic.
 
 The older cloud artifact (https://claude.ai/artifact/6psc9GJ9d1VuHeS8RW85vG,
 `studio/studio.html`, `npm run studio-export` / `studio-import`) can edit but
