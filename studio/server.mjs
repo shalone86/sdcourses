@@ -10,6 +10,7 @@ import path from 'node:path';
 import {spawn, execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {ROOT, ffprobeDuration, loadLesson, words} from '../scripts/lib.mjs';
+import {kidsThumbProps, picAspect} from '../scripts/kids-thumb.mjs';
 import {applyEdits, setStatus, setValue} from '../scripts/studio.mjs';
 import {normalizeQuestion} from '../scripts/build-post.mjs';
 import {cachedWords, compare, whisperAvailable} from '../scripts/voice.mjs';
@@ -127,6 +128,13 @@ function detail(id) {
     // Kids lessons: the drawing on the kids-site thumbnail (`thumb:` in lesson.yml), else what it falls back to.
     kids: kids ? {thumb: lesson.thumb?.sprite ?? null, fallback: course.thumb?.sprite ?? segments.flatMap((x) => x.scenes).find((sc) => sc?.type === 'sprite')?.sprite ?? null} : null,
   };
+}
+
+/** The thumbnail maker's data: the props to draw it, what's saved, and each drawing's width for its height. */
+function kidsThumb(id, pics) {
+  const {props, auto} = kidsThumbProps(lessonPath(id), pics);
+  const saved = loadLesson(lessonPath(id)).lesson.thumb?.pics ?? null;
+  return {props, saved, auto, aspects: props.pics.map((q) => picAspect(q.art)), autoAspect: props.art ? picAspect(props.art) : 1};
 }
 
 // ---------- listening back (Whisper) ----------
@@ -567,6 +575,7 @@ async function handle(req, res) {
     if (p === '/api/timing') return json(res, 200, timingData(id));
     if (p === '/api/images/sources') return json(res, 200, sourceList());
     if (p === '/api/sprites') return json(res, 200, listSprites());
+    if (p === '/api/kids-thumb') return json(res, 200, kidsThumb(id));
     if (p === '/api/puppet-cast') return json(res, 200, puppetCast());
     if (p === '/api/puppet-bases') return json(res, 200, {...puppetBases(), cast: puppetCast().characters});
     if (p === '/api/icons') {
@@ -597,6 +606,7 @@ async function handle(req, res) {
     }
     if (p === '/player.js') return sendFile(req, res, path.join(ROOT, 'studio/player/player.js'));
     if (p === '/timing.js') return sendFile(req, res, path.join(ROOT, 'studio/timing.js'));
+    if (p === '/thumb.js') return sendFile(req, res, path.join(ROOT, 'studio/thumb.js'));
     if (p === '/audio') {
       const section = url.searchParams.get('section');
       if (!/^(intro|outro|point-\d+)$/.test(section ?? '')) throw httpError(400, 'Bad section');
@@ -650,6 +660,23 @@ async function handle(req, res) {
         return json(res, 200, {id: made, lessons: lessonIds().map(summary)});
       }
       catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/kids-thumb') {
+      // The thumbnail maker: {pics: [{sprite, x, y, size, frame, flip}]} (none: back to automatic).
+      const {pics, save} = await readJson(req);
+      if (!Array.isArray(pics) || pics.length > 3) throw httpError(400, 'Up to 3 drawings');
+      const names = new Set(listSprites().map((x) => x.slug));
+      const clean = pics.map((q) => {
+        if (!names.has(q.sprite)) throw httpError(400, 'No drawing called ' + q.sprite);
+        const n = (v, lo, hi) => Math.round(Math.min(hi, Math.max(lo, Number(v) || 0)));
+        return {sprite: q.sprite, x: n(q.x, -200, 1480), y: n(q.y, -200, 920), size: n(q.size, 40, 1400), frame: n(q.frame, 0, 7), ...(q.flip ? {flip: true} : {})};
+      });
+      if (save) {
+        const dir = lessonPath(id);
+        const {pics: _, ...old} = loadLesson(dir).lesson.thumb ?? {};
+        setValue(dir, ['thumb'], clean.length ? {...old, sprite: clean[0].sprite, pics: clean} : old);
+      }
+      return json(res, 200, kidsThumb(id, save ? undefined : clean));
     }
     if (p === '/api/thumb') {
       // A kids lesson's thumbnail drawing (`thumb: {sprite}` in lesson.yml).

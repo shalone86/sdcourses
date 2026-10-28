@@ -185,6 +185,16 @@ body.wide .wrap{max-width:1600px}
 .px-frame{position:relative;padding:3px;border:2px solid var(--rule);border-radius:9px;background:var(--paper);cursor:pointer}
 .px-frame.on{border-color:var(--accent)}
 .px-frame.drop{border-style:dashed;border-color:var(--accent)}
+.th-stage{position:relative;outline:none;touch-action:none;user-select:none}
+.th-over{position:absolute;inset:0}
+.th-crop{position:absolute;top:0;bottom:0;border-left:2px dashed rgba(0,0,0,.35)}
+.th-box{position:absolute;border:2px dashed rgba(43,35,80,.55);border-radius:6px;cursor:move}
+.th-box.on{border:2px solid var(--accent);box-shadow:0 0 0 2px #fff8}
+.th-num{position:absolute;top:-11px;left:-11px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font:700 12px/22px var(--sans);text-align:center}
+.th-grip{position:absolute;right:-9px;bottom:-9px;width:18px;height:18px;border-radius:4px;background:#fff;border:2px solid var(--accent);cursor:nwse-resize}
+.th-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:6px 8px;border-radius:8px;border:1px solid var(--rule)}
+.th-row.on{border-color:var(--accent)}
+.th-row select{width:auto;max-width:100%}
 .px-frame canvas{display:block;width:64px;height:64px;image-rendering:pixelated}
 .px-frame span{position:absolute;top:2px;left:5px;font:700 11px/1 var(--sans);color:var(--muted)}
 .sg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
@@ -274,6 +284,7 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
 <script src="/player.js"></script>
 <script src="/ask.js"></script>
 <script src="/timing.js"></script>
+<script src="/thumb.js"></script>
 <script src="/reference.js"></script>
 <script src="/pixels.js"></script>
 <script src="/sketch.js"></script>
@@ -1167,7 +1178,17 @@ function videoView() {
     ]),
     !L.video ? el('div', {class: 'small muted', text: 'Make the video first.'}) : null,
   ]);
-  return el('div', {class: 'stack'}, [recCard, el('section', {class: 'card'}, vidKids), ghostCard]);
+  return el('div', {class: 'stack'}, [recCard, el('section', {class: 'card'}, vidKids), L.kids ? thumbCard() : null, ghostCard].filter(Boolean));
+}
+
+// The kids thumbnail maker (studio/thumb.js), kept between redraws like the Timing tab.
+function thumbCard() {
+  if (!S.thumbRoot || S.thumbFor !== S.id) {
+    S.thumbRoot = el('section', {class: 'card'});
+    S.thumbFor = S.id;
+    window.ThumbMaker.open(S.thumbRoot, S.id, api, post);
+  }
+  return S.thumbRoot;
 }
 
 function jobPanel(kind) {

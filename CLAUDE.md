@@ -225,6 +225,11 @@ If it's already running, `npm start` just opens the page.
   `scripts/publish.mjs` (gates unchanged) and shows the draft link.
   For a kids lesson without its own `thumb:` it first asks which drawing goes
   on the kids-site thumbnail (saved as `thumb: {sprite}` in lesson.yml).
+- **Kids thumbnail maker** (Video & Ghost tab, kids lessons; `studio/thumb.js`): the
+  thumbnail live, with up to 3 of her drawings she drags, resizes by the corner, and
+  gives a frame and flip; dashed lines mark the home page's crop. Saved as
+  `thumb.pics: [{sprite, x, y, size, frame, flip}]` (1280×720 pixels, x/y the middle,
+  size the height); "Back to automatic" removes them. Title and shapes stay automatic.
 
 The older cloud artifact (https://claude.ai/artifact/6psc9GJ9d1VuHeS8RW85vG,
 `studio/studio.html`, `npm run studio-export` / `studio-import`) can edit but

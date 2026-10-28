@@ -3,6 +3,7 @@
 import {Player, type PlayerRef} from '@remotion/player';
 import {createRef} from 'react';
 import {createRoot} from 'react-dom/client';
+import {KidsThumb, type KidsThumbProps} from '../../video/KidsThumb';
 import {Lesson} from '../../video/Lesson';
 import {FPS} from '../../video/theme';
 import type {LessonProps} from '../../video/types';
@@ -50,4 +51,15 @@ function mount(el: HTMLElement, initial: LessonProps): Api {
   };
 }
 
-(window as any).StudioPlayer = {mount};
+// The kids thumbnail (Video & Ghost tab's thumbnail maker): one still frame, redrawn as she moves things.
+function mountThumb(el: HTMLElement, initial: KidsThumbProps) {
+  const root = createRoot(el);
+  const draw = (props: KidsThumbProps) => root.render(
+    <Player component={KidsThumb as any} inputProps={props} durationInFrames={1} fps={30} compositionWidth={1280} compositionHeight={720}
+      style={{width: '100%', aspectRatio: '16 / 9', borderRadius: 10, overflow: 'hidden'}} controls={false} clickToPlay={false} acknowledgeRemotionLicense />,
+  );
+  draw(initial);
+  return {setProps: draw};
+}
+
+(window as any).StudioPlayer = {mount, mountThumb};

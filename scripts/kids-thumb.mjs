@@ -1,5 +1,6 @@
 // Thumbnail for a kids lesson on kids.sdcason.com, in the look of her kids thumbnails there
-// (video/KidsThumb.tsx). The drawing: lesson.yml or course.yml `thumb: {sprite: <name>, fit: frame | bleed, strip: true}` (strip: every frame of the drawing side by side, in order),
+// (video/KidsThumb.tsx). The drawing: lesson.yml `thumb: {pics: [...]}` (placed by hand in the
+// studio), else lesson.yml or course.yml `thumb: {sprite: <name>, fit: frame | bleed, strip: true}` (strip: every frame of the drawing side by side, in order),
 // else the lesson's first pixel animation. Run: node scripts/kids-thumb.mjs <course>/<lesson>
 import fs from 'node:fs';
 import path from 'node:path';
@@ -35,16 +36,37 @@ function shapeFiles(id) {
   return out;
 }
 
-export function renderKidsThumb(arg) {
+// How wide a placed drawing is for its height (what shows: a pixel drawing's colored part, a
+// sketch's whole picture), so the studio's thumbnail maker can draw a box around it.
+export function picAspect(art) {
+  if (art.kind === 'sketch') return art.width / art.height;
+  let x0 = art.width, y0 = art.height, x1 = -1, y1 = -1;
+  for (const rows of art.frames) rows.forEach((r, y) => [...r].forEach((c, x) => { if (c !== '.') { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } }));
+  return x1 < 0 ? 1 : (x1 - x0 + 1) / (y1 - y0 + 1);
+}
+
+/**
+ * The thumbnail's props. The drawings: `thumb.pics` in lesson.yml (placed in the studio's
+ * thumbnail maker: [{sprite, x, y, size, frame, flip}], up to 3), else one drawing placed
+ * automatically. `pics` here overrides lesson.yml (the studio's live preview).
+ */
+export function kidsThumbProps(arg, pics) {
   const {lesson, course, segments, id} = loadLesson(lessonDir(arg));
+  const pub = (name) => publishSketch(loadSprite(name), path.join(ROOT, 'video', 'public', id), id);
   const name = lesson.thumb?.sprite ?? course.thumb?.sprite ?? segments.flatMap((s) => s.scenes).find((sc) => sc?.type === 'sprite')?.sprite;
-  const art = name ? publishSketch(loadSprite(name), path.join(ROOT, 'video', 'public', id), id) : null;
+  const placed = (pics ?? lesson.thumb?.pics ?? []).slice(0, 3).map((p) => ({art: pub(p.sprite), x: +p.x, y: +p.y, size: +p.size, frame: +p.frame || 0, flip: !!p.flip}));
+  const art = !placed.length && name ? pub(name) : null;
   const m = LEAD.exec(lesson.title);
   const lead = m ? lesson.title.slice(0, m[0].length) : '';
   const title = (m ? lesson.title.slice(m[0].length) : lesson.title).trim();
+  return {id, props: {lead, title, art, pics: placed, shapes: shapeFiles(id), fit: lesson.thumb?.fit ?? course.thumb?.fit ?? 'frame', strip: !!lesson.thumb?.strip}, auto: name ?? null};
+}
+
+export function renderKidsThumb(arg) {
+  const {id, props: p} = kidsThumbProps(arg);
   const dist = outDir(id);
   const props = path.join(dist, 'kids-thumb-props.json');
-  fs.writeFileSync(props, JSON.stringify({lead, title, art, shapes: shapeFiles(id), fit: lesson.thumb?.fit ?? course.thumb?.fit ?? 'frame', strip: !!lesson.thumb?.strip}));
+  fs.writeFileSync(props, JSON.stringify(p));
   const png = path.join(dist, 'kids-thumb.png');
   execFileSync(path.join(ROOT, 'node_modules/.bin/remotion'), ['still', 'video/index.ts', 'KidsThumb', png, `--props=${props}`, '--log=error'], {cwd: ROOT, stdio: 'inherit'});
   return png;
