@@ -377,10 +377,12 @@
       const box = root.querySelector('.tl-scroll') || h('div', {class: 'tl-scroll'});
       const keep = box.scrollLeft;
       box.replaceChildren(tl);
-      // The forms for a clicked block go under the timeline, so it stays where it was.
-      const kids = [strip, controls, camRow, box,
+      // + Add a picture opens above the timeline (under its button); the forms for a clicked block
+      // go under the timeline, so it stays where it was.
+      const adding = T.adding && !T.editing;
+      const kids = [strip, controls, camRow, adding ? adder : null, box,
         h('div', {class: 'small muted', text: 'Drag a scene block to change when it starts, or a diamond to change when an item appears. Click a word or the ruler to jump there. Then Save timing, and Make the video on the Video & Ghost tab.'}),
-        nudger, puppeteer, adder, picOpts];
+        nudger, puppeteer, adding ? null : adder, picOpts];
       // Only the part below the video is redrawn, so the page doesn't jump.
       const y = window.scrollY;
       T.body.replaceChildren(...kids.filter(Boolean));
