@@ -9,13 +9,17 @@
 // go into the part with the most rests at those moments. The lowest drum is
 // a kick (low triangle that drops), the others noise hits.
 // From bar --part-wins-from (default 8) on, the part keeps its notes and
-// drums only fill its rests.
+// drums only fill its rests. With a part left out (--without melody) the
+// drums get the free channel to themselves.
 // Usage: npm run music -- <file.mid> [<drums.mid>] [--part-wins-from 8]
+//   [--without melody]
 //   [--wave melody=3,harmony=0,bass=0] [--no-fx] (no slides, vibrato, fades)
 import fs from 'node:fs';
 
 const args = process.argv.slice(2);
-const files = args.filter((a, i) => !a.startsWith('--') && !['--wave', '--part-wins-from'].includes(args[i - 1]));
+const files = args.filter((a, i) => !a.startsWith('--') && !['--wave', '--part-wins-from', '--without'].includes(args[i - 1]));
+const wo = args.indexOf('--without');
+const without = wo >= 0 ? args[wo + 1].split(',') : [];
 const pw = args.indexOf('--part-wins-from');
 const partWinsFrom = pw >= 0 ? +args[pw + 1] : 8; // bar number, 1 = first
 const cart = 'game/blessed.p8';
@@ -27,7 +31,7 @@ const waves = {melody: 3, harmony: 0, bass: 0};
 const wi = args.indexOf('--wave');
 if (wi >= 0) for (const kv of args[wi + 1].split(',')) { const [k, v] = kv.split('='); waves[k] = +v; }
 // how many volume steps (of 7) each part sits under its MIDI velocity
-const quiet = {harmony: 3};
+const quiet = {harmony: without.includes('melody') ? 1 : 3};
 
 // --- read the MIDI files
 let tempo = 500000; // microseconds per quarter
@@ -84,7 +88,7 @@ const at = (n) => Math.round(n.start / step);
 const until = (n) => Math.max(Math.round(n.end / step), at(n) + 1);
 
 // --- one note per step per part
-const parts = tracks.filter((t) => !t.drums).slice(0, 3).map((tr, ti) => {
+const parts = tracks.filter((t) => !t.drums && !without.includes(t.name)).slice(0, 3).map((tr, ti) => {
   const wave = waves[tr.name] ?? [3, 0, 0][ti];
   const grid = Array.from({length: steps}, (_, s) => {
     const live = tr.notes.filter((n) => at(n) <= s && until(n) > s);
@@ -124,8 +128,10 @@ if (drum) {
   const hits = drum.notes.map((n) => ({s: at(n), key: n.key, vel: n.vel})).filter((h) => h.s < steps);
   const low = Math.min(...hits.map((h) => h.key));
   const free = (part) => hits.filter((h) => !part.grid[h.s] || part.grid[h.s].vol === 0).length;
-  const choices = parts.filter((p) => p.name !== 'melody');
-  const host = choices.sort((a, b) => free(b) - free(a))[0];
+  // a free channel: the drums get it to themselves
+  if (parts.length < 3) parts.push({name: 'drums', wave: 6, grid: Array(steps).fill(null), own: true});
+  const choices = parts.filter((p) => p.own || p.name !== 'melody');
+  const host = choices.find((p) => p.own) || choices.sort((a, b) => free(b) - free(a))[0];
   let covered = 0, dropped = 0;
   for (const h of hits) {
     const busy = host.grid[h.s] && host.grid[h.s].vol > 0;
@@ -137,7 +143,7 @@ if (drum) {
       ? {p: 12, wave: 0, vol: 7, fx: 3} // kick: low triangle, pitch drops
       : {p: 36 + (h.key - low) % 12, wave: 6, vol, fx: 5}; // noise hit, fades
   }
-  drumNote = `drums: ${hits.length} hits, in the ${host.name}: ${covered} of its notes give way to a drum before bar ${partWinsFrom}; from bar ${partWinsFrom} the ${host.name} wins (${dropped} drum hits left out, the rest fill its rests)`;
+  drumNote = host.own ? `drums: ${hits.length} hits, on their own channel` : `drums: ${hits.length} hits, in the ${host.name}: ${covered} of its notes give way to a drum before bar ${partWinsFrom}; from bar ${partWinsFrom} the ${host.name} wins (${dropped} drum hits left out, the rest fill its rests)`;
 }
 
 const hex = (v, w) => v.toString(16).padStart(w, '0');
