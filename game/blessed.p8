@@ -64,6 +64,11 @@ function _init()
  deacons=0 church=0 dcd=0
  chap=false bishop=false cath=false
  relics=false garden=0 pow=1
+ -- combos start off each day
+ van=false chapter=false rosary_group=false
+ hosp_relic=false house_calls=false pilgrim=false
+ procession=false rounds=false sick_calls=false
+ drive_through=false had_coffee=false
  -- the hospital: a number of sick
  -- people that grows all day
  hosp_need=0 hosp_priests=0
@@ -103,25 +108,27 @@ ups={
   f=function() p.spd+=0.4 end},
  {n="guardian angel",d="grace flies to you",max=4,
   f=function() p.mag+=10 end},
- -- the church path: fix it twice,
- -- then it becomes a cathedral,
- -- the bishop's church
+ -- the church path (her order):
+ -- fix it, marian garden, church
+ -- deacon, church relics, then the
+ -- cathedral, the bishop's church
  {n="fix the church",d="more come to mass",max=2,
   f=function() church+=1 end},
  {n="cathedral",d="a bishop's seat",max=1,
-  ok=function() return church>=2 end,
+  ok=function() return church>=2 and relics end,
   f=function() church=3 cath=true end},
  {n="bishop",d="ordain a priest to help",max=5,
   ok=function() return cath end,
   f=function() bishop=true add_helper(false) end},
- {n="church deacon",d="blesses at the church",max=4,
-  f=function() deacons+=1 end},
- {n="church relics",d="the church heals too",max=1,
-  ok=function() return church>0 end,
-  f=function() relics=true end},
  {n="marian garden",d="more come to pray",max=3,
   ok=function() return church>0 end,
   f=function() garden+=1 end},
+ {n="church deacon",d="blesses at the church",max=4,
+  ok=function() return garden>0 end,
+  f=function() deacons+=1 end},
+ {n="church relics",d="the church heals too",max=1,
+  ok=function() return deacons>0 end,
+  f=function() relics=true end},
  -- the hospital path
  {n="chaplain",d="bless the sick there",max=1,
   f=function() chap=true end},
@@ -159,7 +166,7 @@ combos={
  {n="cathedral chapter",r="cathedral + bishop",h="cathedral",d="church grace comes to you",
   ok=function() return bishop end,
   f=function() chapter=true end},
- {n="rosary group",r="marian garden + 2 church deacons",h="marian garden",d="all grace comes, often",
+ {n="rosary group",r="garden + 2 church deacons",h="marian garden",d="all grace comes, often",
   ok=function() return garden>0 and deacons>=2 end,
   f=function() rosary_group=true end},
  {n="healing relics",r="church relics + chaplain",h="church relics",d="the hospital heals too",
@@ -168,6 +175,21 @@ combos={
  {n="house calls",r="a car + quick hands 2",h="quick hands",d="house blessings take half",
   ok=function() return l("a car")>0 and l("quick hands")>=2 end,
   f=function() house_calls=true end},
+ {n="pilgrimage",r="marian garden + chapel",h="marian garden",d="church & chapel: grace x2",
+  ok=function() return garden>0 and chapel end,
+  f=function() pilgrim=true end},
+ {n="procession",r="church relics + chapel relic",h="chapel relic",d="each minute: bless walkers",
+  ok=function() return relics and chapel_relic end,
+  f=function() procession=true end},
+ {n="deacons' rounds",r="church deacon + chapel deacon",h="chapel deacon",d="deacons bring piles to you",
+  ok=function() return deacons>0 and chapel_deacons>0 end,
+  f=function() rounds=true end},
+ {n="sick calls",r="a car + hospital priest",h="hospital priest",d="hospital priests go out",
+  ok=function() return l("a car")>0 and hosp_priests>0 end,
+  f=function() sick_calls=true end},
+ {n="drive-through",r="coffee + a car",h="coffee",d="coffee lasts twice as long",
+  ok=function() return l("a car")>0 and had_coffee end,
+  f=function() drive_through=true end},
 }
 
 -- big needs: they stay in one
@@ -330,6 +352,8 @@ function spawn_event()
 end
 
 function spawn_church()
+ -- pilgrims go to the chapel too
+ if pilgrim and rnd(1)<.5 then spawn_chapel() end
  local b=rnd(bldg)
  local q=person(b.x+8,b.y+18,"church")
  q.tx=church_x-8+rnd(32)
@@ -364,7 +388,8 @@ function hit(q)
  del(people,q) score+=1
  if q.b then q.b.who=nil end
  local v=1
- if q.ev then v=10 elseif q.k=="home" then v=3 end
+ if q.ev then v=10 elseif q.k=="home" then v=3
+ elseif pilgrim and q.tx then v=2 end
  drop_grace(q.x,q.y-4,v)
  if q.ev then
   add(items,{x=q.x,y=q.y+4,k="chest"})
@@ -439,7 +464,9 @@ function use(k)
   bless(p.x,p.y,90)
   say("holy water for everyone!")
  elseif k=="coffee" then
-  p.fast=300 say("coffee! go go go")
+  had_coffee=true
+  p.fast=drive_through and 600 or 300
+  say("coffee! go go go")
  end
 end
 
@@ -490,8 +517,9 @@ function _update()
   return
  end
  if state=="book" then
-  if btnp(0) then page=(page-2)%3+1 end
-  if btnp(1) then page=page%3+1 end
+  local n=pages()
+  if btnp(0) then page=(page-2)%n+1 end
+  if btnp(1) then page=page%n+1 end
   if btnp(4) or btnp(5) then state=book_from end
   return
  end
@@ -632,10 +660,16 @@ function _update()
  end
 
  -- piles: go there to collect them
- if chapter or near(p.x,p.y,church_x+8,church_y+24,22) then
+ if procession and t%1800==0 then
+  for q in all(people) do
+   if q.tx and not q.there then q.need=1 hit(q) end
+  end
+  say("procession: walkers blessed")
+ end
+ if chapter or rounds or near(p.x,p.y,church_x+8,church_y+24,22) then
   if church_pile>0 then xp+=church_pile church_pile=0 sfx(1) end
  end
- if hosp_relic or near(p.x,p.y,hosp_x+8,hosp_y+24,22) then
+ if hosp_relic or rounds or near(p.x,p.y,hosp_x+8,hosp_y+24,22) then
   if hosp_pile>0 then xp+=hosp_pile hosp_pile=0 sfx(1) end
  end
 
@@ -678,13 +712,29 @@ end
 function helper(h)
  if h.hosp then
   local tx,ty=hosp_x+8+h.ox/2,hosp_y+22
-  if not near(h.x,h.y,tx,ty,3) then
+  -- sick calls: when the hospital
+  -- is quiet, visit someone at home
+  local tg
+  if sick_calls and hosp_need==0 then
+   local best=999
+   for q in all(people) do
+    if q.k=="home" then
+     local d=abs(wd(q.x,h.x))+abs(wd(q.y,h.y))
+     if d<best then tg,best=q,d end
+    end
+   end
+   if tg then tx,ty=tg.x,tg.y end
+  end
+  if not near(h.x,h.y,tx,ty,tg and 7 or 3) then
    local a=atan2(wd(tx,h.x),wd(ty,h.y))
    h.x=(h.x+cos(a)*1.5)%world h.y=(h.y+sin(a)*1.5)%world
    h.fl=cos(a)<0
   else
    h.cd-=1
-   if h.cd<=0 and hosp_need>0 then h.cd=60 heal(1) end
+   if h.cd<=0 then
+    if tg then h.cd=30 splash(h.x,h.y-4,6) hit(tg)
+    elseif hosp_need>0 then h.cd=60 heal(1) end
+   end
   end
   return
  end
@@ -839,6 +889,8 @@ end
 -- the book of blessings: every
 -- upgrade, and the combos you've
 -- found (the rest show a hint)
+function pages() return 2+ceil(#combos/6) end
+
 function draw_book()
  cls(1)
  rect(0,0,127,127,10)
@@ -854,9 +906,10 @@ function draw_book()
  else
   local f=dget(1)
   print("book of blessings: combos",4,3,10)
-  for i=1,#combos do
+  local first=(page-3)*6+1
+  for i=first,min(#combos,first+5) do
    local c=combos[i]
-   local y=-4+i*19
+   local y=-4+(i-first+1)*19
    if f&(1<<i)>0 or got[c.n] then
     print("\146 "..c.n,4,y,10)
     print(c.r,8,y+6,7)
@@ -867,7 +920,7 @@ function draw_book()
    end
   end
  end
- print("\139\145 page "..page.."/3",4,121,6)
+ print("\139\145 page "..page.."/"..pages(),4,121,6)
  print("\142 back",96,121,6)
 end
 
