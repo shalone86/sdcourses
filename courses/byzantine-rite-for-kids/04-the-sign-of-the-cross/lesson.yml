@@ -82,9 +82,29 @@ points:
       right shoulder, then the left. We trace the cross of Jesus, who died and
       rose for us!
     visuals:
-      - type: chain
-        items: [Forehead, Chest, Right shoulder, Left shoulder]
-        caption: The Byzantine way
+      - type: image
+        src: images/monk-cross-1.png
+        aspect: 1
+        bare: true
+        caption: Forehead
+      - type: image
+        src: images/monk-cross-2.png
+        aspect: 1
+        bare: true
+        caption: Chest
+        with: side
+      - type: image
+        src: images/monk-cross-3.png
+        aspect: 1
+        bare: true
+        caption: Right shoulder
+        with: side
+      - type: image
+        src: images/monk-cross-4.png
+        aspect: 1
+        bare: true
+        caption: Left shoulder
+        with: side
     quiz:
       type: choice
       question: Which shoulder do Byzantine Catholics touch first?
