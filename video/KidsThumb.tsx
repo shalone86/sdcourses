@@ -47,9 +47,12 @@ const Shapes: React.FC<{title: string; files: ShapeFile[]}> = ({title, files}) =
 export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = []}) => {
   const b = art ? bounds(art) : null;
   // A drawing that fills its canvas (a scene, like a church) touches the edges and would look
-  // cut off: it goes in a white-bordered card instead, like a framed picture.
+  // cut off: it goes in a white-bordered card instead, like a framed picture (unless it is mostly see-through).
   const edges = b && art && art.kind !== 'sketch' ? [b.x === 0, b.y === 0, b.x + b.w === art.width, b.y + b.h === art.height].filter(Boolean).length : 0;
-  const framed = !!art && edges >= 3;
+  // A character that touches its canvas edges (a small 8×8 person) is mostly see-through: no card for it.
+  const empty = art && art.kind !== 'sketch' ? (art.frames[0] as string[]).join('').split('.').length - 1 : 0;
+  const total = art && art.kind !== 'sketch' ? (art.frames[0] as string[]).join('').length : 1;
+  const framed = !!art && edges >= 3 && empty / total < 0.4;
   // The drawing is big and centered; the title sits over its lower part, centered, as big as fits in
   // the safe width on one or two lines (Fredoka caps ≈ 0.62em per letter, a space ≈ 0.3em).
   const px = framed && art ? Math.floor(Math.min(560 / art.width, 520 / art.height)) : b ? Math.floor(Math.min(640 / b.w, 560 / b.h)) : 0;
