@@ -153,5 +153,19 @@
    "#FF4F6D": "#000000",
    "#18B7A6": "#000000"
   }
+ },
+ "east-bishop": {
+  "base": "vestment-guy",
+  "swaps": {
+   "#18B7A6": "#FFEC27",
+   "#A86B3C": "#FFCCAA",
+   "#F2C6A0": "#FFCCAA",
+   "#5A3825": "#FFCCAA",
+   "#FFB300": "#FFCCAA",
+   "#FF8A3D": "#C2C3C7",
+   "#FFFFFF": "#C2C3C7",
+   "#2B2350": "#FFA300",
+   "#FF4F6D": "#FFF1E8"
+  }
  }
 }
