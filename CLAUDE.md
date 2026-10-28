@@ -129,8 +129,8 @@ If it's already running, `npm start` just opens the page.
 - **Pixel art tab** (`studio/pixels.js`): she draws 1–8 frame pixel
   animations, 1–8 frames (8/16/24/32/48/64 px; pencil, dither, eraser, fill, line, box, circle,
   select & move, color picker; copy/cut/paste across drawings; flips; frames can be added empty or as a copy, and moved by dragging or with Move left / right; "Draw in every frame" makes pencil, eraser, shapes, fill and moves change all frames; saved drawings open from a grid of moving thumbnails; mirror, onion
-  skin, speed; keys: B pencil/eraser/fill, S line/box/circle, C/Shift+C colors,
-  I pick, M select; Export frame (PNG, enlarged) or animation (GIF, made by
+  skin, speed; keys: B pencil, E eraser, F fill, S line/box/circle, C next / X previous color,
+  I pick, M select (Delete clears it), . / , next / previous frame; Export frame (PNG, enlarged) or animation (GIF, made by
   ffmpeg at `/api/sprite/gif`)). Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
   Pixel animation, a `sprite` scene (`move: stay | hop | across`, `size`);

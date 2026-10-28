@@ -513,7 +513,9 @@ window.PixelTab = (() => {
 
     const onKey = (e) => {
       if (!root.isConnected) return document.removeEventListener('keydown', onKey);
-      if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
+      // (typing in a box or using a list or slider keeps its keys; a checkbox or button doesn't)
+      const f = document.activeElement;
+      if (/TEXTAREA|SELECT/.test(f?.tagName) || (f?.tagName === 'INPUT' && /text|search|number|range/.test(f.type))) return;
       const cmd = e.metaKey || e.ctrlKey;
       const k = e.key.toLowerCase();
       if (cmd && k === 'z') { e.preventDefault(); undo(); }
@@ -522,16 +524,23 @@ window.PixelTab = (() => {
       else if (cmd && k === 'v') { e.preventDefault(); paste(false); }
       else if (cmd && k === 'a') { e.preventDefault(); commit(); P.sel = {x: 0, y: 0, w: W(), h: H()}; P.tool = 'select'; draw(); }
       else if ((k === 'delete' || k === 'backspace') && (P.sel || P.float)) { e.preventDefault(); if (P.float) P.float = null; else { remember(); clearArea(); } P.sel = null; draw(); markDirty(); }
-      // Hotkeys: B cycles pencil/eraser/fill, S cycles the shapes, C (Shift+C back) the colors, I picks a color, M selects.
-      else if (!cmd && !e.altKey && ['b', 's', 'c', 'i', 'm'].includes(k)) {
+      // Hotkeys: B pencil, E eraser, F fill, S cycles the shapes, C next color, X (or Shift+C) the color
+      // before, I picks a color, M selects; . and , go to the next and previous frame.
+      else if (!cmd && !e.altKey && (k === '.' || k === ',' || k === '>' || k === '<')) {
+        e.preventDefault(); letGo();
+        const n = P.art.frames.length;
+        P.frame = (P.frame + (k === '.' || k === '>' ? 1 : n - 1)) % n;
+        draw();
+      }
+      else if (!cmd && !e.altKey && ['b', 'e', 'f', 's', 'c', 'x', 'i', 'm'].includes(k)) {
         e.preventDefault();
         const next = (list) => list[(list.indexOf(P.tool) + 1) % list.length];
-        if (k === 'c') {
+        if (k === 'c' || k === 'x') {
           const cols = PALETTES[P.pal].colors, at = cols.findIndex((x) => x.toUpperCase() === P.color.toUpperCase());
-          P.color = cols[((at < 0 ? -1 : at) + (e.shiftKey ? cols.length - 1 : 1)) % cols.length];
+          P.color = cols[((at < 0 ? -1 : at) + (e.shiftKey || k === 'x' ? cols.length - 1 : 1)) % cols.length];
           if (['erase', 'pick', 'select'].includes(P.tool)) P.tool = 'pen';
         } else {
-          const t = k === 'b' ? next(['pen', 'erase', 'fill']) : k === 's' ? next(SHAPES) : k === 'i' ? 'pick' : 'select';
+          const t = {b: 'pen', e: 'erase', f: 'fill', i: 'pick', m: 'select'}[k] ?? next(SHAPES);
           if (t !== 'select') letGo();
           P.tool = t;
         }
@@ -789,7 +798,7 @@ window.PixelTab = (() => {
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         P.version ? null : name,
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
-        h('div', {class: 'small muted', text: 'Keys: B pencil → eraser → fill · S line → box → circle · C next color (Shift+C back) · I pick a color · M select'}),
+        h('div', {class: 'small muted', text: 'Keys: B pencil · E eraser · F fill · S line → box → circle · C next color · X color before · I pick a color · M select (Delete clears it) · . next frame · , frame before'}),
         SHAPES.includes(P.tool) && P.tool !== 'line'
           ? h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
         h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
