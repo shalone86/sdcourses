@@ -111,5 +111,20 @@
    "#FF4F6D": "#000000",
    "#18B7A6": "#000000"
   }
+ },
+ "deacon": {
+  "base": "thick-guy",
+  "swaps": {
+   "#FFB300": "#C2C3C7",
+   "#5A3825": "#C2C3C7",
+   "#A86B3C": "#FFCCAA",
+   "#F2C6A0": "#AB5236",
+   "#FF8A3D": "#FFCCAA",
+   "#7B5CFF": "#FFF1E8",
+   "#2B2350": "#FFF1E8",
+   "#FFFFFF": "#FFF1E8",
+   "#FF4F6D": "#FFF1E8",
+   "#18B7A6": "#1D2B53"
+  }
  }
 }
