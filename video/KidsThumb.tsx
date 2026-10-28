@@ -7,7 +7,7 @@ import './theme'; // loads the fonts
 // her pixel drawings. 1280×720.
 // Everything stays inside the SAFE zone (x 175–1105): the kids site's home page crops
 // thumbnails to about 4:3 from the middle (160px off each side), which cut the text off.
-export type KidsThumbProps = {lead?: string; title: string; art?: Art | null; shapes?: ShapeFile[]; fit?: 'frame' | 'bleed'} // fit is kept for old props; every full-canvas drawing is framed now;
+export type KidsThumbProps = {lead?: string; title: string; art?: Art | null; shapes?: ShapeFile[]; fit?: 'frame' | 'bleed'; strip?: boolean} // fit is kept for old props; every full-canvas drawing is framed now;
 
 const SAFE_W = 930; // text width inside the 4:3 crop (x 175–1105)
 const INK = '#FFE58A', SHADOW = '#B8862B';
@@ -44,7 +44,7 @@ const Shapes: React.FC<{title: string; files: ShapeFile[]}> = ({title, files}) =
   );
 };
 
-export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = []}) => {
+export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = [], strip}) => {
   const b = art ? bounds(art) : null;
   // A drawing that fills its canvas (a scene, like a church) touches the edges and would look
   // cut off: it goes in a white-bordered card instead, like a framed picture (unless it is mostly see-through).
@@ -53,6 +53,8 @@ export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = 
   const empty = art && art.kind !== 'sketch' ? (art.frames[0] as string[]).join('').split('.').length - 1 : 0;
   const total = art && art.kind !== 'sketch' ? (art.frames[0] as string[]).join('').length : 1;
   const framed = !!art && edges >= 3 && empty / total < 0.4;
+  // strip: every frame side by side, left to right (like a comic strip), within the safe width.
+  const stripPx = strip && b ? Math.floor(Math.min(SAFE_W / (art!.frames.length * b.w + (art!.frames.length - 1) * 2), 300 / b.h)) : 0;
   // The drawing is big and centered; the title sits over its lower part, centered, as big as fits in
   // the safe width on one or two lines (Fredoka caps ≈ 0.62em per letter, a space ≈ 0.3em).
   const px = framed && art ? Math.floor(Math.min(560 / art.width, 520 / art.height)) : b ? Math.floor(Math.min(640 / b.w, 560 / b.h)) : 0;
@@ -77,7 +79,16 @@ export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = 
       {art?.kind === 'sketch' && (
         <Img src={staticFile(art.frames[0] as string)} style={{position: 'absolute', left: 640 - 380, width: 760, top: 15, height: 640, objectFit: 'contain', objectPosition: 'center top'}} />
       )}
-      {art?.kind !== 'sketch' && framed && art && (
+      {strip && art && b && art.kind !== 'sketch' && (
+        <div style={{position: 'absolute', left: 640 - SAFE_W / 2, width: SAFE_W, top: 40, display: 'flex', justifyContent: 'center', gap: stripPx * 2}}>
+          {(art.frames as string[][]).map((rows, i) => (
+            <svg key={i} width={b.w * stripPx} height={b.h * stripPx} viewBox={`${b.x} ${b.y} ${b.w} ${b.h}`} shapeRendering="crispEdges">
+              <Frame art={art} rows={rows} />
+            </svg>
+          ))}
+        </div>
+      )}
+      {!strip && art?.kind !== 'sketch' && framed && art && (
         <div style={{position: 'absolute', left: 640 - (art.width * px + 28) / 2, top: 30, padding: 14, background: '#FFFFFF', borderRadius: 30,
           transform: 'rotate(4deg)', boxShadow: `0 16px 0 ${SHADOW}55, 0 22px 40px rgba(0,0,0,0.18)`}}>
           <svg width={art.width * px} height={art.height * px} viewBox={`0 0 ${art.width} ${art.height}`} shapeRendering="crispEdges" style={{display: 'block', borderRadius: 18}}>
@@ -85,7 +96,7 @@ export const KidsThumb: React.FC<KidsThumbProps> = ({lead, title, art, shapes = 
           </svg>
         </div>
       )}
-      {art?.kind !== 'sketch' && !framed && art && b && (
+      {!strip && art?.kind !== 'sketch' && !framed && art && b && (
         <svg width={b.w * px} height={b.h * px} viewBox={`${b.x} ${b.y} ${b.w} ${b.h}`} shapeRendering="crispEdges"
           style={{position: 'absolute', left: narrow ? 215 : 640 - (b.w * px) / 2, top: 20}}>
           <Frame art={art} rows={art.frames[0] as string[]} />
