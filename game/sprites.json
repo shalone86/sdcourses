@@ -1,21 +1,57 @@
 {
-  "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
-  "_slots": "0 priest, 2 bishop, 4 deacon, 6 priest who works for the bishop, 16-25 people (5 bases, 2 frames each), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 37 car, 40-45 trees/flowers/rocks scattered on the grass (1 frame each), 48 house, 50 church, 52 hospital, 54 hospital chapel (16x16, 1 frame)",
+  "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide and 2 tall). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
+  "_slots": "0 priest idle, 2 bishop idle, 4 deacon idle, 6 priest walk, 8 priest blessing (4 frames), 12 bishop walk, 14 deacon walk, 16-27 people walking (6 bases), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 37 car, 40-45 trees/flowers/rocks (1 frame each), 48 house, 50 church, 52 hospital, 54 hospital chapel (16x16), 56 bishop blessing (4 frames), 72-83 people standing (6 bases, same order as walking)",
   "slots": {
-    "0": "guy-beard-idle",
-    "16": "skinny-guy-idle",
-    "18": "skinny-woman-idle",
-    "20": "thick-guy-idle",
-    "22": "thick-woman-idle",
-    "24": "thick-guy-idle-beard"
+    "0": "priest-idle",
+    "2": "bishop-idle",
+    "4": "deacon-idle",
+    "6": "priest-walk",
+    "8": "priest-blessing",
+    "12": "bishop-walk",
+    "14": "deacon-walk",
+    "16": "skinny-guy-walk",
+    "18": "skinny-woman-walk",
+    "20": "thick-guy-walk",
+    "22": "thick-woman-walk",
+    "24": "guy-beard-walk",
+    "26": "thick-beard-guy-walk",
+    "48": "a-frame-house",
+    "56": "bishop-blessing",
+    "72": "skinny-guy-idle",
+    "74": "skinny-woman-idle",
+    "76": "thick-guy-idle",
+    "78": "thick-woman-idle",
+    "80": "guy-beard-idle",
+    "82": "thick-beard-guy-idle"
   },
-  "_parts": "Colors in the people's base drawings that get swapped at random for each person: hair, skin, eyes, shirt, pants, shoes, clothes.",
+  "_parts": "Per group, which of her colors the game swaps for each one. people: every person gets random hair, skin (with matching eyes) and clothes. priest: the bishop's priests get their own skin and eyes. deacon: new deacons get their own skin and eyes; 'vestment' follows the season (spring white, summer green, fall green, winter purple).",
   "parts": {
-    "#5A3825": "hair",
-    "#A86B3C": "skin",
-    "#F2C6A0": "eyes",
-    "#2B2350": "clothes"
+    "people": {
+      "#5A3825": "hair",
+      "#A86B3C": "skin",
+      "#F2C6A0": "eyes",
+      "#2B2350": "clothes",
+      "#FF4F6D": "clothes",
+      "#2F8CFF": "clothes",
+      "#18B7A6": "clothes",
+      "#FFFFFF": "clothes",
+      "#FFB300": "clothes",
+      "#FF8A3D": "clothes",
+      "#7B5CFF": "clothes"
+    },
+    "priest": {
+      "#FFCCAA": "skin",
+      "#008751": "eyes"
+    },
+    "deacon": {
+      "#FFCCAA": "skin",
+      "#AB5236": "eyes",
+      "#FFF1E8": "vestment"
+    }
   },
-  "_colors": "Force one of her colors onto a PICO-8 color number (0-15) when the nearest match is wrong or two parts land on the same one.",
-  "colors": {}
+  "_colors": "Force one of her colors onto a PICO-8 color number (0-15) when the nearest match is wrong or two colors land on the same one.",
+  "colors": {
+    "#FFB300": 10,
+    "#18B7A6": 3
+  }
 }

@@ -1,6 +1,6 @@
 // Copies Shalone's drawings (sprites/<name>.json) into the PICO-8 cart's
 // sprite sheet, per game/sprites.json, and writes the cart's `parts` table
-// (which colors to swap for each person's random look). Colors snap to
+// (which colors to swap for each person's, priest's and deacon's look). Colors snap to
 // PICO-8's 16 unless sprites.json's `colors` says otherwise; "." stays
 // see-through (color 0). Usage: npm run pico8 [-- game/blessed.p8]
 import fs from 'node:fs';
@@ -46,13 +46,19 @@ for (const [slot, name] of Object.entries(cfg.slots)) {
   console.log(`slot ${slot}: ${name} (${s.width}x${s.height}, ${s.frames.length} frame${s.frames.length > 1 ? 's' : ''})`);
 }
 
-const parts = {};
-for (const [hex, kind] of Object.entries(cfg.parts || {})) {
-  const n = nearest(hex);
-  if (parts[n]) console.warn(`two parts became PICO-8 color ${n}: ${parts[n]} and ${kind}; set one in "colors"`);
-  parts[n] = kind;
+// parts: per group (people, priest, deacon), which PICO-8 colors the
+// game swaps. Two different kinds on one color can't be told apart.
+const groups = [];
+for (const [group, hexes] of Object.entries(cfg.parts || {})) {
+  const parts = {};
+  for (const [hex, kind] of Object.entries(hexes)) {
+    const n = nearest(hex);
+    if (parts[n] && parts[n] !== kind) console.warn(`${group}: ${parts[n]} and ${kind} both became PICO-8 color ${n}; set one in "colors"`);
+    parts[n] = kind;
+  }
+  groups.push(`${group}={${Object.entries(parts).map(([n, k]) => `[${n}]="${k}"`).join(',')}}`);
 }
-const partsLua = `parts={${Object.entries(parts).map(([n, k]) => `[${n}]="${k}"`).join(',')}}`;
+const partsLua = `parts={\n ${groups.join(',\n ')},\n}`;
 
 const gfx = sheet.map((r) => r.map((c) => c.toString(16)).join('')).join('\n');
 const out = text.replace(/(-- @parts.*\n)[\s\S]*?(?=-- @end)/, `$1${partsLua}\n`).replace(/__gfx__\n[\s\S]*?(?=\n__\w+__|$)/, `__gfx__\n${gfx}`);
