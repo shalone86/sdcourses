@@ -162,7 +162,8 @@ export const readVersions = () => { try { return JSON.parse(fs.readFileSync(VERS
 /** The bases she can start from (with their idle drawing), and the versions made so far. */
 export function puppetBases() {
   const versions = readVersions();
-  const bases = puppetCast().characters.filter((c) => !versions[c.name] && BASE_POSES.every((p) => c.actions.includes(p)))
+  // (a version she marked as a base, `isBase: true`, is one too, with whatever poses it has)
+  const bases = puppetCast().characters.filter((c) => (versions[c.name]?.isBase ? c.actions.includes('idle') : !versions[c.name] && BASE_POSES.every((p) => c.actions.includes(p))))
     .map((c) => ({name: c.name, idle: loadSprite(`${c.name}-idle`)}));
   return {bases, versions};
 }
@@ -181,6 +182,7 @@ export function colorVersion({base, name, idle, dry}) {
   if (!slug) throw new Error('Give the new character a name');
   const {bases, versions} = puppetBases();
   if (!bases.some((b) => b.name === base)) throw new Error(`"${base}" isn't a base character with all five poses`);
+  if (versions[slug]?.isBase) throw new Error(`"${slug}" is a base; pick another name`);
   if (slug === base || (bases.some((b) => b.name === slug))) throw new Error(`"${slug}" is a base; pick another name`);
   const from = loadSprite(`${base}-idle`);
   if (idle.width !== from.width || idle.height !== from.height) throw new Error('The idle drawing must stay the same size as the base');

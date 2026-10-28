@@ -1083,7 +1083,16 @@ document.addEventListener('keydown', (e) => {
   goTo(S.slide + (next ? 1 : -1));
 });
 
-// R (or Option+R while typing in a box) starts and stops recording. F19 does too, anywhere.
+// F16: further down the slide (about half a screen); at the bottom it goes back to the top.
+document.addEventListener('keydown', (e) => {
+  if (!(e.code === 'F16' || e.key === 'F16') || S.tab !== 'script') return;
+  e.preventDefault();
+  const end = window.scrollY + innerHeight >= document.documentElement.scrollHeight - 4;
+  window.scrollTo({top: end ? 0 : window.scrollY + innerHeight * 0.5, behavior: 'smooth'});
+});
+
+// R (or Option+R while typing in a box) starts and stops recording. F19 does too, anywhere
+// (and presses Yes when an "Are you sure?" question is open: studio/ask.js).
 document.addEventListener('keydown', (e) => {
   const f19 = e.code === 'F19' || e.key === 'F19';
   if (!f19 && e.code !== 'KeyR') return;

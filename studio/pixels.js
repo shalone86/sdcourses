@@ -571,7 +571,7 @@ window.PixelTab = (() => {
         // "Start from a copy": every frame of that one, as a new unsaved drawing.
         if (copy) { delete P.art.slug; P.art.name = s.name + ' copy'; P.saved = ''; }
         const v = !copy && /-idle$/.test(s.slug) && s.slug.slice(0, -5);
-        P.version = v && P.bases.versions[v] ? {base: P.bases.versions[v].base, name: v} : null;
+        P.version = v && P.bases.versions[v] && !P.bases.versions[v].isBase ? {base: P.bases.versions[v].base, name: v} : null;
         P.gal.open = false;
         draw();
       };

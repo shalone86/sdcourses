@@ -125,7 +125,8 @@
    "#FFFFFF": "#FFF1E8",
    "#FF4F6D": "#FFF1E8",
    "#18B7A6": "#1D2B53"
-  }
+  },
+  "isBase": true
  },
  "east-deacon": {
   "base": "vestment-guy",
@@ -138,7 +139,8 @@
    "#FFFFFF": "#000000",
    "#2B2350": "#FFF1E8",
    "#FF4F6D": "#FFF1E8"
-  }
+  },
+  "isBase": true
  },
  "east-priest": {
   "base": "thick-beard-guy",
@@ -166,6 +168,7 @@
    "#FFFFFF": "#C2C3C7",
    "#2B2350": "#FFA300",
    "#FF4F6D": "#FFF1E8"
-  }
+  },
+  "isBase": true
  }
 }

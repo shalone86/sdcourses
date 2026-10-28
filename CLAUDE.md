@@ -117,7 +117,8 @@ If it's already running, `npm start` just opens the page.
 - **Recording:** per slide, or one take with Next taps as the cut points.
   Each section ends up as `audio/<section>.wav`, with the browser's original
   beside it (`.webm`, or `.m4a` from Safari; a one take keeps `take.webm`).
-- **Keys:** R/F19 record, F17/F18 change slide. (A prompter mode was tried
+- **Keys:** R/F19 record (F19 also presses Yes on an "Are you sure?"), F17/F18 change
+  slide, F16 scrolls down the slide (back to the top at the bottom). (A prompter mode was tried
   and removed at her request; don't bring it back unasked.)
 - **Camera:** "Record my video too" (in the Microphone panel) records her
   webcam with the voice. Clips go to `<lesson>/camera/` (gitignored: her
@@ -164,7 +165,8 @@ If it's already running, `npm start` just opens the page.
 - **Characters from a base** (Pixel art tab → New character from a base…): a
   base is a character with `-idle`, `-point`, `-look-up`, `-walk`, `-run` (hers:
   thick-beard-guy, thick-guy, skinny-guy, guy-beard, vestment-guy, thick-woman,
-  skinny-woman). She picks one, names the new character, recolors only its idle
+  skinny-woman; and deacon, east-bishop, east-deacon: versions she marked as bases with
+  `isBase: true` in `.versions.json`, which need only an idle and pass on whatever poses they have). She picks one, names the new character, recolors only its idle
   (one color box per part of the base, with "same as" color squares, so parts can share a color
   and still be changed apart), and Save makes all five poses with the
   same color swaps (`colorVersion` in `scripts/sprites.mjs`; `sprites/.versions.json`

@@ -34,7 +34,8 @@
     };
     const onKey = (e) => {
       if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finish(false); }
-      else if (e.key === 'Enter' && e.target.tagName !== 'SELECT') { e.preventDefault(); e.stopPropagation(); finish(true); }
+      // Enter, or F19 (her record key), presses the yes button.
+      else if ((e.key === 'Enter' && e.target.tagName !== 'SELECT') || e.key === 'F19' || e.code === 'F19') { e.preventDefault(); e.stopPropagation(); finish(true); }
     };
     const onOutside = (e) => { if (!pop.contains(e.target)) finish(false); };
     noB.onclick = () => finish(false);
