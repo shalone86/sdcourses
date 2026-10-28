@@ -63,7 +63,8 @@ function _init()
  lv={} -- level of each upgrade
  score=0 xp=0 need=3 lvl=1
  t=0 missed=0 msg="" msg_t=0
- state="play"
+ state="play" page=1
+ found_start=dget(1)
  for i=1,8 do drop_item(rnd(world),rnd(world)) end
 end
 
@@ -106,22 +107,22 @@ function l(n) return lv[n] or 0 end
 -- the ones you've ever found are
 -- saved, so players can collect them.
 combos={
- {n="aspergillum",d="each blessing counts 2",
+ {n="aspergillum",r="holy water 3 + quick hands 3",h="holy water",d="each blessing counts 2",
   ok=function() return l("holy water")>=3 and l("quick hands")>=3 end,
   f=function() pow=2 end},
- {n="parish van",d="priests ride, angel x2",
+ {n="parish van",r="a car 2 + guardian angel 2",h="a car",d="priests ride, angel x2",
   ok=function() return l("a car")>=2 and l("guardian angel")>=2 end,
   f=function() van=true p.mag*=2 end},
- {n="cathedral",d="church grace comes to you",
+ {n="cathedral",r="fix the church 3 + bishop",h="fix the church",d="church grace comes to you",
   ok=function() return church>=3 and bishop end,
   f=function() cathedral=true end},
- {n="rosary group",d="all grace comes, often",
+ {n="rosary group",r="marian garden + 2 deacons",h="marian garden",d="all grace comes, often",
   ok=function() return garden>0 and deacons>=2 end,
   f=function() rosary_group=true end},
- {n="healing relics",d="the hospital heals too",
+ {n="healing relics",r="relics + chaplain",h="relics",d="the hospital heals too",
   ok=function() return relics and chap end,
   f=function() hosp_relic=true end},
- {n="house calls",d="house blessings take half",
+ {n="house calls",r="a car + quick hands 2",h="quick hands",d="house blessings take half",
   ok=function() return l("a car")>0 and l("quick hands")>=2 end,
   f=function() house_calls=true end},
 }
@@ -413,11 +414,18 @@ end
 
 function _update()
  if state=="over" then
-  if btnp(4) or btnp(5) then _init() end
+  if btnp(4) then book_from="over" state="book"
+  elseif btnp(5) then _init() end
   return
  end
  if state=="map" then
-  if btnp(4) or btnp(5) then state="play" end
+  if btnp(4) then state="play"
+  elseif btnp(5) then book_from="map" state="book" end
+  return
+ end
+ if state=="book" then
+  if btnp(0) or btnp(1) then page=3-page end
+  if btnp(4) or btnp(5) then state=book_from end
   return
  end
  if state=="pick" then
@@ -698,11 +706,47 @@ function draw_map()
  print("you",2,122,12)
  print("asking",18,122,10)
  print("big need",44,122,9)
- print("gifts",80,122,9)
+ print("\142map \151book",76,122,6)
+end
+
+-- the book of blessings: every
+-- upgrade, and the combos you've
+-- found (the rest show a hint)
+function draw_book()
+ cls(1)
+ rect(0,0,127,127,10)
+ if page==1 then
+  print("book of blessings: upgrades",4,3,10)
+  for i=1,#ups do
+   local u=ups[i]
+   local y=4+i*9
+   print(u.n,4,y,7)
+   print(l(u.n).."/"..u.max,108,y,9)
+   print(u.d,8,y+4,13)
+  end
+ else
+  local f=dget(1)
+  print("book of blessings: combos",4,3,10)
+  for i=1,#combos do
+   local c=combos[i]
+   local y=-4+i*19
+   if f&(1<<i)>0 or got[c.n] then
+    print("\146 "..c.n,4,y,10)
+    print(c.r,8,y+6,7)
+    print(c.d,8,y+12,13)
+   else
+    print("\146 ???",4,y,5)
+    print("needs "..c.h.." + ?",8,y+6,6)
+   end
+  end
  end
+ print("\139\145 page "..page.."/2",4,121,6)
+ print("\142 back",96,121,6)
+end
 
 function _draw()
  if state=="map" then draw_map() return end
+ if state=="book" then draw_book() return end
  cls(3)
  camera(p.x-64,p.y-64)
  map(0,0,0,0,64,64)
@@ -803,17 +847,25 @@ function _draw()
   print("\148\131 choose  \142 take",28,93,6)
  end
  if state=="over" then
-  rectfill(16,36,111,94,1) rect(16,36,111,94,10)
-  print("the day is done",34,42,10)
-  print("blessed: "..score,34,54,7)
-  print("missed: "..missed,34,62,6)
-  print("best: "..max(best,score),34,70,9)
+  rectfill(12,30,115,104,1) rect(12,30,115,104,10)
+  print("the day is done",34,36,10)
+  print("blessed: "..score,34,48,7)
+  print("missed: "..missed,34,56,6)
+  print("best: "..max(best,score),34,64,9)
   local f=0
   for i=1,#combos do
    if dget(1)&(1<<i)>0 then f+=1 end
   end
-  print("combos found: "..f.."/"..#combos,26,76,10)
-  print("press x to play again",22,85,6)
+  print("combos found: "..f.."/"..#combos,26,78,10)
+  -- the reveal: combos new today
+  local y=86
+  for i=1,#combos do
+   if got[combos[i].n] and found_start&(1<<i)==0 then
+    print("new! "..combos[i].n,26,y,9) y+=6
+    if y>92 then break end
+   end
+  end
+  print("\142 book  \151 play again",18,98,6)
  end
 end
 __gfx__
