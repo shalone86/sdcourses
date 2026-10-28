@@ -4,6 +4,12 @@ intro:
   end: 19.67
 point-1:
   camera: bubble
+  scenes:
+    "1":
+      nudge:
+        x: 75
+        y: 0
+        size: 75
 point-2:
   camera: off
   scenes:
