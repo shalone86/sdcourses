@@ -1,6 +1,6 @@
 {
   "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
-  "_slots": "0 priest, 2 bishop, 4 deacon, 6 priest who works for the bishop, 16-25 people (5 bases, 2 frames each), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 37 car, 40-45 trees/flowers/rocks scattered on the grass (1 frame each), 48 house, 50 church, 52 hospital (16x16, 1 frame)",
+  "_slots": "0 priest, 2 bishop, 4 deacon, 6 priest who works for the bishop, 16-25 people (5 bases, 2 frames each), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 37 car, 40-45 trees/flowers/rocks scattered on the grass (1 frame each), 48 house, 50 church, 52 hospital, 54 hospital chapel (16x16, 1 frame)",
   "slots": {
     "0": "guy-beard-idle",
     "16": "skinny-guy-idle",

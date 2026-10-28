@@ -21,6 +21,7 @@ s_coffee=36 s_car=37
 s_decor={40,41,42,43,44,45}
 -- 16x16 buildings
 s_house=48 s_church=50 s_hosp=52
+s_chapel=54
 
 world=512   -- town size in pixels
             -- (it wraps around)
@@ -29,6 +30,7 @@ miss_cost=5 -- seconds lost for
             -- each person missed
 church_x,church_y=248,232
 hosp_x,hosp_y=380,120
+chapel_x,chapel_y=356,120 -- beside the hospital
 
 -- @parts (npm run pico8 writes this from game/sprites.json)
 parts={[1]="clothes",[4]="skin",[5]="hair",[15]="eyes"}
@@ -60,8 +62,13 @@ function _init()
  people={} fx={} drops={}
  helpers={} graces={} items={}
  deacons=0 church=0 dcd=0
- chap=false bishop=false
+ chap=false bishop=false cath=false
  relics=false garden=0 pow=1
+ -- the hospital: a number of sick
+ -- people that grows all day
+ hosp_need=0 hosp_priests=0
+ chapel=false chapel_relic=false
+ chapel_deacons=0 ccd=0
  -- grace left at the church and
  -- hospital waits there for you
  church_pile=0 hosp_pile=0
@@ -96,23 +103,43 @@ ups={
   f=function() p.spd+=0.4 end},
  {n="guardian angel",d="grace flies to you",max=4,
   f=function() p.mag+=10 end},
- {n="fix the church",d="more come to mass",max=5,
+ -- the church path: fix it twice,
+ -- then it becomes a cathedral,
+ -- the bishop's church
+ {n="fix the church",d="more come to mass",max=2,
   f=function() church+=1 end},
- {n="a deacon",d="blesses at the church",max=4,
-  f=function() deacons+=1 end},
- {n="chaplain",d="the sick ask for you",max=1,
-  f=function() chap=true end},
- {n="bishop",d="a priest helps you",max=5,
+ {n="cathedral",d="a bishop's seat",max=1,
+  ok=function() return church>=2 end,
+  f=function() church=3 cath=true end},
+ {n="bishop",d="ordain a priest to help",max=5,
+  ok=function() return cath end,
   f=function() bishop=true add_helper(false) end},
- {n="hospital priest",d="blesses the sick",max=3,
-  ok=function() return bishop and chap end,
-  f=function() add_helper(true) end},
- {n="relics",d="the church heals too",max=1,
+ {n="church deacon",d="blesses at the church",max=4,
+  f=function() deacons+=1 end},
+ {n="church relics",d="the church heals too",max=1,
   ok=function() return church>0 end,
   f=function() relics=true end},
  {n="marian garden",d="more come to pray",max=3,
   ok=function() return church>0 end,
   f=function() garden+=1 end},
+ -- the hospital path
+ {n="chaplain",d="bless the sick there",max=1,
+  f=function() chap=true end},
+ {n="hospital priest",d="blesses the sick for you",max=3,
+  ok=function() return chap end,
+  f=function() hosp_priests+=1 add_helper(true) end},
+ {n="hospital chapel",d="people come to pray",max=1,
+  ok=function() return hosp_priests>0 end,
+  f=function()
+   chapel=true
+   add(bldg,{x=chapel_x,y=chapel_y,s=s_chapel,k="chapel"})
+  end},
+ {n="chapel relic",d="draws more; heals",max=1,
+  ok=function() return chapel end,
+  f=function() chapel_relic=true end},
+ {n="chapel deacon",d="blesses at the chapel",max=2,
+  ok=function() return chapel end,
+  f=function() chapel_deacons+=1 end},
 }
 
 function l(n) return lv[n] or 0 end
@@ -129,13 +156,13 @@ combos={
  {n="parish van",r="a car 2 + guardian angel 2",h="a car",d="priests ride, angel x2",
   ok=function() return l("a car")>=2 and l("guardian angel")>=2 end,
   f=function() van=true p.mag*=2 end},
- {n="cathedral",r="fix the church 3 + bishop",h="fix the church",d="church grace comes to you",
-  ok=function() return church>=3 and bishop end,
-  f=function() cathedral=true end},
- {n="rosary group",r="marian garden + 2 deacons",h="marian garden",d="all grace comes, often",
+ {n="cathedral chapter",r="cathedral + bishop",h="cathedral",d="church grace comes to you",
+  ok=function() return bishop end,
+  f=function() chapter=true end},
+ {n="rosary group",r="marian garden + 2 church deacons",h="marian garden",d="all grace comes, often",
   ok=function() return garden>0 and deacons>=2 end,
   f=function() rosary_group=true end},
- {n="healing relics",r="relics + chaplain",h="relics",d="the hospital heals too",
+ {n="healing relics",r="church relics + chaplain",h="church relics",d="the hospital heals too",
   ok=function() return relics and chap end,
   f=function() hosp_relic=true end},
  {n="house calls",r="a car + quick hands 2",h="quick hands",d="house blessings take half",
@@ -188,6 +215,7 @@ end
 
 function free(x,y)
  if abs(x-256)<40 and abs(y-260)<40 then return false end
+ if abs(x-chapel_x)<32 and abs(y-chapel_y)<32 then return false end
  for b in all(bldg) do
   if abs(b.x-x)<32 and abs(b.y-y)<32 then return false end
  end
@@ -308,9 +336,25 @@ function spawn_church()
  q.ty=church_y+19+rnd(12)
 end
 
-function spawn_sick()
- local q=person(hosp_x-6+rnd(28),hosp_y+19+rnd(8),"sick")
- q.wait=1200+rnd(300)
+-- with a chapel, people walk to the
+-- hospital to pray and be blessed
+function spawn_chapel()
+ local b=rnd(bldg)
+ local q=person(b.x+8,b.y+18,"chapel")
+ q.tx=chapel_x-6+rnd(28)
+ q.ty=chapel_y+19+rnd(10)
+end
+
+-- the sick in the hospital: one
+-- blessing makes the number 1 less
+function heal(n)
+ n=min(n,hosp_need)
+ if n<=0 then return end
+ hosp_need-=n score+=n
+ hosp_pile+=n
+ splash(hosp_x+8,hosp_y+8,10)
+ add(fx,{x=hosp_x+8,y=hosp_y-4,t=20,s="\143",c=10})
+ sfx(0)
 end
 
 -- one blessing for one person
@@ -446,7 +490,8 @@ function _update()
   return
  end
  if state=="book" then
-  if btnp(0) or btnp(1) then page=3-page end
+  if btnp(0) then page=(page-2)%3+1 end
+  if btnp(1) then page=page%3+1 end
   if btnp(4) or btnp(5) then state=book_from end
   return
  end
@@ -503,7 +548,17 @@ function _update()
  if t%max(10,40-t\900)==0 then spawn_walker() end
  if t%240==0 then spawn_home() end
  if t%max(20,150-church*20-garden*20)==0 then spawn_church() end
- if chap and t%180==0 then spawn_sick() end
+ -- the sick: more as the day goes on.
+ -- once you're chaplain, the ones
+ -- past 9 count as missed
+ if t%max(60,150-t\60)==0 then
+  if hosp_need<9 then hosp_need+=1
+  elseif chap then
+   missed+=1 t+=miss_cost*30 sfx(4)
+   add(fx,{x=hosp_x+8,y=hosp_y-4,t=30,s="-"..miss_cost.."s",c=8})
+  end
+ end
+ if chapel and t%(chapel_relic and 70 or 140)==0 then spawn_chapel() end
  -- a big need about every 45 s
  if t%1350==600 then spawn_event() end
  if t%450==0 then
@@ -514,20 +569,20 @@ function _update()
  -- go to mass; the rest stay put
  for q in all(people) do
   local tx,ty=p.x,p.y
-  if q.k=="church" then tx,ty=q.tx,q.ty end
-  if q.k=="walk" or q.k=="church" then
+  if q.tx then tx,ty=q.tx,q.ty end
+  if q.k=="walk" or q.tx then
    if not near(q.x,q.y,tx,ty,6) then
     local a=atan2(wd(tx,q.x),wd(ty,q.y))
     q.x=(q.x+cos(a)*q.spd)%world
     q.y=(q.y+sin(a)*q.spd)%world
     q.fl=cos(a)<0
-   elseif q.k=="church" then
+   elseif q.tx then
     q.there=true
    end
   end
   -- churchgoers start waiting
-  -- once they're at church
-  if q.k!="church" or q.there then q.wait-=1 end
+  -- once they're there
+  if not q.tx or q.there then q.wait-=1 end
   if q.wait<=0 then miss(q) end
  end
 
@@ -537,6 +592,20 @@ function _update()
   p.cd=p.rate
   splash(p.x,p.y-4,p.r)
   bless(p.x,p.y-4,p.r)
+  -- at the hospital, as chaplain
+  if chap and near(p.x,p.y,hosp_x+8,hosp_y+20,p.r+14) then
+   heal(pow)
+  end
+ end
+
+ -- chapel deacons
+ if chapel_deacons>0 then
+  ccd-=1
+  if ccd<=0 then
+   ccd=max(20,70-chapel_deacons*20)
+   splash(chapel_x+8,chapel_y+24,22)
+   bless(chapel_x+8,chapel_y+24,24,"chapel")
+  end
  end
 
  -- deacons bless at the church
@@ -554,7 +623,8 @@ function _update()
  -- the combo, the hospital) heals
  if t%120==0 then
   if relics then bless(church_x+8,church_y+22,24,"church") end
-  if hosp_relic then bless(hosp_x+8,hosp_y+22,24,"sick") end
+  if chapel_relic then bless(chapel_x+8,chapel_y+24,24,"chapel") end
+  if hosp_relic then heal(1) end
  end
  if rosary_group and t%900==0 then
   for g in all(graces) do g.pull=true end
@@ -562,7 +632,7 @@ function _update()
  end
 
  -- piles: go there to collect them
- if cathedral or near(p.x,p.y,church_x+8,church_y+24,22) then
+ if chapter or near(p.x,p.y,church_x+8,church_y+24,22) then
   if church_pile>0 then xp+=church_pile church_pile=0 sfx(1) end
  end
  if hosp_relic or near(p.x,p.y,hosp_x+8,hosp_y+24,22) then
@@ -601,16 +671,28 @@ function _update()
 end
 
 -- the bishop's priests: one person
--- or one grace at a time. town
--- priests stay on your screen;
--- hospital priests stay there.
+-- or one grace at a time, and they
+-- stay on your screen. hospital
+-- priests stay there and bless
+-- the sick.
 function helper(h)
+ if h.hosp then
+  local tx,ty=hosp_x+8+h.ox/2,hosp_y+22
+  if not near(h.x,h.y,tx,ty,3) then
+   local a=atan2(wd(tx,h.x),wd(ty,h.y))
+   h.x=(h.x+cos(a)*1.5)%world h.y=(h.y+sin(a)*1.5)%world
+   h.fl=cos(a)<0
+  else
+   h.cd-=1
+   if h.cd<=0 and hosp_need>0 then h.cd=60 heal(1) end
+  end
+  return
+ end
  local cx,cy,range=p.x,p.y,60
  if h.hosp then cx,cy,range=hosp_x+8,hosp_y+22,30 end
  local tg,best=nil,999
  for q in all(people) do
-  if (not h.hosp or q.k=="sick")
-   and abs(wd(q.x,cx))<range and abs(wd(q.y,cy))<range then
+  if abs(wd(q.x,cx))<range and abs(wd(q.y,cy))<range then
    local d=abs(wd(q.x,h.x))+abs(wd(q.y,h.y))
    if d<best then tg,best=q,d end
   end
@@ -680,7 +762,11 @@ end
 
 function shape(b)
  local x,y=b.x,b.y
- if b.k=="church" then
+ if b.k=="chapel" then
+  rectfill(x+3,y+8,x+12,y+15,7)
+  rectfill(x+7,y+2,x+8,y+8,7)
+  line(x+5,y+4,x+10,y+4,7)
+ elseif b.k=="church" then
   rectfill(x,y+4,x+15,y+15,7)
   rectfill(x+7,y-5,x+8,y+4,7)
   line(x+5,y-3,x+10,y-3,7)
@@ -724,7 +810,7 @@ function draw_map()
   if b.s then
    local c=15
    if b.k=="church" then c=7
-   elseif b.k=="hosp" then c=8 end
+   elseif b.k=="hosp" or b.k=="chapel" then c=8 end
    rectfill(b.x/4,b.y/4,b.x/4+3,b.y/4+3,c)
   end
  end
@@ -741,6 +827,7 @@ function draw_map()
  -- grace waiting at each
  if church_pile>0 then print(church_pile,church_x/4+5,church_y/4,10) end
  if hosp_pile>0 then print(hosp_pile,hosp_x/4+5,hosp_y/4,10) end
+ if hosp_need>0 then print("+"..hosp_need,hosp_x/4-2,hosp_y/4+6,chap and 8 or 5) end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  rectfill(0,120,127,127,1)
  print("you",2,122,12)
@@ -755,11 +842,11 @@ end
 function draw_book()
  cls(1)
  rect(0,0,127,127,10)
- if page==1 then
+ if page<3 then
   print("book of blessings: upgrades",4,3,10)
-  for i=1,#ups do
+  for i=page*11-10,min(#ups,page*11) do
    local u=ups[i]
-   local y=4+i*9
+   local y=4+(i-page*11+11)*9
    print(u.n,4,y,7)
    print(l(u.n).."/"..u.max,108,y,9)
    print(u.d,8,y+4,13)
@@ -780,7 +867,7 @@ function draw_book()
    end
   end
  end
- print("\139\145 page "..page.."/2",4,121,6)
+ print("\139\145 page "..page.."/3",4,121,6)
  print("\142 back",96,121,6)
 end
 
@@ -816,6 +903,16 @@ function _draw()
   print(church_pile,church_x+12,church_y+24,10)
  end
  at(hosp_x,hosp_y)
+ -- how many sick need a blessing
+ -- (grey until you're chaplain)
+ if hosp_need>0 then
+  local c=5
+  if chap then c=8 if hosp_need>=7 and t%10<5 then c=7 end end
+  print("+"..hosp_need,hosp_x+3,hosp_y-12,c)
+ end
+ for i=1,chapel_deacons do
+  sprite(s_deacon,chapel_x+i*6,chapel_y+24,false,9)
+ end
  if hosp_pile>0 then
   thing(s_grace,hosp_x+8,hosp_y+26,10)
   print(hosp_pile,hosp_x+12,hosp_y+24,10)
@@ -859,13 +956,20 @@ function _draw()
  -- off the screen: who's waiting
  -- at home or at the hospital
  for q in all(people) do
-  if q.k!="walk" and q.k!="church" then
+  if q.k=="home" or q.ev then
    local sx,sy=wd(q.x,p.x)+64,wd(q.y,p.y)+60
    if sx<0 or sx>127 or sy<10 or sy>127 then
     local c=10
-    if q.ev then c=9 elseif q.k=="sick" then c=8 end
+    if q.ev then c=9 end
     circfill(mid(2,sx,125),mid(13,sy,125),1,c)
    end
+  end
+ end
+ -- the hospital, when it's filling up
+ if chap and hosp_need>=5 then
+  local sx,sy=wd(hosp_x+8,p.x)+64,wd(hosp_y+8,p.y)+60
+  if sx<0 or sx>127 or sy<10 or sy>127 then
+   circfill(mid(2,sx,125),mid(13,sy,125),1,8)
   end
  end
 

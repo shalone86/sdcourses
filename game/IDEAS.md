@@ -11,9 +11,15 @@
 - Places to unlock, each with its own building style: Europe, the
   Americas, Africa, the Middle East; and times: ancient Rome, the Middle
   Ages, the Renaissance, the Reformation, ancient China, colonial Americas.
-- More hospital upgrades: with chaplain and relics, too few people come.
-- Coffee shops: buy items there (like coffee) that you can't get
-  elsewhere. Needs more kinds of items.
+- Donations: the between-days currency (like gold in Vampire Survivors).
+  Earned during the day from big needs (weddings, baptisms, the grieving
+  widow, new houses) and fully blessed houses; nothing to spend during the
+  day. Between days, spend them on unlocks: characters, places, times,
+  seasons, small permanent boosts. Grace stays the only currency in a day.
+- Coffee shop: no store or menu. A building on the map where coffee
+  always comes back after a while, so players plan routes past it. The
+  java priest's coffee comes back faster. Later, other café items (e.g. a
+  donut that slows how fast people lose patience).
 - Characters to unlock, each with a different skill:
   - chaplain: starts with access to the hospital
   - archbishop: starts with a bishop who has 2 priests of his own and
