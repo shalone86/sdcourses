@@ -23,6 +23,7 @@ s_decor={40,41,42,43,44,45}
 s_house=48 s_church=50 s_hosp=52
 
 world=512   -- town size in pixels
+            -- (it wraps around)
 day_len=300 -- seconds in a day
 miss_cost=5 -- seconds lost for
             -- each person missed
@@ -75,6 +76,10 @@ function _init()
  -- channel 3 stays free for the
  -- sound effects. silent until
  -- she writes one.
+ -- put her song back to its
+ -- normal speed for a new day
+ reload(0x3200,0x3200,0x1100)
+ hurry=false
  music(0,0,7)
  for i=1,8 do drop_item(rnd(world),rnd(world)) end
 end
@@ -189,12 +194,11 @@ function free(x,y)
  return true
 end
 
--- walls stop the priest: buildings,
--- the town's edge, and map tiles
+-- walls stop the priest: buildings
+-- and map tiles
 -- with sprite flag 0
 function solid(x,y)
- if x<4 or y<8 or x>world-4 or y>world then return true end
- if fget(mget(x\8,y\8),0) then return true end
+ if fget(mget(x\8%64,y\8%64),0) then return true end
  for b in all(bldg) do
   if b.s and x>b.x and x<b.x+16
    and y>b.y+6 and y<b.y+17 then
@@ -204,8 +208,15 @@ function solid(x,y)
  return false
 end
 
+-- the town wraps: walk off one
+-- side, come in the other. wd is
+-- the short way from b to a.
+function wd(a,b)
+ return (a-b+world/2)%world-world/2
+end
+
 function near(ax,ay,bx,by,r)
- local dx,dy=ax-bx,ay-by
+ local dx,dy=wd(ax,bx),wd(ay,by)
  return abs(dx)<r and abs(dy)<r
   and dx*dx+dy*dy<r*r
 end
@@ -241,7 +252,7 @@ function spawn_walker()
  local x,y
  local close={}
  for b in all(bldg) do
-  if abs(b.x-p.x)<100 and abs(b.y-p.y)<100 then
+  if abs(wd(b.x,p.x))<100 and abs(wd(b.y,p.y))<100 then
    add(close,b)
   end
  end
@@ -250,7 +261,7 @@ function spawn_walker()
   x,y=b.x+8,b.y+18
  else
   local a=rnd(1)
-  x,y=p.x+cos(a)*90,p.y+sin(a)*90
+  x,y=(p.x+cos(a)*90)%world,(p.y+sin(a)*90)%world
  end
  person(x,y,"walk")
 end
@@ -365,7 +376,7 @@ end
 -- gifts and upgrades
 
 function drop_item(x,y)
- add(items,{x=mid(16,x,world-16),y=mid(16,y,world-16),
+ add(items,{x=x%world,y=y%world,
   k=rnd({"rosary","bucket","coffee","coffee"})})
 end
 
@@ -460,6 +471,15 @@ function _update()
  if btnp(4) then state="map" return end
 
  t+=1
+ -- last minute: the music hurries
+ -- (her song's notes play faster)
+ if not hurry and t>=(day_len-60)*30 then
+  hurry=true say("one minute left!")
+  for i=8,63 do
+   local a=0x3200+i*68+65
+   poke(a,max(1,peek(a)*3\4))
+  end
+ end
  if t>=day_len*30 then
   state="over"
   best=dget(0)
@@ -475,8 +495,9 @@ function _update()
  if btn(3) then dy+=1 end
  local sp=p.spd
  if p.fast>0 then sp*=2 p.fast-=1 end
- if not solid(p.x+dx*sp,p.y) then p.x+=dx*sp end
- if not solid(p.x,p.y+dy*sp) then p.y+=dy*sp end
+ local nx,ny=(p.x+dx*sp)%world,(p.y+dy*sp)%world
+ if not solid(nx,p.y) then p.x=nx end
+ if not solid(p.x,ny) then p.y=ny end
 
  -- who asks, and how often
  if t%max(10,40-t\900)==0 then spawn_walker() end
@@ -496,8 +517,9 @@ function _update()
   if q.k=="church" then tx,ty=q.tx,q.ty end
   if q.k=="walk" or q.k=="church" then
    if not near(q.x,q.y,tx,ty,6) then
-    local a=atan2(tx-q.x,ty-q.y)
-    q.x+=cos(a)*q.spd q.y+=sin(a)*q.spd
+    local a=atan2(wd(tx,q.x),wd(ty,q.y))
+    q.x=(q.x+cos(a)*q.spd)%world
+    q.y=(q.y+sin(a)*q.spd)%world
     q.fl=cos(a)<0
    elseif q.k=="church" then
     q.there=true
@@ -552,8 +574,8 @@ function _update()
  -- grace: walk near it to pick it up
  for g in all(graces) do
   if g.pull or near(g.x,g.y,p.x,p.y-4,p.mag) then
-   local a=atan2(p.x-g.x,p.y-4-g.y)
-   g.x+=cos(a)*3 g.y+=sin(a)*3
+   local a=atan2(wd(p.x,g.x),wd(p.y-4,g.y))
+   g.x=(g.x+cos(a)*3)%world g.y=(g.y+sin(a)*3)%world
   end
   if near(g.x,g.y,p.x,p.y-4,5) then
    del(graces,g) xp+=g.v sfx(1)
@@ -588,15 +610,15 @@ function helper(h)
  local tg,best=nil,999
  for q in all(people) do
   if (not h.hosp or q.k=="sick")
-   and abs(q.x-cx)<range and abs(q.y-cy)<range then
-   local d=abs(q.x-h.x)+abs(q.y-h.y)
+   and abs(wd(q.x,cx))<range and abs(wd(q.y,cy))<range then
+   local d=abs(wd(q.x,h.x))+abs(wd(q.y,h.y))
    if d<best then tg,best=q,d end
   end
  end
  if not h.hosp then
   for g in all(graces) do
-   local d=abs(g.x-h.x)+abs(g.y-h.y)
-   if abs(g.x-p.x)<60 and abs(g.y-p.y)<60 and d<best then
+   local d=abs(wd(g.x,h.x))+abs(wd(g.y,h.y))
+   if abs(wd(g.x,p.x))<60 and abs(wd(g.y,p.y))<60 and d<best then
     tg,best=g,d
    end
   end
@@ -608,8 +630,8 @@ function helper(h)
   local sp=1
   if van then sp=2 end
   if not h.hosp and not near(h.x,h.y,p.x,p.y,64) then sp=3 end
-  local a=atan2(tx-h.x,ty-h.y)
-  h.x+=cos(a)*sp h.y+=sin(a)*sp
+  local a=atan2(wd(tx,h.x),wd(ty,h.y))
+  h.x=(h.x+cos(a)*sp)%world h.y=(h.y+sin(a)*sp)%world
   h.fl=cos(a)<0
  end
  h.cd-=1
@@ -635,6 +657,12 @@ function drawn(n)
   end end
  end
  return dc[n]
+end
+
+-- draw what comes next on the
+-- side of the wrap nearest you
+function at(x,y)
+ camera(p.x-64-(wd(x,p.x)+p.x-x),p.y-64-(wd(y,p.y)+p.y-y))
 end
 
 function sprite(n,x,y,fl,c)
@@ -669,6 +697,7 @@ function shape(b)
 end
 
 function draw_person(q)
+ at(q.x,q.y)
  for c,n in pairs(q.look) do pal(c,n) end
  if q.hit>0 then
   for i=1,15 do pal(i,7) end
@@ -760,14 +789,21 @@ function _draw()
  if state=="book" then draw_book() return end
  cls(3)
  camera(p.x-64,p.y-64)
- map(0,0,0,0,64,64)
- for d in all(decor) do spr(d.s,d.x,d.y) end
+ -- map tiles she painted, wrapped
+ local tx,ty=(p.x-64)\8,(p.y-64)\8
+ for j=ty,ty+17 do for i=tx,tx+17 do
+  local m=mget(i%64,j%64)
+  if m>0 then spr(m,i*8,j*8) end
+ end end
+ for d in all(decor) do at(d.x,d.y) spr(d.s,d.x,d.y) end
  for b in all(bldg) do
+  at(b.x,b.y)
   if b.s then
    if drawn(b.s) then spr(b.s,b.x,b.y,2,2)
    else shape(b) end
   end
  end
+ at(church_x,church_y)
  -- the marian garden grows
  for i=1,garden*6 do
   local fx_,fy=church_x+20+i%6*3,church_y+8+i\6*4
@@ -779,27 +815,32 @@ function _draw()
   thing(s_grace,church_x+8,church_y+26,10)
   print(church_pile,church_x+12,church_y+24,10)
  end
+ at(hosp_x,hosp_y)
  if hosp_pile>0 then
   thing(s_grace,hosp_x+8,hosp_y+26,10)
   print(hosp_pile,hosp_x+12,hosp_y+24,10)
  end
+ camera(p.x-64,p.y-64)
  circ(p.x,p.y-4,p.r,11)
 
  for it in all(items) do
+  at(it.x,it.y)
   local s,c=s_chest,9
   if it.k=="rosary" then s,c=s_rosary,13
   elseif it.k=="bucket" then s,c=s_bucket,12
   elseif it.k=="coffee" then s,c=s_coffee,4 end
   thing(s,it.x,it.y+sin(t/40),c)
  end
- for g in all(graces) do thing(s_grace,g.x,g.y,10) end
+ for g in all(graces) do at(g.x,g.y) thing(s_grace,g.x,g.y,10) end
  for q in all(people) do draw_person(q) end
+ at(church_x,church_y)
  for i=1,deacons do
   sprite(s_deacon,church_x-6+i*6,church_y+22,false,9)
  end
  for h in all(helpers) do
-  sprite(s_helper,h.x,h.y,h.fl,13)
+  at(h.x,h.y) sprite(s_helper,h.x,h.y,h.fl,13)
  end
+ camera(p.x-64,p.y-64)
  ovalfill(p.x-3,p.y-1,p.x+3,p.y+1,1)
  if (lv["a car"] or 0)>0 and drawn(s_car) then
   spr(s_car,p.x-4,p.y-6,1,1,p.fl)
@@ -808,10 +849,10 @@ function _draw()
  if bishop and drawn(s_bishop) then me=s_bishop end
  sprite(me,p.x,p.y,p.fl,0)
  for d in all(drops) do
-  pset(d.x,d.y,d.t%2==0 and 12 or 7)
+  at(d.x,d.y) pset(d.x,d.y,d.t%2==0 and 12 or 7)
  end
  for f in all(fx) do
-  print(f.s,f.x-#f.s*2,f.y-(30-f.t)/2,f.c)
+  at(f.x,f.y) print(f.s,f.x-#f.s*2,f.y-(30-f.t)/2,f.c)
  end
  camera()
 
@@ -819,7 +860,7 @@ function _draw()
  -- at home or at the hospital
  for q in all(people) do
   if q.k!="walk" and q.k!="church" then
-   local sx,sy=q.x-p.x+64,q.y-p.y+60
+   local sx,sy=wd(q.x,p.x)+64,wd(q.y,p.y)+60
    if sx<0 or sx>127 or sy<10 or sy>127 then
     local c=10
     if q.ev then c=9 elseif q.k=="sick" then c=8 end
