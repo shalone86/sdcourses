@@ -112,6 +112,13 @@ points:
         left: { kicker: No pope yet, title: Black smoke, note: No one has two thirds, icon: cloud }
         right: { kicker: A pope is elected, title: White smoke, note: Two thirds reached, icon: flame }
         emphasis: right
+      - type: image
+        src: images/wikimedia-c-nclave-papal-en-la-capilla-sixtina-190-164857087.jpg
+        aspect: 0.721
+      - type: image
+        src: images/wikimedia-koncil-5501359.jpg
+        aspect: 2.073
+        credit: Matthew Paris · Wikimedia Commons · Public domain
     quiz:
       type: blank
       question: A new pope needs at least ____ of the votes.
@@ -139,8 +146,14 @@ points:
       Church teaches that the pope's authority comes from Christ.
     visuals:
       - type: chain
-        items: [Elected, "Do you accept?", Chooses a name, Is pope]
-        caption: From the vote to the loggia
+        items:
+          - Elected
+          - Do you accept?
+          - Chooses a name
+          - Is pope
+      - type: image
+        src: images/wikimedia-charlemagne-and-pope-adrian-i-263647.jpg
+        aspect: 1.343
     quiz:
       type: truefalse
       question: A newly elected pope must wait for an emperor or king to confirm him.
@@ -166,10 +179,21 @@ points:
       served twelve years and died on Easter Monday, April 21, 2025, at the
       age of 88, which began the process that led to the next conclave.
     visuals:
+      - type: image
+        src: images/wikimedia-2019-pope-francis-visit-saint-louis-hosp-84224544.jpg
+        aspect: 1.5
+        credit: Tris T7 · Wikimedia Commons · CC BY-SA 4.0
       - type: timeline
         items:
-          - { year: "2013", label: Benedict XVI resigns, Francis elected }
-          - { year: "Apr 21, 2025", label: Pope Francis dies }
+          - year: February 28, 2013
+            label: Benedict XVI resigns
+          - year: March 13, 2013
+            label: Pope Francis dies
+      - type: image
+        src: images/wikimedia-san-francisco-de-as-s-juan-mart-nez-mont-89817790.jpg
+        aspect: 0.745
+        credit: Jl FilpoC · Wikimedia Commons · CC BY-SA 4.0
+        with: side
     quiz:
       type: choice
       question: What name did Cardinal Bergoglio choose?
@@ -197,9 +221,14 @@ points:
     visuals:
       - type: timeline
         items:
-          - { year: "May 7, 2025", label: Conclave begins }
-          - { year: "May 8, 2025", label: Leo XIV elected }
-          - { year: "May 18, 2025", label: Inauguration Mass }
+          - year: "1955"
+            label: Born in Chicago
+          - year: May 7, 2025
+            label: Conclave begins
+          - year: May 8, 2025
+            label: Leo XIV elected
+          - year: May 18, 2025
+            label: Inauguration Mass
     quiz:
       type: choice
       question: Which of these is true of Pope Leo XIV?
