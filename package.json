@@ -22,7 +22,8 @@
     "split": "node scripts/split-audio.mjs",
     "studio-autostart": "cp studio/launchd/com.sdcourses.studio.plist ~/Library/LaunchAgents/ && (launchctl bootout gui/$(id -u)/com.sdcourses.studio 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.sdcourses.studio.plist)",
     "studio-restart": "launchctl kickstart -k gui/$(id -u)/com.sdcourses.studio",
-    "pico8": "node scripts/pico8.mjs"
+    "pico8": "node scripts/pico8.mjs",
+    "music": "node scripts/midi2pico8.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.530",
