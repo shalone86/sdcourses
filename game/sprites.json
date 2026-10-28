@@ -49,6 +49,8 @@
       "#FFF1E8": "vestment"
     }
   },
+  "_tops": "People slots whose top row (the top of the head) is hair or a hat: each person gets one at random.",
+  "tops": ["16", "18", "20", "22", "24", "26"],
   "_colors": "Force one of her colors onto a PICO-8 color number (0-15) when the nearest match is wrong or two colors land on the same one.",
   "colors": {
     "#FFB300": 10,

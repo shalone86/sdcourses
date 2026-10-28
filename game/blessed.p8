@@ -44,6 +44,7 @@ parts={
  priest={[3]="eyes",[15]="skin"},
  deacon={[4]="eyes",[7]="vestment",[15]="skin"},
 }
+tops={[16]=12,[18]=14,[20]=10,[22]=14,[24]=12,[26]=9}
 -- @end
 
 -- random looks for the people:
@@ -299,6 +300,7 @@ end
 -- (people, priest or deacon)
 function new_look(g)
  local sk,l,hair=rnd(skins),{},rnd(looks.hair)
+ look_hair=hair -- for the top of the head
  for c,k in pairs(parts[g] or {}) do
   if k=="skin" then l[c]=sk[1]
   elseif k=="eyes" then l[c]=sk[2]
@@ -317,6 +319,10 @@ function person(x,y,k)
  local q={x=x,y=y,k=k,s=rnd(s_people),
   look=new_look("people"),need=1,hit=0,
   wait=900+rnd(300),spd=.2+rnd(.2)}
+ -- the top of the head: hair, or
+ -- a hat (its own random color)
+ local tc=tops[q.s]
+ if tc and rnd(1)<.5 then q.look[tc]=look_hair end
  add(people,q)
  return q
 end

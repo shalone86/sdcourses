@@ -1,6 +1,7 @@
 // Copies Shalone's drawings (sprites/<name>.json) into the PICO-8 cart's
-// sprite sheet, per game/sprites.json, and writes the cart's `parts` table
-// (which colors to swap for each person's, priest's and deacon's look). Colors snap to
+// sprite sheet, per game/sprites.json, and writes the cart's `parts` and
+// `tops` tables (which colors to swap for each person's, priest's and
+// deacon's look). Colors snap to
 // PICO-8's 16 unless sprites.json's `colors` says otherwise; "." stays
 // see-through (color 0). Usage: npm run pico8 [-- game/blessed.p8]
 import fs from 'node:fs';
@@ -60,7 +61,19 @@ for (const [group, hexes] of Object.entries(cfg.parts || {})) {
 }
 const partsLua = `parts={\n ${groups.join(',\n ')},\n}`;
 
+// tops: the top-of-head color of each listed people slot (the most
+// used color in its first row), so a person can wear it as hair or a hat
+const tops = [];
+for (const slot of cfg.tops || []) {
+  const s = JSON.parse(fs.readFileSync(`sprites/${cfg.slots[slot]}.json`, 'utf8'));
+  const count = {};
+  for (const ch of s.frames[0][0]) if (ch !== '.') count[ch] = (count[ch] || 0) + 1;
+  const ch = Object.keys(count).sort((a, b) => count[b] - count[a])[0];
+  if (ch !== undefined) tops.push(`[${slot}]=${nearest(s.palette[parseInt(ch, 36)])}`);
+}
+const topsLua = `tops={${tops.join(',')}}`;
+
 const gfx = sheet.map((r) => r.map((c) => c.toString(16)).join('')).join('\n');
-const out = text.replace(/(-- @parts.*\n)[\s\S]*?(?=-- @end)/, `$1${partsLua}\n`).replace(/__gfx__\n[\s\S]*?(?=\n__\w+__|$)/, `__gfx__\n${gfx}`);
+const out = text.replace(/(-- @parts.*\n)[\s\S]*?(?=-- @end)/, `$1${partsLua}\n${topsLua}\n`).replace(/__gfx__\n[\s\S]*?(?=\n__\w+__|$)/, `__gfx__\n${gfx}`);
 fs.writeFileSync(cart, out.endsWith('\n') ? out : out + '\n');
 console.log(`wrote ${cart}`);
