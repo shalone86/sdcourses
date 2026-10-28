@@ -45,6 +45,11 @@ looks={
 }
 skins={{4,15},{15,1},{9,1},{4,1}} -- skin, eyes
 
+-- sounds (sfx editor): 0 bless,
+-- 1 pick up, 2 level up, 3 gift
+-- box, 4 missed, 5 big need.
+-- music notes go in sfx 8 and up.
+
 cartdata("sdcason_blessed")
 
 function _init()
@@ -65,6 +70,12 @@ function _init()
  t=0 missed=0 msg="" msg_t=0
  state="play" page=1
  found_start=dget(1)
+ -- her song: music pattern 0 on,
+ -- using channels 0-2 (mask 7) so
+ -- channel 3 stays free for the
+ -- sound effects. silent until
+ -- she writes one.
+ music(0,0,7)
  for i=1,8 do drop_item(rnd(world),rnd(world)) end
 end
 
