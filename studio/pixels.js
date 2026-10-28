@@ -686,13 +686,14 @@ window.PixelTab = (() => {
         h('span', {title: 'This part was ' + area + ' in ' + P.version.base, style: {width: '16px', height: '16px', borderRadius: '4px', background: area, border: '1px solid var(--rule)', flex: 'none'}}),
         h('span', {class: 'small muted', text: '→'}),
         h('input', {type: 'color', value: current[k].toLowerCase(), 'aria-label': 'New color for the part that was ' + area, onchange: (e) => setArea(area, e.target.value)}),
-        h('select', {class: 'small', style: {flex: '1', minWidth: '0', width: 'auto'}, 'aria-label': 'Same color as another part', onchange: (e) => { if (e.target.value) setArea(area, e.target.value); }},
-          [h('option', {value: '', text: 'Same as…'}), ...[...new Set(current)].filter((c) => c !== current[k]).map((c) =>
-            h('option', {value: c, text: '■ ' + c, style: {color: c}}))]),
+        // (squares, not a list: the Mac can't color a list's options)
+        h('span', {class: 'small muted', text: 'same as'}),
+        h('span', {style: {display: 'flex', gap: '3px', flexWrap: 'wrap', minWidth: '0'}}, [...new Set(current)].filter((c) => c !== current[k]).map((c) =>
+          h('button', {class: 'px-same', title: 'Same as ' + c, 'aria-label': 'Same color as ' + c, style: {background: c}, onclick: () => setArea(area, c)}))),
       ]);
       const versionBox = P.version ? h('div', {class: 'px-version', style: {display: 'grid', gap: '6px', padding: '8px 10px', borderRadius: '8px', background: 'var(--panel-2, rgba(127,127,127,.12))'}}, [
         h('div', {class: 'small'}, [h('b', {text: P.version.name}), ` from ${P.version.base}: change the colors on this idle drawing. Saving makes point, look up, walk and run in the same colors.`]),
-        areas.length ? h('div', {class: 'small muted', text: 'Each part of the base (its old color on the left) and its color now. Two parts can share a color (Same as…) and still be changed apart later.'})
+        areas.length ? h('div', {class: 'small muted', text: 'Each part of the base (its old color on the left) and its color now. Click a square after “same as” to give a part the same color as another; they can still be changed apart later.'})
           : h('div', {class: 'small muted', text: 'Change a color everywhere (every square and frame):'}),
         areas.length ? h('div', {style: {display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '6px 12px'}}, areas.map(areaBox))
           : h('div', {class: 'px-palette'}, [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].map((c) =>

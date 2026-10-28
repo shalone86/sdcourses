@@ -165,7 +165,7 @@ If it's already running, `npm start` just opens the page.
   base is a character with `-idle`, `-point`, `-look-up`, `-walk`, `-run` (hers:
   thick-beard-guy, thick-guy, skinny-guy, guy-beard, vestment-guy, thick-woman,
   skinny-woman). She picks one, names the new character, recolors only its idle
-  (one color box per part of the base, with "Same as…", so parts can share a color
+  (one color box per part of the base, with "same as" color squares, so parts can share a color
   and still be changed apart), and Save makes all five poses with the
   same color swaps (`colorVersion` in `scripts/sprites.mjs`; `sprites/.versions.json`
   remembers each one's base). Bases are never changed.
