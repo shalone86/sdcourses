@@ -1,0 +1,510 @@
+{
+ "stamp": "2:3726798:1793220262790",
+ "words": [
+  {
+   "w": "After",
+   "start": 0.09,
+   "end": 0.36
+  },
+  {
+   "w": "the",
+   "start": 0.36,
+   "end": 0.57
+  },
+  {
+   "w": "vote,",
+   "start": 0.57,
+   "end": 1
+  },
+  {
+   "w": "the",
+   "start": 1,
+   "end": 1.21
+  },
+  {
+   "w": "one",
+   "start": 1.21,
+   "end": 1.42
+  },
+  {
+   "w": "elected",
+   "start": 1.42,
+   "end": 1.93
+  },
+  {
+   "w": "is",
+   "start": 1.93,
+   "end": 2.07
+  },
+  {
+   "w": "asked",
+   "start": 2.07,
+   "end": 2.42
+  },
+  {
+   "w": "if",
+   "start": 2.42,
+   "end": 2.57
+  },
+  {
+   "w": "he",
+   "start": 2.57,
+   "end": 2.71
+  },
+  {
+   "w": "accepts,",
+   "start": 2.71,
+   "end": 3.62
+  },
+  {
+   "w": "then",
+   "start": 3.62,
+   "end": 3.76
+  },
+  {
+   "w": "he",
+   "start": 3.76,
+   "end": 3.92
+  },
+  {
+   "w": "becomes",
+   "start": 3.92,
+   "end": 4.55
+  },
+  {
+   "w": "Pope",
+   "start": 4.55,
+   "end": 4.8
+  },
+  {
+   "w": "and",
+   "start": 4.8,
+   "end": 5.04
+  },
+  {
+   "w": "at",
+   "start": 5.04,
+   "end": 5.18
+  },
+  {
+   "w": "once,",
+   "start": 5.18,
+   "end": 5.76
+  },
+  {
+   "w": "he",
+   "start": 5.76,
+   "end": 5.9
+  },
+  {
+   "w": "is",
+   "start": 5.9,
+   "end": 6.09
+  },
+  {
+   "w": "immediately",
+   "start": 6.09,
+   "end": 6.85
+  },
+  {
+   "w": "Bishop",
+   "start": 6.85,
+   "end": 7.29
+  },
+  {
+   "w": "of",
+   "start": 7.29,
+   "end": 7.44
+  },
+  {
+   "w": "the",
+   "start": 7.44,
+   "end": 7.65
+  },
+  {
+   "w": "Church",
+   "start": 7.65,
+   "end": 8.09
+  },
+  {
+   "w": "of",
+   "start": 8.09,
+   "end": 8.24
+  },
+  {
+   "w": "Rome,",
+   "start": 8.24,
+   "end": 8.72
+  },
+  {
+   "w": "true",
+   "start": 8.72,
+   "end": 9.32
+  },
+  {
+   "w": "Pope",
+   "start": 9.32,
+   "end": 9.38
+  },
+  {
+   "w": "and",
+   "start": 9.38,
+   "end": 9.55
+  },
+  {
+   "w": "Head",
+   "start": 9.55,
+   "end": 9.85
+  },
+  {
+   "w": "of",
+   "start": 9.85,
+   "end": 10
+  },
+  {
+   "w": "the",
+   "start": 10,
+   "end": 10.33
+  },
+  {
+   "w": "College",
+   "start": 10.33,
+   "end": 10.8
+  },
+  {
+   "w": "of",
+   "start": 10.8,
+   "end": 10.96
+  },
+  {
+   "w": "Bishops.",
+   "start": 10.96,
+   "end": 11.96
+  },
+  {
+   "w": "The",
+   "start": 11.96,
+   "end": 12.16
+  },
+  {
+   "w": "Cardinal",
+   "start": 12.16,
+   "end": 12.7
+  },
+  {
+   "w": "Dean",
+   "start": 12.7,
+   "end": 12.97
+  },
+  {
+   "w": "asks",
+   "start": 12.97,
+   "end": 13.29
+  },
+  {
+   "w": "the",
+   "start": 13.29,
+   "end": 13.44
+  },
+  {
+   "w": "one",
+   "start": 13.44,
+   "end": 13.65
+  },
+  {
+   "w": "elected,",
+   "start": 13.65,
+   "end": 14.32
+  },
+  {
+   "w": "\"Do",
+   "start": 14.32,
+   "end": 14.58
+  },
+  {
+   "w": "you",
+   "start": 14.58,
+   "end": 14.77
+  },
+  {
+   "w": "accept",
+   "start": 14.77,
+   "end": 15.23
+  },
+  {
+   "w": "your",
+   "start": 15.23,
+   "end": 15.54
+  },
+  {
+   "w": "canonical",
+   "start": 15.54,
+   "end": 16.24
+  },
+  {
+   "w": "election",
+   "start": 16.24,
+   "end": 16.96
+  },
+  {
+   "w": "as",
+   "start": 16.96,
+   "end": 17.2
+  },
+  {
+   "w": "Supreme",
+   "start": 17.2,
+   "end": 17.76
+  },
+  {
+   "w": "Pontiff?\"",
+   "start": 17.76,
+   "end": 18.7
+  },
+  {
+   "w": "If",
+   "start": 18.7,
+   "end": 18.72
+  },
+  {
+   "w": "he",
+   "start": 18.72,
+   "end": 18.84
+  },
+  {
+   "w": "says",
+   "start": 18.84,
+   "end": 19.13
+  },
+  {
+   "w": "yes,",
+   "start": 19.13,
+   "end": 19.49
+  },
+  {
+   "w": "he",
+   "start": 19.49,
+   "end": 19.63
+  },
+  {
+   "w": "is",
+   "start": 19.63,
+   "end": 19.77
+  },
+  {
+   "w": "asked,",
+   "start": 19.77,
+   "end": 20.29
+  },
+  {
+   "w": "\"By",
+   "start": 20.29,
+   "end": 20.57
+  },
+  {
+   "w": "what",
+   "start": 20.57,
+   "end": 20.78
+  },
+  {
+   "w": "name",
+   "start": 20.78,
+   "end": 21.07
+  },
+  {
+   "w": "do",
+   "start": 21.07,
+   "end": 21.38
+  },
+  {
+   "w": "you",
+   "start": 21.38,
+   "end": 21.43
+  },
+  {
+   "w": "wish",
+   "start": 21.43,
+   "end": 21.72
+  },
+  {
+   "w": "to",
+   "start": 21.72,
+   "end": 21.86
+  },
+  {
+   "w": "be",
+   "start": 21.86,
+   "end": 22
+  },
+  {
+   "w": "called?\"",
+   "start": 22,
+   "end": 22.88
+  },
+  {
+   "w": "From",
+   "start": 22.88,
+   "end": 23.04
+  },
+  {
+   "w": "that",
+   "start": 23.04,
+   "end": 23.4
+  },
+  {
+   "w": "moment,",
+   "start": 23.4,
+   "end": 23.92
+  },
+  {
+   "w": "he",
+   "start": 24.01,
+   "end": 24.13
+  },
+  {
+   "w": "is",
+   "start": 24.13,
+   "end": 24.34
+  },
+  {
+   "w": "Pope.",
+   "start": 24.34,
+   "end": 25.07
+  },
+  {
+   "w": "No",
+   "start": 25.07,
+   "end": 25.28
+  },
+  {
+   "w": "Emperor",
+   "start": 25.28,
+   "end": 26.01
+  },
+  {
+   "w": "or",
+   "start": 26.01,
+   "end": 26.25
+  },
+  {
+   "w": "King",
+   "start": 26.25,
+   "end": 26.64
+  },
+  {
+   "w": "needs",
+   "start": 26.64,
+   "end": 27.16
+  },
+  {
+   "w": "to",
+   "start": 27.16,
+   "end": 27.54
+  },
+  {
+   "w": "confirm",
+   "start": 27.54,
+   "end": 28.09
+  },
+  {
+   "w": "him,",
+   "start": 28.09,
+   "end": 28.62
+  },
+  {
+   "w": "which",
+   "start": 28.62,
+   "end": 29.23
+  },
+  {
+   "w": "in",
+   "start": 29.23,
+   "end": 29.35
+  },
+  {
+   "w": "the",
+   "start": 29.35,
+   "end": 29.83
+  },
+  {
+   "w": "past",
+   "start": 29.83,
+   "end": 30.16
+  },
+  {
+   "w": "was",
+   "start": 30.16,
+   "end": 30.42
+  },
+  {
+   "w": "a",
+   "start": 30.42,
+   "end": 30.5
+  },
+  {
+   "w": "serious",
+   "start": 30.5,
+   "end": 31.12
+  },
+  {
+   "w": "issue.",
+   "start": 31.12,
+   "end": 31.76
+  },
+  {
+   "w": "The",
+   "start": 31.76,
+   "end": 32.09
+  },
+  {
+   "w": "Church",
+   "start": 32.09,
+   "end": 32.49
+  },
+  {
+   "w": "teaches",
+   "start": 32.49,
+   "end": 33.06
+  },
+  {
+   "w": "that",
+   "start": 33.06,
+   "end": 33.44
+  },
+  {
+   "w": "the",
+   "start": 33.44,
+   "end": 33.63
+  },
+  {
+   "w": "Pope's",
+   "start": 33.63,
+   "end": 34.12
+  },
+  {
+   "w": "authority",
+   "start": 34.12,
+   "end": 34.89
+  },
+  {
+   "w": "comes",
+   "start": 34.89,
+   "end": 35.38
+  },
+  {
+   "w": "directly",
+   "start": 35.38,
+   "end": 35.92
+  },
+  {
+   "w": "from",
+   "start": 35.92,
+   "end": 36.33
+  },
+  {
+   "w": "Christ.",
+   "start": 36.33,
+   "end": 37.04
+  }
+ ]
+}

@@ -1,0 +1,490 @@
+{
+ "stamp": "2:4014798:1793219926715",
+ "words": [
+  {
+   "w": "A",
+   "start": 0.09,
+   "end": 0.09
+  },
+  {
+   "w": "new",
+   "start": 0.09,
+   "end": 0.36
+  },
+  {
+   "w": "pope",
+   "start": 0.36,
+   "end": 0.76
+  },
+  {
+   "w": "needs",
+   "start": 0.76,
+   "end": 1.17
+  },
+  {
+   "w": "a",
+   "start": 1.17,
+   "end": 1.26
+  },
+  {
+   "w": "large",
+   "start": 1.26,
+   "end": 1.71
+  },
+  {
+   "w": "majority,",
+   "start": 1.71,
+   "end": 2.62
+  },
+  {
+   "w": "as",
+   "start": 2.62,
+   "end": 2.8
+  },
+  {
+   "w": "the",
+   "start": 2.8,
+   "end": 3.07
+  },
+  {
+   "w": "Constitution",
+   "start": 3.07,
+   "end": 4.14
+  },
+  {
+   "w": "says.",
+   "start": 4.14,
+   "end": 4.86
+  },
+  {
+   "w": "For",
+   "start": 4.86,
+   "end": 5.09
+  },
+  {
+   "w": "the",
+   "start": 5.09,
+   "end": 5.34
+  },
+  {
+   "w": "valid",
+   "start": 5.34,
+   "end": 5.71
+  },
+  {
+   "w": "election",
+   "start": 5.71,
+   "end": 6.34
+  },
+  {
+   "w": "of",
+   "start": 6.34,
+   "end": 6.49
+  },
+  {
+   "w": "the",
+   "start": 6.49,
+   "end": 6.72
+  },
+  {
+   "w": "Roman",
+   "start": 6.72,
+   "end": 7.1
+  },
+  {
+   "w": "Pontiff,",
+   "start": 7.1,
+   "end": 7.8
+  },
+  {
+   "w": "at",
+   "start": 7.8,
+   "end": 7.95
+  },
+  {
+   "w": "least",
+   "start": 7.95,
+   "end": 8.34
+  },
+  {
+   "w": "two",
+   "start": 8.34,
+   "end": 8.57
+  },
+  {
+   "w": "thirds",
+   "start": 8.57,
+   "end": 9
+  },
+  {
+   "w": "of",
+   "start": 9,
+   "end": 9.18
+  },
+  {
+   "w": "the",
+   "start": 9.18,
+   "end": 9.55
+  },
+  {
+   "w": "votes",
+   "start": 9.55,
+   "end": 9.85
+  },
+  {
+   "w": "are",
+   "start": 9.85,
+   "end": 10.04
+  },
+  {
+   "w": "required.",
+   "start": 10.04,
+   "end": 11.08
+  },
+  {
+   "w": "The",
+   "start": 11.08,
+   "end": 11.31
+  },
+  {
+   "w": "Cardinals",
+   "start": 11.31,
+   "end": 12.01
+  },
+  {
+   "w": "vote",
+   "start": 12.01,
+   "end": 12.32
+  },
+  {
+   "w": "in",
+   "start": 12.32,
+   "end": 12.47
+  },
+  {
+   "w": "secret",
+   "start": 12.47,
+   "end": 12.94
+  },
+  {
+   "w": "on",
+   "start": 12.94,
+   "end": 13.09
+  },
+  {
+   "w": "paper",
+   "start": 13.09,
+   "end": 13.61
+  },
+  {
+   "w": "ballots",
+   "start": 13.61,
+   "end": 14.03
+  },
+  {
+   "w": "in",
+   "start": 14.03,
+   "end": 14.2
+  },
+  {
+   "w": "the",
+   "start": 14.2,
+   "end": 14.41
+  },
+  {
+   "w": "Sistine",
+   "start": 14.41,
+   "end": 14.94
+  },
+  {
+   "w": "Chapel.",
+   "start": 14.94,
+   "end": 15.72
+  },
+  {
+   "w": "After",
+   "start": 15.72,
+   "end": 16.07
+  },
+  {
+   "w": "each",
+   "start": 16.07,
+   "end": 16.35
+  },
+  {
+   "w": "count,",
+   "start": 16.35,
+   "end": 16.84
+  },
+  {
+   "w": "the",
+   "start": 16.84,
+   "end": 17.05
+  },
+  {
+   "w": "ballots",
+   "start": 17.05,
+   "end": 17.55
+  },
+  {
+   "w": "are",
+   "start": 17.55,
+   "end": 17.75
+  },
+  {
+   "w": "burned,",
+   "start": 17.75,
+   "end": 18.31
+  },
+  {
+   "w": "and",
+   "start": 18.31,
+   "end": 18.52
+  },
+  {
+   "w": "the",
+   "start": 18.52,
+   "end": 18.73
+  },
+  {
+   "w": "smoke",
+   "start": 18.73,
+   "end": 19.08
+  },
+  {
+   "w": "tells",
+   "start": 19.08,
+   "end": 19.43
+  },
+  {
+   "w": "the",
+   "start": 19.43,
+   "end": 19.64
+  },
+  {
+   "w": "crowd",
+   "start": 19.64,
+   "end": 20.41
+  },
+  {
+   "w": "outside.",
+   "start": 20.41,
+   "end": 20.76
+  },
+  {
+   "w": "Black",
+   "start": 20.76,
+   "end": 21.24
+  },
+  {
+   "w": "means",
+   "start": 21.24,
+   "end": 21.64
+  },
+  {
+   "w": "no",
+   "start": 21.64,
+   "end": 21.85
+  },
+  {
+   "w": "pope",
+   "start": 21.85,
+   "end": 22.16
+  },
+  {
+   "w": "yet,",
+   "start": 22.16,
+   "end": 22.59
+  },
+  {
+   "w": "white",
+   "start": 22.59,
+   "end": 23.29
+  },
+  {
+   "w": "means",
+   "start": 23.29,
+   "end": 23.47
+  },
+  {
+   "w": "there",
+   "start": 23.47,
+   "end": 23.97
+  },
+  {
+   "w": "is",
+   "start": 23.97,
+   "end": 24.09
+  },
+  {
+   "w": "one.",
+   "start": 24.09,
+   "end": 24.64
+  },
+  {
+   "w": "The",
+   "start": 24.73,
+   "end": 24.94
+  },
+  {
+   "w": "two",
+   "start": 24.94,
+   "end": 25.24
+  },
+  {
+   "w": "thirds",
+   "start": 25.24,
+   "end": 25.84
+  },
+  {
+   "w": "rule",
+   "start": 25.84,
+   "end": 26.25
+  },
+  {
+   "w": "is",
+   "start": 26.25,
+   "end": 26.47
+  },
+  {
+   "w": "old,",
+   "start": 26.47,
+   "end": 27.04
+  },
+  {
+   "w": "a",
+   "start": 27.04,
+   "end": 27.17
+  },
+  {
+   "w": "Lateran",
+   "start": 27.17,
+   "end": 27.74
+  },
+  {
+   "w": "Council",
+   "start": 27.74,
+   "end": 28.44
+  },
+  {
+   "w": "set",
+   "start": 28.44,
+   "end": 28.74
+  },
+  {
+   "w": "it",
+   "start": 28.74,
+   "end": 28.93
+  },
+  {
+   "w": "in",
+   "start": 28.93,
+   "end": 29.33
+  },
+  {
+   "w": "1179.",
+   "start": 29.33,
+   "end": 30.72
+  },
+  {
+   "w": "The",
+   "start": 30.72,
+   "end": 31.02
+  },
+  {
+   "w": "first",
+   "start": 31.02,
+   "end": 31.52
+  },
+  {
+   "w": "conclave,",
+   "start": 31.52,
+   "end": 32.53
+  },
+  {
+   "w": "which",
+   "start": 32.53,
+   "end": 33.25
+  },
+  {
+   "w": "means",
+   "start": 33.25,
+   "end": 33.52
+  },
+  {
+   "w": "with",
+   "start": 33.52,
+   "end": 33.91
+  },
+  {
+   "w": "a",
+   "start": 33.91,
+   "end": 34.05
+  },
+  {
+   "w": "key,",
+   "start": 34.05,
+   "end": 34.52
+  },
+  {
+   "w": "came",
+   "start": 34.52,
+   "end": 34.85
+  },
+  {
+   "w": "in",
+   "start": 34.85,
+   "end": 35.41
+  },
+  {
+   "w": "1274,",
+   "start": 35.41,
+   "end": 36.4
+  },
+  {
+   "w": "so",
+   "start": 36.4,
+   "end": 36.53
+  },
+  {
+   "w": "that",
+   "start": 36.53,
+   "end": 36.7
+  },
+  {
+   "w": "the",
+   "start": 36.7,
+   "end": 36.85
+  },
+  {
+   "w": "Cardinals",
+   "start": 36.85,
+   "end": 37.3
+  },
+  {
+   "w": "could",
+   "start": 37.3,
+   "end": 37.56
+  },
+  {
+   "w": "choose",
+   "start": 37.56,
+   "end": 38.2
+  },
+  {
+   "w": "without",
+   "start": 38.2,
+   "end": 38.71
+  },
+  {
+   "w": "outside",
+   "start": 38.71,
+   "end": 39.29
+  },
+  {
+   "w": "pressure.",
+   "start": 39.29,
+   "end": 40.04
+  }
+ ]
+}

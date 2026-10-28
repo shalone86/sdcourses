@@ -1,0 +1,510 @@
+{
+ "stamp": "2:4210638:1793220364432",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.21
+  },
+  {
+   "w": "Vatican",
+   "start": 0.21,
+   "end": 0.72
+  },
+  {
+   "w": "biography",
+   "start": 0.72,
+   "end": 1.37
+  },
+  {
+   "w": "tells",
+   "start": 1.37,
+   "end": 1.85
+  },
+  {
+   "w": "how",
+   "start": 1.85,
+   "end": 1.94
+  },
+  {
+   "w": "Pope",
+   "start": 1.94,
+   "end": 2.23
+  },
+  {
+   "w": "Francis",
+   "start": 2.23,
+   "end": 2.8
+  },
+  {
+   "w": "was",
+   "start": 2.8,
+   "end": 2.95
+  },
+  {
+   "w": "chosen",
+   "start": 2.95,
+   "end": 3.58
+  },
+  {
+   "w": "on",
+   "start": 3.58,
+   "end": 3.59
+  },
+  {
+   "w": "the",
+   "start": 3.59,
+   "end": 3.79
+  },
+  {
+   "w": "13th",
+   "start": 3.79,
+   "end": 4.35
+  },
+  {
+   "w": "of",
+   "start": 4.35,
+   "end": 4.54
+  },
+  {
+   "w": "March,",
+   "start": 4.54,
+   "end": 4.99
+  },
+  {
+   "w": "2013",
+   "start": 4.99,
+   "end": 6.1
+  },
+  {
+   "w": "at",
+   "start": 6.1,
+   "end": 6.14
+  },
+  {
+   "w": "the",
+   "start": 6.14,
+   "end": 6.24
+  },
+  {
+   "w": "age",
+   "start": 6.24,
+   "end": 6.4
+  },
+  {
+   "w": "of",
+   "start": 6.4,
+   "end": 6.55
+  },
+  {
+   "w": "76.",
+   "start": 6.55,
+   "end": 7.66
+  },
+  {
+   "w": "Cardinal",
+   "start": 7.66,
+   "end": 8.06
+  },
+  {
+   "w": "Bergoglio",
+   "start": 8.06,
+   "end": 8.68
+  },
+  {
+   "w": "was",
+   "start": 8.68,
+   "end": 8.84
+  },
+  {
+   "w": "elected",
+   "start": 8.84,
+   "end": 9.26
+  },
+  {
+   "w": "the",
+   "start": 9.26,
+   "end": 9.44
+  },
+  {
+   "w": "266th",
+   "start": 9.44,
+   "end": 11.01
+  },
+  {
+   "w": "Pope",
+   "start": 11.01,
+   "end": 11.37
+  },
+  {
+   "w": "of",
+   "start": 11.37,
+   "end": 11.57
+  },
+  {
+   "w": "the",
+   "start": 11.57,
+   "end": 11.66
+  },
+  {
+   "w": "Catholic",
+   "start": 11.66,
+   "end": 12.21
+  },
+  {
+   "w": "Church",
+   "start": 12.21,
+   "end": 12.82
+  },
+  {
+   "w": "by",
+   "start": 12.82,
+   "end": 12.91
+  },
+  {
+   "w": "the",
+   "start": 12.91,
+   "end": 13.03
+  },
+  {
+   "w": "Cardinals",
+   "start": 13.03,
+   "end": 13.76
+  },
+  {
+   "w": "gathered",
+   "start": 13.76,
+   "end": 14.33
+  },
+  {
+   "w": "in",
+   "start": 14.33,
+   "end": 14.39
+  },
+  {
+   "w": "Conclave.",
+   "start": 14.39,
+   "end": 15
+  },
+  {
+   "w": "Benedict",
+   "start": 15,
+   "end": 15.59
+  },
+  {
+   "w": "XVI",
+   "start": 15.59,
+   "end": 15.79
+  },
+  {
+   "w": "had",
+   "start": 15.79,
+   "end": 16.02
+  },
+  {
+   "w": "resigned,",
+   "start": 16.02,
+   "end": 16.85
+  },
+  {
+   "w": "so",
+   "start": 16.85,
+   "end": 16.89
+  },
+  {
+   "w": "the",
+   "start": 16.89,
+   "end": 17.15
+  },
+  {
+   "w": "Cardinals",
+   "start": 17.15,
+   "end": 17.8
+  },
+  {
+   "w": "met",
+   "start": 17.8,
+   "end": 17.98
+  },
+  {
+   "w": "in",
+   "start": 17.98,
+   "end": 18.03
+  },
+  {
+   "w": "Conclave.",
+   "start": 18.03,
+   "end": 19
+  },
+  {
+   "w": "They",
+   "start": 19,
+   "end": 19.35
+  },
+  {
+   "w": "chose",
+   "start": 19.35,
+   "end": 19.83
+  },
+  {
+   "w": "Jorge,",
+   "start": 19.83,
+   "end": 20.4
+  },
+  {
+   "w": "Mario,",
+   "start": 20.4,
+   "end": 21.1
+  },
+  {
+   "w": "Bergoglio,",
+   "start": 21.1,
+   "end": 22
+  },
+  {
+   "w": "and",
+   "start": 22,
+   "end": 22.23
+  },
+  {
+   "w": "Argentine,",
+   "start": 22.23,
+   "end": 22.99
+  },
+  {
+   "w": "Jesuit,",
+   "start": 22.99,
+   "end": 23.55
+  },
+  {
+   "w": "and",
+   "start": 23.55,
+   "end": 23.76
+  },
+  {
+   "w": "the",
+   "start": 23.76,
+   "end": 23.97
+  },
+  {
+   "w": "first",
+   "start": 23.97,
+   "end": 24.38
+  },
+  {
+   "w": "Pope",
+   "start": 24.38,
+   "end": 24.62
+  },
+  {
+   "w": "from",
+   "start": 24.62,
+   "end": 24.91
+  },
+  {
+   "w": "the",
+   "start": 24.91,
+   "end": 25.12
+  },
+  {
+   "w": "Americas.",
+   "start": 25.12,
+   "end": 26
+  },
+  {
+   "w": "He",
+   "start": 26.09,
+   "end": 26.16
+  },
+  {
+   "w": "took",
+   "start": 26.16,
+   "end": 26.49
+  },
+  {
+   "w": "the",
+   "start": 26.49,
+   "end": 26.74
+  },
+  {
+   "w": "name",
+   "start": 26.74,
+   "end": 27.07
+  },
+  {
+   "w": "Francis",
+   "start": 27.07,
+   "end": 27.65
+  },
+  {
+   "w": "after",
+   "start": 27.65,
+   "end": 28.15
+  },
+  {
+   "w": "Saint",
+   "start": 28.15,
+   "end": 28.47
+  },
+  {
+   "w": "Francis",
+   "start": 28.47,
+   "end": 29.05
+  },
+  {
+   "w": "of",
+   "start": 29.05,
+   "end": 29.2
+  },
+  {
+   "w": "Assisi.",
+   "start": 29.2,
+   "end": 30
+  },
+  {
+   "w": "He",
+   "start": 30,
+   "end": 30.18
+  },
+  {
+   "w": "served",
+   "start": 30.18,
+   "end": 30.72
+  },
+  {
+   "w": "12",
+   "start": 30.72,
+   "end": 31.28
+  },
+  {
+   "w": "years",
+   "start": 31.28,
+   "end": 31.71
+  },
+  {
+   "w": "and",
+   "start": 31.71,
+   "end": 32.1
+  },
+  {
+   "w": "died",
+   "start": 32.1,
+   "end": 32.34
+  },
+  {
+   "w": "on",
+   "start": 32.34,
+   "end": 32.52
+  },
+  {
+   "w": "Easter",
+   "start": 32.52,
+   "end": 33.03
+  },
+  {
+   "w": "Monday,",
+   "start": 33.03,
+   "end": 33.79
+  },
+  {
+   "w": "April",
+   "start": 33.79,
+   "end": 34.25
+  },
+  {
+   "w": "the",
+   "start": 34.25,
+   "end": 34.49
+  },
+  {
+   "w": "21st",
+   "start": 34.49,
+   "end": 35.22
+  },
+  {
+   "w": "of",
+   "start": 35.22,
+   "end": 35.4
+  },
+  {
+   "w": "2025",
+   "start": 35.4,
+   "end": 36.5
+  },
+  {
+   "w": "at",
+   "start": 36.5,
+   "end": 36.66
+  },
+  {
+   "w": "the",
+   "start": 36.66,
+   "end": 37.02
+  },
+  {
+   "w": "age",
+   "start": 37.02,
+   "end": 37.2
+  },
+  {
+   "w": "of",
+   "start": 37.2,
+   "end": 37.57
+  },
+  {
+   "w": "88,",
+   "start": 37.57,
+   "end": 38.21
+  },
+  {
+   "w": "which",
+   "start": 38.21,
+   "end": 38.89
+  },
+  {
+   "w": "began",
+   "start": 38.89,
+   "end": 38.96
+  },
+  {
+   "w": "the",
+   "start": 38.96,
+   "end": 39.23
+  },
+  {
+   "w": "process",
+   "start": 39.23,
+   "end": 39.77
+  },
+  {
+   "w": "that",
+   "start": 39.77,
+   "end": 40.09
+  },
+  {
+   "w": "led",
+   "start": 40.09,
+   "end": 40.33
+  },
+  {
+   "w": "to",
+   "start": 40.33,
+   "end": 40.49
+  },
+  {
+   "w": "the",
+   "start": 40.49,
+   "end": 40.73
+  },
+  {
+   "w": "next",
+   "start": 40.73,
+   "end": 41.37
+  },
+  {
+   "w": "Conclave.",
+   "start": 41.37,
+   "end": 42
+  }
+ ]
+}

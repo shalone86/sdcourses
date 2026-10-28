@@ -32,7 +32,10 @@ sources:
 
 intro:
   text: >-
-    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+    A conclave happened about a year ago. Do you know what that is? Who votes
+    in a conclave, and how were Pope Francis and Pope Leo XIV elected? Let's
+    find out with this lesson. I'm your host, Shalone Cason, and let's begin
+    in the name of the Father and of the Son and of the Holy Spirit.
   notes:
     - "A question to open with: a conclave just happened. How did the cardinals choose Pope Leo XIV, and how did popes get chosen before?"
     - "Current rules: Pope John Paul II's 1996 constitution Universi Dominici Gregis (UDG), with later changes by Benedict XVI. The text on vatican.va is the updated one."
@@ -119,7 +122,9 @@ points:
 
   - heading: "Yes, and a new name"
     quote:
-      lead: After the vote, the one elected is asked if he accepts. Then he becomes pope at once.
+      lead: >-
+        After the vote, the one elected is asked if he accepts. Then he
+        becomes pope at once and he
       text: >-
         is immediately Bishop of the Church of Rome, true Pope and Head of the
         College of Bishops
@@ -128,9 +133,9 @@ points:
       highlight: immediately Bishop of the Church of Rome
     text: >-
       The Cardinal Dean asks the one elected, "Do you accept your canonical
-      election as Supreme Pontiff?" If he says yes, he is asked, "By what
-      name do you wish to be called?" From that moment he is pope. No
-      emperor or king needs to confirm him, which was once an issue. The
+      election as Supreme Pontiff?" If he says yes, he is asked, "By what name
+      do you wish to be called?" From that moment he is pope. No emperor or
+      king needs to confirm him, which, in the past, was a serious issue. The
       Church teaches that the pope's authority comes from Christ.
     visuals:
       - type: chain
@@ -209,7 +214,13 @@ points:
 
 outro:
   text: >-
-    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+    So, how is a new Pope elected? The cardinals gather together at the
+    Vatican after the death or resignation of the previous Pope. The cardinals
+    under eighty all cast their vote in secret. The winning cardinal must
+    receive two-thirds of the votes to be named as a successor of Saint Peter.
+    That was Pope Francis in 2013 and Pope Leo XIV last year. Thanks for
+    learning with us. I've been your host, Shalone, and until next time, stay
+    holy, my friends.
   notes:
     - "Recap: the cardinals vote · two thirds of the votes · accepting and choosing a name · Pope Francis, 2013 · Pope Leo XIV, 2025."
     - "Next in the course: What Infallibility Does (and Doesn't) Mean."
