@@ -24,7 +24,7 @@ stand=56
 s_grace=32 s_chest=33
 s_rosary=34 s_bucket=35
 s_coffee=36 s_car=37
-s_decor={40,41,42,43,44,45}
+s_decor={41,42,43,44,45} -- 40 is the big tree
 -- 16x16 buildings
 s_house=48 s_church=50 s_hosp=52
 s_chapel=54
@@ -261,13 +261,21 @@ function make_town()
  for i=1,150 do
   add(decor,{x=rnd(world),y=rnd(world),s=rnd(s_decor)})
  end
+ -- big trees, as tall as a house
+ trees={}
+ for i=1,60 do
+  local x,y=rnd(world),rnd(world)
+  if free(x-8,y-16) then add(trees,{x=x,y=y}) end
+ end
 end
 
+-- room for a building at x,y?
+-- (buildings are 32x32: 4 people tall)
 function free(x,y)
- if abs(x-256)<40 and abs(y-260)<40 then return false end
- if abs(x-chapel_x)<32 and abs(y-chapel_y)<32 then return false end
+ if abs(x-256)<44 and abs(y-260)<44 then return false end
+ if abs(x-chapel_x)<44 and abs(y-chapel_y)<44 then return false end
  for b in all(bldg) do
-  if abs(b.x-x)<32 and abs(b.y-y)<32 then return false end
+  if abs(b.x-x)<44 and abs(b.y-y)<44 then return false end
  end
  return true
 end
@@ -278,8 +286,8 @@ end
 function solid(x,y)
  if fget(mget(x\8%64,y\8%64),0) then return true end
  for b in all(bldg) do
-  if b.s and x>b.x and x<b.x+16
-   and y>b.y+6 and y<b.y+17 then
+  if b.s and x>b.x-8 and x<b.x+24
+   and y>b.y+2 and y<b.y+17 then
    return true
   end
  end
@@ -865,62 +873,90 @@ function thing(n,x,y,c)
  if drawn(n) then spr(n,x-4,y-4) else circfill(x,y,2,c) end
 end
 
+-- buildings until she draws them,
+-- on a 16x16 grid drawn twice the
+-- size (g: one grid square)
+function g(a,b,c,d,col)
+ rectfill(gx+a*2,gy+b*2,gx+c*2+1,gy+d*2+1,col)
+end
+function gbox(a,b,c,d)
+ g(a,b,c,b,1) g(a,d,c,d,1) g(a,b,a,d,1) g(c,b,c,d,1)
+end
+-- a roof: rows from (l..r) at y,
+-- one wider each row down
+function roof(l,r,y,rows,col)
+ for i=0,rows-1 do
+  g(l-i,y+i,r+i,y+i,col)
+  g(l-i-1,y+i,l-i-1,y+i,1) g(r+i+1,y+i,r+i+1,y+i,1)
+ end
+ g(l,y-1,r,y-1,1)
+end
+
 function shape(b)
- local x,y=b.x,b.y
+ gx,gy=b.x-8,b.y-16
  if b.k=="chapel" then
-  rectfill(x+3,y+8,x+12,y+15,7)
-  rectfill(x+7,y+2,x+8,y+8,7)
-  line(x+5,y+4,x+10,y+4,7)
+  g(3,8,12,15,7) gbox(3,8,12,15)
+  g(7,1,8,7,7) g(5,3,10,4,7)
+  g(7,12,8,15,4)
  elseif b.k=="church" then
-  rectfill(x,y+4,x+15,y+15,7)
-  rectfill(x+7,y-5,x+8,y+4,7)
-  line(x+5,y-3,x+10,y-3,7)
-  rectfill(x+6,y+10,x+9,y+15,4)
+  g(0,5,15,15,7) gbox(0,5,15,15)
+  roof(6,9,2,3,7)
+  g(7,-3,8,1,10) g(5,-2,10,-1,10)
+  g(6,10,9,15,4)
+  g(2,8,3,10,12) g(12,8,13,10,12)
  elseif b.k=="hosp" then
-  rectfill(x,y+2,x+15,y+15,7)
-  rectfill(x+7,y+4,x+8,y+11,8)
-  rectfill(x+4,y+7,x+11,y+8,8)
+  g(0,2,15,15,7) gbox(0,2,15,15)
+  g(7,4,8,11,8) g(4,7,11,8,8)
+  g(6,13,9,15,12)
  else
   house(b)
  end
 end
 
--- placeholder houses until she draws
--- hers: 1 cottage, 2 tall house,
--- 3 wide house, 4 cottage with a tree
+-- 4 kinds of house: 1 cottage,
+-- 2 tall house, 3 wide house,
+-- 4 cottage with a tree
 function house(b)
- local x,y,w,r=b.x,b.y,b.wc,b.rc
- local v=b.v or 1
+ local w,r,v=b.wc,b.rc,b.v or 1
  if v==1 then
-  rectfill(x+2,y+8,x+13,y+15,w) rect(x+2,y+8,x+13,y+15,1)
-  for i=0,6 do line(x+7-i-1,y+2+i,x+8+i+1,y+2+i,r) end
-  line(x+1,y+8,x+7,y+1,1) line(x+8,y+1,x+14,y+8,1)
-  rectfill(x+7,y+11,x+9,y+15,4)
-  rectfill(x+4,y+10,x+5,y+11,12)
-  rectfill(x+11,y+10,x+12,y+11,12)
+  g(2,8,13,15,w) gbox(2,8,13,15)
+  roof(7,8,2,6,r)
+  g(7,11,8,15,4)
+  g(4,10,5,11,12) g(10,10,11,11,12)
  elseif v==2 then
-  rectfill(x+4,y+4,x+11,y+15,w) rect(x+4,y+4,x+11,y+15,1)
-  rectfill(x+3,y+1,x+12,y+3,r) rect(x+3,y+1,x+12,y+3,1)
-  rectfill(x+6,y+6,x+9,y+7,12)
-  rectfill(x+6,y+9,x+9,y+10,12)
-  rectfill(x+7,y+12,x+8,y+15,4)
+  g(4,4,11,15,w) gbox(4,4,11,15)
+  g(3,1,12,3,r) gbox(3,1,12,3)
+  g(6,6,9,7,12) g(6,9,9,10,12)
+  g(7,12,8,15,4)
  elseif v==3 then
-  rectfill(x,y+9,x+15,y+15,w) rect(x,y+9,x+15,y+15,1)
-  for i=0,3 do line(x+3-i,y+5+i,x+12+i,y+5+i,r) end
-  line(x+3,y+5,x+12,y+5,1)
-  line(x+3,y+5,x,y+8,1) line(x+12,y+5,x+15,y+8,1)
-  rectfill(x+2,y+11,x+4,y+12,12)
-  rectfill(x+11,y+11,x+13,y+12,12)
-  rectfill(x+7,y+11,x+8,y+15,4)
+  g(0,9,15,15,w) gbox(0,9,15,15)
+  roof(3,12,5,4,r)
+  g(2,11,4,12,12) g(11,11,13,12,12)
+  g(7,11,8,15,4)
  else
-  rectfill(x+1,y+9,x+10,y+15,w) rect(x+1,y+9,x+10,y+15,1)
-  for i=0,4 do line(x+5-i,y+4+i,x+6+i,y+4+i,r) end
-  rectfill(x+5,y+12,x+6,y+15,4)
-  rectfill(x+2,y+11,x+3,y+12,12)
-  -- a tree beside it
-  rectfill(x+13,y+12,x+13,y+15,4)
-  circfill(x+13,y+9,3,11) circ(x+13,y+9,3,1)
+  g(1,9,10,15,w) gbox(1,9,10,15)
+  roof(5,6,4,5,r)
+  g(5,12,6,15,4)
+  g(2,11,3,12,12)
+  g(13,12,13,15,4)
+  circfill(gx+27,gy+19,6,11) circ(gx+27,gy+19,6,1)
  end
+end
+
+-- a big tree (4 people tall): her
+-- drawing in slot 40, made 4x, or
+-- a round one until she draws it
+function tree(x,y)
+ if drawn(40) then
+  sspr(0,40,8,8,x-16,y-32,32,32)
+  return
+ end
+ rectfill(x-2,y-12,x+1,y,4)
+ rect(x-3,y-12,x+2,y,1)
+ circfill(x,y-20,11,1)
+ circfill(x,y-20,10,11)
+ circfill(x-3,y-23,4,3)
+ circfill(x+4,y-17,3,3)
 end
 
 function draw_person(q)
@@ -957,7 +993,7 @@ function draw_map()
    local c=15
    if b.k=="church" then c=7
    elseif b.k=="hosp" or b.k=="chapel" then c=8 end
-   rectfill(b.x/4,b.y/4,b.x/4+3,b.y/4+3,c)
+   rectfill((b.x-8)/4,(b.y-16)/4,(b.x-8)/4+7,(b.y-16)/4+7,c)
   end
  end
  for it in all(items) do pset(it.x/4,it.y/4,9) end
@@ -1022,22 +1058,25 @@ end
 
 -- the start screen
 function draw_title()
- cls(1)
+ -- sky and a green hill to stand on
+ cls(12)
+ circfill(64,150,90,3)
  for i=0,40 do
   -- falling grace
   local y=(i*37+time()*20)%140-8
-  pset((i*53)%128,y,i%3==0 and 10 or 13)
+  pset((i*53)%128,y,i%3==0 and 10 or 7)
  end
+ print("\^w\^tblessed!",33,21,1)
  print("\^w\^tblessed!",32,20,10)
  -- your priest, big
  local n=s_priest+flr(time()*2)%2
  if drawn(s_priest) then
-  sspr(n%16*8,n\16*8,8,8,48,40,32,32)
+  sspr(n%16*8,n\16*8,8,8,48,38,32,32)
  end
  print("walk around town and",24,80,7)
  print("bless everyone who asks",18,87,7)
- print("best: "..dget(0),46,98,9)
- print("\151 start   \142 book",26,114,6)
+ print("best: "..dget(0),46,98,10)
+ print("\151 start   \142 book",26,114,7)
 end
 
 function _draw()
@@ -1056,10 +1095,14 @@ function _draw()
  for b in all(bldg) do
   at(b.x,b.y)
   if b.s then
-   if drawn(b.s) then spr(b.s,b.x,b.y,2,2)
+   -- drawn at twice the size, its
+   -- door where the 16x16 one was
+   if drawn(b.s) then
+    sspr(b.s%16*8,b.s\16*8,16,16,b.x-8,b.y-16,32,32)
    else shape(b) end
   end
  end
+ for tr in all(trees) do at(tr.x,tr.y) tree(tr.x,tr.y) end
  at(church_x,church_y)
  -- the marian garden grows
  for i=1,garden*6 do
@@ -1343,14 +1386,14 @@ __sfx__
 000606002b560005002b5600050030562305550000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000f00002706000000000000000000000000002805000000000000000000000000002706028050280502805028050280502706027065000000000027060280602806028060280602806500000000000000000000
-000f00002706028060280602806028060280652d0402d0402d0402d0402d045000002405024050240502405024050240551d0401f0301f0301f0301f0301f0301f0301f0301f0301f0301f0301f0350000000000
-000f00002704028050280502805028050280552805000000000000000000000000002706028050280502805028050280552d0402d0402d0402d04528060280602806028060280602806028060280602806500000
-000f00002706028060280602806028060280652d0402d0402d0402d0402d0402d0452406024060240602406024060240651f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f045
-000f00002504026030260302603026030260302603026030260302603026030260302603026030260302603026030260302603026030260302603026030260352404024045260600000028040280452b0502b050
-000f00002b0502b0502b0502b0502b0502b0502b0502b0502b0502b0502b0502b0551f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f0401f04500000
-000f00002506026040260402604026040260402604026040260402604026040260402604026040260402604026040260402604026040260402604026045000002404024045260502605528040280452b0602b060
-000f00002b0602b0602b0602b0602b0602b0602b0602b0602b0602b0602b0602b0651f0401f0401f0401f0401f0401f0401f0401f0401f0401f04518060180601806018060180601806018060180601806500000
+000f00002706000000000000000000000000002805000000000000000000000000002706028050280502805228052280522706027065000000000027060280602806228062280622806500000000000000000000
+000f00002706028060280622806228062280652d0402d0402d0422d0422d045000002405024050240522405224052240551d0401f0301f0321f0321f0321f0321f0321f0321f0321f0321f0321f0350000000000
+000f00002704028050280522805228052280552805000000000000000000000000002706028050280522805228052280552d0402d0402d0422d04528060280602806228062280622806228062280622806500000
+000f00002706028060280622806228062280652d0402d0402d0422d0422d0422d0452406024060240622406224062240651f0401f0401f0421f0421f0421f0421f0421f0421f0421f0421f0421f0421f0421f045
+000f00002504026030260322603226032260322603226032260322603226032260322603226032260322603226032260322603226032260322603226032260352404024045260600000028040280452b0502b050
+000f00002b0522b0522b0522b0522b0522b0522b0522b0522b0522b0522b0522b0551f0401f0401f0421f0421f0421f0421f0421f0421f0421f0421f0421f0421f0421f0421f0421f0421f0421f0421f04500000
+000f00002506026040260422604226042260422604226042260422604226042260422604226042260422604226042260422604226042260422604226045000002404024045260502605528040280452b0602b060
+000f00002b0622b0622b0622b0622b0622b0622b0622b0622b0622b0622b0622b0651f0401f0401f0421f0421f0421f0421f0421f0421f0421f04518060180601806218062180621806218062180621806500000
 000f00000507000000000000000000000000000000000000000000000005070000000000005070000000000005070050700000000000000000000000000000000000000000050700507000000050700507000000
 000f0000000700007000000000000000000000000000000000000000000007000070000000007000070000000007000070000000000000000000000c0600c0600000000000000000000000070000700a07000000
 000f00000507005070000000000000000000000000000000000000000005070050700000005070000000000005070050700000000000000000000000000000000000000000050700507000000050700507000000

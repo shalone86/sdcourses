@@ -99,13 +99,16 @@ const parts = tracks.filter((t) => !t.drums && !without.includes(t.name)).slice(
     let p = n.key - 36; // PICO-8 pitch 0 is MIDI C2 (pitch 33 is A 440)
     while (p < 0) p += 12; while (p > 63) p -= 12;
     const vol = Math.max(1, Math.min(7, Math.round(n.vel / 127 * 7) - (quiet[tr.name] || 0)));
-    // effects: a long melody note gets vibrato (2) after its first 2
-    // steps; harmony notes fade out (5) on their last step, like a
-    // plucked piano; the bass plays plain
+    // effects: long melody and harmony notes get vibrato (2) after
+    // their first 2 steps; harmony notes fade out (5) on their last
+    // step, like a plucked piano; the bass plays plain
     const st = at(n), en = until(n);
     let fx = 0;
     if (useFx && tr.name === 'melody') { if (en - st >= 4 && s - st >= 2) fx = 2; }
-    else if (useFx && tr.name === 'harmony' && s === en - 1 && en - st >= 2) fx = 5;
+    else if (useFx && tr.name === 'harmony') {
+      if (s === en - 1 && en - st >= 2) fx = 5; // fades on its last step
+      else if (en - st >= 4 && s - st >= 2) fx = 2; // long notes: vibrato
+    }
     return {p, wave, vol, fx};
   });
   // the melody slides (1) into the first note of each phrase, from a
