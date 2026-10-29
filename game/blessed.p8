@@ -604,6 +604,13 @@ function drop_grace(x,y,v)
  end
 end
 
+-- a blessing: water splashes out to
+-- r, and everyone in reach (only
+-- kind k, if given) is blessed
+function sb(x,y,r,k)
+ splash(x,y,r) bless(x,y,r,k)
+end
+
 function splash(x,y,r)
  for i=1,10 do
   local a=rnd(1)
@@ -631,8 +638,7 @@ function use(k)
   for q in all(people) do
    if not q.ev then q.need=1 end
   end
-  splash(p.x,p.y-4,70)
-  bless(p.x,p.y,90)
+  sb(p.x,p.y,90)
   say("holy water for everyone!")
  elseif k=="coffee" then
   had_coffee=true
@@ -761,7 +767,7 @@ function _update()
  -- the pope blesses everyone on
  -- screen, once a minute
  if popemode and t%1800==0 then
-  splash(p.x,p.y-4,70) bless(p.x,p.y,90) say("urbi et orbi!")
+  sb(p.x,p.y,90) say("urbi et orbi!")
  end
  if t%240==0 then spawn_home() end
  if t%max(20,150-church*20-garden*20)==0 then spawn_church() end
@@ -804,8 +810,7 @@ function _update()
  p.cd-=1
  if p.cd<=0 then
   p.cd=p.rate
-  splash(p.x,p.y-4,p.r)
-  bless(p.x,p.y-4,p.r)
+  sb(p.x,p.y-4,p.r)
   -- at the hospital, as chaplain
   if chap and near(p.x,p.y,hosp_x+8,hosp_y+20,p.r+14) then
    heal(pow)
@@ -817,8 +822,7 @@ function _update()
   ccd-=1
   if ccd<=0 then
    ccd=max(20,70-chapel_deacons*20)
-   splash(chapel_x+8,chapel_y+24,22)
-   bless(chapel_x+8,chapel_y+24,24,"chapel")
+   sb(chapel_x+8,chapel_y+24,24,"chapel")
   end
  end
 
@@ -828,8 +832,7 @@ function _update()
   dcd-=1
   if dcd<=0 then
    dcd=max(15,70-deacons*14)
-   splash(church_x+8,church_y+22,22)
-   bless(church_x+8,church_y+22,24,"church")
+   sb(church_x+8,church_y+22,24,"church")
   end
  end
 
@@ -968,23 +971,17 @@ function at(x,y)
  camera(p.x-64-(wd(x,p.x)+p.x-x),p.y-64-(wd(y,p.y)+p.y-y))
 end
 
-function sprite(n,x,y,fl,c)
- -- her drawing (2 frames), or a dot
- if drawn(n) then
-  spr(n+flr(t/15)%2,x-4,y-8,1,1,fl)
- else
-  circfill(x,y-4,3,c)
- end
+-- her drawing (2 frames), feet at x,y
+function sprite(n,x,y,fl)
+ spr(n+flr(t/15)%2,x-4,y-8,1,1,fl)
 end
 
 -- walking or standing, wearing look
 -- (a color swap); walk falls back
 -- to stand if it isn't drawn yet
-function figure(stand_n,walk_n,moving,x,y,fl,look,c)
+function figure(stand_n,walk_n,moving,x,y,fl,look)
  for a,b in pairs(look or {}) do pal(a,b) end
- local n=stand_n
- if moving and drawn(walk_n) then n=walk_n end
- sprite(n,x,y,fl,c)
+ sprite(moving and walk_n or stand_n,x,y,fl)
  pal()
 end
 
@@ -1028,10 +1025,10 @@ function draw_person(q)
  end
  -- walking, or standing still
  local n=q.s
- if (q.there or not q.tx) and q.k!="walk" and drawn(q.s+stand) then
+ if (q.there or not q.tx) and q.k!="walk" then
   n=q.s+stand
  end
- sprite(n,q.x,q.y,q.fl,12)
+ sprite(n,q.x,q.y,q.fl)
  pal()
  -- a big need glows
  if q.ev and t%16<10 then circ(q.x,q.y-4,7,9) end
@@ -1072,9 +1069,7 @@ function draw_map()
  if hosp_need>0 then print("+"..hosp_need,hosp_x/4-2,hosp_y/4+6,chap and 8 or 5) end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  rectfill(0,120,127,127,1)
- print("you",2,122,12)
- print("asking",18,122,10)
- print("big need",44,122,9)
+ print("\fcyou  \faasking  \f9big need",2,122)
  print("\142map \151book",76,122,6)
 end
 
@@ -1188,7 +1183,7 @@ function _draw()
   print("+"..hosp_need,hosp_x+3,hosp_y-12,c)
  end
  for i=1,chapel_deacons do
-  figure(s_deacon,s_deacon_walk,false,chapel_x+i*6,chapel_y+24,false,cdlooks[i],9)
+  figure(s_deacon,0,false,chapel_x+i*6,chapel_y+24,false,cdlooks[i])
  end
  if hosp_pile>0 then
   thing(s_grace,hosp_x+8,hosp_y+26,10)
@@ -1209,40 +1204,40 @@ function _draw()
  for q in all(people) do draw_person(q) end
  at(church_x,church_y)
  for i=1,deacons do
-  figure(s_deacon,s_deacon_walk,false,church_x-6+i*6,church_y+22,false,dlooks[i],9)
+  figure(s_deacon,0,false,church_x-6+i*6,church_y+22,false,dlooks[i])
  end
  for h in all(helpers) do
   at(h.x,h.y)
-  figure(s_priest,s_priest_walk,h.mv,h.x,h.y,h.fl,h.look,13)
+  figure(s_priest,s_priest_walk,h.mv,h.x,h.y,h.fl,h.look)
  end
  camera(p.x-64,p.y-64)
  ovalfill(p.x-3,p.y-1,p.x+3,p.y+1,1)
  -- driving: her car (the parish van
  -- with that combo), you inside
  local car=van and s_van or s_car
- if l("a car")>0 and p.mv and drawn(car) then
+ if l("a car")>0 and p.mv then
   spr(car+flr(t/4)%4*2,p.x-8,p.y-14,2,2,p.fl)
  else
  -- you: blessing (4 frames, just
  -- after each blessing), walking,
  -- or standing. bishop once you are.
  local st,wk,bl=chars[who].s,chars[who].w,who==1 and s_priest_bless
- if who==1 and bishop and drawn(s_bishop) then
+ -- the priest dresses as a bishop
+ -- once the cathedral is built
+ if who==1 and (bishop or cath) then
   st,wk,bl=s_bishop,s_bishop_walk,s_bishop_bless
  end
  local since=p.rate-p.cd
- if bl and since<12 and drawn(bl) then
+ if bl and since<12 then
   spr(bl+since\3,p.x-4,p.y-8,1,1,p.fl)
  else
-  figure(st,wk,p.mv,p.x,p.y,p.fl,nil,0)
+  figure(st,wk,p.mv,p.x,p.y,p.fl)
  end
  end
  -- your guardian angel, bringing grace
  if angel_t>0 then
   angel_t-=1
-  if drawn(s_angel) then
-   spr(s_angel+flr(t/4)%4,p.x+(p.fl and -12 or 4),p.y-16,1,1,p.fl)
-  end
+  spr(s_angel+flr(t/4)%4,p.x+(p.fl and -12 or 4),p.y-16,1,1,p.fl)
  end
  for d in all(drops) do
   at(d.x,d.y) pset(d.x,d.y,d.t%2==0 and 12 or 7)
@@ -1257,6 +1252,14 @@ function _draw()
  if season==4 then
   for i=1,50 do
    pset((i*37+t*.3-p.x)%128,(i*53+t*(.5+i%3*.2)-p.y)%128,7)
+  end
+ end
+ -- spring: showers come and go
+ -- (about 40 s of rain, 40 s dry)
+ if season==1 and t\1200%2==1 then
+  for i=1,40 do
+   local x,y=(i*41-t-p.x)%128,(i*29+t*4-p.y)%128
+   line(x,y,x-1,y+3,12)
   end
  end
 
