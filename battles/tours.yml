@@ -1,0 +1,113 @@
+# Battle of Tours, October 732 (BATTLES.md). Stand-in drawings: replace them by drawing the same names.
+# Positions are cells; a unit's spot is its bottom-left cell. Times are seconds.
+# What the sources agree on: Frankish infantry under Charles Martel met an Umayyad army (mostly
+# cavalry) under Abd al-Rahman al-Ghafiqi; the Franks held; Abd al-Rahman was killed; the Umayyads
+# withdrew. The exact site (near Tours and Poitiers) and any raid on their camp are uncertain.
+name: tours
+title: The Battle of Tours, 732
+view: [16, 9]
+seconds: 40
+tiles: {g: tile-grass, G: tile-grass2, t: tile-tree, T: tile-forest, h: tile-hill, r: tile-road, w: tile-river, f: tile-ford, c: tile-camp}
+map:
+  - "tggttgtggggtggggGgtTTtttTtTTTTTT"
+  - "gtttgggtttgggggggGtTTTTTTTTTtTTT"
+  - "GggGGggggGGGgggggtTttTtTTtTTtTTT"
+  - "gccccccccgggtggGggGgtggthhhhhTTT"
+  - "gccccccccgggGGggGgggGggghhhhhTTT"
+  - "gccccccccGggggggggGgGgGGhhhhhTTT"
+  - "gccccccccrrrrrrrrrrrrrgghhhhhTTT"
+  - "gccccccccggGgrrrrggggGGghhhhhTTT"
+  - "gccccccccGgggggggggggggghhhhhTTT"
+  - "ggggggggggGtGGggtGgtgtGtggGgGTTT"
+  - "wwwwwwwwwwwwwfffwwwwwwwwwwwwwwww"
+  - "wwwwwwwwwwwwwfffwwwwwwwwwwwwwwww"
+props:
+  - {sprite: prop-tent, at: [2, 5]}
+  - {sprite: prop-tent, at: [5, 4]}
+  - {sprite: prop-tent, at: [3, 8]}
+  - {sprite: prop-tent, at: [6, 7]}
+  - {sprite: prop-banner-umayyad, at: [1, 4]}
+  - {sprite: prop-banner-frank, at: [24, 6]}
+units:
+  - {id: fr1, kind: frank-spearman, at: [22, 4]}
+  - {id: fr2, kind: frank-spearman, at: [22, 5]}
+  - {id: fr3, kind: frank-spearman, at: [22, 6]}
+  - {id: fr4, kind: frank-spearman, at: [22, 7]}
+  - {id: fr5, kind: frank-spearman, at: [22, 8]}
+  - {id: fr6, kind: frank-spearman, at: [23, 4]}
+  - {id: fr7, kind: frank-spearman, at: [23, 5]}
+  - {id: fr8, kind: frank-spearman, at: [23, 6]}
+  - {id: fr9, kind: frank-spearman, at: [23, 7]}
+  - {id: fr10, kind: frank-spearman, at: [23, 8]}
+  - {id: ax1, kind: frank-axeman, at: [22, 3]}
+  - {id: ax2, kind: frank-axeman, at: [22, 9]}
+  - {id: charles, kind: charles, at: [25, 6]}
+  - {id: leader, kind: umayyad-leader, at: [13, 6], face: right, speed: 56}
+  - {id: rd1, kind: umayyad-rider, at: [8, 4], face: right, speed: 56}
+  - {id: rd2, kind: umayyad-rider, at: [8, 6], face: right, speed: 56}
+  - {id: rd3, kind: umayyad-rider, at: [8, 8], face: right, speed: 56}
+  - {id: rd4, kind: umayyad-rider, at: [10, 5], face: right, speed: 56}
+  - {id: rd5, kind: umayyad-rider, at: [10, 7], face: right, speed: 56}
+  - {id: rd6, kind: umayyad-rider, at: [10, 9], face: right, speed: 56}
+  - {id: aq1, kind: aquitaine-rider, at: [16, 8], face: left, speed: 56, hidden: true}
+  - {id: aq2, kind: aquitaine-rider, at: [18, 8], face: left, speed: 56, hidden: true}
+script:
+  - {t: 0, camera: [0, 2]}
+  - {t: 0, say: "October 732: an Umayyad army pushes north into Frankish lands.", dur: 5}
+  - {t: 5, camera: [12, 2], dur: 5}
+  - {t: 5, say: "Charles Martel meets them near Tours and Poitiers. The exact spot is not known.", dur: 6, note: "site uncertain"}
+  - {t: 8, unit: charles, move: [[24, 4], [24, 8]], speed: 24}
+  - {t: 11.5, unit: charles, face: left, act: point, dur: 1.5}
+  - {t: 11, say: "The Franks stand on foot, packed tight on high ground among the trees.", dur: 5}
+  - {t: 13, unit: rd1, move: [[20, 4]]}
+  - {t: 13, fx: dust, at: [9, 4]}
+  - {t: 14.7, unit: rd1, act: attack, dur: 0.8}
+  - {t: 14.8, fx: spark, at: [21, 4]}
+  - {t: 13, unit: rd2, move: [[20, 6]]}
+  - {t: 13, fx: dust, at: [9, 6]}
+  - {t: 14.7, unit: rd2, act: attack, dur: 0.8}
+  - {t: 14.8, fx: spark, at: [21, 6]}
+  - {t: 13, unit: rd3, move: [[20, 8]]}
+  - {t: 13, fx: dust, at: [9, 8]}
+  - {t: 14.7, unit: rd3, act: attack, dur: 0.8}
+  - {t: 14.8, fx: spark, at: [21, 8]}
+  - {t: 14.75, unit: fr1, act: attack, dur: 0.8}
+  - {t: 14.75, unit: fr3, act: attack, dur: 0.8}
+  - {t: 14.75, unit: fr5, act: attack, dur: 0.8}
+  - {t: 15.8, unit: rd2, act: fall}
+  - {t: 15.8, unit: fr3, act: fall}
+  - {t: 15.8, unit: rd1, move: [[10, 4]]}
+  - {t: 15.8, unit: rd3, move: [[10, 8]]}
+  - {t: 17.5, unit: rd4, move: [[20, 5]]}
+  - {t: 18.9, unit: rd4, act: attack, dur: 0.8}
+  - {t: 19.0, fx: spark, at: [21, 5]}
+  - {t: 17.5, unit: rd5, move: [[20, 7]]}
+  - {t: 18.9, unit: rd5, act: attack, dur: 0.8}
+  - {t: 19.0, fx: spark, at: [21, 7]}
+  - {t: 17.5, unit: rd6, move: [[20, 9]]}
+  - {t: 18.9, unit: rd6, act: attack, dur: 0.8}
+  - {t: 19.0, fx: spark, at: [21, 9]}
+  - {t: 18.95, unit: fr2, act: attack, dur: 0.8}
+  - {t: 18.95, unit: fr4, act: attack, dur: 0.8}
+  - {t: 19.9, unit: rd5, act: fall}
+  - {t: 20.0, unit: rd4, move: [[10, 5]]}
+  - {t: 20.0, unit: rd6, move: [[10, 9]]}
+  - {t: 21, say: "The line holds.", dur: 3.5}
+  - {t: 22.5, unit: leader, move: [[20, 5]]}
+  - {t: 23.55, unit: fr2, act: attack, dur: 0.8}
+  - {t: 23.6, fx: spark, at: [21, 5]}
+  - {t: 24.6, unit: leader, act: fall}
+  - {t: 24.8, say: "Abd al-Rahman, the Umayyad commander, is killed.", dur: 4.5}
+  - {t: 29, camera: [0, 2], dur: 4}
+  - {t: 29.5, unit: rd1, move: [[-3, 6]], speed: 56}
+  - {t: 29.5, unit: rd3, move: [[-3, 6]], speed: 56}
+  - {t: 29.5, unit: rd4, move: [[-3, 6]], speed: 56}
+  - {t: 29.5, unit: rd6, move: [[-3, 6]], speed: 56}
+  - {t: 29, say: "The Umayyad army withdrew, and the Franks held the field.", dur: 5, note: "sources agree the Umayyads withdrew"}
+  - {t: 33, unit: aq1, show: true}
+  - {t: 33, unit: aq2, show: true}
+  - {t: 33, unit: aq1, move: [[6, 8]]}
+  - {t: 33.4, unit: aq2, move: [[8, 8]]}
+  - {t: 34.9, unit: aq1, act: attack, dur: 1}
+  - {t: 35.0, fx: spark, at: [5, 8]}
+  - {t: 34, say: "Some accounts say riders of Duke Eudes of Aquitaine raided their camp.", dur: 5, note: "contested: not in every account, keep hedged"}

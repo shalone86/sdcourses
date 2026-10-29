@@ -46,6 +46,9 @@ HANDOFF.md.**
   for kids. They guide and react; they never stand for a whole idea. Things like a chalice or the
   Eucharist get a real picture (Wikimedia etc.) or a 2D shape sketch (like the iconostasis). She
   adjusts everything in the Timing tab.
+- Battles (BATTLES.md): `type: battle` scenes are PICO-8-style game footage (tile map, units, camera) built from
+  `battles/<name>.yml` and her 8 × 8 drawings; `npm run battle -- <name>` renders one alone. Stand-in drawings are
+  marked `"standin": true`; she redraws them under the same names. Keep contested history hedged.
 - Maps can highlight `areas:`: a country (Natural Earth name or a common one,
   "United States"), a continent, a group of countries (EU, NATO, BRICS…;
   members as of 2025), or an empire (approximate, at about its peak; those
