@@ -119,6 +119,11 @@ seasons={"spring","summer","fall","winter"}
 -- green, tan, snow. (her leaves
 -- are color 3, so not that)
 grounds={138,139,134,7}
+-- building colors to pick from
+-- (not 15 or 7: her windows and
+-- doors use those)
+walls={13,6,9,12,14,4}
+roofs={2,8,4,5,12,3}
 vests={7,11,11,2} -- white, green, green, purple
 
 cartdata("sdcason_blessed")
@@ -217,7 +222,8 @@ ups={
   ok=function() return hosp_priests>0 end,
   f=function()
    chapel=true
-   add(bldg,{x=chapel_x,y=chapel_y,s=s_chapel,k="chapel"})
+   add(bldg,{x=chapel_x,y=chapel_y,s=s_chapel,k="chapel",
+    wc=hosp_wc,rc=hosp_rc}) -- matches the hospital
   end},
  {n="chapel relic",d="draws more; heals",max=1,
   ok=function() return chapel end,
@@ -294,8 +300,13 @@ end
 
 function make_town()
  bldg={}
- add(bldg,{x=church_x,y=church_y,s=s_church,k="church"})
- add(bldg,{x=hosp_x,y=hosp_y,s=s_hosp,k="hosp"})
+ -- her buildings get random wall and
+ -- roof colors (she designed them in
+ -- lavender or grey walls, purple roofs)
+ add(bldg,{x=church_x,y=church_y,s=s_church,k="church",
+  wc=rnd(walls),rc=rnd(roofs)})
+ hosp_wc,hosp_rc=rnd(walls),rnd(roofs)
+ add(bldg,{x=hosp_x,y=hosp_y,s=s_hosp,k="hosp",wc=hosp_wc,rc=hosp_rc})
  -- doors she paints in the map
  -- editor (sprite flag 1) send
  -- people out too
@@ -310,7 +321,7 @@ function make_town()
    -- one of 4 kinds of house, in
    -- its own wall and roof colors
    add(bldg,{x=x,y=y,s=s_house,k="house",
-    v=flr(rnd(4))+1,wc=rnd({15,6,7,9,13}),rc=rnd({8,4,2,5,12})})
+    v=flr(rnd(4))+1,wc=rnd(walls),rc=rnd(roofs)})
   end
  end
  -- bushes all year; lilies in
@@ -1190,7 +1201,12 @@ function _draw()
    -- drawn at twice the size, its
    -- door where the 16x16 one was
    local n=art(b)
-   if n then bigspr(n,b.x-8,b.y-16)
+   if n then
+    -- her walls (13 houses, 6 church
+    -- and hospital) and roof (2)
+    pal(13,b.wc) pal(6,b.wc) pal(2,b.rc)
+    bigspr(n,b.x-8,b.y-16)
+    pal()
    else shape(b) end
   end
  end
