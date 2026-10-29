@@ -1,6 +1,6 @@
 {
   "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide and 2 tall). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
-  "_slots": "0 priest idle, 2 bishop idle, 4 deacon idle, 6 priest walk, 8 priest blessing (4 frames), 12 bishop walk, 14 deacon walk, 16-27 people walking (6 bases), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 37 car, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 56 bishop blessing (4 frames), 84 angel (4 frames), 72-83 people standing (6 bases, same order as walking)",
+  "_slots": "0 priest idle, 2 bishop idle, 4 deacon idle, 6 priest walk, 8 priest blessing (4 frames), 12 bishop walk, 14 deacon walk, 16-27 people walking (6 bases), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 56 bishop blessing (4 frames), 84 angel (4 frames), 96 car and 104 parish van (16x16, 4 frames each), 72-83 people standing (6 bases, same order as walking)",
   "slots": {
     "0": "priest-idle",
     "2": "bishop-idle",
@@ -15,7 +15,9 @@
     "22": "thick-woman-walk",
     "24": "guy-beard-walk",
     "26": "thick-beard-guy-walk",
+    "33": "gift-box",
     "34": "rosary",
+    "35": "holy-water-bucket",
     "36": "coffee-mug",
     "41": "bush-1",
     "42": "bush-2",
@@ -29,9 +31,11 @@
     "78": "thick-woman-idle",
     "80": "guy-beard-idle",
     "82": "thick-beard-guy-idle",
-    "84": "angel"
+    "84": "angel",
+    "96": "car",
+    "104": "parish-van"
   },
-  "_big": "Her 32x32 art, too big for the sprite sheet: stored in the code and unpacked at start into two extra sprite sheets (upper memory). Order is fixed: add new ones at the end.",
+  "_big": "Her 32x32 art: the first 8 on the bottom half of the sprite sheet, the rest stored in the code and unpacked at start into an extra sprite sheet (upper memory). Order is fixed: add new ones at the end.",
   "big": [
     "church-1",
     "church-2",
