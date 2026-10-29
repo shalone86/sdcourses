@@ -161,6 +161,7 @@ function _init()
  lv={} -- level of each upgrade
  score=0 xp=0 need=3 lvl=1
  lost={0,0,0} lost_t=0 lost_c=0 -- time lost
+ car_c,car_r=rnd({8,9,10,11,12,14,6,13}),rnd(roofs)
  t=0 missed=0 msg="" msg_t=0
  state="play" page=1
  -- the start screen, when the
@@ -262,10 +263,16 @@ who=max(1,dget(3))
 
 function unlocked(i) return i==1 or dget(2)&(1<<i)>0 end
 
--- end of the day: anything new?
-function check_unlocks()
+-- how many combos you've ever found
+function found()
  local f=0
  for i=1,#combos do if dget(1)&(1<<i)>0 then f+=1 end end
+ return f
+end
+
+-- end of the day: anything new?
+function check_unlocks()
+ local f=found()
  local won={false,missed<=30 and score>=50,l("marian garden")>=3,
   sick_healed>=50,f>=3,cath,score>=500}
  newchar=nil
@@ -1056,12 +1063,17 @@ end
 function draw_map()
  -- the whole town at 1/4 size
  cls(3)
+ -- houses in their colors; a white
+ -- cross for the church, a red one
+ -- for the hospital
  for b in all(bldg) do
-  if b.s then
-   local c=15
-   if b.k=="church" then c=7
-   elseif b.k=="hosp" or b.k=="chapel" then c=8 end
-   rectfill((b.x-8)/4,(b.y-16)/4,(b.x-8)/4+7,(b.y-16)/4+7,c)
+  local x,y=(b.x+8)\4,b.y\4
+  if b.k=="church" then
+   rectfill(x-1,y-5,x+1,y+5,7) rectfill(x-4,y-2,x+4,y,7)
+  elseif b.k=="hosp" then
+   rectfill(x-1,y-4,x+1,y+4,8) rectfill(x-4,y-1,x+4,y+1,8)
+  elseif b.k=="house" then
+   rectfill(x-3,y-3,x+3,y+2,b.wc)
   end
  end
  for it in all(items) do pset(it.x/4,it.y/4,9) end
@@ -1069,11 +1081,9 @@ function draw_map()
   if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or 7)
   elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or 7) end
  end
- print("church",church_x/4-10,church_y/4-7,7)
- print("hospital",hosp_x/4-14,hosp_y/4-7,8)
+ print("church",church_x/4-10,church_y/4-13,7)
+ print("hospital",hosp_x/4-14,hosp_y/4-12,8)
  -- grace waiting at each
- if church_pile>0 then print(church_pile,church_x/4+5,church_y/4,10) end
- if hosp_pile>0 then print(hosp_pile,hosp_x/4+5,hosp_y/4,10) end
  if hosp_need>0 then print("+"..hosp_need,hosp_x/4-2,hosp_y/4+6,chap and 8 or 5) end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  rectfill(0,120,127,127,1)
@@ -1225,7 +1235,10 @@ function _draw()
  -- with that combo), you inside
  local car=van and s_van or s_car
  if l("a car")>0 and p.mv then
+  -- its paint: random each day
+  pal(13,car_c) pal(2,car_r)
   spr(car+flr(t/4)%4*2,p.x-8,p.y-14,2,2,p.fl)
+  pal()
  else
  -- you: blessing (4 frames, just
  -- after each blessing), walking,
@@ -1335,11 +1348,7 @@ function _draw()
   -- where the time went
   print("time lost:",34,68,8)
   print("home "..lost[1].." sick "..lost[2].." need "..lost[3].."s",16,75,8)
-  local f=0
-  for i=1,#combos do
-   if dget(1)&(1<<i)>0 then f+=1 end
-  end
-  print("combos found: "..f.."/"..#combos,26,83,10)
+  print("combos found: "..found().."/"..#combos,26,83,10)
   -- the reveal: a combo new today
   for i=1,#combos do
    if got[combos[i].n] and found_start&(1<<i)==0 then
