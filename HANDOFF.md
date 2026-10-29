@@ -1,3 +1,11 @@
+# Battles (2026-10-29, branch `battle-engine`)
+
+Game footage for videos: `battles/tours.yml` + `video/battle.ts` + the `battle` scene, rendered with
+`npm run battle -- tours`. Read BATTLES.md. The drawings are **stand-ins** (`"standin": true`), so
+Shalone redraws them under the same names (list: `grep -l '"standin"' sprites/*.json`). Not built yet: the
+Studio scene builder and play/record mode, and the PICO-8 tactics cart. A `battle` scene inside a lesson
+(prepare.mjs path) is wired but not yet tried in a real lesson.
+
 # Handoff: state of play, 2026-10-14 (local session on Shalone's Mac)
 
 Read CLAUDE.md first; it has the rules. This file is the state of play and
