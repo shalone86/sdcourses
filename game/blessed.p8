@@ -1289,14 +1289,17 @@ function _draw()
  -- at home or at the hospital
  -- (and the hospital, filling up)
  -- symbols at the edge: ⌂ a house
- -- blessing, ★ a big need, + the
- -- hospital filling up
+ -- blessing, ★ a big need
  local marks={}
  for q in all(people) do
   if q.ev then add(marks,{q.x,q.y,9,"\146"})
   elseif q.k=="home" then add(marks,{q.x,q.y,10,"\138"}) end
  end
- if chap and hosp_need>=5 then add(marks,{hosp_x+8,hosp_y+8,8,"+"}) end
+ -- always: the church (white +) and
+ -- the hospital (red +, flashing
+ -- while the sick need you)
+ add(marks,{church_x+8,church_y+8,7,"+"})
+ add(marks,{hosp_x+8,hosp_y+8,chap and hosp_need>0 and t%10<5 and 7 or 8,"+"})
  for m in all(marks) do
   local sx,sy=wd(m[1],p.x)+64,wd(m[2],p.y)+60
   if sx<0 or sx>127 or sy<10 or sy>127 then
