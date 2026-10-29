@@ -1,0 +1,355 @@
+{
+ "stamp": "2:2689998:1793302508276",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.23
+  },
+  {
+   "w": "Catechism",
+   "start": 0.23,
+   "end": 0.91
+  },
+  {
+   "w": "says",
+   "start": 0.91,
+   "end": 1.25
+  },
+  {
+   "w": "where",
+   "start": 1.25,
+   "end": 1.59
+  },
+  {
+   "w": "the",
+   "start": 1.59,
+   "end": 1.81
+  },
+  {
+   "w": "Church",
+   "start": 1.81,
+   "end": 2.28
+  },
+  {
+   "w": "Year",
+   "start": 2.28,
+   "end": 2.59
+  },
+  {
+   "w": "begins.",
+   "start": 2.59,
+   "end": 3.32
+  },
+  {
+   "w": "The",
+   "start": 3.32,
+   "end": 3.56
+  },
+  {
+   "w": "immovable",
+   "start": 3.56,
+   "end": 4.28
+  },
+  {
+   "w": "cycle",
+   "start": 4.28,
+   "end": 4.68
+  },
+  {
+   "w": "of",
+   "start": 4.68,
+   "end": 4.84
+  },
+  {
+   "w": "the",
+   "start": 4.84,
+   "end": 5.07
+  },
+  {
+   "w": "Church",
+   "start": 5.07,
+   "end": 5.56
+  },
+  {
+   "w": "Year",
+   "start": 5.56,
+   "end": 5.89
+  },
+  {
+   "w": "begins",
+   "start": 5.89,
+   "end": 6.35
+  },
+  {
+   "w": "on",
+   "start": 6.35,
+   "end": 6.61
+  },
+  {
+   "w": "September",
+   "start": 6.61,
+   "end": 7.29
+  },
+  {
+   "w": "1st.",
+   "start": 7.29,
+   "end": 7.92
+  },
+  {
+   "w": "On",
+   "start": 7.92,
+   "end": 8.04
+  },
+  {
+   "w": "the",
+   "start": 8.04,
+   "end": 8.22
+  },
+  {
+   "w": "old",
+   "start": 8.22,
+   "end": 8.42
+  },
+  {
+   "w": "Julian",
+   "start": 8.42,
+   "end": 8.77
+  },
+  {
+   "w": "calendar,",
+   "start": 8.77,
+   "end": 9.38
+  },
+  {
+   "w": "which",
+   "start": 9.38,
+   "end": 9.68
+  },
+  {
+   "w": "some",
+   "start": 9.68,
+   "end": 9.93
+  },
+  {
+   "w": "churches",
+   "start": 9.93,
+   "end": 10.42
+  },
+  {
+   "w": "still",
+   "start": 10.42,
+   "end": 10.7
+  },
+  {
+   "w": "follow,",
+   "start": 10.7,
+   "end": 11.28
+  },
+  {
+   "w": "that",
+   "start": 11.28,
+   "end": 11.53
+  },
+  {
+   "w": "day",
+   "start": 11.53,
+   "end": 11.71
+  },
+  {
+   "w": "falls",
+   "start": 11.71,
+   "end": 12.02
+  },
+  {
+   "w": "on",
+   "start": 12.02,
+   "end": 12.15
+  },
+  {
+   "w": "September",
+   "start": 12.15,
+   "end": 12.72
+  },
+  {
+   "w": "14th.",
+   "start": 12.72,
+   "end": 13.72
+  },
+  {
+   "w": "The",
+   "start": 13.72,
+   "end": 13.92
+  },
+  {
+   "w": "Catechism",
+   "start": 13.92,
+   "end": 14.51
+  },
+  {
+   "w": "explains",
+   "start": 14.51,
+   "end": 15.04
+  },
+  {
+   "w": "that",
+   "start": 15.04,
+   "end": 15.3
+  },
+  {
+   "w": "the",
+   "start": 15.3,
+   "end": 15.49
+  },
+  {
+   "w": "two",
+   "start": 15.49,
+   "end": 15.7
+  },
+  {
+   "w": "calendars",
+   "start": 15.7,
+   "end": 16.31
+  },
+  {
+   "w": "now",
+   "start": 16.31,
+   "end": 16.5
+  },
+  {
+   "w": "differ",
+   "start": 16.5,
+   "end": 17.01
+  },
+  {
+   "w": "by",
+   "start": 17.01,
+   "end": 17.03
+  },
+  {
+   "w": "13",
+   "start": 17.03,
+   "end": 17.43
+  },
+  {
+   "w": "days,",
+   "start": 17.43,
+   "end": 17.82
+  },
+  {
+   "w": "and",
+   "start": 17.82,
+   "end": 18.02
+  },
+  {
+   "w": "that",
+   "start": 18.02,
+   "end": 18.39
+  },
+  {
+   "w": "is",
+   "start": 18.39,
+   "end": 18.41
+  },
+  {
+   "w": "also",
+   "start": 18.41,
+   "end": 18.69
+  },
+  {
+   "w": "why",
+   "start": 18.69,
+   "end": 18.96
+  },
+  {
+   "w": "Pascha",
+   "start": 18.96,
+   "end": 19.46
+  },
+  {
+   "w": "is",
+   "start": 19.46,
+   "end": 19.6
+  },
+  {
+   "w": "sometimes",
+   "start": 19.6,
+   "end": 20.32
+  },
+  {
+   "w": "celebrated",
+   "start": 20.32,
+   "end": 21.1
+  },
+  {
+   "w": "on",
+   "start": 21.1,
+   "end": 21.28
+  },
+  {
+   "w": "different",
+   "start": 21.28,
+   "end": 22.25
+  },
+  {
+   "w": "dates.",
+   "start": 22.25,
+   "end": 22.68
+  },
+  {
+   "w": "Many",
+   "start": 22.68,
+   "end": 22.92
+  },
+  {
+   "w": "Byzantine",
+   "start": 22.92,
+   "end": 23.46
+  },
+  {
+   "w": "Catholics",
+   "start": 23.46,
+   "end": 24
+  },
+  {
+   "w": "keep",
+   "start": 24,
+   "end": 24.24
+  },
+  {
+   "w": "the",
+   "start": 24.24,
+   "end": 24.42
+  },
+  {
+   "w": "new",
+   "start": 24.42,
+   "end": 24.6
+  },
+  {
+   "w": "calendar,",
+   "start": 24.6,
+   "end": 25.19
+  },
+  {
+   "w": "others",
+   "start": 25.19,
+   "end": 25.55
+  },
+  {
+   "w": "keep",
+   "start": 25.55,
+   "end": 25.97
+  },
+  {
+   "w": "the",
+   "start": 25.97,
+   "end": 25.98
+  },
+  {
+   "w": "old.",
+   "start": 25.98,
+   "end": 26.4
+  }
+ ]
+}

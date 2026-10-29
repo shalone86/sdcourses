@@ -1,0 +1,420 @@
+{
+ "stamp": "2:3461838:1793302424411",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.22
+  },
+  {
+   "w": "Byzantine",
+   "start": 0.22,
+   "end": 0.88
+  },
+  {
+   "w": "Catechism",
+   "start": 0.88,
+   "end": 1.53
+  },
+  {
+   "w": "describes",
+   "start": 1.53,
+   "end": 2.39
+  },
+  {
+   "w": "how",
+   "start": 2.39,
+   "end": 2.49
+  },
+  {
+   "w": "the",
+   "start": 2.49,
+   "end": 2.74
+  },
+  {
+   "w": "year",
+   "start": 2.74,
+   "end": 3.07
+  },
+  {
+   "w": "is",
+   "start": 3.07,
+   "end": 3.25
+  },
+  {
+   "w": "built.",
+   "start": 3.25,
+   "end": 3.96
+  },
+  {
+   "w": "The",
+   "start": 3.96,
+   "end": 4.18
+  },
+  {
+   "w": "services",
+   "start": 4.18,
+   "end": 4.76
+  },
+  {
+   "w": "of",
+   "start": 4.76,
+   "end": 4.9
+  },
+  {
+   "w": "the",
+   "start": 4.9,
+   "end": 5.12
+  },
+  {
+   "w": "liturgical",
+   "start": 5.12,
+   "end": 5.85
+  },
+  {
+   "w": "year",
+   "start": 5.85,
+   "end": 6.15
+  },
+  {
+   "w": "or",
+   "start": 6.15,
+   "end": 6.35
+  },
+  {
+   "w": "church",
+   "start": 6.35,
+   "end": 6.88
+  },
+  {
+   "w": "year",
+   "start": 6.88,
+   "end": 7.31
+  },
+  {
+   "w": "are",
+   "start": 7.31,
+   "end": 7.44
+  },
+  {
+   "w": "built",
+   "start": 7.44,
+   "end": 7.99
+  },
+  {
+   "w": "upon",
+   "start": 7.99,
+   "end": 8.2
+  },
+  {
+   "w": "the",
+   "start": 8.2,
+   "end": 8.33
+  },
+  {
+   "w": "immovable",
+   "start": 8.33,
+   "end": 9.16
+  },
+  {
+   "w": "and",
+   "start": 9.16,
+   "end": 9.35
+  },
+  {
+   "w": "movable",
+   "start": 9.35,
+   "end": 10
+  },
+  {
+   "w": "feasts.",
+   "start": 10,
+   "end": 11
+  },
+  {
+   "w": "The",
+   "start": 11,
+   "end": 11.22
+  },
+  {
+   "w": "church",
+   "start": 11.22,
+   "end": 11.67
+  },
+  {
+   "w": "year",
+   "start": 11.67,
+   "end": 11.97
+  },
+  {
+   "w": "has",
+   "start": 11.97,
+   "end": 12.23
+  },
+  {
+   "w": "two",
+   "start": 12.23,
+   "end": 12.44
+  },
+  {
+   "w": "cycles",
+   "start": 12.44,
+   "end": 12.86
+  },
+  {
+   "w": "that",
+   "start": 12.86,
+   "end": 13.15
+  },
+  {
+   "w": "run",
+   "start": 13.15,
+   "end": 13.39
+  },
+  {
+   "w": "together.",
+   "start": 13.39,
+   "end": 14.28
+  },
+  {
+   "w": "The",
+   "start": 14.28,
+   "end": 14.49
+  },
+  {
+   "w": "immovable",
+   "start": 14.49,
+   "end": 15.12
+  },
+  {
+   "w": "cycle",
+   "start": 15.12,
+   "end": 15.51
+  },
+  {
+   "w": "is",
+   "start": 15.51,
+   "end": 15.62
+  },
+  {
+   "w": "linked",
+   "start": 15.62,
+   "end": 16.05
+  },
+  {
+   "w": "to",
+   "start": 16.05,
+   "end": 16.19
+  },
+  {
+   "w": "fixed",
+   "start": 16.19,
+   "end": 16.67
+  },
+  {
+   "w": "dates,",
+   "start": 16.67,
+   "end": 17.05
+  },
+  {
+   "w": "such",
+   "start": 17.05,
+   "end": 17.33
+  },
+  {
+   "w": "as",
+   "start": 17.33,
+   "end": 17.47
+  },
+  {
+   "w": "Christmas",
+   "start": 17.47,
+   "end": 18.25
+  },
+  {
+   "w": "on",
+   "start": 18.25,
+   "end": 18.32
+  },
+  {
+   "w": "December",
+   "start": 18.32,
+   "end": 18.85
+  },
+  {
+   "w": "25th.",
+   "start": 18.85,
+   "end": 19.68
+  },
+  {
+   "w": "The",
+   "start": 19.68,
+   "end": 19.93
+  },
+  {
+   "w": "movable",
+   "start": 19.93,
+   "end": 20.51
+  },
+  {
+   "w": "cycle",
+   "start": 20.51,
+   "end": 20.93
+  },
+  {
+   "w": "is",
+   "start": 20.93,
+   "end": 21.12
+  },
+  {
+   "w": "linked",
+   "start": 21.12,
+   "end": 21.6
+  },
+  {
+   "w": "to",
+   "start": 21.6,
+   "end": 21.77
+  },
+  {
+   "w": "the",
+   "start": 21.77,
+   "end": 22.07
+  },
+  {
+   "w": "date",
+   "start": 22.07,
+   "end": 22.35
+  },
+  {
+   "w": "of",
+   "start": 22.35,
+   "end": 22.52
+  },
+  {
+   "w": "Pascha,",
+   "start": 22.52,
+   "end": 23.18
+  },
+  {
+   "w": "which",
+   "start": 23.18,
+   "end": 23.72
+  },
+  {
+   "w": "changes",
+   "start": 23.72,
+   "end": 24.25
+  },
+  {
+   "w": "every",
+   "start": 24.25,
+   "end": 24.61
+  },
+  {
+   "w": "year.",
+   "start": 24.61,
+   "end": 25.28
+  },
+  {
+   "w": "Through",
+   "start": 25.37,
+   "end": 25.84
+  },
+  {
+   "w": "the",
+   "start": 25.84,
+   "end": 26.08
+  },
+  {
+   "w": "services",
+   "start": 26.08,
+   "end": 26.72
+  },
+  {
+   "w": "of",
+   "start": 26.72,
+   "end": 27.03
+  },
+  {
+   "w": "both,",
+   "start": 27.03,
+   "end": 27.36
+  },
+  {
+   "w": "the",
+   "start": 27.36,
+   "end": 27.64
+  },
+  {
+   "w": "Catechism",
+   "start": 27.64,
+   "end": 28.32
+  },
+  {
+   "w": "says",
+   "start": 28.32,
+   "end": 28.64
+  },
+  {
+   "w": "the",
+   "start": 28.64,
+   "end": 29.31
+  },
+  {
+   "w": "church",
+   "start": 29.31,
+   "end": 29.36
+  },
+  {
+   "w": "commemorates",
+   "start": 29.36,
+   "end": 30.48
+  },
+  {
+   "w": "and",
+   "start": 30.48,
+   "end": 30.56
+  },
+  {
+   "w": "experiences",
+   "start": 30.56,
+   "end": 31.48
+  },
+  {
+   "w": "all",
+   "start": 31.48,
+   "end": 31.71
+  },
+  {
+   "w": "the",
+   "start": 31.71,
+   "end": 31.99
+  },
+  {
+   "w": "major",
+   "start": 31.99,
+   "end": 32.32
+  },
+  {
+   "w": "events",
+   "start": 32.32,
+   "end": 32.78
+  },
+  {
+   "w": "of",
+   "start": 32.78,
+   "end": 32.93
+  },
+  {
+   "w": "salvation",
+   "start": 32.93,
+   "end": 33.87
+  },
+  {
+   "w": "history.",
+   "start": 33.87,
+   "end": 34.44
+  }
+ ]
+}

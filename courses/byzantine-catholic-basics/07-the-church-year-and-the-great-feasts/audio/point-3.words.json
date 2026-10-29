@@ -1,0 +1,395 @@
+{
+ "stamp": "2:3312078:1793302550147",
+ "words": [
+  {
+   "w": "The",
+   "start": 0.09,
+   "end": 0.23
+  },
+  {
+   "w": "Catechism",
+   "start": 0.23,
+   "end": 0.91
+  },
+  {
+   "w": "names",
+   "start": 0.91,
+   "end": 1.39
+  },
+  {
+   "w": "the",
+   "start": 1.39,
+   "end": 1.57
+  },
+  {
+   "w": "heart",
+   "start": 1.57,
+   "end": 1.91
+  },
+  {
+   "w": "of",
+   "start": 1.91,
+   "end": 2.07
+  },
+  {
+   "w": "the",
+   "start": 2.07,
+   "end": 2.3
+  },
+  {
+   "w": "movable",
+   "start": 2.3,
+   "end": 2.84
+  },
+  {
+   "w": "Feast.",
+   "start": 2.84,
+   "end": 3.44
+  },
+  {
+   "w": "The",
+   "start": 3.44,
+   "end": 3.66
+  },
+  {
+   "w": "center",
+   "start": 3.66,
+   "end": 4.09
+  },
+  {
+   "w": "and",
+   "start": 4.09,
+   "end": 4.31
+  },
+  {
+   "w": "pivotal",
+   "start": 4.31,
+   "end": 4.83
+  },
+  {
+   "w": "point",
+   "start": 4.83,
+   "end": 5.2
+  },
+  {
+   "w": "of",
+   "start": 5.2,
+   "end": 5.35
+  },
+  {
+   "w": "the",
+   "start": 5.35,
+   "end": 5.6
+  },
+  {
+   "w": "liturgical",
+   "start": 5.6,
+   "end": 6.31
+  },
+  {
+   "w": "year's",
+   "start": 6.31,
+   "end": 6.9
+  },
+  {
+   "w": "movable",
+   "start": 6.9,
+   "end": 7.28
+  },
+  {
+   "w": "cycle",
+   "start": 7.28,
+   "end": 7.68
+  },
+  {
+   "w": "of",
+   "start": 7.68,
+   "end": 7.95
+  },
+  {
+   "w": "Feast",
+   "start": 7.95,
+   "end": 8.64
+  },
+  {
+   "w": "is",
+   "start": 8.64,
+   "end": 9.15
+  },
+  {
+   "w": "Pascha.",
+   "start": 9.15,
+   "end": 10.68
+  },
+  {
+   "w": "Pascha",
+   "start": 10.68,
+   "end": 11.23
+  },
+  {
+   "w": "is",
+   "start": 11.23,
+   "end": 11.33
+  },
+  {
+   "w": "the",
+   "start": 11.33,
+   "end": 11.56
+  },
+  {
+   "w": "Byzantine",
+   "start": 11.56,
+   "end": 12.28
+  },
+  {
+   "w": "name",
+   "start": 12.28,
+   "end": 12.69
+  },
+  {
+   "w": "for",
+   "start": 12.69,
+   "end": 12.85
+  },
+  {
+   "w": "Easter.",
+   "start": 12.85,
+   "end": 13.64
+  },
+  {
+   "w": "Its",
+   "start": 13.64,
+   "end": 13.86
+  },
+  {
+   "w": "date",
+   "start": 13.86,
+   "end": 14.19
+  },
+  {
+   "w": "falls",
+   "start": 14.19,
+   "end": 14.48
+  },
+  {
+   "w": "on",
+   "start": 14.48,
+   "end": 14.62
+  },
+  {
+   "w": "the",
+   "start": 14.62,
+   "end": 14.83
+  },
+  {
+   "w": "first",
+   "start": 14.83,
+   "end": 15.21
+  },
+  {
+   "w": "Sunday",
+   "start": 15.21,
+   "end": 15.65
+  },
+  {
+   "w": "after",
+   "start": 15.65,
+   "end": 15.95
+  },
+  {
+   "w": "the",
+   "start": 15.95,
+   "end": 16.16
+  },
+  {
+   "w": "full",
+   "start": 16.16,
+   "end": 16.48
+  },
+  {
+   "w": "moon,",
+   "start": 16.48,
+   "end": 17.11
+  },
+  {
+   "w": "after",
+   "start": 17.11,
+   "end": 17.28
+  },
+  {
+   "w": "the",
+   "start": 17.28,
+   "end": 17.54
+  },
+  {
+   "w": "spring",
+   "start": 17.54,
+   "end": 18.05
+  },
+  {
+   "w": "equinox,",
+   "start": 18.05,
+   "end": 18.72
+  },
+  {
+   "w": "so",
+   "start": 18.72,
+   "end": 18.97
+  },
+  {
+   "w": "it",
+   "start": 18.97,
+   "end": 19.2
+  },
+  {
+   "w": "moves",
+   "start": 19.2,
+   "end": 19.66
+  },
+  {
+   "w": "each",
+   "start": 19.66,
+   "end": 20.03
+  },
+  {
+   "w": "year.",
+   "start": 20.03,
+   "end": 20.7
+  },
+  {
+   "w": "When",
+   "start": 20.7,
+   "end": 21.01
+  },
+  {
+   "w": "Pascha",
+   "start": 21.01,
+   "end": 21.47
+  },
+  {
+   "w": "moves,",
+   "start": 21.47,
+   "end": 22.09
+  },
+  {
+   "w": "so",
+   "start": 22.09,
+   "end": 22.16
+  },
+  {
+   "w": "do",
+   "start": 22.16,
+   "end": 22.31
+  },
+  {
+   "w": "Great",
+   "start": 22.31,
+   "end": 22.71
+  },
+  {
+   "w": "Lent,",
+   "start": 22.71,
+   "end": 23.16
+  },
+  {
+   "w": "the",
+   "start": 23.16,
+   "end": 23.54
+  },
+  {
+   "w": "Entrance",
+   "start": 23.54,
+   "end": 24.16
+  },
+  {
+   "w": "into",
+   "start": 24.16,
+   "end": 24.31
+  },
+  {
+   "w": "Jerusalem,",
+   "start": 24.31,
+   "end": 25.16
+  },
+  {
+   "w": "the",
+   "start": 25.16,
+   "end": 25.39
+  },
+  {
+   "w": "Ascension,",
+   "start": 25.39,
+   "end": 26.41
+  },
+  {
+   "w": "and",
+   "start": 26.41,
+   "end": 26.45
+  },
+  {
+   "w": "Pentacost.",
+   "start": 26.45,
+   "end": 27.96
+  },
+  {
+   "w": "Everything",
+   "start": 28.05,
+   "end": 28.7
+  },
+  {
+   "w": "in",
+   "start": 28.7,
+   "end": 28.84
+  },
+  {
+   "w": "the",
+   "start": 28.84,
+   "end": 29.06
+  },
+  {
+   "w": "moving",
+   "start": 29.06,
+   "end": 29.53
+  },
+  {
+   "w": "cycle",
+   "start": 29.53,
+   "end": 29.87
+  },
+  {
+   "w": "is",
+   "start": 29.87,
+   "end": 30.01
+  },
+  {
+   "w": "counted",
+   "start": 30.01,
+   "end": 30.55
+  },
+  {
+   "w": "from",
+   "start": 30.55,
+   "end": 30.82
+  },
+  {
+   "w": "the",
+   "start": 30.82,
+   "end": 31.43
+  },
+  {
+   "w": "resurrection",
+   "start": 31.43,
+   "end": 31.93
+  },
+  {
+   "w": "of",
+   "start": 31.93,
+   "end": 32.07
+  },
+  {
+   "w": "Christ.",
+   "start": 32.07,
+   "end": 32.8
+  }
+ ]
+}
