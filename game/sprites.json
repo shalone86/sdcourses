@@ -1,6 +1,6 @@
 {
   "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide and 2 tall). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
-  "_slots": "0 priest idle, 2 bishop idle, 4 deacon idle, 6 priest walk, 8 priest blessing (4 frames), 12 bishop walk, 14 deacon walk, 16-27 people walking (6 bases), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 37 car, 40-45 trees/flowers/rocks (1 frame each), 48 house, 50 church, 52 hospital, 54 hospital chapel (16x16), 56 bishop blessing (4 frames), 72-83 people standing (6 bases, same order as walking)",
+  "_slots": "0 priest idle, 2 bishop idle, 4 deacon idle, 6 priest walk, 8 priest blessing (4 frames), 12 bishop walk, 14 deacon walk, 16-27 people walking (6 bases), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 37 car, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 56 bishop blessing (4 frames), 84 angel (4 frames), 72-83 people standing (6 bases, same order as walking)",
   "slots": {
     "0": "priest-idle",
     "2": "bishop-idle",
@@ -15,14 +15,43 @@
     "22": "thick-woman-walk",
     "24": "guy-beard-walk",
     "26": "thick-beard-guy-walk",
+    "34": "rosary",
+    "36": "coffee-mug",
+    "41": "bush-1",
+    "42": "bush-2",
+    "43": "bush-3",
+    "44": "lilies",
+    "45": "pumpkin",
     "56": "bishop-blessing",
     "72": "skinny-guy-idle",
     "74": "skinny-woman-idle",
     "76": "thick-guy-idle",
     "78": "thick-woman-idle",
     "80": "guy-beard-idle",
-    "82": "thick-beard-guy-idle"
+    "82": "thick-beard-guy-idle",
+    "84": "angel"
   },
+  "_big": "Her 32x32 art, too big for the sprite sheet: stored in the code and unpacked at start into two extra sprite sheets (upper memory). Order is fixed: add new ones at the end.",
+  "big": [
+    "church-1",
+    "church-2",
+    "church-3",
+    "cathedral",
+    "hospital",
+    "chapel",
+    "house-1",
+    "house-2",
+    "house-3",
+    "house-4",
+    "tree-1",
+    "tree-2",
+    "tree-3",
+    "tree-4",
+    "tree-5",
+    "tree-6",
+    "christmas-tree",
+    "marian-garden"
+  ],
   "_parts": "Per group, which of her colors the game swaps for each one. people: every person gets random hair, skin (with matching eyes) and clothes. priest: the bishop's priests get their own skin and eyes. deacon: new deacons get their own skin and eyes; 'vestment' follows the season (spring white, summer green, fall green, winter purple).",
   "parts": {
     "people": {
@@ -49,7 +78,14 @@
     }
   },
   "_tops": "People slots whose top row (the top of the head) is hair or a hat: each person gets one at random.",
-  "tops": ["16", "18", "20", "22", "24", "26"],
+  "tops": [
+    "16",
+    "18",
+    "20",
+    "22",
+    "24",
+    "26"
+  ],
   "_colors": "Force one of her colors onto a PICO-8 color number (0-15) when the nearest match is wrong or two colors land on the same one.",
   "colors": {
     "#FFB300": 10,

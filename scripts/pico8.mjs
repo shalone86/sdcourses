@@ -73,7 +73,41 @@ for (const slot of cfg.tops || []) {
 }
 const topsLua = `tops={${tops.join(',')}}`;
 
+// big: her 32x32 art. The first 8 go on the bottom half of the sprite
+// sheet (sprites 128-255; the game reads only the top half of the map, so
+// nothing else uses it). The rest don't fit, so they go in the code as one
+// run-length string (each character: a color and a run of 1-4 pixels, 1024
+// pixels per picture), unpacked at start into extra sprite sheets in upper
+// memory.
+const ALPHA = '0123456789abcdefghijklmnopqrstuvwxyz!#$%&()*+,-./:;<=>?@[]^_{|}~';
+let bigLua = 'big={}\nbigart=""';
+if (cfg.big?.length) {
+  let art = '';
+  const ids = [];
+  cfg.big.forEach((name, i) => {
+    const s = JSON.parse(fs.readFileSync(`sprites/${name}.json`, 'utf8'));
+    if (s.width !== 32 || s.height !== 32) throw new Error(`${name} is ${s.width}x${s.height}; big art must be 32x32`);
+    const cols = s.palette.map(nearest);
+    const px = s.frames[0].flatMap((row) => [...row].map((ch) => (ch === '.' ? 0 : cols[parseInt(ch, 36)] ?? 0)));
+    ids.push(`["${name}"]=${i}`);
+    if (i < 8) {
+      const x0 = (i % 4) * 32, y0 = 64 + Math.floor(i / 4) * 32;
+      px.forEach((c, k) => { sheet[y0 + Math.floor(k / 32)][x0 + (k % 32)] = c; });
+      return;
+    }
+    for (let k = 0; k < px.length;) {
+      let n = 1;
+      while (n < 4 && px[k + n] === px[k]) n++;
+      art += ALPHA[px[k] * 4 + n - 1];
+      k += n;
+    }
+  });
+  bigLua = `big={${ids.join(',')}}\nbigart="${art}"`;
+  console.log(`big art: ${Math.min(8, cfg.big.length)} on the sprite sheet, ${Math.max(0, cfg.big.length - 8)} in the code (${art.length} characters)`);
+}
+
 const gfx = sheet.map((r) => r.map((c) => c.toString(16)).join('')).join('\n');
-const out = text.replace(/(-- @parts.*\n)[\s\S]*?(?=-- @end)/, `$1${partsLua}\n${topsLua}\n`).replace(/__gfx__\n[\s\S]*?(?=\n__\w+__|$)/, `__gfx__\n${gfx}`);
+const out = text.replace(/(-- @parts.*\n)[\s\S]*?(?=-- @end)/, `$1${partsLua}\n${topsLua}\n`)
+  .replace(/(-- @big.*\n)[\s\S]*?(?=-- @end big)/, `$1${bigLua}\n`).replace(/__gfx__\n[\s\S]*?(?=\n__\w+__|$)/, `__gfx__\n${gfx}`);
 fs.writeFileSync(cart, out.endsWith('\n') ? out : out + '\n');
 console.log(`wrote ${cart}`);
