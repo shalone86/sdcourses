@@ -953,8 +953,12 @@ function figure(stand_n,walk_n,moving,x,y,fl,look,c)
  pal()
 end
 
-function thing(n,x,y,c)
- if drawn(n) then spr(n,x-4,y-4) else circfill(x,y,2,c) end
+-- a small thing; z=2 draws it
+-- twice the size (the coffee mug)
+function thing(n,x,y,c,z)
+ z=z or 1
+ if drawn(n) then sspr(n%16*8,n\16*8,8,8,x-4*z,y-4*z,8*z,8*z)
+ else circfill(x,y,2,c) end
 end
 
 -- her drawing for a building
@@ -1163,7 +1167,7 @@ function _draw()
   if it.k=="rosary" then s,c=s_rosary,13
   elseif it.k=="bucket" then s,c=s_bucket,12
   elseif it.k=="coffee" then s,c=s_coffee,4 end
-  thing(s,it.x,it.y+sin(t/40),c)
+  thing(s,it.x,it.y+sin(t/40),c,s==s_coffee and 2)
  end
  for g in all(graces) do at(g.x,g.y) thing(s_grace,g.x,g.y,10) end
  for q in all(people) do draw_person(q) end
