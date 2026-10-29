@@ -117,9 +117,10 @@ skins={{4,15},{15,1},{9,1},{4,1}} -- skin, eyes
 seasons={"spring","summer","fall","winter"}
 -- the ground each season, from
 -- pico-8's hidden colors: lime,
--- green, tan, snow. (her leaves
--- are color 3, so not that)
-grounds={138,139,134,7}
+-- green, tan, snowy grey (white
+-- flakes fall on it). her leaves
+-- are color 3, so not that
+grounds={138,139,134,6}
 -- building colors to pick from
 -- (not 15 or 7: her windows and
 -- doors use those)
@@ -1210,6 +1211,14 @@ function _draw()
   at(f.x,f.y) print(f.s,f.x-#f.s*2,f.y-(30-f.t)/2,f.c)
  end
  camera()
+
+ -- winter: snow falls (it drifts
+ -- past as you walk)
+ if season==4 then
+  for i=1,50 do
+   pset((i*37+t*.3-p.x)%128,(i*53+t*(.5+i%3*.2)-p.y)%128,7)
+  end
+ end
 
  -- off the screen: who's waiting
  -- at home or at the hospital
