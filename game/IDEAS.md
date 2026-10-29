@@ -46,3 +46,49 @@
   them to the hospital or hospice.
 - Some people are heavy: you need a second nun, a stretcher, a car, etc.
   (upgrades or items).
+
+## Plan (Oct 29, 2026): three new games and four Blessed! eras
+
+Decision: the games are for family and friends on the kids' site, so no
+multicart or BBS strategy. Each new game or era is its own cart with its own
+link, built only when the kids ask for it. Blessed! is at the token limit, so
+eras are copies of the cart with swapped data and changed rules, not unlocks
+inside the main cart. Optional later: a shared `cartdata` ID so finishing one
+cart gives a small cosmetic perk in the others.
+
+### Three new games
+Order of effort: Rosary Rescue, then Deliverance Diary, then Sanctum Siege.
+
+- **Rosary Rescue** (the nuns game; the monks and nuns idea above). A grid
+  maze puzzle: navigate city streets and jiggle (push) resources around to
+  bring the sick and needy to the hospice or convent. Heavy people need a
+  second nun, a stretcher or a car. Smallest build, a good warm-up. Its grid
+  movement, pushing and pathing code is reused in Sanctum Siege.
+- **Deliverance Diary** (the exorcist detective game). A point-and-click
+  detective game. Interview people with a Q&A and decide: normal, possessed,
+  or psychosis. Now and then a demon manifests and the player picks the right
+  prayers and sacraments to defeat it (a prayer-matching minigame). Mostly
+  text, and long strings cost almost no tokens, so there is room for many
+  cases. Randomize which symptoms point to which answer so it replays well.
+  Its dialogue system could also power the trust conversations in the Franks
+  and Goths era.
+- **Sanctum Siege** (tactics, based on famous Catholic battles). Move one
+  space and attack. Use a top-down grid instead of isometric (iso math and
+  depth sorting eat tokens). Each battle gets a small map and a special rule:
+  Lepanto (wind direction), Tours, Vienna 1683, Las Navas de Tolosa (a hidden
+  path). Reuses the puzzle and grid logic from Rosary Rescue. Ties in with
+  the battle scenes in the studio (battle-engine branch).
+
+### Four Blessed! eras (proposed mechanic changes)
+- **Byzantine Empire:** iconoclasm. Smuggle and bless icons while dodging
+  soldiers; a stealth game. Hide in doorways and chapels; bless an icon in a
+  safe house to score.
+- **Franks and Goths:** missionary work. Each tribe has a trust meter that
+  rises with gifts, listening and small blessings; only then can you
+  baptize. Bonus level: Boniface felling the oak, a timing minigame.
+- **Asia:** island hopping. Sail between ports, learn a few local words in a
+  matching minigame, follow etiquette. A hidden-Christians level in Japan
+  where you bless in secret.
+- **Colonial Times:** circuit riding. A limited number of days to visit
+  scattered settlements, and each stop needs a different blessing. A serious
+  level: St. Peter Claver meeting the ships in Cartagena.
