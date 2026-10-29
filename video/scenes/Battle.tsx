@@ -11,7 +11,9 @@ import type {SceneProps} from '.';
 // whole number so the pixels stay square. `battle` is the battle file (battles/<name>.yml) and
 // `arts` its drawings, both put in the scene by prepare.mjs (or scripts/battle.mjs).
 //   palette: pico (default; colors snap to PICO-8's 16) | own (her colors as drawn)
-type BattleScene = {battle: Battle; arts: ArtMap; palette?: 'pico' | 'own'};
+//   clip: [from, to] seconds of the battle this picture plays (a lesson can use one battle across several
+//   slides); it starts at `from` when the picture starts and holds on its last moment at `to`
+type BattleScene = {battle: Battle; arts: ArtMap; palette?: 'pico' | 'own'; clip?: [number, number]};
 
 const PICO = ['000000', '1d2b53', '7e2553', '008751', 'ab5236', '5f574f', 'c2c3c7', 'fff1e8',
   'ff004d', 'ffa300', 'ffec27', '00e436', '29adff', '83769c', 'ff77a8', 'ffccaa'];
@@ -71,6 +73,14 @@ export const BattleView: React.FC<{battle: Battle; arts: ArtMap; palette?: 'pico
           {s.units.map((u) => <Placed key={u.id} href={ref(u.sprite, u.frame)} x={u.x} y={u.y} w={u.w} flip={u.flip} />)}
           {s.fx.map((e, i) => <use key={`f${i}`} href={ref(e.sprite, e.frame)} x={e.x} y={e.y} />)}
         </svg>
+        {s.labels.map((l, i) => {
+          // A name tag centered over its person or place, in screen pixels (clipped to the picture).
+          const lx = (l.x - s.camera.x) * scale, ly = (l.y - s.camera.y) * scale - scale * 2;
+          if (lx < 0 || lx > view.w * scale || ly < 0 || ly > view.h * scale) return null;
+          return <div key={`l${i}`} style={{position: 'absolute', left: lx, top: ly, transform: 'translate(-50%, -100%)', whiteSpace: 'nowrap',
+            background: 'rgba(29,43,83,0.92)', color: '#fff1e8', border: `${scale / 3}px solid #ffec27`, padding: `${scale * 0.6}px ${scale * 1.6}px`,
+            fontFamily: theme.sans, fontSize: scale * 3, fontWeight: 600}}>{l.text}</div>;
+        })}
         {s.say && (
           <div style={{position: 'absolute', left: view.w * scale * 0.06, right: view.w * scale * 0.06, bottom: view.h * scale * 0.04,
             background: 'rgba(29,43,83,0.92)', border: `${scale / 2}px solid #fff1e8`, color: '#fff1e8', padding: `${scale * 1.2}px ${scale * 2.5}px`,
@@ -93,7 +103,10 @@ export const BattleScene: React.FC<SceneProps<BattleScene>> = ({scene}) => {
   if (!scene.battle || !scene.arts) {
     return <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', fontSize: 40, color: '#888'}}>No battle file for “{String((scene as any).name ?? '')}” yet</AbsoluteFill>;
   }
-  return <AbsoluteFill style={{opacity: ramp(f, 0, 8)}}><BattleView battle={scene.battle} arts={scene.arts} palette={scene.palette} /></AbsoluteFill>;
+  const {fps} = useVideoConfig();
+  const [from, to] = scene.clip ?? [0, battleSeconds(scene.battle)];
+  const time = Math.min(to, from + f / fps);
+  return <AbsoluteFill style={{opacity: ramp(f, 0, 8)}}><BattleView battle={scene.battle} arts={scene.arts} palette={scene.palette} time={time} /></AbsoluteFill>;
 };
 
 /** The battle on its own, full 1920 × 1080 (npm run battle -- <name>). */

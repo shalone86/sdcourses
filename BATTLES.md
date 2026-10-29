@@ -54,10 +54,21 @@ back to `idle`. Characters are 8 × 8; riders (horse and rider) 16 × 16; tiles 
 in their JSON. Draw the real one in the Pixel art tab under the same name and it replaces
 the stand-in. Run `grep -l '"standin"' sprites/*.json` to list the ones still to redraw.
 
+## Studio: the Battles tab
+
+Lesson Studio → **Battles** (not tied to a lesson). Pick a battle or **+ New battle**; paint tiles,
+place people and things, drag them, and scrub the preview (the same Remotion player as the video).
+The script lines are listed under the map; each has an editor, and map spots are picked by clicking.
+**Play a person:** choose someone, press *Record from the playhead*, and walk them with the arrow
+keys while the battle plays (A attack, P point, F fall, S spark, D dust, Esc stops). Their later
+lines are replaced; *Undo that recording* brings them back. **Save** writes `battles/<name>.yml`.
+
+In a lesson: Timing tab → + Add a picture here → **Battle**, pick the battle and the window
+(`clip: [from, to]` seconds), so one battle can fill the 4–5 slides of a lesson. `label` lines put
+name tags on people or places (intro slide).
+
 ## Not built yet
 
-- The scene builder and the play/record mode in the Studio (place units, set moves, play with
-  keys and record against the playhead, like the puppet). The battle file is what they will edit.
 - The PICO-8 tactics cart (turn-based, Fire Emblem style) and the converter from battle files to
   levels.
 - Contested history stays hedged: Tours' exact site and any raid on the camp are uncertain

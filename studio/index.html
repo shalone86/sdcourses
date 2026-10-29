@@ -278,6 +278,7 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
     <button role="tab" id="tab-script" aria-selected="true">Script &amp; recording</button>
     <button role="tab" id="tab-timing" aria-selected="false">Timing</button>
     <button role="tab" id="tab-pixels" aria-selected="false">Pixel art</button>
+    <button role="tab" id="tab-battles" aria-selected="false">Battles</button>
     <button role="tab" id="tab-video" aria-selected="false">Video &amp; Ghost</button>
   </div>
   <main id="view"></main>
@@ -290,6 +291,7 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
 <script src="/reference.js"></script>
 <script src="/pixels.js"></script>
 <script src="/sketch.js"></script>
+<script src="/battles.js"></script>
 <script>
 'use strict';
 const S = {
@@ -389,7 +391,7 @@ function renderHeader() {
   pick.replaceChildren(...active.map((l) => el('option', {value: l.id, selected: S.tab !== 'archive' && l.id === S.id, text: l.course + ' ' + l.number + ': ' + l.title + (isDone(l) ? ' (done)' : '')})),
     archived.length ? el('option', {value: '__archive', selected: S.tab === 'archive', text: 'Archive (' + archived.length + ' finished)…'}) : null);
   pick.disabled = !!(S.rec || S.busy);
-  for (const t of ['script', 'timing', 'pixels', 'video']) {
+  for (const t of ['script', 'timing', 'pixels', 'battles', 'video']) {
     const b = document.getElementById('tab-' + t);
     b.setAttribute('aria-selected', S.tab === t);
     b.disabled = !!(S.rec || S.busy);
@@ -398,11 +400,12 @@ function renderHeader() {
 
 function render() {
   renderHeader();
-  document.body.classList.toggle('wide', S.tab === 'timing' || S.tab === 'pixels');
+  document.body.classList.toggle('wide', S.tab === 'timing' || S.tab === 'pixels' || S.tab === 'battles');
   const kids = [];
   if (S.notice) kids.push(noticeEl(S.notice));
   if (S.tab === 'new') kids.push(newLessonView());
   else if (S.tab === 'archive') kids.push(archiveView());
+  else if (S.tab === 'battles') kids.push(battlesView());
   else if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : S.tab === 'pixels' ? pixelsView() : videoView());
   view.replaceChildren(...kids);
   for (const t of view.querySelectorAll('textarea.read')) grow(t);
@@ -419,11 +422,12 @@ document.getElementById('tab-script').addEventListener('click', () => switchTab(
 document.getElementById('tab-video').addEventListener('click', () => switchTab('video'));
 document.getElementById('tab-timing').addEventListener('click', () => switchTab('timing'));
 document.getElementById('tab-pixels').addEventListener('click', () => switchTab('pixels'));
+document.getElementById('tab-battles').addEventListener('click', () => switchTab('battles'));
 document.getElementById('new-lesson').addEventListener('click', async () => { await saveAll(); if (S.timing) S.timing.pause(); S.tab = 'new'; S.notice = null; stopPlayback(); releaseMic(); render(); });
 document.getElementById('pick').addEventListener('change', async (e) => {
   await saveAll();
   if (e.target.value === '__archive') { if (S.timing) S.timing.pause(); S.tab = 'archive'; S.notice = null; stopPlayback(); releaseMic(); render(); return; }
-  if (S.tab === 'new' || S.tab === 'archive') S.tab = 'script';
+  if (S.tab === 'new' || S.tab === 'archive' || S.tab === 'battles') S.tab = 'script';
   openLesson(e.target.value, 0);
 });
 
@@ -450,11 +454,14 @@ async function switchTab(tab) {
   await saveAll();
   if (S.timing && S.timing.dirty() && !(await ask('You have timing changes that aren’t saved. Leave them?'))) return;
   if (S.tab === 'pixels' && S.pixels && S.pixels.dirty() && !(await ask('Your drawing isn’t saved. Leave it?'))) return;
+  if (S.tab === 'battles' && S.battles && S.battles.dirty() && !(await ask('Your battle changes aren’t saved. Leave them?'))) return;
   if (S.timing) S.timing.pause();
+  if (S.battles) S.battles.pause();
   S.tab = tab; S.notice = null;
   stopPlayback();
   if (tab === 'timing') { releaseMic(); S.timingRoot = null; }
   if (tab === 'pixels') { releaseMic(); S.pixelsRoot = null; }
+  if (tab === 'battles') releaseMic();
   if (tab === 'video') { releaseMic(); await refresh(); }
   render();
 }
@@ -508,6 +515,17 @@ function newLessonView() {
     );
   }, (e) => box.replaceChildren(el('div', {class: 'notice error', text: 'Couldn’t get the courses: ' + e.message})));
   return box;
+}
+
+// ---------- battles ----------
+
+// The Battles tab (studio/battles.js): game-footage scenes. Not tied to a lesson; kept alive between tab visits.
+function battlesView() {
+  if (!S.battlesRoot) {
+    S.battlesRoot = el('div', {class: 'stack'});
+    S.battles = window.BattleTab.open(S.battlesRoot, api, post);
+  }
+  return S.battlesRoot;
 }
 
 // ---------- pixel art ----------
@@ -1276,7 +1294,7 @@ async function poll() {
   if (panel && j) panel.replaceChildren(...jobPanel(j.kind));
 }
 
-window.addEventListener('beforeunload', (e) => { if (hasDrafts() || S.rec || S.busy || (S.timing && S.timing.dirty()) || (S.pixels && S.pixels.dirty())) { e.preventDefault(); e.returnValue = ''; } });
+window.addEventListener('beforeunload', (e) => { if (hasDrafts() || S.rec || S.busy || (S.timing && S.timing.dirty()) || (S.pixels && S.pixels.dirty()) || (S.battles && S.battles.dirty())) { e.preventDefault(); e.returnValue = ''; } });
 
 S.mode = store.get('mode') === 'take' ? 'take' : 'each';
 S.keepScript = store.get('keep') || {};

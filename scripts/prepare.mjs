@@ -320,7 +320,7 @@ function snapToBeats(segments, beats) {
 }
 
 const pixelArtCredit = (segments, site) =>
-  segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite' || sc?.type === 'puppet')) ? `Pixel art drawn by hand by ${site.author || 'the host'}` : '';
+  segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite' || sc?.type === 'puppet' || sc?.type === 'battle')) ? `Pixel art drawn by hand by ${site.author || 'the host'}` : '';
 
 // Her video's layouts on a slide; "full" was the first name for the floating card.
 export const LAYOUTS = {off: 'off', bubble: 'bubble', card: 'card', full: 'card', side: 'side', lower: 'lower', only: 'only'};

@@ -5,7 +5,7 @@
 'use strict';
 (function () {
   const FPS = 30;
-  const LABELS = {puppet: 'Puppet', icons: 'Icons', image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
+  const LABELS = {battle: 'Battle', puppet: 'Puppet', icons: 'Icons', image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
     recap: 'Lesson summary', union: 'Union', partners: 'Partners', title: 'Title card', host: 'Your photo', trinity: 'Trinity', term: 'Word', keys: 'Keys', college: 'College', iconostasis: 'Iconostasis'};
 
   function h(tag, attrs, kids) {
@@ -82,6 +82,13 @@
       make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
         return {type: 'sprite', sprite: v.sprite, ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
       read: (sc) => ({sprite: sc.sprite || '', move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
+    battle: {label: 'Battle (game footage from the Battles tab)', fields: [['battle', 'Which battle', 'battlepick'], ['from', 'Starts at (seconds into the battle)', 'text'], ['to', 'Stops at (seconds into the battle; empty = the end)', 'text'],
+      ['palette', 'Colors', 'select', ['pico', 'own']]],
+      make: (v) => { if (!v.battle) throw new Error('Make a battle on the Battles tab first');
+        const f = Number(v.from || 0), t = v.to === '' || v.to === undefined ? null : Number(v.to);
+        if (!Number.isFinite(f) || f < 0 || (t !== null && (!Number.isFinite(t) || t <= f))) throw new Error('The stop time must be after the start time');
+        return {type: 'battle', battle: v.battle, ...(f || t !== null ? {clip: [f, t ?? 9999]} : {}), ...(v.palette && v.palette !== 'pico' ? {palette: v.palette} : {})}; },
+      read: (sc) => ({battle: typeof sc.battle === 'string' ? sc.battle : sc.battle?.name || '', from: sc.clip ? String(sc.clip[0]) : '0', to: sc.clip && sc.clip[1] < 9999 ? String(sc.clip[1]) : '', palette: sc.palette || 'pico'})},
     puppet: {label: 'Puppet (a character you play with the keys)', fields: [['character', 'Which character', 'character'], ['item', 'The item it points to (P)', 'item'],
       ['size', 'Size', 'select', ['medium', 'small', 'big']], ['start', 'Stands at first', 'select', ['center', 'left', 'right']]],
       make: (v) => { if (!v.character) throw new Error('Draw a character first: <name>-idle and <name>-walk on the Pixel art tab');
@@ -635,6 +642,11 @@
             });
             vals[name] = input;
             return h('label', {class: 'tl-field'}, [h('span', {text: label}), input, note]);
+          }
+          else if (type === 'battlepick') {
+            input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);
+            api('/api/battles').then((list) => input.replaceChildren(...(list.length ? list.map((b) => h('option', {value: b.name, text: b.title + ' (' + b.seconds + ' s)', selected: b.name === value}))
+              : [h('option', {value: '', text: 'None yet: make one on the Battles tab'})])));
           }
           else if (type === 'sprite') {
             // Her saved pixel animations and sketches.

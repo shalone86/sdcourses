@@ -28,12 +28,14 @@ export type BattleProp = {sprite: string; at: Pt; face?: 'left' | 'right'};
 //   fx: spark|dust + (at: [x,y] | unit: id)   a one-shot effect (dx, dy: pixel nudge)
 //   camera: [x,y] (cells, top-left of the view) + dur: slide there; follow: <unit id> keeps it centered
 //   say: "text" + who + dur: a caption
+//   label: "Charles Martel" + (unit: id | at: [x,y]) + dur: a name tag over a person or a place
 export type BattleEvent = {
   t: number;
   unit?: string; move?: Pt[]; speed?: number; act?: string; dur?: number; face?: 'left' | 'right'; show?: boolean;
   fx?: string; at?: Pt; dx?: number; dy?: number;
   camera?: Pt; follow?: string;
   say?: string; who?: string;
+  label?: string;
   note?: string; // for people reading the file (sources, what is uncertain); never shown
 };
 
@@ -60,6 +62,7 @@ export type BattleState = {
   props: {sprite: string; frame: number; x: number; y: number; flip: boolean}[];
   fx: FxState[];
   say: {text: string; who?: string} | null;
+  labels: {text: string; x: number; y: number}[]; // x: middle, y: top of what it names (pixels of the world)
 };
 
 const MOVE_ORDER = ['walk', 'gallop', 'ride', 'run', 'idle'];
@@ -233,7 +236,16 @@ export function battleAt(b: Battle, arts: ArtMap, T: number): BattleState {
   let say: BattleState['say'] = null;
   for (const e of b.script) if (e.say && e.t <= T && T < e.t + (e.dur ?? 3)) say = {text: e.say, who: e.who};
 
-  return {camera, units, props, fx, say};
+  // Name tags: over a unit (following it) or at a place, while their time lasts.
+  const labels: BattleState['labels'] = [];
+  for (const e of b.script) {
+    if (!e.label || e.t > T || T >= e.t + (e.dur ?? 4)) continue;
+    const u = e.unit ? units.find((x) => x.id === e.unit) : null;
+    if (u) labels.push({text: e.label, x: u.x + u.w / 2, y: u.y});
+    else if (e.at) labels.push({text: e.label, x: e.at[0] * CELL + CELL / 2, y: e.at[1] * CELL - (e.dy ?? 0)});
+  }
+
+  return {camera, units, props, fx, say, labels};
 }
 
 /** Everything a battle needs drawn: sprite names its tiles, props, units and effects can use. */
