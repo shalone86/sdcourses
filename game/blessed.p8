@@ -151,7 +151,8 @@ function _init()
  drive_through=false had_coffee=false
  -- the hospital: a number of sick
  -- people that grows all day
- hosp_need=0 hosp_priests=0
+ hosp_need=0 hosp_priests=0 sick_healed=0
+ patience=1 popemode=false
  chapel=false chapel_relic=false
  chapel_deacons=0 ccd=0
  -- grace left at the church and
@@ -237,6 +238,56 @@ ups={
 
 function l(n) return lv[n] or 0 end
 
+-- characters: who you play. s,w:
+-- standing and walking drawings.
+-- u: how to unlock (saved for good)
+chars={
+ {n="priest",s=0,w=6,d="the parish priest"},
+ {n="benedictine",s=28,w=30,d="people wait longer",
+  u="5 or fewer missed in a day"},
+ {n="dominican",s=60,w=62,d="garden; more rosaries",
+  u="marian garden 3 times in a day"},
+ {n="franciscan",s=64,w=66,d="starts as chaplain",
+  u="bless 50 sick in a day"},
+ {n="eastern monk",s=68,w=70,d="starts with an angel",
+  u="find 3 combos"},
+ {n="cardinal",s=88,w=90,d="starts with a cathedral",
+  u="build the cathedral"},
+ {n="pope",s=92,w=94,d="blesses all, each minute",
+  u="bless 500 in a day"},
+}
+pick=max(1,dget(3)) -- last one you played
+
+function unlocked(i) return i==1 or dget(2)&(1<<i)>0 end
+
+-- end of the day: anything new?
+function check_unlocks()
+ local f=0
+ for i=1,#combos do if dget(1)&(1<<i)>0 then f+=1 end end
+ local won={false,missed<=5 and score>=50,l("marian garden")>=3,
+  sick_healed>=50,f>=3,cath,score>=500}
+ newchar=nil
+ for i=2,#chars do
+  if won[i] and not unlocked(i) then
+   dset(2,dget(2)|(1<<i)) newchar=chars[i].n
+  end
+ end
+end
+
+-- your character's head start
+function start_skill()
+ local n=chars[pick].n
+ patience=n=="benedictine" and 1.5 or 1
+ if n=="dominican" then garden=1 lv["marian garden"]=1 end
+ if n=="franciscan" then chap=true lv["chaplain"]=1 end
+ if n=="eastern monk" then lv["guardian angel"]=1 p.mag+=10 end
+ if n=="cardinal" then
+  church=3 cath=true lv["fix the church"]=2 lv["cathedral"]=1
+  bishop=true lv["bishop"]=1 add_helper(false)
+ end
+ popemode=n=="pope"
+end
+
 -- combos: two upgrades that work
 -- together. a combo shows up (gold)
 -- once you have what it needs.
@@ -309,14 +360,6 @@ function make_town()
   wc=rnd(walls),rc=rnd(roofs)})
  hosp_wc,hosp_rc=rnd(walls),rnd(roofs)
  add(bldg,{x=hosp_x,y=hosp_y,s=s_hosp,k="hosp",wc=hosp_wc,rc=hosp_rc})
- -- doors she paints in the map
- -- editor (sprite flag 1) send
- -- people out too
- for my=0,31 do for mx=0,63 do
-  if fget(mget(mx,my),1) then
-   add(bldg,{x=mx*8-4,y=my*8-10,k="door"})
-  end
- end end
  for i=1,40 do
   local x,y=16+rnd(world-48),16+rnd(world-48)
   if free(x,y) then
@@ -362,11 +405,9 @@ function free(x,y)
  return true
 end
 
--- walls stop the priest: buildings
--- and map tiles
+-- buildings stop the priest
 -- with sprite flag 0
 function solid(x,y)
- if fget(mget(x\8%64,y\8%32),0) then return true end
  for b in all(bldg) do
   if b.s and x>b.x-8 and x<b.x+24
    and y>b.y+2 and y<b.y+17 then
@@ -414,7 +455,7 @@ end
 function person(x,y,k)
  local q={x=x,y=y,k=k,s=rnd(s_people),
   look=new_look("people"),need=1,hit=0,
-  wait=900+rnd(300),spd=.2+rnd(.2)}
+  wait=(900+rnd(300))*patience,spd=.2+rnd(.2)}
  -- the top of the head: hair, or
  -- a hat (its own random color)
  local tc=tops[q.s]
@@ -501,7 +542,7 @@ end
 function heal(n)
  n=min(n,hosp_need)
  if n<=0 then return end
- hosp_need-=n score+=n
+ hosp_need-=n score+=n sick_healed+=n
  hosp_pile+=n
  splash(hosp_x+8,hosp_y+8,10)
  add(fx,{x=hosp_x+8,y=hosp_y-4,t=20,s="\143",c=10})
@@ -573,7 +614,8 @@ end
 
 function drop_item(x,y)
  add(items,{x=x%world,y=y%world,
-  k=rnd({"rosary","bucket","coffee","coffee"})})
+  k=rnd({"rosary","bucket","coffee","coffee",
+   chars[pick].n=="dominican" and "rosary" or "coffee"})})
 end
 
 function use(k)
@@ -634,13 +676,19 @@ end
 
 function _update()
  if state=="title" then
-  if btnp(5) then state="play"
+  -- left/right: who you play
+  if btnp(0) then pick=(pick-2)%#chars+1 end
+  if btnp(1) then pick=pick%#chars+1 end
+  if btnp(5) then
+   if unlocked(pick) then
+    dset(3,pick) _init() start_skill() state="play"
+   else sfx(4) end
   elseif btnp(4) then book_from="title" state="book" end
   return
  end
  if state=="over" then
   if btnp(4) then book_from="over" state="book"
-  elseif btnp(5) then _init() end
+  elseif btnp(5) then _init() state="title" end
   return
  end
  if state=="map" then
@@ -686,7 +734,7 @@ function _update()
   end
  end
  if t>=day_len*30 then
-  state="over"
+  state="over" check_unlocks()
   best=dget(0)
   if score>best then dset(0,score) end
   return
@@ -706,7 +754,13 @@ function _update()
  if not solid(p.x,ny) then p.y=ny end
 
  -- who asks, and how often
- if t%max(10,40-t\900)==0 then spawn_walker() end
+ -- (crowds come faster for the pope)
+ if t%max(8,(40-t\900)*(popemode and .7 or 1)\1)==0 then spawn_walker() end
+ -- the pope blesses everyone on
+ -- screen, once a minute
+ if popemode and t%1800==0 then
+  splash(p.x,p.y-4,70) bless(p.x,p.y,90) say("urbi et orbi!")
+ end
  if t%240==0 then spawn_home() end
  if t%max(20,150-church*20-garden*20)==0 then spawn_church() end
  -- the sick: more as the day goes on.
@@ -733,10 +787,7 @@ function _update()
   if q.tx then tx,ty=q.tx,q.ty end
   if q.k=="walk" or q.tx then
    if not near(q.x,q.y,tx,ty,6) then
-    local a=atan2(wd(tx,q.x),wd(ty,q.y))
-    q.x=(q.x+cos(a)*q.spd)%world
-    q.y=(q.y+sin(a)*q.spd)%world
-    q.fl=cos(a)<0
+    step(q,tx,ty,q.spd)
    elseif q.tx then
     q.there=true
    end
@@ -811,8 +862,7 @@ function _update()
  -- grace: walk near it to pick it up
  for g in all(graces) do
   if g.pull or near(g.x,g.y,p.x,p.y-4,p.mag) then
-   local a=atan2(wd(p.x,g.x),wd(p.y-4,g.y))
-   g.x=(g.x+cos(a)*3)%world g.y=(g.y+sin(a)*3)%world
+   step(g,p.x,p.y-4,3)
   end
   if near(g.x,g.y,p.x,p.y-4,5) then
    del(graces,g) xp+=g.v sfx(1)
@@ -839,76 +889,59 @@ function _update()
  if xp>=need and state=="play" then levelup() end
 end
 
+-- move o toward tx,ty (the short
+-- way round the town)
+function step(o,tx,ty,sp)
+ local a=atan2(wd(tx,o.x),wd(ty,o.y))
+ o.x=(o.x+cos(a)*sp)%world
+ o.y=(o.y+sin(a)*sp)%world
+ o.fl=cos(a)<0 o.mv=true
+end
+
+-- the nearest thing in list that ok() likes
+function closest(list,o,ok)
+ local tg,best
+ for q in all(list) do
+  local d=abs(wd(q.x,o.x))+abs(wd(q.y,o.y))
+  if ok(q) and (not tg or d<best) then tg,best=q,d end
+ end
+ return tg
+end
+
+function onscreen(q)
+ return abs(wd(q.x,p.x))<60 and abs(wd(q.y,p.y))<60
+end
+
 -- the bishop's priests: one person
--- or one grace at a time, and they
--- stay on your screen. hospital
--- priests stay there and bless
--- the sick.
+-- (or else one grace) at a time, on
+-- your screen. hospital priests
+-- stay there and bless the sick;
+-- with sick calls they visit homes
+-- when the hospital is quiet.
 function helper(h)
  h.mv=false
+ local tg,tx,ty,r,sp
  if h.hosp then
-  local tx,ty=hosp_x+8+h.ox/2,hosp_y+22
-  -- sick calls: when the hospital
-  -- is quiet, visit someone at home
-  local tg
+  tx,ty,r,sp=hosp_x+8+h.ox/2,hosp_y+22,3,1.5
   if sick_calls and hosp_need==0 then
-   local best=999
-   for q in all(people) do
-    if q.k=="home" then
-     local d=abs(wd(q.x,h.x))+abs(wd(q.y,h.y))
-     if d<best then tg,best=q,d end
-    end
-   end
-   if tg then tx,ty=tg.x,tg.y end
+   tg=closest(people,h,function(q) return q.k=="home" end)
   end
-  if not near(h.x,h.y,tx,ty,tg and 7 or 3) then
-   local a=atan2(wd(tx,h.x),wd(ty,h.y))
-   h.x=(h.x+cos(a)*1.5)%world h.y=(h.y+sin(a)*1.5)%world
-   h.fl=cos(a)<0 h.mv=true
-  else
-   h.cd-=1
-   if h.cd<=0 then
-    if tg then h.cd=30 splash(h.x,h.y-4,6) hit(tg)
-    elseif hosp_need>0 then h.cd=60 heal(1) end
-   end
-  end
-  return
- end
- local cx,cy,range=p.x,p.y,60
- if h.hosp then cx,cy,range=hosp_x+8,hosp_y+22,30 end
- local tg,best=nil,999
- for q in all(people) do
-  if abs(wd(q.x,cx))<range and abs(wd(q.y,cy))<range then
-   local d=abs(wd(q.x,h.x))+abs(wd(q.y,h.y))
-   if d<best then tg,best=q,d end
-  end
- end
- if not h.hosp then
-  for g in all(graces) do
-   local d=abs(wd(g.x,h.x))+abs(wd(g.y,h.y))
-   if abs(wd(g.x,p.x))<60 and abs(wd(g.y,p.y))<60 and d<best then
-    tg,best=g,d
-   end
-  end
- end
- local tx,ty=cx+h.ox,cy+h.oy
- if tg then tx,ty=tg.x,tg.y end
- if not near(h.x,h.y,tx,ty,4) then
+ else
+  tg=closest(people,h,onscreen) or closest(graces,h,onscreen)
+  tx,ty,r,sp=p.x+h.ox,p.y+h.oy,4,van and 2 or 1
   -- left behind? hurry back
-  local sp=1
-  if van then sp=2 end
-  if not h.hosp and not near(h.x,h.y,p.x,p.y,64) then sp=3 end
-  local a=atan2(wd(tx,h.x),wd(ty,h.y))
-  h.x=(h.x+cos(a)*sp)%world h.y=(h.y+sin(a)*sp)%world
-  h.fl=cos(a)<0 h.mv=true
+  if not near(h.x,h.y,p.x,p.y,64) then sp=3 end
  end
- h.cd-=1
- if tg and h.cd<=0 and near(h.x,h.y,tg.x,tg.y,7) then
-  h.cd=30
-  if tg.v then
-   del(graces,tg) xp+=tg.v sfx(1)
-  else
-   splash(h.x,h.y-4,6) hit(tg)
+ if tg then tx,ty,r=tg.x,tg.y,7 end
+ if not near(h.x,h.y,tx,ty,r) then
+  step(h,tx,ty,sp)
+ else
+  h.cd-=1
+  if h.cd<=0 then
+   h.cd=30
+   if tg and tg.v then del(graces,tg) xp+=tg.v sfx(1)
+   elseif tg then splash(h.x,h.y-4,6) hit(tg)
+   elseif h.hosp and hosp_need>0 then h.cd=60 heal(1) end
   end
  end
 end
@@ -1093,13 +1126,17 @@ function draw_title()
  end
  print("\^w\^tblessed!",33,21,1)
  print("\^w\^tblessed!",32,20,10)
- -- your priest, big
- local n=s_priest+flr(time()*2)%2
- if drawn(s_priest) then
-  sspr(n%16*8,n\16*8,8,8,48,38,32,32)
- end
- print("walk around town and",24,80,7)
- print("bless everyone who asks",18,87,7)
+ -- who you'll play, big (a dark
+ -- shape until unlocked)
+ local c=chars[pick]
+ local n=c.s+flr(time()*2)%2
+ if not unlocked(pick) then for i=1,15 do pal(i,1) end end
+ sspr(n%16*8,n\16*8,8,8,48,38,32,32)
+ pal()
+ print("\139",38,52,7) print("\145",84,52,7)
+ print(c.n,64-#c.n*2,76,10)
+ local d=unlocked(pick) and c.d or "unlock: "..c.u
+ print(d,64-#d*2,84,7)
  print("best: "..dget(0),46,98,10)
  print("\151 start   \142 book",26,114,7)
 end
@@ -1113,12 +1150,6 @@ function _draw()
  -- this season's ground color
  cls(0)
  camera(p.x-64,p.y-64)
- -- map tiles she painted, wrapped
- local tx,ty=(p.x-64)\8,(p.y-64)\8
- for j=ty,ty+17 do for i=tx,tx+17 do
-  local m=mget(i%64,j%32)
-  if m>0 then spr(m,i*8,j*8) end
- end end
  for d in all(decor) do at(d.x,d.y) spr(d.s,d.x,d.y) end
  for b in all(bldg) do
   at(b.x,b.y)
@@ -1190,12 +1221,12 @@ function _draw()
  -- you: blessing (4 frames, just
  -- after each blessing), walking,
  -- or standing. bishop once you are.
- local st,wk,bl=s_priest,s_priest_walk,s_priest_bless
- if bishop and drawn(s_bishop) then
+ local st,wk,bl=chars[pick].s,chars[pick].w,pick==1 and s_priest_bless
+ if pick==1 and bishop and drawn(s_bishop) then
   st,wk,bl=s_bishop,s_bishop_walk,s_bishop_bless
  end
  local since=p.rate-p.cd
- if since<12 and drawn(bl) then
+ if bl and since<12 and drawn(bl) then
   spr(bl+since\3,p.x-4,p.y-8,1,1,p.fl)
  else
   figure(st,wk,p.mv,p.x,p.y,p.fl,nil,0)
@@ -1226,21 +1257,16 @@ function _draw()
 
  -- off the screen: who's waiting
  -- at home or at the hospital
+ -- (and the hospital, filling up)
+ local marks={}
  for q in all(people) do
-  if q.k=="home" or q.ev then
-   local sx,sy=wd(q.x,p.x)+64,wd(q.y,p.y)+60
-   if sx<0 or sx>127 or sy<10 or sy>127 then
-    local c=10
-    if q.ev then c=9 end
-    circfill(mid(2,sx,125),mid(13,sy,125),1,c)
-   end
-  end
+  if q.k=="home" or q.ev then add(marks,{q.x,q.y,q.ev and 9 or 10}) end
  end
- -- the hospital, when it's filling up
- if chap and hosp_need>=5 then
-  local sx,sy=wd(hosp_x+8,p.x)+64,wd(hosp_y+8,p.y)+60
+ if chap and hosp_need>=5 then add(marks,{hosp_x+8,hosp_y+8,8}) end
+ for m in all(marks) do
+  local sx,sy=wd(m[1],p.x)+64,wd(m[2],p.y)+60
   if sx<0 or sx>127 or sy<10 or sy>127 then
-   circfill(mid(2,sx,125),mid(13,sy,125),1,8)
+   circfill(mid(2,sx,125),mid(13,sy,125),1,m[3])
   end
  end
 
@@ -1292,6 +1318,7 @@ function _draw()
     if y>92 then break end
    end
   end
+  if newchar then print("unlocked: "..newchar.."!",64-(#newchar+11)*2,22,10) end
   print("\142 book  \151 play again",18,98,6)
  end
  -- show color 0 as the ground
@@ -1307,14 +1334,14 @@ __gfx__
 000110000001700000111100001171000077a70000777900000110000001700000011000000110000001f0000001100000111100001171000077a70000777900
 000f1000000f100000fddd0000fddd0000f9770000f7a700000f10000001f000000f1000000f1000000f1000000f100000fddd0000ddfd0000f977000077f700
 00011000000110000001100000011000000110000001100000011000001010000001100000011000000110000001100000011000001101000001100000110100
-000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000000ccc0000000000000999000000000000000000000000000000000000000000
-00544400000ccc0000544400000eee0000544400000aaa0000544450000eee0000544400000ccc00005444000009990000000000000000000000000000000000
-004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450004f4f0000544400004f4f000054440000000000000000000000000000000000
-0054a400004f4f0005544450054f4f0000549400004f4f0005544400054f4f5000545400004f4f0000545400004f4f0000000000000000000000000000000000
-000d70000054a400000370000554445000d17100005494000053770005544400005555000054540000d555000054540000000000000000000000000000000000
-000d1000000d7000000310000003700000d11100001d7100000c4c0000537700000a70000055550000d1a100001d550000000000000000000000000000000000
-0004e000000e40000004c00000014000004eee0000ee4e00000111000004cc000004100000014000004eee0000ee4e0000000000000000000000000000000000
-00033000003030000001100000101000000330000033030000110100000111000003300000303000000330000033030000000000000000000000000000000000
+000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000000ccc0000000000000999000000000000055500000000000005550000000000
+00544400000ccc0000544400000eee0000544400000aaa0000544450000eee0000544400000ccc00005444000009990000544400000555000054440000055500
+004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450004f4f0000544400004f4f000054440000414100005444000041410000544400
+0054a400004f4f0005544450054f4f0000549400004f4f0005544400054f4f5000545400004f4f0000545400004f4f0000544400004141000054440000414100
+000d70000054a400000370000554445000d17100005494000053770005544400005555000054540000d555000054540000111100005444000011110000544400
+000d1000000d7000000310000003700000d11100001d7100000c4c0000537700000a70000055550000d1a100001d550000111100001111000011110000111100
+0004e000000e40000004c00000014000004eee0000ee4e00000111000004cc000004100000014000004eee0000ee4e0000455500004555000045550000545500
+00033000003030000001100000101000000330000033030000110100000111000003300000303000000330000033030000111100001111000011110001101100
 00000000000000000004444000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000040000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000400040409acca00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -1323,30 +1350,30 @@ __gfx__
 00000000001777000a004000009aa00000055500000000000000000000000000000000003bbb3bbb33343343000b30009090a0a0000400000000000000000000
 0000000000117100aaa4000000000000000000000000000000000000000000000000000033bb33bb343433430b3333000b000b00009990000000000000000000
 00000000000000000a0000000000000000000000000000000000000000000000000000000240024000400400033333300b000b00009990000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000ddd00000ddd00000ddd00000ddd0000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000007fff00007fff00007fff00007fff0000000000000000000000000000000000
-000000000000000000000000000000000000000000000000000000000000000000f3f3f000f3f30000f3f30000f3f30000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000007fff10007fff00007fff00007fff0000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000011710000117100001171000011710000000000000000000000000000000000
-000000000000000000000000000000000000000000000000000000000000000000111100001111f00011f1000011111f00000000000000000000000000000000
-000000000000000000000000000000000000000000000000000000000000000000fddd0000fddd0000fddd0000fddd0000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000001100000011000000110000001100000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000
-000000000000000000000000000000000000000000000000000000000000000000544400000ccc0000544400000eee0000544400000aaa0000544450000eee00
-0000000000000000000000000000000000000000000000000000000000000000004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450
-00000000000000000000000000000000000000000000000000000000000000000054a400004f4f0005544450054f4f0000549400004f4f0005544400054f4f50
-0000000000000000000000000000000000000000000000000000000000000000000d70000054a400000370000554445000d17100005494000053770005544400
-0000000000000000000000000000000000000000000000000000000000000000000d1000000d7000000310000003700000d1110000d171000003110000537700
-00000000000000000000000000000000000000000000000000000000000000000004e0000004e0000004c0000004c000004eee00004eee000004cc000004cc00
-00000000000000000000000000000000000000000000000000000000000000000003300000033000000110000001100000033000000330000001110000011100
-000ccc00000000000009990000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00544400000ccc000054440000099900d009990dd009990d000000000d0000d00000000000000000000000000000000000000000000000000000000000000000
-004f4f0000544400004f4f00005444007d9fffd77d9fffd7dd0999ddd559995d0000000000000000000000000000000000000000000000000000000000000000
-00545400004f4f0000545400004f4f0077fafa7777fafa77759fff57d79fff7d0000000000000000000000000000000000000000000000000000000000000000
-005555000054540000d5550000545400779fff77779fff7777fafa7777fafa770000000000000000000000000000000000000000000000000000000000000000
-000a70000055550000d1a10000d555000770077007700770779fff77709fff070000000000000000000000000000000000000000000000000000000000000000
-0004100000041000004eee00004eee00000000000000000000000000700000070000000000000000000000000000000000000000000000000000000000000000
-00033000000330000003300000033000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000ddd00000ddd00000ddd00000ddd0000055500000000000005550000000000
+0000000000000000000000000000000000000000000000000000000000000000007fff00007fff00007fff00007fff00005fff0000055500005fff0000055500
+000000000000000000000000000000000000000000000000000000000000000000f3f3f000f3f30000f3f30000f3f30000fdfd00005fff0000fdfd00005fff00
+0000000000000000000000000000000000000000000000000000000000000000007fff10007fff00007fff00007fff00005f5f0000fdfd00005f5f0000fdfd00
+00000000000000000000000000000000000000000000000000000000000000000011710000117100001171000011710000755500005f5f0000755500005f5f00
+000000000000000000000000000000000000000000000000000000000000000000111100001111f00011f1000011111f00077000007555000007700000755500
+000000000000000000000000000000000000000000000000000000000000000000fddd0000fddd0000fddd0000fddd00000f7000000f7000000f70000007f000
+00000000000000000000000000000000000000000000000000000000000000000001100000011000000110000001100000077000000770000007700000707000
+000aaa0000000000000aaa000000000000111100000000000011110000000000000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000
+00afff00000aaa0000afff00000aaa00001fff0000111100001fff000011110000544400000ccc0000544400000eee0000544400000aaa0000544450000eee00
+00fdfd0000afff0000fdfd0000afff0000fdfd00001fff0000fdfd00001fff00004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450
+005fff0000fdfd00005fff0000fdfd00007f7f0000fdfd00007f7f0000fdfd000054a400004f4f0005544450054f4f0000549400004f4f0005544400054f4f50
+00055000005fff0000055000005fff0000177700007f7f0000177700007f7f00000d70000054a400000370000554445000d17100005494000053770005544400
+0005500000055000000550000005500000111100001777000011110000117700000d1000000d7000000310000003700000d1110000d171000003110000537700
+000f4000000f4000000f40000004f00000f1110000f1110000f111000011f1000004e0000004e0000004c0000004c000004eee00004eee000004cc000004cc00
+00055000000550000005500000505000001111000011110000011000001101000003300000033000000110000001100000033000000330000001110000011100
+000ccc0000000000000999000000000000000000000000000000000000000000000eee0000000000000eee000000000000077700000000000007770000000000
+00544400000ccc000054440000099900d009990dd009990d000000000d0000d0007fff00000eee00007fff00000eee00005fff0000077700005fff0000077700
+004f4f0000544400004f4f00005444007d9fffd77d9fffd7dd0999ddd559995d00fcfc00007fff0000fcfc00007fff0000f3f300005fff0000f3f300005fff00
+00545400004f4f0000545400004f4f0077fafa7777fafa77759fff57d79fff7d007fff0000fcfc00007fff0000fcfc00005fff0000f3f300005fff0000f3f300
+005555000054540000d5550000545400779fff77779fff7777fafa7777fafa7700117100007fff0000117100007fff0000777700005fff0000777700005fff00
+000a70000055550000d1a10000d555000770077007700770779fff77709fff070011110000117100001111000011710000777700007777000077770000777700
+0004100000041000004eee00004eee000000000000000000000000007000000700feee0000feee0000feee0000eefe0000f7770000f7770000f777000077f700
+000330000003300000033000000330000000000000000000000000000000000000011000000110000001100000110100000ee000000ee000000ee00000ee0e00
 00000000000000000000000000000000000000000000000000000000000000001111111111110000000000000000000011111111111100000000000000000000
 0000000000000000000000000000000000000000000000000000000000000000f777221f77710000111111111111000077ff22177ff100001111111111110000
 0000000000000000000000000000000000000000000000000000000000000000f777221f77710000777f221777f1000077ff22177ff10000ff77221ff7710000

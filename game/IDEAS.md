@@ -30,6 +30,15 @@
   - monk: starts with more angels
   - dominican: starts with the Marian garden and sees more rosaries
 
+## Exorcist (spitballing, nothing decided)
+- A special unlock: blesses people as usual, but instead of sick calls
+  he goes to the hospital and to houses and casts out demons.
+- A large roaming demon he fights back with holy water.
+- Probably too much for the main cart: maybe an exorcist mode as its own
+  cart, with places like Transylvania, or a separate exorcism game.
+- Worry: it could turn into Vampire Survivors with a priest skin. Could
+  still be fun.
+
 ## A second game: monks and nuns
 - Helping the poor, like Mother Teresa. A thinking/puzzle and collecting
   game, not run-and-bless like Blessed!.
