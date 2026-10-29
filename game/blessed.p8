@@ -256,7 +256,9 @@ chars={
  {n="pope",s=92,w=94,d="blesses all, each minute",
   u="bless 500 in a day"},
 }
-pick=max(1,dget(3)) -- last one you played
+-- who: the character you play
+-- (the last one you played)
+who=max(1,dget(3))
 
 function unlocked(i) return i==1 or dget(2)&(1<<i)>0 end
 
@@ -276,7 +278,7 @@ end
 
 -- your character's head start
 function start_skill()
- local n=chars[pick].n
+ local n=chars[who].n
  patience=n=="benedictine" and 1.5 or 1
  if n=="dominican" then garden=1 lv["marian garden"]=1 end
  if n=="franciscan" then chap=true lv["chaplain"]=1 end
@@ -615,7 +617,7 @@ end
 function drop_item(x,y)
  add(items,{x=x%world,y=y%world,
   k=rnd({"rosary","bucket","coffee","coffee",
-   chars[pick].n=="dominican" and "rosary" or "coffee"})})
+   chars[who].n=="dominican" and "rosary" or "coffee"})})
 end
 
 function use(k)
@@ -677,11 +679,11 @@ end
 function _update()
  if state=="title" then
   -- left/right: who you play
-  if btnp(0) then pick=(pick-2)%#chars+1 end
-  if btnp(1) then pick=pick%#chars+1 end
+  if btnp(0) then who=(who-2)%#chars+1 end
+  if btnp(1) then who=who%#chars+1 end
   if btnp(5) then
-   if unlocked(pick) then
-    dset(3,pick) _init() start_skill() state="play"
+   if unlocked(who) then
+    dset(3,who) _init() start_skill() state="play"
    else sfx(4) end
   elseif btnp(4) then book_from="title" state="book" end
   return
@@ -1128,15 +1130,18 @@ function draw_title()
  print("\^w\^tblessed!",32,20,10)
  -- who you'll play, big (a dark
  -- shape until unlocked)
- local c=chars[pick]
+ local c=chars[who]
  local n=c.s+flr(time()*2)%2
- if not unlocked(pick) then for i=1,15 do pal(i,1) end end
+ if not unlocked(who) then for i=1,15 do pal(i,1) end end
  sspr(n%16*8,n\16*8,8,8,48,38,32,32)
  pal()
  print("\139",38,52,7) print("\145",84,52,7)
  print(c.n,64-#c.n*2,76,10)
- local d=unlocked(pick) and c.d or "unlock: "..c.u
- print(d,64-#d*2,84,7)
+ -- the skill, or how to unlock
+ -- (on its own line, to fit)
+ local d=unlocked(who) and c.d or c.u
+ if not unlocked(who) then print("to unlock:",44,84,6) end
+ print(d,64-#d*2,unlocked(who) and 84 or 90,7)
  print("best: "..dget(0),46,98,10)
  print("\151 start   \142 book",26,114,7)
 end
@@ -1221,8 +1226,8 @@ function _draw()
  -- you: blessing (4 frames, just
  -- after each blessing), walking,
  -- or standing. bishop once you are.
- local st,wk,bl=chars[pick].s,chars[pick].w,pick==1 and s_priest_bless
- if pick==1 and bishop and drawn(s_bishop) then
+ local st,wk,bl=chars[who].s,chars[who].w,who==1 and s_priest_bless
+ if who==1 and bishop and drawn(s_bishop) then
   st,wk,bl=s_bishop,s_bishop_walk,s_bishop_bless
  end
  local since=p.rate-p.cd
