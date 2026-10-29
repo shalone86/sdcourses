@@ -80,16 +80,14 @@ const topsLua = `tops={${tops.join(',')}}`;
 // pixels per picture), unpacked at start into extra sprite sheets in upper
 // memory.
 const ALPHA = '0123456789abcdefghijklmnopqrstuvwxyz!#$%&()*+,-./:;<=>?@[]^_{|}~';
-let bigLua = 'big={}\nbigart=""';
+let bigLua = 'bigart=""';
 if (cfg.big?.length) {
   let art = '';
-  const ids = [];
   cfg.big.forEach((name, i) => {
     const s = JSON.parse(fs.readFileSync(`sprites/${name}.json`, 'utf8'));
     if (s.width !== 32 || s.height !== 32) throw new Error(`${name} is ${s.width}x${s.height}; big art must be 32x32`);
     const cols = s.palette.map(nearest);
     const px = s.frames[0].flatMap((row) => [...row].map((ch) => (ch === '.' ? 0 : cols[parseInt(ch, 36)] ?? 0)));
-    ids.push(`["${name}"]=${i}`);
     if (i < 8) {
       const x0 = (i % 4) * 32, y0 = 64 + Math.floor(i / 4) * 32;
       px.forEach((c, k) => { sheet[y0 + Math.floor(k / 32)][x0 + (k % 32)] = c; });
@@ -102,7 +100,8 @@ if (cfg.big?.length) {
       k += n;
     }
   });
-  bigLua = `big={${ids.join(',')}}\nbigart="${art}"`;
+  // the game refers to them by number, in this order
+  bigLua = `bigart="${art}"`;
   console.log(`big art: ${Math.min(8, cfg.big.length)} on the sprite sheet, ${Math.max(0, cfg.big.length - 8)} in the code (${art.length} characters)`);
 }
 

@@ -50,7 +50,6 @@ tops={[16]=12,[18]=14,[20]=10,[22]=14,[24]=12,[26]=9}
 -- @end
 
 -- @big (npm run pico8 writes her 32x32 art here)
-big={["church-1"]=0,["church-2"]=1,["church-3"]=2,["cathedral"]=3,["hospital"]=4,["chapel"]=5,["house-1"]=6,["house-2"]=7,["house-3"]=8,["house-4"]=9,["tree-1"]=10,["tree-2"]=11,["tree-3"]=12,["tree-4"]=13,["tree-5"]=14,["tree-6"]=15,["christmas-tree"]=16,["marian-garden"]=17}
 bigart="33333333333333333333333333333333333333333333333332777733335bbb533325bbb9433307bbb9433304bbbb8433304bbbb8433305bbba533307777633304=7@@=633314>5@@?433324>4@@@433324>4=k|@>k{433324>4=k|@>k{433324>4=k|@>k{433324>4=k|@>k{433324>4@@@433324>4@@@433324>4@kv?433324>4@kv?433324>4@kv?433324>4@kv?433324>4@kuk?433324>4@kv?433324>5?kv?433324=7>kv>53332777743323333333333333333333333333333333333333333333333333307777433326bbb533316bbb9431776bbb9774ba5bbb95a6bb84bbb94b85bb6bbb5b87777776b7@>7@@>776@@5@k{l{?5?604@@=4@nk?4@=504@@=4@k{l{?4@>404@@=4@=k@>4@>404@@=4@@@4@>404?k|?4k|@?k{4>k|=404?k|?4k|@?k{4>k|=404?k|?4k|@?k{4>k|=404?k|?4k|=ltk=k{4>k|=404@k@4=k>kv>k4?k>404@@=4@kv?4@>404@@=4@kv?4@>404@@=4@kuk?4@>404@@=4@kv?4@>404@@=4@kv?4@>405@?6?ltk>6@507777777603333333333333333333fe333333+ffd,33329fffd83332+8fd8ff3332ffffc3332e8ff8f3332fe+ff+3332fffd+c83332c8fffe3332f8fff3332fffe8+33330ff+f33332fffc33332fffc33332+8ffc9333330ffc333332+8fc8+333332,fc,33333309h833333328j3333332jg3333332jg3333332jg33333328j33333329h83333333i33333330i33333330i333333308h333333308h3332333333333333333333333333333333333333333333333333333333333333333333333333333333333ffffc3332f+ffc8fd332ffffd+d331ff8fc+fe331e+fd+fff330ffffff33fc0+8ffc9c2c33c2c1ffe0c2c33c2c1d8fc8d0c2c33c2c1ffe0c2c33c31c0cb8c32c33c31c18jd8f333f8d0jgci+d333ffjgchf333d+cicjgc0c2c333fcjj1c2c333c30c09h8182c333c30c1i32c33383081i33333330i333333308h333333308h33323333333333333333333333333333333333333333333333333333333333333333333333333333333330g33333333i33333333g33333330ji33jg333ji32g3333g1g1h31jg3330g30h2jg0g3331g30jjg2g3330g1jjg31g3333jjg31g3332h2b831g3332g38j333331g3jjg33331g3jjh33331i0jg3g33331jjg3g33331g29h83333333i33333330i33333330i333333308h333333308h3332333333333332,33333330f3333331fe+333333c+fc+333333ff3333338fc+c3333308fff+33331fd8fd+33331fffd33331fffd3332fd+fd8fc+333ffffe+333f8fffc8c3338fffc+fc332ffd+ffd+331fffffd331c8e+fffd+c331ff8fffc3308fffffd+33ffcb8fe8c+33e+fc8je+fd33ffcjgffd33c0d0d0fe0d0d0d338090908jg809090933338jg33333329h83333333i33333330i33333330i333333308h33333339h3332333333333333333333333333333333333333333333333333333333333333333333333333332g333333282g830h33333g1g2g0h3333308i28h3333330h3g333330jh3j3g3332j2j80i333308h2j1g33308h3i1i1h3333g2j0h1i33330g8g0jh0i833331jjj333330ji9g3333328jh3333331jh3333332jg33333318jg33333329h83333333i33333330i33333330i333333308h33333339h33323333333333333333333333333333333333333333333333333333333333333333333331d33333331cg0f30fd30fd2cg0f30fd30ffdg0chc30fd30ehdhcgegc30egd2gcgdhdhf0ge3c0gfchejhfcgd1c0d0gegchc1gdjgdid0gcjgcjgd2fe30c0gcgfcgdhd0fff1c1cgfjdgejgdjh2cgf0h0dgf0fcichc1cieh0fc0ehfdh3iehfdgehd0c1e2fjgfcicicgcjc1fdjcgeichdjhc1c0hfejhffegc1c2c30c8jg0c1c1c1e33319h83c32c3332i30c333332i33333330i333333308h33333339h3332333333333332&33333331(s3333333*s3333333)3333333&0c0&3333332+f3333331ff3333338fc+c3333308fe:e+33331d:d8c:e+33331d:ffd33331fffd3332fd+c:e8:e+333c:fc:f:e+333c:c8fdxfc8c3338fxfxc+cxd332fdxc(fdxd+331ffc(ffe331xd(ff(f+c331xd(d8fc(fd3308fffffd+33ffcb8fe8c+33d(fc8je+c(e33d(fcjgfc(e33c0d0d0fe0d0d0d338090908jg809090933331i33333330i33333330i333333308h33333339h333233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333077776s63304ffffcscsc43304f8d+f8c+esd43304ffffdsd43304e+d&d8c+d&esd43304fffffc433077777633"
 -- @end big
 
@@ -81,7 +80,7 @@ function load_big()
  poke(0x5f55,0x60) -- back to the screen
 end
 
--- draw big picture n (from big[...])
+-- draw big picture n
 -- with its top left at x,y
 function bigspr(n,x,y,fl)
  if n<8 then
@@ -245,7 +244,7 @@ function l(n) return lv[n] or 0 end
 chars={
  {n="priest",s=0,w=6,d="the parish priest"},
  {n="benedictine",s=28,w=30,d="people wait longer",
-  u="5 or fewer missed in a day"},
+  u="30 or fewer missed in a day"},
  {n="dominican",s=60,w=62,d="garden; more rosaries",
   u="marian garden 3 times in a day"},
  {n="franciscan",s=64,w=66,d="starts as chaplain",
@@ -267,7 +266,7 @@ function unlocked(i) return i==1 or dget(2)&(1<<i)>0 end
 function check_unlocks()
  local f=0
  for i=1,#combos do if dget(1)&(1<<i)>0 then f+=1 end end
- local won={false,missed<=5 and score>=50,l("marian garden")>=3,
+ local won={false,missed<=30 and score>=50,l("marian garden")>=3,
   sick_healed>=50,f>=3,cath,score>=500}
  newchar=nil
  for i=2,#chars do
@@ -1004,26 +1003,28 @@ function thing(n,x,y,c,z)
 end
 
 -- her drawing for a building
+-- (her big pictures by number, in
+-- the order of "big" in sprites.json:
+-- 0-2 church levels, 3 cathedral,
+-- 4 hospital, 5 chapel, 6-9 houses,
+-- 10-15 trees 1-6, 16 christmas
+-- tree, 17 marian garden)
 function art(b)
- local name
- if b.k=="church" then
-  name=cath and "cathedral" or "church-"..min(church+1,3)
- elseif b.k=="hosp" then name="hospital"
- elseif b.k=="chapel" then name="chapel"
- elseif b.k=="house" then name="house-"..b.v end
- return big[name]
+ if b.k=="church" then return cath and 3 or min(church,2) end
+ if b.k=="house" then return 5+b.v end
+ return b.k=="hosp" and 4 or 5
 end
 
 -- a big tree (4 people tall); in
 -- winter leafy trees are bare and
 -- some pines are christmas trees
 function tree(tr)
- local name="tree-"..tr.k
+ local n=9+tr.k
  if season==4 then
-  if tr.k!=4 then name="tree-"..tr.bare
-  elseif tr.xmas then name="christmas-tree" end
+  if tr.k!=4 then n=9+tr.bare
+  elseif tr.xmas then n=16 end
  end
- bigspr(big[name],tr.x-16,tr.y-32)
+ bigspr(n,tr.x-16,tr.y-32)
 end
 
 function draw_person(q)
@@ -1065,11 +1066,8 @@ function draw_map()
  end
  for it in all(items) do pset(it.x/4,it.y/4,9) end
  for q in all(people) do
-  if q.ev then
-   circfill(q.x/4,q.y/4,1,t%10<5 and 9 or 7)
-  elseif q.k!="walk" then
-   pset(q.x/4,q.y/4,t%10<5 and 10 or 7)
-  end
+  if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or 7)
+  elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or 7) end
  end
  print("church",church_x/4-10,church_y/4-7,7)
  print("hospital",hosp_x/4-14,hosp_y/4-7,8)
@@ -1079,7 +1077,7 @@ function draw_map()
  if hosp_need>0 then print("+"..hosp_need,hosp_x/4-2,hosp_y/4+6,chap and 8 or 5) end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  rectfill(0,120,127,127,1)
- print("\fcyou  \faasking  \f9big need",2,122)
+ print("\fcyou  \fa\138 house  \f9\146 need",2,122)
  print("\142map \151book",76,122,6)
 end
 
@@ -1171,13 +1169,14 @@ function _draw()
    pal(13,b.wc) pal(6,b.wc) pal(2,b.rc)
    bigspr(art(b),b.x-8,b.y-16)
    pal()
+   if b.who and t%20<14 then print("\138",b.x+5,b.y-22,b.who.ev and 9 or 10) end
   end
  end
  for tr in all(trees) do at(tr.x,tr.y) tree(tr) end
  at(church_x,church_y)
  -- the marian garden, beside the church
  if garden>0 then
-  bigspr(big["marian-garden"],church_x+26,church_y-16)
+  bigspr(17,church_x+26,church_y-16)
  end
  -- grace piled up, waiting for you
  if church_pile>0 then
@@ -1276,15 +1275,19 @@ function _draw()
  -- off the screen: who's waiting
  -- at home or at the hospital
  -- (and the hospital, filling up)
+ -- symbols at the edge: ⌂ a house
+ -- blessing, ★ a big need, + the
+ -- hospital filling up
  local marks={}
  for q in all(people) do
-  if q.k=="home" or q.ev then add(marks,{q.x,q.y,q.ev and 9 or 10}) end
+  if q.ev then add(marks,{q.x,q.y,9,"\146"})
+  elseif q.k=="home" then add(marks,{q.x,q.y,10,"\138"}) end
  end
- if chap and hosp_need>=5 then add(marks,{hosp_x+8,hosp_y+8,8}) end
+ if chap and hosp_need>=5 then add(marks,{hosp_x+8,hosp_y+8,8,"+"}) end
  for m in all(marks) do
   local sx,sy=wd(m[1],p.x)+64,wd(m[2],p.y)+60
   if sx<0 or sx>127 or sy<10 or sy>127 then
-   circfill(mid(2,sx,125),mid(13,sy,125),1,m[3])
+   print(m[4],mid(1,sx,121),mid(12,sy,122),m[3])
   end
  end
 
