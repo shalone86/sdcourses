@@ -161,6 +161,7 @@ function _init()
  got={} -- combos taken this day
  lv={} -- level of each upgrade
  score=0 xp=0 need=3 lvl=1
+ lost={0,0,0} lost_t=0 lost_c=0 -- time lost
  t=0 missed=0 msg="" msg_t=0
  state="play" page=1
  -- the start screen, when the
@@ -581,15 +582,23 @@ end
 
 -- waited too long: the day gets
 -- shorter
+-- waited too long. only needs on
+-- the map cost time: a house
+-- blessing, or a big need (3x).
+-- walkers and churchgoers just go.
 function miss(q)
  del(people,q) missed+=1
  if q.b then q.b.who=nil end
- -- a big need missed costs 3x
- local c=miss_cost
- if q.ev then c*=3 end
- t+=c*30
- add(fx,{x=q.x,y=q.y-12,t=30,s="-"..c.."s",c=8})
- sfx(4)
+ if q.ev then lose(miss_cost*3,3,q.ev.." was missed")
+ elseif q.k=="home" then lose(miss_cost,1,"a house blessing was missed") end
+end
+
+-- lose c seconds (kind k: 1 house,
+-- 2 hospital, 3 big need); the clock
+-- flashes and says why
+function lose(c,k,why)
+ t+=c*30 lost[k]+=c lost_t=60 lost_c=c
+ say(why) sfx(4)
 end
 
 -- grace near the church or the
@@ -773,13 +782,14 @@ function _update()
  if t%max(20,150-church*20-garden*20)==0 then spawn_church() end
  -- the sick: more as the day goes on.
  -- once you're chaplain, the ones
- -- past 9 count as missed
+ -- (up to 9)
  if t%max(60,150-t\60)==0 then
-  if hosp_need<9 then hosp_need+=1
-  elseif chap then
-   missed+=1 t+=miss_cost*30 sfx(4)
-   add(fx,{x=hosp_x+8,y=hosp_y-4,t=30,s="-"..miss_cost.."s",c=8})
-  end
+  if hosp_need<9 then hosp_need+=1 end
+ end
+ -- a full hospital (once you're
+ -- chaplain) costs 5 s every 10 s
+ if chap and hosp_need>=9 and t%300==0 then
+  missed+=1 lose(miss_cost,2,"the hospital is full!")
  end
  if chapel and t%(chapel_relic and 70 or 140)==0 then spawn_chapel() end
  -- a big need about every 45 s
@@ -1283,7 +1293,13 @@ function _draw()
  print("blessed "..score,2,1,7)
  print("lv "..lvl,64,1,6)
  local left=max(0,day_len-t\30)
- print(left\60 ..":"..sub("0"..left%60,-2),108,1,10)
+ -- the clock flashes red when time is lost
+ local lc=10
+ if lost_t>0 then
+  lost_t-=1 lc=t%8<4 and 8 or 10
+  print("-"..lost_c.."s",90,1,8)
+ end
+ print(left\60 ..":"..sub("0"..left%60,-2),108,1,lc)
  rectfill(0,8,127,9,1)
  rectfill(0,8,127*min(1,xp/need),9,10)
  if msg_t>0 then
@@ -1310,20 +1326,21 @@ function _draw()
  if state=="over" then
   rectfill(12,30,115,104,1) rect(12,30,115,104,10)
   print("the day is done",34,36,10)
-  print("blessed: "..score,34,48,7)
-  print("missed: "..missed,34,56,6)
-  print("best: "..max(best,score),34,64,9)
+  print("blessed: "..score,34,46,7)
+  print("missed: "..missed,34,53,6)
+  print("best: "..max(best,score),34,60,9)
+  -- where the time went
+  print("time lost:",34,68,8)
+  print("home "..lost[1].." sick "..lost[2].." need "..lost[3].."s",16,75,8)
   local f=0
   for i=1,#combos do
    if dget(1)&(1<<i)>0 then f+=1 end
   end
-  print("combos found: "..f.."/"..#combos,26,78,10)
-  -- the reveal: combos new today
-  local y=86
+  print("combos found: "..f.."/"..#combos,26,83,10)
+  -- the reveal: a combo new today
   for i=1,#combos do
    if got[combos[i].n] and found_start&(1<<i)==0 then
-    print("new! "..combos[i].n,26,y,9) y+=6
-    if y>92 then break end
+    print("new! "..combos[i].n,26,90,9)
    end
   end
   if newchar then print("unlocked: "..newchar.."!",64-(#newchar+11)*2,22,10) end
