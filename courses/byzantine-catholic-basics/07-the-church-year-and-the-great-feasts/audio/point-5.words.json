@@ -1,0 +1,490 @@
+{
+ "stamp": "2:3824718:1793302989931",
+ "words": [
+  {
+   "w": "Of",
+   "start": 0.09,
+   "end": 0.13
+  },
+  {
+   "w": "the",
+   "start": 0.13,
+   "end": 0.33
+  },
+  {
+   "w": "Fixed",
+   "start": 0.33,
+   "end": 0.66
+  },
+  {
+   "w": "Feasts,",
+   "start": 0.66,
+   "end": 1.21
+  },
+  {
+   "w": "the",
+   "start": 1.21,
+   "end": 1.39
+  },
+  {
+   "w": "Catechism",
+   "start": 1.39,
+   "end": 1.98
+  },
+  {
+   "w": "says",
+   "start": 1.98,
+   "end": 2.39
+  },
+  {
+   "w": "Christmas",
+   "start": 2.39,
+   "end": 3.02
+  },
+  {
+   "w": "and",
+   "start": 3.02,
+   "end": 3.25
+  },
+  {
+   "w": "Theophany",
+   "start": 3.25,
+   "end": 4.03
+  },
+  {
+   "w": "share",
+   "start": 4.03,
+   "end": 4.32
+  },
+  {
+   "w": "one",
+   "start": 4.32,
+   "end": 4.54
+  },
+  {
+   "w": "meaning.",
+   "start": 4.54,
+   "end": 5.28
+  },
+  {
+   "w": "Their",
+   "start": 5.28,
+   "end": 5.6
+  },
+  {
+   "w": "meaning",
+   "start": 5.6,
+   "end": 6.07
+  },
+  {
+   "w": "lies",
+   "start": 6.07,
+   "end": 6.3
+  },
+  {
+   "w": "in",
+   "start": 6.3,
+   "end": 6.49
+  },
+  {
+   "w": "the",
+   "start": 6.49,
+   "end": 6.65
+  },
+  {
+   "w": "manifestation",
+   "start": 6.65,
+   "end": 7.48
+  },
+  {
+   "w": "of",
+   "start": 7.48,
+   "end": 7.67
+  },
+  {
+   "w": "Christ,",
+   "start": 7.67,
+   "end": 8.16
+  },
+  {
+   "w": "the",
+   "start": 8.16,
+   "end": 8.38
+  },
+  {
+   "w": "Light",
+   "start": 8.38,
+   "end": 8.81
+  },
+  {
+   "w": "that",
+   "start": 8.81,
+   "end": 9.3
+  },
+  {
+   "w": "Overcomes",
+   "start": 9.3,
+   "end": 9.76
+  },
+  {
+   "w": "the",
+   "start": 9.76,
+   "end": 9.95
+  },
+  {
+   "w": "Darkness",
+   "start": 9.95,
+   "end": 10.69
+  },
+  {
+   "w": "of",
+   "start": 10.69,
+   "end": 10.7
+  },
+  {
+   "w": "Sin.",
+   "start": 10.7,
+   "end": 11.36
+  },
+  {
+   "w": "The",
+   "start": 11.36,
+   "end": 11.58
+  },
+  {
+   "w": "Chief",
+   "start": 11.58,
+   "end": 11.98
+  },
+  {
+   "w": "Fixed",
+   "start": 11.98,
+   "end": 12.28
+  },
+  {
+   "w": "Feasts",
+   "start": 12.28,
+   "end": 12.7
+  },
+  {
+   "w": "of",
+   "start": 12.7,
+   "end": 12.84
+  },
+  {
+   "w": "the",
+   "start": 12.84,
+   "end": 13.05
+  },
+  {
+   "w": "Lord",
+   "start": 13.05,
+   "end": 13.34
+  },
+  {
+   "w": "are",
+   "start": 13.34,
+   "end": 13.55
+  },
+  {
+   "w": "the",
+   "start": 13.55,
+   "end": 13.82
+  },
+  {
+   "w": "Birth",
+   "start": 13.82,
+   "end": 14.12
+  },
+  {
+   "w": "of",
+   "start": 14.12,
+   "end": 14.32
+  },
+  {
+   "w": "Christ",
+   "start": 14.32,
+   "end": 14.69
+  },
+  {
+   "w": "on",
+   "start": 14.69,
+   "end": 14.89
+  },
+  {
+   "w": "December",
+   "start": 14.89,
+   "end": 15.41
+  },
+  {
+   "w": "25th",
+   "start": 15.41,
+   "end": 16.08
+  },
+  {
+   "w": "or",
+   "start": 16.08,
+   "end": 16.78
+  },
+  {
+   "w": "January",
+   "start": 16.78,
+   "end": 17.04
+  },
+  {
+   "w": "7th",
+   "start": 17.04,
+   "end": 17.44
+  },
+  {
+   "w": "and",
+   "start": 17.44,
+   "end": 17.68
+  },
+  {
+   "w": "Theophany",
+   "start": 17.68,
+   "end": 18.47
+  },
+  {
+   "w": "on",
+   "start": 18.47,
+   "end": 18.61
+  },
+  {
+   "w": "January",
+   "start": 18.61,
+   "end": 19.21
+  },
+  {
+   "w": "6th",
+   "start": 19.21,
+   "end": 19.68
+  },
+  {
+   "w": "or",
+   "start": 19.68,
+   "end": 19.81
+  },
+  {
+   "w": "19th.",
+   "start": 19.81,
+   "end": 20.8
+  },
+  {
+   "w": "Theophany",
+   "start": 20.8,
+   "end": 21.38
+  },
+  {
+   "w": "celebrates",
+   "start": 21.38,
+   "end": 22.1
+  },
+  {
+   "w": "the",
+   "start": 22.1,
+   "end": 22.24
+  },
+  {
+   "w": "Baptism",
+   "start": 22.24,
+   "end": 22.68
+  },
+  {
+   "w": "of",
+   "start": 22.68,
+   "end": 23.09
+  },
+  {
+   "w": "Jesus",
+   "start": 23.09,
+   "end": 23.2
+  },
+  {
+   "w": "in",
+   "start": 23.2,
+   "end": 23.44
+  },
+  {
+   "w": "the",
+   "start": 23.44,
+   "end": 23.66
+  },
+  {
+   "w": "Jordan.",
+   "start": 23.66,
+   "end": 24.32
+  },
+  {
+   "w": "Both",
+   "start": 24.41,
+   "end": 24.63
+  },
+  {
+   "w": "Feasts",
+   "start": 24.63,
+   "end": 25.11
+  },
+  {
+   "w": "show",
+   "start": 25.11,
+   "end": 25.53
+  },
+  {
+   "w": "who",
+   "start": 25.53,
+   "end": 25.65
+  },
+  {
+   "w": "Christ",
+   "start": 25.65,
+   "end": 26.08
+  },
+  {
+   "w": "is",
+   "start": 26.08,
+   "end": 26.37
+  },
+  {
+   "w": "to",
+   "start": 26.37,
+   "end": 26.39
+  },
+  {
+   "w": "the",
+   "start": 26.39,
+   "end": 26.71
+  },
+  {
+   "w": "world,",
+   "start": 26.71,
+   "end": 27.28
+  },
+  {
+   "w": "the",
+   "start": 27.28,
+   "end": 27.38
+  },
+  {
+   "w": "Light",
+   "start": 27.38,
+   "end": 27.75
+  },
+  {
+   "w": "that",
+   "start": 27.75,
+   "end": 28.06
+  },
+  {
+   "w": "Overcomes",
+   "start": 28.06,
+   "end": 28.76
+  },
+  {
+   "w": "the",
+   "start": 28.76,
+   "end": 28.99
+  },
+  {
+   "w": "Darkness",
+   "start": 28.99,
+   "end": 29.73
+  },
+  {
+   "w": "of",
+   "start": 29.73,
+   "end": 29.76
+  },
+  {
+   "w": "Sin.",
+   "start": 29.76,
+   "end": 30.32
+  },
+  {
+   "w": "The",
+   "start": 30.88,
+   "end": 30.94
+  },
+  {
+   "w": "day",
+   "start": 30.94,
+   "end": 30.97
+  },
+  {
+   "w": "after",
+   "start": 30.97,
+   "end": 31.5
+  },
+  {
+   "w": "each,",
+   "start": 31.5,
+   "end": 32.09
+  },
+  {
+   "w": "the",
+   "start": 32.09,
+   "end": 32.39
+  },
+  {
+   "w": "Church",
+   "start": 32.39,
+   "end": 33.01
+  },
+  {
+   "w": "honors",
+   "start": 33.01,
+   "end": 33.67
+  },
+  {
+   "w": "those",
+   "start": 33.67,
+   "end": 34.08
+  },
+  {
+   "w": "closest",
+   "start": 34.08,
+   "end": 34.59
+  },
+  {
+   "w": "to",
+   "start": 34.59,
+   "end": 34.9
+  },
+  {
+   "w": "the",
+   "start": 34.9,
+   "end": 34.97
+  },
+  {
+   "w": "event,",
+   "start": 34.97,
+   "end": 35.52
+  },
+  {
+   "w": "Mary",
+   "start": 35.52,
+   "end": 36.29
+  },
+  {
+   "w": "and",
+   "start": 36.29,
+   "end": 36.39
+  },
+  {
+   "w": "John",
+   "start": 36.39,
+   "end": 36.89
+  },
+  {
+   "w": "the",
+   "start": 36.89,
+   "end": 37.26
+  },
+  {
+   "w": "Baptist.",
+   "start": 37.26,
+   "end": 38.24
+  }
+ ]
+}

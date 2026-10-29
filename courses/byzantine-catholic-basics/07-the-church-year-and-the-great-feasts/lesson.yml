@@ -16,7 +16,10 @@ sources:
 
 intro:
   text: >-
-    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+    When does the Church's year begin? Not January 1, and not Advent: for
+    Byzantine Catholics, it begins on September 1. Let's find out more in this
+    lesson. I'm your host, Shalone Cason, and let's begin in the name of the
+    Father and of the Son and of the Holy Spirit.
   notes:
     - "A question to open with: when does the Church's year begin? Not January 1, and not Advent: for Byzantine Catholics it begins on September 1."
     - Five points, from the two cycles of feasts to the Light of Christmas and Theophany.
@@ -47,9 +50,17 @@ points:
       experiences all the major events of salvation history.
     visuals:
       - type: compare
-        left: { kicker: Fixed dates, title: Immoveable cycle, note: Same day every year, icon: calendar }
-        right: { kicker: Date of Pascha, title: Movable cycle, note: Changes every year, icon: moon }
-        emphasis: left
+        left:
+          kicker: Fixed dates
+          title: Immoveable cycle
+          note: Same day every year
+          icon: calendar
+        right:
+          kicker: Date of Pascha
+          title: Movable cycle
+          note: Changes every year
+          icon: moon
+        emphasis: none
     quiz:
       type: choice
       question: The two cycles of the Church year are called...
@@ -108,6 +119,15 @@ points:
       - type: chain
         items: [Great Lent, Pascha, Ascension, Pentecost]
         caption: The movable feasts move with Pascha
+      - type: image
+        src: images/sdcason-pascha-procession-around-the-church-at-n-00013cdbf6.jpg
+        aspect: 0.75
+        credit: The Free Catholic Gallery (sdcason.com)
+      - type: image
+        src: images/wikimedia-holy-ascension-orthodox-church-503226873-52146918.jpg
+        aspect: 1.507
+        credit: Andrew Gould · Wikimedia Commons · CC BY-SA 2.0
+        with: side
     quiz:
       type: truefalse
       question: The date of Pascha is the same every year.
@@ -118,7 +138,7 @@ points:
 
   - heading: The twelve great feasts
     quote:
-      lead: Look at a Byzantine church, where the feasts hang on the wall.
+      lead: The Byzantine church
       text: >-
         presents the icons of twelve great feasts of the Lord and Mother of God
       source: ugcc
@@ -135,6 +155,20 @@ points:
       - type: iconostasis
         highlight: [feasts]
         caption: The festal row shows the great feasts
+      - type: image
+        src: images/wikimedia-christ-ascension-icon-michurin-bulgaria--5989318.jpg
+        aspect: 0.711
+        credit: Unknown author Unknown author · Wikimedia Commons · Public domain
+      - type: image
+        src: images/wikimedia-hermitage-hall-143-10-icon-with-theophan-93886063.jpg
+        aspect: 0.663
+        credit: Netelo · Wikimedia Commons · CC BY-SA 4.0
+        with: over
+      - type: image
+        src: images/wikimedia-annunciation-icon-with-yarn-national-mus-29320151.jpg
+        aspect: 0.75
+        credit: Orjen · Wikimedia Commons · CC BY-SA 3.0
+        with: over
     quiz:
       type: choice
       question: How many great feasts are usually shown in the festal row?
@@ -162,9 +196,17 @@ points:
       Baptist.
     visuals:
       - type: compare
-        left: { kicker: December 25 / January 7, title: The Birth of Christ, note: Christ shines into the world, icon: star }
-        right: { kicker: January 6 / 19, title: Theophany, note: Christ is baptized in the Jordan, icon: droplets }
-        emphasis: left
+        left:
+          kicker: December 25 / January 7
+          title: Birth of Christ
+          note: Christ shines into the world
+          icon: star
+        right:
+          kicker: January 6 / 19
+          title: Theophany
+          note: Christ is baptized in the Jordan
+          icon: droplets
+        emphasis: none
     quiz:
       type: choice
       question: What do Christmas and Theophany show us about Christ?
@@ -179,7 +221,12 @@ points:
 
 outro:
   text: >-
-    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+    So when does the church year start? It starts on September 1, and Pascha
+    is the centerpiece of the year, with twelve great feasts around it,
+    because Christ's Resurrection is so pivotal to our salvation. Christmas
+    and Theophany are two of the other twelve feasts. Thanks for learning with
+    us. I've been your host, Shalone, and until next time, stay holy, my
+    friends.
   notes:
     - "Recap: two cycles · a new year on September 1 · Pascha at the center · the twelve great feasts · the Light of Christmas and Theophany."
   scenes:
