@@ -94,6 +94,7 @@ function _init()
  got={}
  lv={}
  score=0 xp=0 need=3 lvl=1
+ b2=0
  lost={0,0,0} lost_t=0 lost_c=0
  car_c,car_r=rnd({8,9,10,11,12,14,6,13}),rnd(roofs)
  t=0 missed=0 msg="" msg_t=0
@@ -178,7 +179,8 @@ end
 function top5(x,y,c)
  for i=1,5 do
   if dget(9+i)>0 then
-   print(i.." "..initials(dget(14+i)).." "..dget(9+i),x,y+i*7,c)
+   local v=dget(9+i)
+   print(i.." "..initials(dget(14+i)).." "..v\1 ..(v%1>0 and " 2p" or ""),x,y+i*7,c)
   end
  end
 end
@@ -401,6 +403,7 @@ function hit(q)
  q.need-=pow q.hit=4
  if q.need>0 then return end
  del(people,q) score+=1
+ if by2 then b2+=1 end
  if q.b then q.b.who=nil end
  local v=1
  if q.ev then v=10 elseif q.k=="home" then v=3
@@ -531,7 +534,7 @@ function _update()
    while i>1 and score>dget(8+i) do
     dset(9+i,dget(8+i)) dset(14+i,dget(13+i)) i-=1
    end
-   dset(9+i,score) dset(14+i,nl[1]*1024+nl[2]*32+nl[3])
+   dset(9+i,score+(p2 and .5 or 0)) dset(14+i,nl[1]*1024+nl[2]*32+nl[3])
    state="over"
   end
   return
@@ -562,7 +565,6 @@ function _update()
     for i=1,#combos do
      if combos[i]==u then dset(1,dget(1)|(1<<i)) end
     end
-    say("combo: "..u.n.."!")
    end
    u.f() state="play"
   end
@@ -600,7 +602,7 @@ function _update()
   p2.x=(p.x+mid(-60,wd(p2.x+dx*sp,p.x),60))%world
   p2.y=(p.y+mid(-52,wd(p2.y+dy*sp,p.y),60))%world
   p2.cd-=1
-  if p2.cd<=0 then p2.cd=p.rate sb(p2.x,p2.y-4,p.r) end
+  if p2.cd<=0 then p2.cd=p.rate by2=1 sb(p2.x,p2.y-4,p.r) by2=nil end
  end
  if t%max(8,(40-t\900)*(popemode and .7 or 1)\1)==0 then spawn_walker() end
  if popemode and t%1800==0 then
@@ -848,8 +850,7 @@ function draw_book()
    end
   end
  end
- print("\139\145 page "..page.."/4",4,121,6)
- print("\142 back",96,121,6)
+ print("\139\145 page "..page.."/4        \142 back",4,121,6)
 end
 function draw_title()
  cls(12)
@@ -873,7 +874,6 @@ function draw_title()
   local d=u and c.d or c.u
   if not u then print("to unlock:",44,84,6) end
   print(d,64-#d*2,u and 84 or 90,7)
-  print("best: "..dget(10),46,98,10)
  end
  print("\151 start   \142 book",26,114,7)
  if p2on then
@@ -999,7 +999,6 @@ function _draw()
  end
  rectfill(0,0,127,7,1)
  print("blessed "..score,2,1,7)
- print("lv "..lvl,64,1,6)
  local left=max(0,day_len-t\30)
  local lc=10
  if lost_t>0 then
@@ -1044,7 +1043,8 @@ function _draw()
   print("the day is done",34,36,10)
   print("blessed: "..score,34,46,7)
   print("missed: "..missed,34,53,6)
-  print("best: "..dget(10).." "..initials(dget(15)),34,60,9)
+  if p2 then print("p1 "..score-b2.."   p2 "..b2,26,90,12) end
+  print("best: "..dget(10)\1,34,60,9)
   print("time lost:",34,68,8)
   print("home "..lost[1].." sick "..lost[2].." need "..lost[3].."s",16,75,8)
   print("combos found: "..found().."/"..#combos,26,83,10)
