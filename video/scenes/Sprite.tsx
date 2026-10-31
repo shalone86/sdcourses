@@ -11,9 +11,18 @@ import type {SceneProps} from '.';
 //   size: small | medium (default) | big | full (fills the slide, for a wide scene)
 // A sketch (kind: 'sketch') has a picture per frame instead of pixel rows.
 export type Art = {kind?: 'sketch'; width: number; height: number; fps: number; palette: string[]; frames: string[][] | string[]};
-type SpriteScene = {sprite: string; art: Art; move?: 'stay' | 'hop' | 'across'; size?: 'small' | 'medium' | 'big' | 'full'; caption?: string};
+type SpriteScene = {sprite: string; art: Art; colors?: Colors; move?: 'stay' | 'hop' | 'across'; size?: 'small' | 'medium' | 'big' | 'full'; caption?: string};
 
 const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
+
+// Colors changed for one use of a drawing ({'#old': '#new'}), without saving a new drawing: a
+// sprite or puppet scene's `colors:`, or a battle army's. Every pose follows, since only the palette changes.
+export type Colors = Record<string, string>;
+export function recolor<A extends {palette?: string[]}>(art: A, colors?: Colors | null): A {
+  if (!colors || !art.palette || !Object.keys(colors).length) return art;
+  const up = Object.fromEntries(Object.entries(colors).map(([k, v]) => [k.toUpperCase(), v]));
+  return {...art, palette: art.palette.map((c) => up[c.toUpperCase()] ?? c)};
+}
 // Share of the room it takes (the slide, or the panel beside her video).
 const SHARE = {small: 0.4, medium: 0.65, big: 0.85, full: 1};
 

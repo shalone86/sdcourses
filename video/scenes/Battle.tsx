@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {ramp} from '../anim';
-import {battleAt, battleSeconds, CELL, mapSize, viewPx, type ArtMap, type Battle} from '../battle';
+import {battleAt, battleSeconds, CELL, mapSize, viewPx, withColors, type ArtMap, type Battle} from '../battle';
 import {StageContext, useStage} from '../layout';
 import {theme} from '../theme';
 import {Frame, type Art} from './Sprite';
@@ -35,10 +35,12 @@ export const BattleView: React.FC<{battle: Battle; arts: ArtMap; palette?: 'pico
   const stage = useStage();
   const T = time ?? f / fps;
 
+  // Each army's colors first (withColors), then the snap to PICO-8's 16.
   const art = useMemo<ArtMap>(() => {
-    if (palette === 'own') return arts;
-    return Object.fromEntries(Object.entries(arts).map(([k, a]) => [k, {...a, palette: a.palette.map(snap)} as Art]));
-  }, [arts, palette]);
+    const all = withColors(battle, arts);
+    if (palette === 'own') return all;
+    return Object.fromEntries(Object.entries(all).map(([k, a]) => [k, {...a, palette: a.palette.map(snap)} as Art]));
+  }, [arts, palette, battle.armies, battle.units]);
 
   const view = viewPx(battle), map = mapSize(battle);
   const scale = Math.max(1, Math.floor(Math.min(stage.w / view.w, stage.h / view.h)));

@@ -39,16 +39,16 @@ window.BattleTab = (() => {
     // ---------- drawings ----------
     const cache = new Map();
     const art = (name) => { const a = B.sprites[name]; return a && a.kind !== 'sketch' && Array.isArray(a.frames) ? a : null; };
-    function spriteCanvas(name, frame) {
+    function spriteCanvas(name, frame, colors) {
       const a = art(name);
       if (!a) return null;
-      const key = name + '.' + (frame % a.frames.length);
+      const key = name + '.' + (frame % a.frames.length) + (colors ? JSON.stringify(colors) : '');
       if (cache.has(key)) return cache.get(key);
       const c = document.createElement('canvas');
       c.width = a.width; c.height = a.height;
       const ctx = c.getContext('2d');
       a.frames[frame % a.frames.length].forEach((row, y) => {
-        for (let x = 0; x < row.length; x++) if (row[x] !== '.') { ctx.fillStyle = a.palette[CODES.indexOf(row[x])]; ctx.fillRect(x, y, 1, 1); }
+        for (let x = 0; x < row.length; x++) if (row[x] !== '.') { const c = a.palette[CODES.indexOf(row[x])]; ctx.fillStyle = (colors && colors[String(c).toUpperCase()]) || c; ctx.fillRect(x, y, 1, 1); }
       });
       cache.set(key, c);
       return c;
@@ -154,15 +154,15 @@ window.BattleTab = (() => {
       ctx.imageSmoothingEnabled = false;
       ctx.fillStyle = b.ground || '#00e436';
       ctx.fillRect(0, 0, cv.width, cv.height);
-      const put = (name, frame, x, y, flip) => {
-        const c = spriteCanvas(name, frame);
+      const put = (name, frame, x, y, flip, colors) => {
+        const c = spriteCanvas(name, frame, colors);
         if (!c) { ctx.fillStyle = 'rgba(255,0,77,.7)'; ctx.fillRect(x * Z, y * Z, CELL * Z, CELL * Z); return; }
         if (flip) { ctx.save(); ctx.translate((x + c.width) * Z, y * Z); ctx.scale(-1, 1); ctx.drawImage(c, 0, 0, c.width * Z, c.height * Z); ctx.restore(); }
         else ctx.drawImage(c, x * Z, y * Z, c.width * Z, c.height * Z);
       };
       for (let y = 0; y < hh; y++) for (let x = 0; x < w; x++) { const n = b.tiles[b.map[y][x]]; if (n) put(n, 0, x * CELL, y * CELL); }
       for (const p of b.props || []) { const bx = propBox(p); put(p.sprite, 0, bx.x, bx.y, p.face === 'right'); }
-      b.units.forEach((u) => { const bx = unitBox(u); put(u.kind + '-idle', 0, bx.x, bx.y, u.face === 'right'); if (u.hidden) { ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fillRect(bx.x * Z, bx.y * Z, bx.w * Z, bx.h * Z); } });
+      b.units.forEach((u) => { const bx = unitBox(u); put(u.kind + '-idle', 0, bx.x, bx.y, u.face === 'right', E().unitColors(b, u)); if (u.hidden) { ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fillRect(bx.x * Z, bx.y * Z, bx.w * Z, bx.h * Z); } });
       // faint grid
       ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = 1;
       for (let x = 0; x <= w; x++) { ctx.beginPath(); ctx.moveTo(x * CELL * Z + .5, 0); ctx.lineTo(x * CELL * Z + .5, cv.height); ctx.stroke(); }
@@ -200,7 +200,7 @@ window.BattleTab = (() => {
       } else if (B.tool === 'unit') {
         if (!B.kind) { B.error = 'Pick who to place first.'; draw(); return; }
         const id = uid(B.kind);
-        b.units.push({id, kind: B.kind, at: [p.cx, p.cy]});
+        b.units.push({id, kind: B.kind, at: [p.cx, p.cy], ...(B.side && (b.armies || {})[B.side] ? {side: B.side} : {})});
         B.sel = {type: 'unit', i: b.units.length - 1};
         changed(); draw();
       } else if (B.tool === 'prop') {
@@ -270,11 +270,13 @@ window.BattleTab = (() => {
       B.canvas.addEventListener('pointermove', onMove);
       R.selection = h('div');
       R.script = h('div', {class: 'stack', style: {gap: '10px'}});
+      R.armies = h('div', {class: 'stack', style: {gap: '10px'}});
       root.replaceChildren(h('div', {class: 'stack'}, [
         R.bar, R.notice,
         card('', [R.playerBox, R.transport]),
         card('Map and people', [R.tools, h('div', {style: {overflow: 'auto'}}, [B.canvas]), R.selection,
           h('div', {class: 'small muted', text: 'The yellow box is what the camera shows at the playhead. Units sit on the cell at their bottom-left.'})]),
+        card('Armies', [R.armies]),
         card('Script', [R.script]),
       ]));
     }
@@ -291,7 +293,7 @@ window.BattleTab = (() => {
     function draw(rebuild) {
       if (!R.bar) skeleton();
       if (rebuild) mountPlayer();
-      renderBar(); renderNotice(); renderTransport(); renderTools(); renderSelection(); renderScript();
+      renderBar(); renderNotice(); renderTransport(); renderTools(); renderSelection(); renderArmies(); renderScript();
       drawMap();
     }
     function renderNotice() {
@@ -366,6 +368,7 @@ window.BattleTab = (() => {
         if (!B.kind) B.kind = kinds[0] || null;
         palette = h('div', {class: 'row', style: {justifyContent: 'flex-start', gap: '8px'}}, [
           h('select', {'aria-label': 'Who to place', onchange: (e) => { B.kind = e.target.value; }}, kinds.map((k) => h('option', {value: k, text: k, selected: k === B.kind}))),
+          Object.keys(b.armies || {}).length ? h('label', {class: 'small muted'}, ['Army ', armySelect(B.side, (v) => { B.side = v; })]) : null,
           h('span', {class: 'small muted', text: 'Then click the map. Anyone with an “-idle” drawing is here.'})]);
       } else if (B.tool === 'prop') {
         const props = propNames();
@@ -395,7 +398,7 @@ window.BattleTab = (() => {
       const kids = s.type === 'unit' ? [
         field('Name', h('input', {type: 'text', value: o.id, style: {width: '8em'}, onchange: (e) => renameUnit(s.i, e.target.value)})),
         field('Who', h('select', {onchange: (e) => { o.kind = e.target.value; changed(); draw(); }}, kindNames().map((k) => h('option', {value: k, text: k, selected: k === o.kind})))),
-        field('Side', h('input', {type: 'text', value: o.side || '', style: {width: '6em'}, onchange: (e) => { if (e.target.value) o.side = e.target.value; else delete o.side; touch(); }})),
+        field('Army', armySelect(o.side, (v) => { if (v) o.side = v; else delete o.side; changed(); draw(); })),
         field('Speed (px/s)', numIn(o.speed ?? '', (v) => { if (v > 0) o.speed = v; else delete o.speed; })),
         field('Faces', h('select', {onchange: (e) => { if (e.target.value === 'right') o.face = 'right'; else delete o.face; changed(); draw(); }}, ['left', 'right'].map((f) => h('option', {value: f, text: f, selected: (o.face || 'left') === f})))),
         field('Starts hidden', h('input', {type: 'checkbox', checked: !!o.hidden, onchange: (e) => { if (e.target.checked) o.hidden = true; else delete o.hidden; changed(); draw(); }})),
@@ -405,7 +408,68 @@ window.BattleTab = (() => {
       ];
       kids.push(field('Cell x', numIn(o.at[0], (v) => { o.at[0] = v; }, 0.125)), field('Cell y', numIn(o.at[1], (v) => { o.at[1] = v; }, 0.125)),
         h('button', {class: 'btn', text: 'Remove', onclick: () => removeSel(s)}));
-      R.selection.replaceChildren(h('div', {class: 'row', style: {justifyContent: 'flex-start', gap: '12px', alignItems: 'flex-end'}}, kids));
+      // Colors for just this one (over its army's), e.g. a leader in his own colors.
+      const own = s.type === 'unit' ? h('details', {open: B.ownOpen || (o.colors ? true : null), ontoggle: (e) => { B.ownOpen = e.target.open; }}, [
+        h('summary', {class: 'small', text: 'Colors for just ' + o.id + (o.colors ? ' (changed)' : '')}),
+        window.ColorSwaps.editor({arts: [idleArt(o.kind)], colors: {...((b.armies || {})[o.side]?.colors), ...o.colors},
+          onChange: (c) => {
+            // keep only what differs from the army
+            const army = (b.armies || {})[o.side]?.colors || {};
+            const mine = Object.fromEntries(Object.entries(c).filter(([k, v]) => army[k] !== v));
+            for (const k of Object.keys(army)) if (!(k in c)) mine[k] = k; // back to as drawn, though the army changes it
+            if (Object.keys(mine).length) o.colors = mine; else delete o.colors;
+            changed();
+          }, saveAs: {from: () => o.kind, done: afterSave}, post}),
+      ]) : null;
+      R.selection.replaceChildren(h('div', {class: 'row', style: {justifyContent: 'flex-start', gap: '12px', alignItems: 'flex-end'}}, kids), own);
+    }
+
+    // ---------- armies: each side's colors ----------
+    const armySlug = (n) => String(n || '').toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 20);
+    function armySelect(value, set) {
+      const armies = B.battle.armies || {};
+      return h('select', {'aria-label': 'Army', onchange: (e) => set(e.target.value)}, [h('option', {value: '', text: 'none (as drawn)'}),
+        ...Object.entries(armies).map(([k, a]) => h('option', {value: k, text: a.name || k, selected: k === value}))]);
+    }
+    async function afterSave() { await loadSprites(); renderTools(); }
+    function renderArmies() {
+      const b = B.battle;
+      if (!b) { R.armies.replaceChildren(); return; }
+      const armies = b.armies || {};
+      const list = Object.entries(armies).map(([k, a]) => {
+        const kinds = [...new Set(b.units.filter((u) => u.side === k).map((u) => u.kind))];
+        const count = b.units.filter((u) => u.side === k).length;
+        return h('div', {class: 'stack', style: {gap: '6px', borderTop: '1px solid var(--rule)', paddingTop: '8px'}}, [
+          h('div', {class: 'row', style: {justifyContent: 'flex-start', gap: '10px'}}, [
+            h('input', {type: 'text', value: a.name || k, 'aria-label': 'Army name', style: {width: '12em', fontWeight: '600'}, onchange: (e) => { a.name = e.target.value; touch(); renderTools(); renderSelection(); }}),
+            h('span', {class: 'small muted', text: count + (count === 1 ? ' person' : ' people') + (kinds.length ? ': ' + kinds.join(', ') : '')}),
+            h('button', {class: 'btn', text: 'Everyone not in an army joins', disabled: !b.units.some((u) => !u.side) || null, onclick: () => { for (const u of b.units) if (!u.side) u.side = k; changed(); draw(); }}),
+            h('button', {class: 'btn', text: 'Remove army', onclick: async () => {
+              if (count && !(await window.ask('Remove ' + (a.name || k) + '? Its ' + count + ' people go back to the colors as drawn.'))) return;
+              for (const u of b.units) if (u.side === k) delete u.side;
+              delete armies[k]; if (!Object.keys(armies).length) delete b.armies;
+              changed(); draw();
+            }}),
+          ]),
+          kinds.length ? window.ColorSwaps.editor({arts: kinds.map(idleArt).filter(Boolean), colors: a.colors,
+            onChange: (c) => { if (Object.keys(c).length) a.colors = c; else delete a.colors; changed(); },
+            saveAs: kinds.length === 1 ? {from: () => kinds[0], done: afterSave} : null, post})
+            : h('div', {class: 'small muted', text: 'Nobody in this army yet: pick it under “Army” when you place people (or select someone).'}),
+        ]);
+      });
+      const nameIn = h('input', {type: 'text', placeholder: 'New army, e.g. Franks', 'aria-label': 'New army name'});
+      const add = () => {
+        const k = armySlug(nameIn.value);
+        if (!k) return;
+        b.armies ||= {};
+        if (!b.armies[k]) b.armies[k] = {name: nameIn.value.trim()};
+        B.side = k; touch(); draw();
+      };
+      nameIn.addEventListener('keydown', (e) => { if (e.key === 'Enter') add(); });
+      R.armies.replaceChildren(
+        h('div', {class: 'small muted', text: 'Draw each kind of soldier once; each army gives them its colors. Everyone in an army wears them in every pose (walk, attack, fall). Nothing new is drawn.'}),
+        ...list,
+        h('div', {class: 'row', style: {justifyContent: 'flex-start', gap: '8px'}}, [nameIn, h('button', {class: 'btn', text: '+ Add army', onclick: add})]));
     }
 
     // ---------- the script ----------

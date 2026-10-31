@@ -32,7 +32,9 @@
   // Each kind of picture: its boxes ([name, label, kind, options]), how to make the scene from
   // them (make), and how to fill them from a scene already in the lesson (read, for editing).
   // Box kinds: text, lines (one per line), check, select, areas, sprite, icon (one, with a picker),
-  // icons (one per line, with a picker), and a heading (kind 'head') between groups of boxes.
+  // icons (one per line, with a picker), colors (the drawing's colors for this picture only, for the
+  // drawing picked in the box named in its options), and a heading (kind 'head') between groups of boxes.
+  const colorsOf = (v) => v.colors && typeof v.colors === 'object' && Object.keys(v.colors).length;
   const ADD = {
     image: {label: 'Picture (search)', fields: [], search: true},
     map: {label: 'Map', fields: [['region', 'Show', 'select', ['auto (fit what’s highlighted)', 'world', 'europe', 'mediterranean', 'east', 'holyland', 'middle-east', 'africa', 'asia', 'south-asia', 'east-asia', 'americas', 'north-america', 'south-america', 'oceania']],
@@ -77,11 +79,11 @@
     timeline: {label: 'Timeline', fields: [['years', 'Years, one per line', 'lines'], ['events', 'What happened, one per line in the same order', 'lines']],
       make: (v) => { const e = lines(v.events); return {type: 'timeline', items: lines(v.years).map((year, i) => ({year, label: e[i] || ''}))}; },
       read: (sc) => ({years: nl((sc.items || []).map((x) => x.year)), events: nl((sc.items || []).map((x) => x.label || ''))})},
-    sprite: {label: 'Pixel animation (from the Pixel art tab)', fields: [['sprite', 'Which drawing', 'sprite'], ['move', 'How it moves', 'select', ['stay', 'hop', 'across']],
+    sprite: {label: 'Pixel animation (from the Pixel art tab)', fields: [['sprite', 'Which drawing', 'sprite'], ['colors', 'Colors (just in this picture)', 'colors', 'sprite'], ['move', 'How it moves', 'select', ['stay', 'hop', 'across']],
       ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
       make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
-        return {type: 'sprite', sprite: v.sprite, ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
-      read: (sc) => ({sprite: sc.sprite || '', move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
+        return {type: 'sprite', sprite: v.sprite, ...(colorsOf(v) ? {colors: v.colors} : {}), ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
+      read: (sc) => ({sprite: sc.sprite || '', colors: sc.colors || {}, move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
     battle: {label: 'Battle (game footage from the Battles tab)', fields: [['battle', 'Which battle', 'battlepick'], ['from', 'Starts at (seconds into the battle)', 'text'], ['to', 'Stops at (seconds into the battle; empty = the end)', 'text'],
       ['palette', 'Colors', 'select', ['pico', 'own']]],
       make: (v) => { if (!v.battle) throw new Error('Make a battle on the Battles tab first');
@@ -89,11 +91,11 @@
         if (!Number.isFinite(f) || f < 0 || (t !== null && (!Number.isFinite(t) || t <= f))) throw new Error('The stop time must be after the start time');
         return {type: 'battle', battle: v.battle, ...(f || t !== null ? {clip: [f, t ?? 9999]} : {}), ...(v.palette && v.palette !== 'pico' ? {palette: v.palette} : {})}; },
       read: (sc) => ({battle: typeof sc.battle === 'string' ? sc.battle : sc.battle?.name || '', from: sc.clip ? String(sc.clip[0]) : '0', to: sc.clip && sc.clip[1] < 9999 ? String(sc.clip[1]) : '', palette: sc.palette || 'pico'})},
-    puppet: {label: 'Puppet (a character you play with the keys)', fields: [['character', 'Which character', 'character'], ['item', 'The item it points to (P)', 'item'],
+    puppet: {label: 'Puppet (a character you play with the keys)', fields: [['character', 'Which character', 'character'], ['colors', 'Colors (just in this picture; every pose follows)', 'colors', 'character'], ['item', 'The item it points to (P)', 'item'],
       ['size', 'Size', 'select', ['medium', 'small', 'big']], ['start', 'Stands at first', 'select', ['center', 'left', 'right']]],
       make: (v) => { if (!v.character) throw new Error('Draw a character first: <name>-idle and <name>-walk on the Pixel art tab');
-        return {type: 'puppet', character: v.character, ...(v.item ? {item: v.item} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.start && v.start !== 'center' ? {start: v.start} : {})}; },
-      read: (sc) => ({character: sc.character || '', item: sc.item || '', size: sc.size || 'medium', start: sc.start || 'center'})},
+        return {type: 'puppet', character: v.character, ...(colorsOf(v) ? {colors: v.colors} : {}), ...(v.item ? {item: v.item} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.start && v.start !== 'center' ? {start: v.start} : {})}; },
+      read: (sc) => ({character: sc.character || '', colors: sc.colors || {}, item: sc.item || '', size: sc.size || 'medium', start: sc.start || 'center'})},
     term: {label: 'A word', fields: [['term', 'The word', 'text'], ['origin', 'From (e.g. Greek …)', 'text'], ['meaning', 'Meaning', 'text']],
       make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning}),
       read: (sc) => ({term: sc.term || '', origin: sc.origin || '', meaning: sc.meaning || ''})},
@@ -677,6 +679,27 @@
             });
             vals[name] = input;
             return h('label', {class: 'tl-field'}, [h('span', {text: label}), input, note]);
+          }
+          else if (type === 'colors') {
+            // The picked drawing's colors, changed for this picture only (studio/colors.js).
+            const holder = {value: {...(value || {})}};
+            vals[name] = holder;
+            const wrap = h('div', {class: 'small muted', text: 'Loading…'});
+            const src = () => vals[extra];
+            const show = () => api('/api/sprites').then((list) => {
+              const by = Object.fromEntries(list.map((x) => [x.slug, x]));
+              const pick = src()?.value || '';
+              const a = extra === 'character' ? by[pick + '-idle'] : by[pick];
+              wrap.className = '';
+              wrap.replaceChildren(a ? window.ColorSwaps.editor({arts: [a], colors: holder.value, onChange: (c) => { holder.value = c; }, post,
+                saveAs: {from: () => src()?.value || '', done: () => {}}}) : h('span', {class: 'small muted', text: 'Pick a drawing above.'}));
+            });
+            const det = h('details', {open: Object.keys(holder.value).length ? true : null}, [h('summary', {text: label + (Object.keys(holder.value).length ? ' (changed)' : '')}), wrap]);
+            det.addEventListener('toggle', () => { if (det.open) show(); });
+            if (det.open) show();
+            // A different drawing: its own colors start fresh.
+            queueMicrotask(() => src()?.addEventListener('change', () => { holder.value = {}; if (det.open) show(); }));
+            return det;
           }
           else if (type === 'battlepick') {
             input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);

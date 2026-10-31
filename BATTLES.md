@@ -43,6 +43,20 @@ script:                  # times in seconds
 Units also take `face: left|right` and `show: true|false` events. `note:` on any line is for
 people reading the file (sources, what is uncertain) and is never shown.
 
+**Armies (colors without new drawings):** draw each kind of soldier once; `armies:` gives each side
+its colors and a unit's `side:` puts it in one, in every pose. A unit's own `colors:` go over its army's.
+
+```yaml
+armies:
+  franks: {name: Franks, colors: {"#29ADFF": "#FF004D"}}   # drawn color → this army's color
+units:
+  - {id: fr1, kind: spearman, at: [22, 4], side: franks}
+```
+
+In the Battles tab: the **Armies** card (+ Add army, one color box per color of its soldiers,
+"same as" squares), **Army** when placing a person, and "Colors for just …" on a selected person.
+"Save as a character…" keeps one as real drawings (every pose) when she'll reuse it.
+
 ## Drawings (her art, shared with the cart)
 
 Her drawings face **left** (facing right is a flip). A unit's drawings are `<kind>-<action>`:

@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
 import {ROOT} from './lib.mjs';
-import {SPRITES, spriteSlug} from './sprites.mjs';
+import {SPRITES, cleanColors, spriteSlug} from './sprites.mjs';
 
 export const BATTLES = path.join(ROOT, 'battles');
 // The drawings a unit can have: `<kind>-<action>`.
@@ -72,7 +72,8 @@ export function cleanBattle(b) {
     ids.add(id);
     const at = pt(u.at);
     if (!at || !slug(u.kind)) throw new Error(`Unit ${id} needs a kind and a place`);
-    return {id, kind: slug(u.kind), at, ...(u.side ? {side: word(u.side, 20)} : {}), ...(u.face === 'right' ? {face: 'right'} : {}),
+    const colors = cleanColors(u.colors);
+    return {id, kind: slug(u.kind), at, ...(u.side ? {side: word(u.side, 20)} : {}), ...(colors ? {colors} : {}), ...(u.face === 'right' ? {face: 'right'} : {}),
       ...(u.speed ? {speed: round(num(u.speed, 1, 400))} : {}), ...(u.hidden ? {hidden: true} : {})};
   });
   const props = (Array.isArray(b.props) ? b.props : []).slice(0, 300).map((p) => ({sprite: slug(p.sprite), at: pt(p.at) ?? [0, 0], ...(p.face === 'right' ? {face: 'right'} : {})})).filter((p) => p.sprite);
@@ -96,12 +97,20 @@ export function cleanBattle(b) {
     if (e.note) o.note = word(e.note, 240);
     return o;
   }).sort((a, c) => a.t - c.t);
+  // Armies: each side's name and colors ({franks: {name: Franks, colors: {'#OLD': '#NEW'}}}).
+  const armies = {};
+  for (const [k, a] of Object.entries(b.armies && typeof b.armies === 'object' ? b.armies : {}).slice(0, 20)) {
+    const side = word(k, 20).trim();
+    if (!side) continue;
+    const colors = cleanColors(a?.colors);
+    armies[side] = {...(a?.name ? {name: word(a.name, 40)} : {}), ...(colors ? {colors} : {})};
+  }
   return {name: battleSlug(b.name), ...(b.title ? {title: word(b.title, 80)} : {}), view, ...(b.seconds ? {seconds: round(num(b.seconds, 1, 3600))} : {}),
-    ...(b.ground ? {ground: word(b.ground, 9)} : {}), tiles, map: rows, props, units, script};
+    ...(b.ground ? {ground: word(b.ground, 9)} : {}), ...(Object.keys(armies).length ? {armies} : {}), tiles, map: rows, props, units, script};
 }
 
-const scalar = (v) => (typeof v === 'string' ? (/^[A-Za-z0-9_.-]+$/.test(v) && !/^[0-9.+-]/.test(v) && !['true', 'false', 'null', 'yes', 'no'].includes(v) ? v : JSON.stringify(v)) : Array.isArray(v) ? `[${v.map(scalar).join(', ')}]` : String(v));
-const flow = (o) => `{${Object.entries(o).map(([k, v]) => `${k}: ${scalar(v)}`).join(', ')}}`;
+const scalar = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? flow(v) : typeof v === 'string' ? (/^[A-Za-z0-9_.-]+$/.test(v) && !/^[0-9.+-]/.test(v) && !['true', 'false', 'null', 'yes', 'no'].includes(v) ? v : JSON.stringify(v)) : Array.isArray(v) ? `[${v.map(scalar).join(', ')}]` : String(v));
+const flow = (o) => `{${Object.entries(o).map(([k, v]) => `${scalar(k)}: ${scalar(v)}`).join(', ')}}`;
 
 /** The battle as YAML text in the layout of battles/tours.yml (one line per unit and event), with her top-of-file comments kept. */
 export function formatBattle(b, header = '') {
@@ -112,6 +121,7 @@ export function formatBattle(b, header = '') {
   out.push(`view: ${scalar(b.view)}`);
   if (b.seconds) out.push(`seconds: ${b.seconds}`);
   if (b.ground) out.push(`ground: ${scalar(b.ground)}`);
+  if (b.armies) out.push('armies:', ...Object.entries(b.armies).map(([k, a]) => `  ${scalar(k)}: ${flow(a)}`));
   out.push(`tiles: ${flow(b.tiles)}`);
   out.push('map:', ...b.map.map((r) => `  - ${JSON.stringify(r)}`));
   out.push('props:' + (b.props.length ? '' : ' []'), ...b.props.map((p) => `  - ${flow(p)}`));

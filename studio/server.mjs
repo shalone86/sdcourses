@@ -22,7 +22,7 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import * as esbuild from 'esbuild';
 import {importImage, importUpload, searchImages, sourceList} from './images.mjs';
 import {battleProps, battleSlug, listBattles, newBattle, saveBattle} from '../scripts/battles.mjs';
-import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCast, saveSprite, setFavorite} from '../scripts/sprites.mjs';
+import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCast, saveColors, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
 
@@ -615,6 +615,7 @@ async function handle(req, res) {
     if (p === '/player.js') return sendFile(req, res, path.join(ROOT, 'studio/player/player.js'));
     if (p === '/timing.js') return sendFile(req, res, path.join(ROOT, 'studio/timing.js'));
     if (p === '/thumb.js') return sendFile(req, res, path.join(ROOT, 'studio/thumb.js'));
+    if (p === '/colors.js') return sendFile(req, res, path.join(ROOT, 'studio/colors.js'));
     if (p === '/audio') {
       const section = url.searchParams.get('section');
       if (!/^(intro|outro|point-\d+)$/.test(section ?? '')) throw httpError(400, 'Bad section');
@@ -763,6 +764,12 @@ async function handle(req, res) {
       let out;
       try { out = copyPose(await readJson(req)); } catch (e) { throw httpError(409, e.message); }
       return json(res, 200, {drafts: out, sprites: listSprites()});
+    }
+    if (p === '/api/sprite/save-colors') {
+      // A scene's or an army's colors kept as a real character ({from, name, colors}).
+      let out;
+      try { out = saveColors(await readJson(req)); } catch (e) { throw httpError(409, e.message); }
+      return json(res, 200, {...out, sprites: listSprites()});
     }
     if (p === '/api/sprite/gif') {
       // A drawing as an animated GIF (frames come as PNG pictures, already enlarged): made with ffmpeg.

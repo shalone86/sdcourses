@@ -165,6 +165,13 @@ If it's already running, `npm start` just opens the page.
   separate boxes (no `|`). **Icons** (`type: icons`): 1–4 lucide.dev icons
   that draw themselves in, each with an optional word (cued when said); the
   form has an icon search with previews (`/api/icons`).
+- **Colors just for one use** (`studio/colors.js`): one-off characters aren't saved as drawings.
+  A `sprite` or `puppet` scene's `colors: {'#OLD': '#NEW'}` (Timing tab form → Colors, one box per
+  color with "same as" squares) and a battle army's or unit's `colors:` recolor the drawing when the
+  video is made (`recolorArt` in prepare.mjs, `withColors` in video/battle.ts); every pose follows.
+  **Save as a character…** makes real drawings of every pose (`saveColors`, remembered in
+  `.versions.json`) for one she'll reuse. Color versions now also copy battle poses (attack, fall,
+  gallop, ride).
 - **Characters from a base** (Pixel art tab → New character from a base…): a
   base is a character with `-idle`, `-point`, `-look-up`, `-walk`, `-run` (hers:
   thick-beard-guy, thick-guy, skinny-guy, guy-beard, vestment-guy, thick-woman,

@@ -200,7 +200,7 @@ export function colorVersion({base, name, idle, dry}) {
     if (ranked.length > 1) split.push({from: c, to: ranked});
   }
   // (and any extra poses the base has, like blessing or kneel)
-  const others = PUPPET_ACTIONS.filter((p) => p !== 'idle' && fs.existsSync(path.join(SPRITES, `${base}-${p}.json`)));
+  const others = ALL_POSES.filter((p) => p !== 'idle' && fs.existsSync(path.join(SPRITES, `${base}-${p}.json`)));
   const made = [`${slug}-idle`, ...others.map((p) => `${slug}-${p}`)];
   const exists = made.filter((s) => fs.existsSync(path.join(SPRITES, `${s}.json`)));
   if (dry) return {slug, swaps, split, shape, made, exists};
@@ -212,6 +212,61 @@ export function colorVersion({base, name, idle, dry}) {
   versions[slug] = {base, swaps};
   fs.writeFileSync(VERSIONS, JSON.stringify(versions, null, 1) + '\n');
   return {slug, swaps, split, shape, made, exists};
+}
+
+// ---------- colors for one use (a scene's or a battle army's `colors:`) ----------
+// Every pose a character can have: the puppet's and the battle's (attack, fall, gallop, ride).
+export const ALL_POSES = [...new Set([...PUPPET_ACTIONS, 'gallop', 'ride', 'attack', 'fall'])];
+const HEX = /^#[0-9a-f]{6}$/i;
+
+/** Only real color swaps ({'#OLD': '#new'}), or undefined when there are none. */
+export function cleanColors(c) {
+  if (!c || typeof c !== 'object') return undefined;
+  const out = {};
+  for (const [k, v] of Object.entries(c).slice(0, 64)) if (HEX.test(k) && HEX.test(v)) out[k.toUpperCase()] = v.toUpperCase();
+  return Object.keys(out).length ? out : undefined;
+}
+
+/** The drawing with its colors swapped (sketches have no palette and stay as they are). */
+export function recolorArt(art, colors) {
+  const c = cleanColors(colors);
+  if (!c || !Array.isArray(art?.palette)) return art;
+  return {...art, palette: art.palette.map((x) => c[String(x).toUpperCase()] ?? x)};
+}
+
+/**
+ * A keeper: the colors she picked for one use, saved as a real drawing. `from` is the drawing the
+ * scene shows (e.g. thick-guy-walk) or a character (thick-guy); a character's every pose is saved as
+ * `<name>-<pose>` and .versions.json remembers it (with its base's colors, so it can be a base's
+ * version). A single drawing (a house) is saved as `<name>`. Never replaces a drawing.
+ */
+export function saveColors({from, name, colors}) {
+  const slug = spriteSlug(name), c = cleanColors(colors);
+  if (!slug) throw new Error('Give it a name');
+  if (!c) throw new Error('No colors are changed yet');
+  const exists = (n) => fs.existsSync(path.join(SPRITES, `${n}.json`));
+  const src = spriteSlug(from);
+  const m = new RegExp(`^(.+?)-(${ALL_POSES.join('|')})$`).exec(src);
+  const char = m ? m[1] : ALL_POSES.some((p) => exists(`${src}-${p}`)) ? src : null;
+  if (!char) {
+    if (!exists(src)) throw new Error(`No drawing "${src}"`);
+    if (exists(slug)) throw new Error(`There is already a drawing called "${slug}"`);
+    saveSprite({...loadSprite(src), name: slug, palette: recolorArt(loadSprite(src), c).palette});
+    return {made: [slug]};
+  }
+  const poses = ALL_POSES.filter((p) => exists(`${char}-${p}`));
+  const taken = poses.map((p) => `${slug}-${p}`).filter(exists);
+  if (taken.length) throw new Error(`Those drawings already exist: ${taken.join(', ')}`);
+  for (const p of poses) { const art = loadSprite(`${char}-${p}`); saveSprite({...art, name: `${slug}-${p}`, palette: recolorArt(art, c).palette}); }
+  // Remember it as a version of the same base (the swaps from the base's colors to these).
+  const versions = readVersions(), was = versions[char];
+  const base = was && !was.isBase ? was.base : char;
+  const swaps = {};
+  const keys = new Set([...Object.keys(was && !was.isBase ? was.swaps ?? {} : {}), ...Object.keys(c)]);
+  for (const k of keys) { const mid = (was && !was.isBase ? was.swaps?.[k] : null) ?? k; const to = c[mid.toUpperCase()] ?? mid; if (to.toUpperCase() !== k) swaps[k] = to; }
+  versions[slug] = {base, swaps};
+  fs.writeFileSync(VERSIONS, JSON.stringify(versions, null, 1) + '\n');
+  return {made: poses.map((p) => `${slug}-${p}`)};
 }
 
 // ---------- copying a pose to other characters ----------

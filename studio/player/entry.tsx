@@ -3,7 +3,7 @@
 import {Player, type PlayerRef} from '@remotion/player';
 import {createRef} from 'react';
 import {createRoot} from 'react-dom/client';
-import {battleAt, battleSeconds, CELL, unitPos} from '../../video/battle';
+import {battleAt, battleSeconds, CELL, unitColors, unitPos} from '../../video/battle';
 import {KidsThumb, type KidsThumbProps} from '../../video/KidsThumb';
 import {Lesson} from '../../video/Lesson';
 import {BattleClip, type BattleClipProps} from '../../video/scenes/Battle';
@@ -94,4 +94,4 @@ function mountBattle(el: HTMLElement, initial: BattleClipProps) {
   };
 }
 
-(window as any).StudioPlayer = {mount, mountThumb, mountBattle, engine: {battleAt, battleSeconds, unitPos, CELL, FPS}};
+(window as any).StudioPlayer = {mount, mountThumb, mountBattle, engine: {battleAt, battleSeconds, unitColors, unitPos, CELL, FPS}};

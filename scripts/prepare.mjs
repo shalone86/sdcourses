@@ -6,7 +6,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
 import {detectBeats} from './beats.mjs';
-import {loadSprite, publishSketch, puppetArt} from './sprites.mjs';
+import {loadSprite, publishSketch, puppetArt, recolorArt} from './sprites.mjs';
 import {battleProps} from './battles.mjs';
 import {phraseSpan, phraseTime, transcribe, trimLead, trimVoice, whisperAvailable} from './voice.mjs';
 
@@ -66,9 +66,13 @@ export function prepare(arg) {
   }
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'image' && sc.src && !sc.src.startsWith(id + '/')) sc.src = path.posix.join(id, sc.src);
   // Pixel animations: the drawing itself goes into the props (sprites/<name>.json).
-  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'sprite') sc.art = publishSketch(loadSprite(sc.sprite), publicDir, id);
+  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'sprite') sc.art = recolorArt(publishSketch(loadSprite(sc.sprite), publicDir, id), sc.colors);
   // The keyboard puppet: every drawing named <character>-<action>, and the items it points to.
-  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'puppet') Object.assign(sc, puppetArt(sc));
+  // (`colors:` recolors it for this scene only, every pose alike.)
+  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'puppet') {
+    const p = puppetArt(sc);
+    Object.assign(sc, p, {actions: Object.fromEntries(Object.entries(p.actions).map(([a, art]) => [a, recolorArt(art, sc.colors)]))});
+  }
   // A battle (BATTLES.md): the battle file and its drawings go into the props.
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'battle') { const {battle, arts, missing} = battleProps(sc); Object.assign(sc, {battle, arts}); if (missing.length) console.warn(`Battle ${sc.battle?.name ?? ''}: not drawn yet: ${missing.join(', ')}`); }
 

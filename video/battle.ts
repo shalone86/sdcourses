@@ -5,7 +5,7 @@
 // PICO-8 rules it follows on purpose: 8 × 8 cells, whole-pixel positions, a script that is a
 // plain list of timed events, sprites looked up by name, one anchor per sprite (its bottom-left
 // cell). Positions in the file are in cells (fractions are fine); the engine works in pixels.
-import type {Art} from './scenes/Sprite';
+import {recolor, type Art, type Colors} from './scenes/Sprite';
 
 export type Pt = [number, number];
 export const CELL = 8;
@@ -13,7 +13,8 @@ export const CELL = 8;
 export type BattleUnit = {
   id: string;
   kind: string; // sprites are `<kind>-<action>` (idle, walk/gallop/ride, attack, point, fall)
-  side?: string;
+  side?: string; // its army (`armies:`), whose colors it wears
+  colors?: Colors; // this one's own colors, over its army's
   at: Pt; // bottom-left cell the unit starts on
   face?: 'left' | 'right';
   speed?: number; // pixels per second when it moves
@@ -50,6 +51,8 @@ export type Battle = {
   script: BattleEvent[];
   seconds?: number; // length; else the last event
   ground?: string; // color behind everything
+  // Armies: each side's colors, so one neutral drawing per kind of soldier serves every battle.
+  armies?: Record<string, {name?: string; colors?: Colors}>;
 };
 
 export type ArtMap = Record<string, Art>;
@@ -64,6 +67,27 @@ export type BattleState = {
   say: {text: string; who?: string} | null;
   labels: {text: string; x: number; y: number}[]; // x: middle, y: top of what it names (pixels of the world)
 };
+
+// Every drawing a unit can have (`<kind>-<action>`).
+export const UNIT_ACTIONS = ['idle', 'walk', 'gallop', 'ride', 'run', 'attack', 'point', 'fall'];
+
+/** A unit's colors: its army's, then its own over them (or null for the colors as drawn). */
+export function unitColors(b: Battle, u: BattleUnit): Colors | null {
+  const c = {...(u.side ? b.armies?.[u.side]?.colors : null), ...u.colors};
+  return Object.keys(c).length ? c : null;
+}
+const colorKey = (b: Battle, u: BattleUnit) => (u.colors && Object.keys(u.colors).length ? 'u-' + u.id : unitColors(b, u) ? 'a-' + u.side : '');
+
+/** The drawings plus a recolored copy of each unit's poses for every army (and unit) with its own colors (`<name>__<key>`). */
+export function withColors(b: Battle, arts: ArtMap): ArtMap {
+  const out = {...arts};
+  for (const u of b.units) {
+    const k = colorKey(b, u), c = unitColors(b, u);
+    if (!k || !c) continue;
+    for (const a of UNIT_ACTIONS) { const n = `${u.kind}-${a}`; if (arts[n] && !out[`${n}__${k}`]) out[`${n}__${k}`] = recolor(arts[n], c); }
+  }
+  return out;
+}
 
 const MOVE_ORDER = ['walk', 'gallop', 'ride', 'run', 'idle'];
 const ORDER: Record<string, string[]> = {
@@ -200,10 +224,11 @@ export function battleAt(b: Battle, arts: ArtMap, T: number): BattleState {
   for (const u of b.units) {
     const run = unitRun(u, eventsFor(b, u.id), T);
     if (run.hidden) continue;
-    const name = pickSprite(arts, u.kind, run.action);
-    if (!name) continue;
+    const base = pickSprite(arts, u.kind, run.action);
+    if (!base) continue;
+    const k = colorKey(b, u), name = k && arts[`${base}__${k}`] ? `${base}__${k}` : base; // (its army's colors, from withColors)
     const art = arts[name];
-    const frame = frameOf(art, T - run.since, run.dead || name.endsWith('-fall'));
+    const frame = frameOf(art, T - run.since, run.dead || base.endsWith('-fall'));
     // Her drawings face left; facing right flips them.
     units.push({id: u.id, kind: u.kind, sprite: name, frame, x: Math.round(run.pos[0]), y: Math.round(run.pos[1]) - art.height + CELL,
       flip: run.face === 'right', dead: run.dead, w: art.width, h: art.height});
