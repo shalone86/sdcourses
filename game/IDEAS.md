@@ -46,3 +46,28 @@
   them to the hospital or hospice.
 - Some people are heavy: you need a second nun, a stretcher, a car, etc.
   (upgrades or items).
+
+## More games (Shalone's list; nothing built yet)
+1. **Rosary Rescue**: a puzzle game. Nuns rescue people with disabilities
+   and take them to the hospital, or bring food or medicine to people at
+   home. The city is littered with cars, junk, etc. that must be moved.
+   10-20 levels of growing difficulty (drag, push, bring an item...), a
+   move counter for a better score, and a button to reset the puzzle.
+   (This may be the "monks and nuns" game above.)
+2. **Peter's Pence**: a matching game with patron saints as jokers, like
+   Balatro; synergies between saints are never spelled out. Match pairs,
+   trios or a full house. 8 cards in 4 suit colors or themes (fish,
+   loaves, lamb, dove, angel, chalice, fire, cross). After each round, a
+   shop: spend grace to pray to patron saints (get their holy card).
+   5 rounds of rising scores to win; endless mode.
+3. **Midnight Mass Usher**: go to the nave, get people, find a pew with
+   enough empty seats for them; lose points if they wait too long. High
+   score. Easter Vigil and Christmas Vigil variants.
+4. **Sanctum Siege**: tactics, like chess or Fire Emblem: famous Catholic
+   battles, units move one space at a time (might reuse Rosary Rescue's
+   grid movement).
+5. **Deliverance Diary**: you're an exorcist interviewing people: are they
+   possessed, do they need to pray more, or do they need psychotherapy?
+   Not obvious, but there are tells a player can learn. If possessed, the
+   demon manifests and the game switches to choosing the prayer that works
+   on this demon (like Pokemon).
