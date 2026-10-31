@@ -16,7 +16,7 @@ s_priest=0 s_priest_walk=6
 s_priest_bless=8 -- 4 frames
 s_bishop=2 s_bishop_walk=12
 s_bishop_bless=56 -- 4 frames
-s_deacon=4 s_deacon_walk=14
+s_deacon=4
 -- people walking; the same people
 -- standing are 56 slots later
 s_people={16,18,20,22,24,26}
@@ -26,7 +26,6 @@ s_rosary=34 s_bucket=35
 s_coffee=36
 s_car=96 s_van=104 -- 16x16, 4 frames
 s_angel=84 -- 4 frames
-s_decor={41,42,43,44,45} -- 40 is the big tree
 -- 16x16 buildings
 s_house=48 s_church=50 s_hosp=52
 s_chapel=54
@@ -99,9 +98,6 @@ end
 -- for one of these colors
 looks={
  hair={1,2,4,5,6,7,9,10},
- shirt={1,2,3,8,9,11,12,13,14},
- pants={1,2,3,5,12,13},
- shoes={1,2,4,5},
  clothes={1,2,3,8,9,11,12,13,14},
 }
 skins={{4,15},{15,1},{9,1},{4,1}} -- skin, eyes
@@ -164,6 +160,7 @@ function _init()
  car_c,car_r=rnd({8,9,10,11,12,14,6,13}),rnd(roofs)
  t=0 missed=0 msg="" msg_t=0
  state="play" page=1
+ p2=nil -- player 2 joins from the start screen
  -- the start screen, when the
  -- game is first switched on
  if not booted then booted=true state="title" end
@@ -260,6 +257,7 @@ chars={
 -- who: the character you play
 -- (the last one you played)
 who=max(1,dget(3))
+who2=1 -- player 2's character
 
 function unlocked(i) return i==1 or dget(2)&(1<<i)>0 end
 
@@ -516,10 +514,9 @@ function spawn_event()
   end
   if not b then return end
   x,y=b.x+8,b.y+18
- elseif e.at=="church" then
-  x,y=church_x+2+rnd(12),church_y+30
  else
-  x,y=hosp_x+2+rnd(12),hosp_y+30
+  local c=e.at=="church"
+  x,y=(c and church_x or hosp_x)+2+rnd(12),(c and church_y or hosp_y)+30
  end
  local q=person(x,y,"event")
  q.need=e.need+lvl\2 q.wait=1800 q.ev=e.n
@@ -702,9 +699,18 @@ function _update()
   -- left/right: who you play
   if btnp(0) then who=(who-2)%#chars+1 end
   if btnp(1) then who=who%#chars+1 end
+  -- player 2: x on their controls
+  -- joins (or leaves), left/right
+  -- picks their own character
+  if btnp(5,1) then p2on=not p2on end
+  if p2on then
+   if btnp(0,1) then who2=(who2-2)%#chars+1 end
+   if btnp(1,1) then who2=who2%#chars+1 end
+  end
   if btnp(5) then
-   if unlocked(who) then
+   if unlocked(who) and (not p2on or unlocked(who2)) then
     dset(3,who) _init() start_skill() state="play"
+    if p2on then p2={x=p.x+12,y=p.y,cd=0} end
    else sfx(4) end
   elseif btnp(4) then book_from="title" state="book" end
   return
@@ -775,6 +781,18 @@ function _update()
  local nx,ny=(p.x+dx*sp)%world,(p.y+dy*sp)%world
  if not solid(nx,p.y) then p.x=nx end
  if not solid(p.x,ny) then p.y=ny end
+
+ -- player 2: walks on your screen
+ -- and blesses as far as you do
+ if p2 then
+  local dx,dy=tonum(btn(1,1))-tonum(btn(0,1)),tonum(btn(3,1))-tonum(btn(2,1))
+  if dx!=0 then p2.fl=dx<0 end
+  p2.mv=dx!=0 or dy!=0
+  p2.x=(p.x+mid(-60,wd(p2.x+dx*sp,p.x),60))%world
+  p2.y=(p.y+mid(-52,wd(p2.y+dy*sp,p.y),60))%world
+  p2.cd-=1
+  if p2.cd<=0 then p2.cd=p.rate sb(p2.x,p2.y-4,p.r) end
+ end
 
  -- who asks, and how often
  -- (crowds come faster for the pope)
@@ -970,17 +988,6 @@ end
 -->8
 -- draw
 
-dc={}
-function drawn(n)
- if dc[n]==nil then
-  dc[n]=false
-  for y=0,7 do for x=0,7 do
-   if sget(n%16*8+x,n\16*8+y)!=0 then dc[n]=true end
-  end end
- end
- return dc[n]
-end
-
 -- draw what comes next on the
 -- side of the wrap nearest you
 function at(x,y)
@@ -993,8 +1000,7 @@ function sprite(n,x,y,fl)
 end
 
 -- walking or standing, wearing look
--- (a color swap); walk falls back
--- to stand if it isn't drawn yet
+-- (a color swap)
 function figure(stand_n,walk_n,moving,x,y,fl,look)
  for a,b in pairs(look or {}) do pal(a,b) end
  sprite(moving and walk_n or stand_n,x,y,fl)
@@ -1002,11 +1008,12 @@ function figure(stand_n,walk_n,moving,x,y,fl,look)
 end
 
 -- a small thing; z=2 draws it
--- twice the size (the coffee mug)
-function thing(n,x,y,c,z)
+-- twice the size (the coffee mug).
+-- grace has no drawing: a yellow dot
+function thing(n,x,y,z)
  z=z or 1
- if drawn(n) then sspr(n%16*8,n\16*8,8,8,x-4*z,y-4*z,8*z,8*z)
- else circfill(x,y,2,c) end
+ if n==s_grace then circfill(x,y,2,10)
+ else sspr(n%16*8,n\16*8,8,8,x-4*z,y-4*z,8*z,8*z) end
 end
 
 -- her drawing for a building
@@ -1081,9 +1088,6 @@ function draw_map()
   if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or 7)
   elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or 7) end
  end
- print("church",church_x/4-10,church_y/4-13,7)
- print("hospital",hosp_x/4-14,hosp_y/4-12,8)
- -- grace waiting at each
  if hosp_need>0 then print("+"..hosp_need,hosp_x/4-2,hosp_y/4+6,chap and 8 or 5) end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  rectfill(0,120,127,127,1)
@@ -1143,20 +1147,28 @@ function draw_title()
  print("\^w\^tblessed!",32,20,10)
  -- who you'll play, big (a dark
  -- shape until unlocked)
- local c=chars[who]
+ local c,u=chars[who],unlocked(who)
  local n=c.s+flr(time()*2)%2
- if not unlocked(who) then for i=1,15 do pal(i,1) end end
+ if not u then for i=1,15 do pal(i,1) end end
  sspr(n%16*8,n\16*8,8,8,48,38,32,32)
  pal()
- print("\139",38,52,7) print("\145",84,52,7)
+ print("\139         \145",38,52,7)
  print(c.n,64-#c.n*2,76,10)
  -- the skill, or how to unlock
  -- (on its own line, to fit)
- local d=unlocked(who) and c.d or c.u
- if not unlocked(who) then print("to unlock:",44,84,6) end
- print(d,64-#d*2,unlocked(who) and 84 or 90,7)
+ local d=u and c.d or c.u
+ if not u then print("to unlock:",44,84,6) end
+ print(d,64-#d*2,u and 84 or 90,7)
  print("best: "..dget(0),46,98,10)
  print("\151 start   \142 book",26,114,7)
+ -- player 2, small, on the right
+ if p2on then
+  local n=chars[who2].s
+  sspr(n%16*8,n\16*8,8,8,100,54,16,16)
+  print("p2",104,46,unlocked(who2) and 12 or 5)
+ else
+  print("p2:\151",101,60,6)
+ end
 end
 
 function _draw()
@@ -1190,7 +1202,7 @@ function _draw()
  end
  -- grace piled up, waiting for you
  if church_pile>0 then
-  thing(s_grace,church_x+8,church_y+26,10)
+  thing(s_grace,church_x+8,church_y+26)
   print(church_pile,church_x+12,church_y+24,10)
  end
  at(hosp_x,hosp_y)
@@ -1205,7 +1217,7 @@ function _draw()
   figure(s_deacon,0,false,chapel_x+i*6,chapel_y+24,false,cdlooks[i])
  end
  if hosp_pile>0 then
-  thing(s_grace,hosp_x+8,hosp_y+26,10)
+  thing(s_grace,hosp_x+8,hosp_y+26)
   print(hosp_pile,hosp_x+12,hosp_y+24,10)
  end
  camera(p.x-64,p.y-64)
@@ -1213,13 +1225,10 @@ function _draw()
 
  for it in all(items) do
   at(it.x,it.y)
-  local s,c=s_chest,9
-  if it.k=="rosary" then s,c=s_rosary,13
-  elseif it.k=="bucket" then s,c=s_bucket,12
-  elseif it.k=="coffee" then s,c=s_coffee,4 end
-  thing(s,it.x,it.y+sin(t/40),c,s==s_coffee and 2)
+  local s=({rosary=s_rosary,bucket=s_bucket,coffee=s_coffee})[it.k] or s_chest
+  thing(s,it.x,it.y+sin(t/40),s==s_coffee and 2)
  end
- for g in all(graces) do at(g.x,g.y) thing(s_grace,g.x,g.y,10) end
+ for g in all(graces) do at(g.x,g.y) thing(s_grace,g.x,g.y) end
  for q in all(people) do draw_person(q) end
  at(church_x,church_y)
  for i=1,deacons do
@@ -1228,6 +1237,10 @@ function _draw()
  for h in all(helpers) do
   at(h.x,h.y)
   figure(s_priest,s_priest_walk,h.mv,h.x,h.y,h.fl,h.look)
+ end
+ if p2 then
+  at(p2.x,p2.y)
+  figure(chars[who2].s,chars[who2].w,p2.mv,p2.x,p2.y,p2.fl)
  end
  camera(p.x-64,p.y-64)
  ovalfill(p.x-3,p.y-1,p.x+3,p.y+1,1)
