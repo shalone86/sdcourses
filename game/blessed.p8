@@ -170,12 +170,7 @@ function _init()
  -- her song: music pattern 0 on,
  -- using channels 0-2 (mask 7) so
  -- channel 3 stays free for the
- -- sound effects. silent until
- -- she writes one.
- -- put her song back to its
- -- normal speed for a new day
- reload(0x3200,0x3200,0x1100)
- hurry=false
+ -- sound effects
  music(0,0,7)
  for i=1,8 do drop_item(rnd(world),rnd(world)) end
 end
@@ -260,6 +255,23 @@ who=max(1,dget(3))
 who2=1 -- player 2's character
 
 function unlocked(i) return i==1 or dget(2)&(1<<i)>0 end
+
+-- high scores: dget(10..14) the top 5
+-- scores, dget(15..19) their
+-- initials (3 letters in one number)
+abc="abcdefghijklmnopqrstuvwxyz"
+function initials(v)
+ local s=""
+ for k in all({v\1024,v\32%32,v%32}) do s..=sub(abc,k,k) end
+ return s
+end
+function top5(x,y,c)
+ for i=1,5 do
+  if dget(9+i)>0 then
+   print(i.." "..initials(dget(14+i)).." "..dget(9+i),x,y+i*7,c)
+  end
+ end
+end
 
 -- how many combos you've ever found
 function found()
@@ -367,6 +379,12 @@ function make_town()
   wc=rnd(walls),rc=rnd(roofs)})
  hosp_wc,hosp_rc=rnd(walls),rnd(roofs)
  add(bldg,{x=hosp_x,y=hosp_y,s=s_hosp,k="hosp",wc=hosp_wc,rc=hosp_rc})
+ -- keep these spots clear of houses:
+ -- where you start, the marian
+ -- garden, the hospital chapel
+ add(bldg,{x=256,y=260})
+ add(bldg,{x=church_x+30,y=church_y})
+ add(bldg,{x=chapel_x,y=chapel_y})
  for i=1,40 do
   local x,y=16+rnd(world-48),16+rnd(world-48)
   if free(x,y) then
@@ -402,10 +420,6 @@ end
 -- room for a building at x,y?
 -- (buildings are 32x32: 4 people tall)
 function free(x,y)
- if abs(x-256)<44 and abs(y-260)<44 then return false end
- -- the marian garden, right of the church
- if abs(x-(church_x+30))<36 and abs(y-church_y)<36 then return false end
- if abs(x-chapel_x)<44 and abs(y-chapel_y)<44 then return false end
  for b in all(bldg) do
   if abs(b.x-x)<44 and abs(b.y-y)<44 then return false end
  end
@@ -461,7 +475,7 @@ end
 -- sick (at the hospital)
 function person(x,y,k)
  local q={x=x,y=y,k=k,s=rnd(s_people),
-  look=new_look("people"),need=1,hit=0,
+  look=new_look("people"),need=1,
   wait=(900+rnd(300))*patience,spd=.2+rnd(.2)}
  -- the top of the head: hair, or
  -- a hat (its own random color)
@@ -475,14 +489,8 @@ function spawn_walker()
  -- out of a house near you,
  -- or from off the screen
  local x,y
- local close={}
- for b in all(bldg) do
-  if abs(wd(b.x,p.x))<100 and abs(wd(b.y,p.y))<100 then
-   add(close,b)
-  end
- end
- if #close>0 and rnd(1)<0.7 then
-  local b=rnd(close)
+ local b=rnd(bldg)
+ if abs(wd(b.x,p.x))<100 and abs(wd(b.y,p.y))<100 then
   x,y=b.x+8,b.y+18
  else
   local a=rnd(1)
@@ -557,7 +565,7 @@ end
 
 -- one blessing for one person
 function hit(q)
- q.need-=pow q.hit=4
+ q.need-=pow
  if q.need>0 then return end
  del(people,q) score+=1
  if q.b then q.b.who=nil end
@@ -715,6 +723,24 @@ function _update()
   elseif btnp(4) then book_from="title" state="book" end
   return
  end
+ -- initials: up/down change the
+ -- letter, x takes it; after the
+ -- third, the score is saved
+ if state=="name" then
+  if btnp(2) then nl[ni]=nl[ni]%26+1 end
+  if btnp(3) then nl[ni]=(nl[ni]-2)%26+1 end
+  if btnp(5) then ni+=1 end
+  if ni>3 then
+   -- slide the lower scores down
+   local i=5
+   while i>1 and score>dget(8+i) do
+    dset(9+i,dget(8+i)) dset(14+i,dget(13+i)) i-=1
+   end
+   dset(9+i,score) dset(14+i,nl[1]*1024+nl[2]*32+nl[3])
+   state="over"
+  end
+  return
+ end
  if state=="over" then
   if btnp(4) then book_from="over" state="book"
   elseif btnp(5) then _init() state="title" end
@@ -753,19 +779,10 @@ function _update()
  if btnp(4) then state="map" return end
 
  t+=1
- -- last minute: the music hurries
- -- (her song's notes play faster)
- if not hurry and t>=(day_len-60)*30 then
-  hurry=true say("one minute left!")
-  for i=8,63 do
-   local a=0x3200+i*68+65
-   poke(a,max(1,peek(a)*3\4))
-  end
- end
  if t>=day_len*30 then
   state="over" check_unlocks()
-  best=dget(0)
-  if score>best then dset(0,score) end
+  -- in the top 5? enter initials
+  if score>dget(14) then state="name" ni=1 nl={1,1,1} end
   return
  end
 
@@ -851,24 +868,10 @@ function _update()
   end
  end
 
- -- chapel deacons
- if chapel_deacons>0 then
-  ccd-=1
-  if ccd<=0 then
-   ccd=max(20,70-chapel_deacons*20)
-   sb(chapel_x+8,chapel_y+24,24,"chapel")
-  end
- end
-
- -- deacons bless at the church
- -- (more deacons: faster)
- if deacons>0 then
-  dcd-=1
-  if dcd<=0 then
-   dcd=max(15,70-deacons*14)
-   sb(church_x+8,church_y+22,24,"church")
-  end
- end
+ -- deacons bless at the church and
+ -- the chapel (more deacons: faster)
+ dcd=deacon(deacons,dcd,church_x,church_y,"church")
+ ccd=deacon(chapel_deacons,ccd,chapel_x,chapel_y,"chapel")
 
  -- relics: the church (and with
  -- the combo, the hospital) heals
@@ -926,6 +929,14 @@ function _update()
  end
  msg_t=max(0,msg_t-1)
  if xp>=need and state=="play" then levelup() end
+end
+
+function deacon(n,cd,x,y,k)
+ if n>0 then
+  cd-=1
+  if cd<=0 then cd=max(15,70-n*15) sb(x+8,y+23,24,k) end
+ end
+ return cd
 end
 
 -- move o toward tx,ty (the short
@@ -1044,10 +1055,6 @@ end
 function draw_person(q)
  at(q.x,q.y)
  for c,n in pairs(q.look) do pal(c,n) end
- if q.hit>0 then
-  for i=1,15 do pal(i,7) end
-  q.hit-=1
- end
  -- walking, or standing still
  local n=q.s
  if (q.there or not q.tx) and q.k!="walk" then
@@ -1055,8 +1062,6 @@ function draw_person(q)
  end
  sprite(n,q.x,q.y,q.fl)
  pal()
- -- a big need glows
- if q.ev and t%16<10 then circ(q.x,q.y-4,7,9) end
  -- "+" asks for a blessing; a number
  -- is how many more it needs
  if q.wait>150 or t%8<4 then
@@ -1083,7 +1088,6 @@ function draw_map()
    rectfill(x-3,y-3,x+3,y+2,b.wc)
   end
  end
- for it in all(items) do pset(it.x/4,it.y/4,9) end
  for q in all(people) do
   if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or 7)
   elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or 7) end
@@ -1138,11 +1142,6 @@ function draw_title()
  -- sky and a green hill to stand on
  cls(12)
  circfill(64,150,90,3)
- for i=0,40 do
-  -- falling grace
-  local y=(i*37+time()*20)%140-8
-  pset((i*53)%128,y,i%3==0 and 10 or 7)
- end
  print("\^w\^tblessed!",33,21,1)
  print("\^w\^tblessed!",32,20,10)
  -- who you'll play, big (a dark
@@ -1153,13 +1152,19 @@ function draw_title()
  sspr(n%16*8,n\16*8,8,8,48,38,32,32)
  pal()
  print("\139         \145",38,52,7)
- print(c.n,64-#c.n*2,76,10)
- -- the skill, or how to unlock
- -- (on its own line, to fit)
- local d=u and c.d or c.u
- if not u then print("to unlock:",44,84,6) end
- print(d,64-#d*2,u and 84 or 90,7)
- print("best: "..dget(0),46,98,10)
+ -- every few seconds: the top 5;
+ -- otherwise the character's skill,
+ -- or how to unlock them
+ if time()\4%2==1 and dget(10)>0 then
+  rectfill(30,73,97,111,1)
+  top5(38,70,10)
+ else
+  print(c.n,64-#c.n*2,76,10)
+  local d=u and c.d or c.u
+  if not u then print("to unlock:",44,84,6) end
+  print(d,64-#d*2,u and 84 or 90,7)
+  print("best: "..dget(10),46,98,10)
+ end
  print("\151 start   \142 book",26,114,7)
  -- player 2, small, on the right
  if p2on then
@@ -1355,12 +1360,22 @@ function _draw()
   end
   print("\148\131 choose  \142 take",28,93,6)
  end
+ if state=="name" then
+  rectfill(16,40,111,92,1) rect(16,40,111,92,10)
+  print("a high score!",38,46,10)
+  print(score,64-#tostr(score)*2,56,7)
+  for i=1,3 do
+   print(sub(abc,nl[i],nl[i]),52+i*6,68,i==ni and 10 or 7)
+  end
+  print("^",52+ni*6,74,10)
+  print("\148\131 letter  \151 next",22,84,6)
+ end
  if state=="over" then
   rectfill(12,30,115,104,1) rect(12,30,115,104,10)
   print("the day is done",34,36,10)
   print("blessed: "..score,34,46,7)
   print("missed: "..missed,34,53,6)
-  print("best: "..max(best,score),34,60,9)
+  print("best: "..dget(10).." "..initials(dget(15)),34,60,9)
   -- where the time went
   print("time lost:",34,68,8)
   print("home "..lost[1].." sick "..lost[2].." need "..lost[3].."s",16,75,8)
