@@ -1099,9 +1099,10 @@ function draw_map()
  end
  if hosp_need>0 then print("+"..hosp_need,hosp_x/4-2,hosp_y/4+6,chap and 8 or 5) end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
- rectfill(0,120,127,127,1)
- print("\fcyou  \fa\138 house  \f9\146 need",2,122)
- print("\142map \151book",76,122,6)
+ -- the legend, then the buttons
+ rectfill(0,112,127,127,1)
+ print("\fcyou  \fa\138 house  \f9\146 need",2,114)
+ print("\142 back   \151 book",2,121,6)
 end
 
 -- the book of blessings: every
