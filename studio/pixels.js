@@ -385,13 +385,21 @@ window.PixelTab = (() => {
       const colors = PALETTES[P.pal].colors.map((c) => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16), c]);
       const nearest = (r, g, b) => colors.reduce((best, c) => { const d = (c[0] - r) ** 2 + (c[1] - g) ** 2 + (c[2] - b) ** 2; return d < best[0] ? [d, c[3]] : best; }, [Infinity, null])[1];
       const w = W(), hgt = H();
-      for (const [k, file] of list.slice(0, MAX_FRAMES - P.frame).entries()) {
+      // Every picture, cut into frames when it's a sprite sheet (e.g. from Pixel Studio).
+      const cells = [];
+      for (const file of list) {
         const img = await new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = URL.createObjectURL(file); });
+        cells.push(...sheetCells(img, w, hgt).map((r) => ({img, ...r})));
+      }
+      const used = cells.slice(0, MAX_FRAMES - P.frame);
+      for (const [k, {img, x: sx, y: sy, w: sw, h: sh}] of used.entries()) {
         const c = document.createElement('canvas'); c.width = w; c.height = hgt;
         const g = c.getContext('2d');
+        // Pixel art stays sharp when it's already the right size (or a whole-number enlargement).
+        const s = Math.min(w / sw, hgt / sh);
+        g.imageSmoothingEnabled = !(Number.isInteger(1 / s) || Number.isInteger(s));
         g.imageSmoothingQuality = 'high';
-        const s = Math.min(w / img.width, hgt / img.height);
-        g.drawImage(img, (w - img.width * s) / 2, (hgt - img.height * s) / 2, img.width * s, img.height * s);
+        g.drawImage(img, sx, sy, sw, sh, (w - sw * s) / 2, (hgt - sh * s) / 2, sw * s, sh * s);
         const d = g.getImageData(0, 0, w, hgt).data;
         const out = [];
         for (let i = 0; i < w * hgt; i++) out.push(d[i * 4 + 3] < 128 ? null : nearest(d[i * 4], d[i * 4 + 1], d[i * 4 + 2]));
@@ -400,7 +408,42 @@ window.PixelTab = (() => {
         P.art.frames[at] = out;
       }
       draw(); markDirty();
-      note(`Uploaded ${Math.min(list.length, MAX_FRAMES - P.frame)} picture${list.length > 1 ? 's' : ''} as frames, in the ${PALETTES[P.pal].label} colors.`);
+      const sheet = cells.length > list.length ? ' (cut from a sprite sheet)' : '';
+      note(`Uploaded ${used.length} frame${used.length > 1 ? 's' : ''}${sheet}, in the ${PALETTES[P.pal].label} colors.` + (cells.length > used.length ? ` ${cells.length - used.length} didn’t fit (8 frames at most, from the frame showing).` : ''));
+    }
+
+    /**
+     * The frames in one picture: a sprite sheet is a row, column or grid of same-size frames,
+     * at the drawing's size or enlarged a whole number of times (any sheet that splits into
+     * 2–8 frames of this drawing's shape; empty ones at the end are left out). Else a strip of
+     * square frames (for a square drawing), else the whole picture is one frame.
+     */
+    function sheetCells(img, w, hgt) {
+      const W0 = img.naturalWidth, H0 = img.naturalHeight;
+      const grid = (fw, fh) => {
+        const cols = Math.round(W0 / fw), rows = Math.round(H0 / fh), out = [];
+        for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) out.push({x: c * fw, y: r * fh, w: fw, h: fh});
+        return out;
+      };
+      for (let k = Math.floor(Math.min(W0 / w, H0 / hgt)); k >= 1; k--) {
+        if (W0 % (w * k) || H0 % (hgt * k)) continue;
+        const n = (W0 / (w * k)) * (H0 / (hgt * k));
+        if (n >= 2 && n <= 64) return trim(grid(w * k, hgt * k));
+        if (n === 1) break;
+      }
+      if (w === hgt) {
+        if (W0 > H0 && W0 % H0 === 0 && W0 / H0 <= MAX_FRAMES) return trim(grid(H0, H0));
+        if (H0 > W0 && H0 % W0 === 0 && H0 / W0 <= MAX_FRAMES) return trim(grid(W0, W0));
+      }
+      return [{x: 0, y: 0, w: W0, h: H0}];
+      // Leave out empty frames at the end of a sheet (a grid that isn't full).
+      function trim(list) {
+        const c = document.createElement('canvas'); c.width = W0; c.height = H0;
+        const g = c.getContext('2d', {willReadFrequently: true}); g.drawImage(img, 0, 0);
+        const empty = (r) => { const d = g.getImageData(r.x, r.y, r.w, r.h).data; for (let i = 3; i < d.length; i += 4) if (d[i] > 0) return false; return true; };
+        while (list.length > 1 && empty(list[list.length - 1])) list.pop();
+        return list;
+      }
     }
 
     // ---------- flips ----------
@@ -794,7 +837,7 @@ window.PixelTab = (() => {
         posesPanel,
         versionBox,
         h('div', {class: 'row', style: {gap: '8px'}}, [size,
-          h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
+          h('label', {class: 'btn px-upload', title: 'Pictures from Procreate, Pixel Studio or anywhere: each becomes a frame (from this one on); a sprite sheet is cut into its frames'}, ['Upload pictures…',
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         P.version ? null : name,
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),

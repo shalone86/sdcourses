@@ -217,8 +217,10 @@ If it's already running, `npm start` just opens the page.
   Wi-Fi, PIN `STUDIO_DRAW_PIN` in .env: only the Pixel art tab and the
   drawing routes (studio/server.mjs `handleDraw`); everything else stays on
   this Mac. Sketch brushes follow Apple Pencil pressure. Both drawing modes
-  have **Upload pictures…** (e.g. from Procreate): each becomes a frame
-  (pixel mode shrinks it to the grid and matches the palette).
+  have **Upload pictures…** (e.g. from Procreate or Pixel Studio): each becomes a frame
+  (pixel mode shrinks it to the grid and matches the palette, and cuts a sprite sheet,
+  a row, column or grid of frames at any whole-number enlargement, into its frames).
+  Her Pixel Studio .psp files can't be read; she exports PNG or a sprite sheet.
 - **Posters** (`npm run render`): the title card without her camera clip.
 - **Backup to GitHub:** the studio commits and pushes a lesson's folder a
   few minutes after her last change to it, and right after she sends it to
