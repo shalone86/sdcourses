@@ -116,3 +116,10 @@ Order of effort: Rosary Rescue, then Deliverance Diary, then Sanctum Siege.
    Not obvious, but there are tells a player can learn. If possessed, the
    demon manifests and the game switches to choosing the prayer that works
    on this demon (like Pokemon).
+6. **Pixel Patrons**: an RPG about one saint at a time. Walk around, talk
+   to people, and fight: real people, demons, bad inclinations, or all
+   three, plus a debate mode against preachers and theologians where you
+   make arguments to win (mechanics not decided). Made to double as videos
+   that teach a saint's life, like Extra History: her characters tell the
+   whole story, with real pictures where they help. (Sanctum Siege could
+   double as videos too.)
