@@ -21,6 +21,7 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import * as esbuild from 'esbuild';
 import {importImage, importUpload, searchImages, sourceList} from './images.mjs';
+import {battleProps, battleSlug, listBattles, newBattle, saveBattle} from '../scripts/battles.mjs';
 import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCast, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
@@ -577,6 +578,13 @@ async function handle(req, res) {
     if (p === '/api/sprites') return json(res, 200, listSprites());
     if (p === '/api/kids-thumb') return json(res, 200, kidsThumb(id));
     if (p === '/api/puppet-cast') return json(res, 200, puppetCast());
+    if (p === '/api/battles') return json(res, 200, listBattles());
+    if (p === '/api/battle') {
+      // A battle file and the drawings it can use (the Battles tab and the Timing tab's Battle picture).
+      try { const {battle, arts, missing} = battleProps(battleSlug(url.searchParams.get('name'))); return json(res, 200, {battle, arts, missing}); }
+      catch (e) { throw httpError(404, e.message); }
+    }
+    if (p === '/battles.js') return sendFile(req, res, path.join(ROOT, 'studio/battles.js'));
     if (p === '/api/puppet-bases') return json(res, 200, {...puppetBases(), cast: puppetCast().characters});
     if (p === '/api/icons') {
       // Lucide icons whose name matches, with a small drawing of each, for the Icons picker.
@@ -623,6 +631,15 @@ async function handle(req, res) {
     // Anything that changes a lesson or a drawing: back it up a few minutes after the last change.
     if (id && /^\/api\/(save|use-spoken|quiz|slide|timing|scene|audio|take|ask|images\/import)$/.test(p)) backupSoon(id, lessonPaths(id), id);
     if (/^\/api\/sprite(\/delete|\/favorite)?$/.test(p)) backupSoon('sprites', ['sprites'], 'drawings');
+    if (/^\/api\/battle(\/new)?$/.test(p)) backupSoon('battles', ['battles'], 'battles');
+    if (p === '/api/battle') {
+      const body = await readJson(req);
+      try { const name = saveBattle(body.name, body.battle); return json(res, 200, {name, battles: listBattles()}); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/battle/new') {
+      const body = await readJson(req);
+      try { const name = newBattle(body.name, body.title); return json(res, 200, {name, battles: listBattles()}); } catch (e) { throw httpError(400, e.message); }
+    }
     if (p === '/api/save') {
       const dir = lessonPath(id);
       const body = await readJson(req);

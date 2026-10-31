@@ -7,6 +7,7 @@ import {execFileSync} from 'node:child_process';
 import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartScene, words} from './lib.mjs';
 import {detectBeats} from './beats.mjs';
 import {loadSprite, publishSketch, puppetArt} from './sprites.mjs';
+import {battleProps} from './battles.mjs';
 import {phraseSpan, phraseTime, transcribe, trimLead, trimVoice, whisperAvailable} from './voice.mjs';
 
 const FPS = 30;
@@ -68,6 +69,8 @@ export function prepare(arg) {
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'sprite') sc.art = publishSketch(loadSprite(sc.sprite), publicDir, id);
   // The keyboard puppet: every drawing named <character>-<action>, and the items it points to.
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'puppet') Object.assign(sc, puppetArt(sc));
+  // A battle (BATTLES.md): the battle file and its drawings go into the props.
+  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'battle') { const {battle, arts, missing} = battleProps(sc); Object.assign(sc, {battle, arts}); if (missing.length) console.warn(`Battle ${sc.battle?.name ?? ''}: not drawn yet: ${missing.join(', ')}`); }
 
   // The host scene's photo (site.yml host_photo); without one it shows initials.
   const site = loadSite();
@@ -317,7 +320,7 @@ function snapToBeats(segments, beats) {
 }
 
 const pixelArtCredit = (segments, site) =>
-  segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite' || sc?.type === 'puppet')) ? `Pixel art drawn by hand by ${site.author || 'the host'}` : '';
+  segments.some((s) => (s.scenes ?? []).some((sc) => sc?.type === 'sprite' || sc?.type === 'puppet' || sc?.type === 'battle')) ? `Pixel art drawn by hand by ${site.author || 'the host'}` : '';
 
 // Her video's layouts on a slide; "full" was the first name for the floating card.
 export const LAYOUTS = {off: 'off', bubble: 'bubble', card: 'card', full: 'card', side: 'side', lower: 'lower', only: 'only'};
