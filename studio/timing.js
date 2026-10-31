@@ -371,6 +371,7 @@
       ]) : null;
       const adder = T.editing && T.editing.seg === T.seg && s.scenes[T.editing.i] && ADD[s.scenes[T.editing.i].type]?.read ? addForm(T.editing.i) : T.adding ? addForm() : null;
       const nudger = T.nudge && T.nudge.seg === T.seg && s.scenes[T.nudge.i] ? nudgeRow(T.nudge.i) : null;
+      if (T.drag) T.drag.classList.toggle('on', !!nudger);
       const puppeteer = T.nudge && T.nudge.seg === T.seg && s.scenes[T.nudge.i]?.type === 'puppet' ? puppetRow(T.nudge.i) : null;
       const picOpts = T.editPic && T.editPic.seg === T.seg && s.scenes[T.editPic.i]?.type === 'image' ? pictureOptions(T.editPic.i) : null;
       const tl = timeline();
@@ -503,17 +504,51 @@
       const n = cur();
       const btn = (text, title, fn) => h('button', {class: 'btn', title, text, onclick: (e) => set((v) => fn(v, step(e)))});
       return h('div', {class: 'row', style: {gap: '6px', justifyContent: 'flex-start'}}, [
-        h('b', {text: 'Move ' + (LABELS[sc.type] || sc.type).toLowerCase() + ':'}),
+        h('b', {text: 'Move ' + (LABELS[sc.type] || sc.type).toLowerCase() + ':', title: 'Or drag it on the video, and use the mouse wheel there to resize it'}),
         btn('←', 'Left (Shift: further)', (v, d) => ({...v, x: v.x - d})),
         btn('↑', 'Up (Shift: further)', (v, d) => ({...v, y: v.y - d})),
         btn('↓', 'Down (Shift: further)', (v, d) => ({...v, y: v.y + d})),
         btn('→', 'Right (Shift: further)', (v, d) => ({...v, x: v.x + d})),
         btn('Smaller', 'Smaller', (v) => ({...v, size: Math.max(30, v.size - 5)})),
         btn('Bigger', 'Bigger', (v) => ({...v, size: Math.min(200, v.size + 5)})),
-        h('span', {class: 'small muted', text: n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made'}),
+        h('span', {class: 'small muted', text: (n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made') + ' · or drag it on the video (mouse wheel: size)'}),
         n.x || n.y || n.size !== 100 ? btn('Reset', 'Put it back', () => ({x: 0, y: 0, size: 100})) : null,
         h('button', {class: 'btn', text: 'Close', onclick: () => { T.nudge = null; draw(); }}),
       ]);
+    }
+
+    /** Drag on the video to move the picked block (its nudge, in pixels of 1920×1080). */
+    function dragOnVideo(layer) {
+      layer.addEventListener('pointerdown', (e) => {
+        const s = seg(), i = T.nudge?.i;
+        if (!T.nudge || T.nudge.seg !== T.seg || !s.scenes[i]) return;
+        e.preventDefault();
+        try { layer.setPointerCapture(e.pointerId); } catch { /* fine */ }
+        const k = 1920 / layer.getBoundingClientRect().width;
+        const o = (((T.timing[s.name] ||= {}).scenes ||= {})[i] ||= {});
+        const n0 = {x: 0, y: 0, size: 100, ...o.nudge}, x0 = e.clientX, y0 = e.clientY;
+        let frame = 0;
+        const move = (ev) => {
+          o.nudge = {...n0, x: Math.round(n0.x + (ev.clientX - x0) * k), y: Math.round(n0.y + (ev.clientY - y0) * k)};
+          if (!frame) frame = requestAnimationFrame(() => { frame = 0; updatePlayer(); });
+        };
+        const up = () => {
+          layer.removeEventListener('pointermove', move); layer.removeEventListener('pointerup', up);
+          if (!o.nudge.x && !o.nudge.y && o.nudge.size === 100) delete o.nudge;
+          updatePlayer(); draw(); setDirty();
+        };
+        layer.addEventListener('pointermove', move); layer.addEventListener('pointerup', up);
+      });
+      // The mouse wheel (or two fingers on the trackpad) over the video makes it bigger or smaller.
+      layer.addEventListener('wheel', (e) => {
+        const s = seg(), i = T.nudge?.i;
+        if (!T.nudge || T.nudge.seg !== T.seg || !s.scenes[i]) return;
+        e.preventDefault();
+        const o = (((T.timing[s.name] ||= {}).scenes ||= {})[i] ||= {});
+        const n = {x: 0, y: 0, size: 100, ...o.nudge};
+        o.nudge = {...n, size: Math.max(30, Math.min(200, n.size + (e.deltaY < 0 ? 2 : -2)))};
+        updatePlayer(); clearTimeout(T.wheelT); T.wheelT = setTimeout(() => { draw(); setDirty(); }, 300);
+      }, {passive: false});
     }
 
     /** Options for a picture already in the lesson: framing, which part stays when cropped, caption, credit, or a different picture. */
@@ -652,6 +687,9 @@
       // Picture: search free sources, pick one, add a caption.
       if (!old && T.addType === 'image') fields.replaceChildren(imagePicker());
       const at = h('input', {type: 'number', step: '0.1', min: '0', value: now.toFixed(1), style: {width: '6em'}});
+      // Where it shows: on its own, beside the picture before, or floating over it (remembered).
+      const place = h('select', {'aria-label': 'Where it shows', onchange: (e) => { T.addWith = e.target.value; }},
+        WITH.map(([v, face, label]) => h('option', {value: v || '', text: face + ' ' + label, selected: (T.addWith || '') === (v || '')})));
       const close = () => { T.adding = false; T.editing = null; draw(); };
       const save = async () => {
         const v = Object.fromEntries(Object.entries(vals).map(([k, el]) => [k, el.type === 'checkbox' ? el.checked : el.value]));
@@ -667,14 +705,15 @@
           } else scene = ADD[old ? kind : T.addType].make(v, old);
           const d = old
             ? await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'replace', section: s.name, index: edit, scene})
-            : await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'add', section: s.name, scene, start: Number(at.value)});
+            : await post('/api/scene?id=' + encodeURIComponent(T.id), {op: 'add', section: s.name, scene: place.value ? {...scene, with: place.value} : scene, start: Number(at.value)});
           T.adding = false; T.editing = null; reload(d);
         } catch (e) { alert((old ? 'Couldn’t change it: ' : 'Couldn’t add it: ') + e.message); }
       };
       return h('div', {class: 'card', style: {gap: '10px'}}, [
         old ? h('b', {text: 'Change this ' + (LABELS[kind] || kind).toLowerCase()})
           : h('div', {class: 'row'}, [h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Kind'}), typeSel]),
-            h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Starts at (seconds into the recording)'}), at])]),
+            h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Starts at (seconds into the recording)'}), at]),
+            h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Shows'}), place])]),
         fields,
         h('div', {class: 'row'}, [h('span', {class: 'small muted', text: old ? 'Its place and timing stay as they are.' : 'Items appear when you say them. You can drag it afterwards.'}),
           h('span', {}, [h('button', {class: 'btn', text: 'Cancel', onclick: close}), ' ', h('button', {class: 'btn primary', text: old ? 'Save changes' : 'Add it', onclick: save})])]),
@@ -806,13 +845,17 @@
         if (si !== T.seg) { T.seg = si; draw(); }
       });
       T.bar = bar;
-      const top = h('div', {class: 'tl-top'}, [h('div', {class: 'tl-player'}), h('div', {class: 'tl-player'}, [bar])]);
+      // Over the video: with a block picked (Move…), drag it on the video to move it.
+      const screen = h('div');
+      T.drag = h('div', {class: 'tl-drag', title: 'Drag to move it'});
+      dragOnVideo(T.drag);
+      const top = h('div', {class: 'tl-top'}, [h('div', {class: 'tl-player', style: {position: 'relative'}}, [screen, T.drag]), h('div', {class: 'tl-player'}, [bar])]);
       T.body = h('div', {class: 'stack', style: {gap: '12px'}});
       // Video on the left (stays put), timeline on the right; stacked on narrow windows.
       root.classList.add('tl-grid');
       root.replaceChildren(top, T.body);
       if (!window.StudioPlayer) { top.replaceChildren(h('div', {class: 'notice error', text: 'The video preview didn’t load. Restart the studio.'})); return; }
-      T.player = window.StudioPlayer.mount(top.firstChild, T.props);
+      T.player = window.StudioPlayer.mount(screen, T.props);
       T.player.onFrame((f) => {
         // Playing the puppet stops at the end of its slide.
         if (T.puppetRec && (f < segStart(T.puppetRec.seg) || f >= segStart(T.puppetRec.seg) + T.props.segments[T.puppetRec.seg].durationInFrames - 1)) stopPuppet();

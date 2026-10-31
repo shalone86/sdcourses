@@ -155,6 +155,8 @@ body.wide .wrap{max-width:1600px}
   .tl-grid .tl-player{max-width:none}
 }
 .tl-player{max-width:600px;margin:0 auto}
+.tl-drag{position:absolute;inset:0;display:none;border-radius:10px;cursor:move;touch-action:none}
+.tl-drag.on{display:block;outline:3px dashed var(--accent);outline-offset:-3px}
 .tl-scene.fixed{background:var(--bg);border-style:dashed;cursor:default;color:var(--muted)}
 .tl-scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
 .tl{position:relative;height:250px;user-select:none;-webkit-user-select:none}

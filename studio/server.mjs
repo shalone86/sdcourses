@@ -801,6 +801,8 @@ async function handle(req, res) {
         // After every scene that starts before it; never before a point's quotation.
         const f = seg.audioOffsetInFrames + start * 30;
         at = Math.max(sceneList(section, dir).first, seg.scenes.filter((s) => (s.from ?? 0) <= f).length);
+        // Beside or over the picture before: only when there is one it can share with.
+        if (scene.with != null && (!['side', 'over'].includes(scene.with) || at < 1)) delete scene.with;
       } else if (op === 'with') {
         // Show this picture with the one before it: beside it, over it, or on its own (null).
         if (!Number.isInteger(index) || index < 1 || index < sceneList(section, dir).first) throw httpError(400, 'Only a picture after another one can share its space');
