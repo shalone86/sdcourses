@@ -109,7 +109,6 @@ skins={{4,15},{15,1},{9,1},{4,1}} -- skin, eyes
 
 -- seasons: deacons' vestments
 -- follow the church year
-seasons={"spring","summer","fall","winter"}
 -- the ground each season, from
 -- pico-8's hidden colors: lime,
 -- green, tan, snowy grey (white
@@ -165,7 +164,6 @@ function _init()
  -- game is first switched on
  if not booted then booted=true state="title" end
  angel_t=0
- say("a "..seasons[season].." day")
  found_start=dget(1)
  -- her song: music pattern 0 on,
  -- using channels 0-2 (mask 7) so
@@ -475,7 +473,7 @@ end
 -- sick (at the hospital)
 function person(x,y,k)
  local q={x=x,y=y,k=k,s=rnd(s_people),
-  look=new_look("people"),need=1,
+  look=new_look("people"),need=1,hit=0,
   wait=(900+rnd(300))*patience,spd=.2+rnd(.2)}
  -- the top of the head: hair, or
  -- a hat (its own random color)
@@ -565,7 +563,7 @@ end
 
 -- one blessing for one person
 function hit(q)
- q.need-=pow
+ q.need-=pow q.hit=4
  if q.need>0 then return end
  del(people,q) score+=1
  if q.b then q.b.who=nil end
@@ -752,7 +750,7 @@ function _update()
   return
  end
  if state=="book" then
-  local n=pages()
+  local n=4 -- 2 pages of upgrades, 2 of combos
   if btnp(0) then page=(page-2)%n+1 end
   if btnp(1) then page=page%n+1 end
   if btnp(4) or btnp(5) then state=book_from end
@@ -1055,6 +1053,11 @@ end
 function draw_person(q)
  at(q.x,q.y)
  for c,n in pairs(q.look) do pal(c,n) end
+ -- a white flash when blessed
+ if q.hit>0 then
+  for i=1,15 do pal(i,7) end
+  q.hit-=1
+ end
  -- walking, or standing still
  local n=q.s
  if (q.there or not q.tx) and q.k!="walk" then
@@ -1062,6 +1065,8 @@ function draw_person(q)
  end
  sprite(n,q.x,q.y,q.fl)
  pal()
+ -- a big need glows
+ if q.ev and t%16<10 then circ(q.x,q.y-4,7,9) end
  -- "+" asks for a blessing; a number
  -- is how many more it needs
  if q.wait>150 or t%8<4 then
@@ -1102,7 +1107,6 @@ end
 -- the book of blessings: every
 -- upgrade, and the combos you've
 -- found (the rest show a hint)
-function pages() return 2+ceil(#combos/6) end
 
 function draw_book()
  cls(1)
@@ -1133,7 +1137,7 @@ function draw_book()
    end
   end
  end
- print("\139\145 page "..page.."/"..pages(),4,121,6)
+ print("\139\145 page "..page.."/4",4,121,6)
  print("\142 back",96,121,6)
 end
 
@@ -1142,6 +1146,10 @@ function draw_title()
  -- sky and a green hill to stand on
  cls(12)
  circfill(64,150,90,3)
+ -- falling grace
+ for i=0,40 do
+  pset(i*53%128,(i*37+time()*20)%140-8,i%3==0 and 10 or 7)
+ end
  print("\^w\^tblessed!",33,21,1)
  print("\^w\^tblessed!",32,20,10)
  -- who you'll play, big (a dark
