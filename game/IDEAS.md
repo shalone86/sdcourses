@@ -115,6 +115,8 @@ Order of effort: Rosary Rescue, then Deliverance Diary, then Sanctum Siege.
    - A countdown to the start of Mass; no speed-up at the end. When Mass
      starts, points are lost for everyone still waiting.
    - Top 5 high scores with initials, like Blessed!.
+   - The start screen remembers the last usher played; left/right picks
+     another.
 4. **Sanctum Siege**: tactics, like chess or Fire Emblem: famous Catholic
    battles, units move one space at a time (might reuse Rosary Rescue's
    grid movement).
