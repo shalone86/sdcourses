@@ -502,14 +502,17 @@ function levelup()
  offer("level "..lvl.."! choose one")
 end
 -->8
+function cyc(v,n,pl)
+ if btnp(0,pl) then v-=1 end
+ if btnp(1,pl) then v+=1 end
+ return (v-1)%n+1
+end
 function _update()
  if state=="title" then
-  if btnp(0) then who=(who-2)%#chars+1 end
-  if btnp(1) then who=who%#chars+1 end
+  who=cyc(who,#chars)
   if btnp(5,1) then p2on=not p2on end
   if p2on then
-   if btnp(0,1) then who2=(who2-2)%#chars+1 end
-   if btnp(1,1) then who2=who2%#chars+1 end
+   who2=cyc(who2,#chars,1)
   end
   if btnp(5) then
    if unlocked(who) and (not p2on or unlocked(who2)) then
@@ -544,9 +547,7 @@ function _update()
   return
  end
  if state=="book" then
-  local n=4
-  if btnp(0) then page=(page-2)%n+1 end
-  if btnp(1) then page=page%n+1 end
+  page=cyc(page,4)
   if btnp(4) or btnp(5) then state=book_from end
   return
  end
@@ -745,6 +746,11 @@ end
 function at(x,y)
  camera(p.x-64-(wd(x,p.x)+p.x-x),p.y-64-(wd(y,p.y)+p.y-y))
 end
+function drive(o)
+ pal(13,car_c) pal(2,car_r)
+ spr((van and s_van or s_car)+flr(t/4)%4*2,o.x-8,o.y-14,2,2,o.fl)
+ pal()
+end
 function sprite(n,x,y,fl)
  spr(n+flr(t/15)%2,x-4,y-8,1,1,fl)
 end
@@ -936,15 +942,14 @@ function _draw()
  end
  if p2 then
   at(p2.x,p2.y)
-  figure(chars[who2].s,chars[who2].w,p2.mv,p2.x,p2.y,p2.fl)
+  circ(p2.x,p2.y-4,p.r,11)
+  if l("a car")>0 and p2.mv then drive(p2)
+  else figure(chars[who2].s,chars[who2].w,p2.mv,p2.x,p2.y,p2.fl) end
  end
  camera(p.x-64,p.y-64)
  ovalfill(p.x-3,p.y-1,p.x+3,p.y+1,1)
- local car=van and s_van or s_car
  if l("a car")>0 and p.mv then
-  pal(13,car_c) pal(2,car_r)
-  spr(car+flr(t/4)%4*2,p.x-8,p.y-14,2,2,p.fl)
-  pal()
+  drive(p)
  else
  local st,wk,bl=chars[who].s,chars[who].w,who==1 and s_priest_bless
  if who==1 and (bishop or cath) then
