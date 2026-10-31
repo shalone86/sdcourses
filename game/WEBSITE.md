@@ -35,7 +35,7 @@ of the same name, and keep it active. Check that the game opens at:
 Make a page or post, add an **HTML** card, and paste:
 
 ```html
-<div style="max-width:560px;margin:0 auto">
+<div style="width:100%;max-width:560px;margin:0 auto">
   <div style="position:relative;padding-top:100%">
     <iframe src="/assets/games/blessed.html" title="Blessed!"
       style="position:absolute;inset:0;width:100%;height:100%;border:0"
