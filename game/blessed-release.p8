@@ -667,13 +667,13 @@ function _update()
   if g.pull or near(g.x,g.y,p.x,p.y-4,p.mag) then
    step(g,p.x,p.y-4,3)
   end
-  if near(g.x,g.y,p.x,p.y-4,5) then
+  if near(g.x,g.y,p.x,p.y-4,5) or touch(g,6) then
    del(graces,g) xp+=g.v sfx(1)
    if g.pull or l("guardian angel")>0 then angel_t=30 end
   end
  end
  for it in all(items) do
-  if near(it.x,it.y,p.x,p.y-4,8) then
+  if near(it.x,it.y,p.x,p.y-4,8) or touch(it,8) then
    del(items,it) use(it.k)
    if state=="pick" then break end
   end
@@ -708,6 +708,9 @@ function closest(list,o,ok)
   if ok(q) and (not tg or d<best) then tg,best=q,d end
  end
  return tg
+end
+function touch(o,r)
+ return p2 and near(o.x,o.y,p2.x,p2.y-4,r)
 end
 function onscreen(q)
  return abs(wd(q.x,p.x))<60 and abs(wd(q.y,p.y))<60
