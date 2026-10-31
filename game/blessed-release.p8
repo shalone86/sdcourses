@@ -101,7 +101,7 @@ function _init()
  p2=nil
  if not booted then booted=true state="title" end
  angel_t=0
- found_start=dget(1)
+ reload(0x3200,0x3200,0x1100) hurry=false
  music(0,0,7)
  for i=1,8 do drop_item(rnd(world),rnd(world)) end
 end
@@ -569,6 +569,13 @@ function _update()
  end
  if btnp(4) then state="map" return end
  t+=1
+ if not hurry and t>=(day_len-60)*30 then
+  hurry=true say("one minute left!")
+  for i=8,63 do
+   local a=0x3200+i*68+65
+   poke(a,max(1,peek(a)*3\4))
+  end
+ end
  if t>=day_len*30 then
   state="over" check_unlocks()
   if score>dget(14) then state="name" ni=1 nl={1,1,1} end
@@ -798,7 +805,6 @@ function draw_map()
   if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or 7)
   elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or 7) end
  end
- if hosp_need>0 then print("+"..hosp_need,hosp_x/4-2,hosp_y/4+6,chap and 8 or 5) end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  rectfill(0,112,127,127,1)
  print("\fcyou  \fa\138 house  \f9\146 need",2,114)
@@ -1034,11 +1040,6 @@ function _draw()
   print("time lost:",34,68,8)
   print("home "..lost[1].." sick "..lost[2].." need "..lost[3].."s",16,75,8)
   print("combos found: "..found().."/"..#combos,26,83,10)
-  for i=1,#combos do
-   if got[combos[i].n] and found_start&(1<<i)==0 then
-    print("new! "..combos[i].n,26,90,9)
-   end
-  end
   if newchar then print("unlocked: "..newchar.."!",64-(#newchar+11)*2,22,10) end
   print("\142 book  \151 play again",18,98,6)
  end
