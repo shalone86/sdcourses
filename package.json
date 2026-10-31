@@ -25,7 +25,8 @@
     "pico8": "node scripts/pico8.mjs",
     "music": "node scripts/midi2pico8.mjs",
     "pico8-release": "node scripts/pico8-release.mjs",
-    "pico8-label": "node scripts/pico8-label.mjs"
+    "pico8-label": "node scripts/pico8-label.mjs",
+    "game-to-theme": "node scripts/game-to-theme.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.530",
