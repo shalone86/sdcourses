@@ -858,7 +858,10 @@ function _update()
  -- walkers come to you, churchgoers
  -- go to mass; the rest stay put
  for q in all(people) do
-  local tx,ty=p.x,p.y
+  -- walkers head for the nearer player
+  local o=p
+  if touch(q,60) and not near(q.x,q.y,p.x,p.y,40) then o=p2 end
+  local tx,ty=o.x,o.y
   if q.tx then tx,ty=q.tx,q.ty end
   if q.k=="walk" or q.tx then
    if not near(q.x,q.y,tx,ty,6) then
