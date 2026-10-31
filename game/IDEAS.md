@@ -108,6 +108,13 @@ Order of effort: Rosary Rescue, then Deliverance Diary, then Sanctum Siege.
 3. **Midnight Mass Usher**: go to the nave, get people, find a pew with
    enough empty seats for them; lose points if they wait too long. High
    score. Easter Vigil and Christmas Vigil variants.
+   - Pick one of 3 ushers, each with exactly one strength, so you play
+     around it: **the new usher** (walks faster, no other skill), **the
+     experienced usher** (can split a family across pews), **the
+     respected usher** (can ask people to move down and make room).
+   - A countdown to the start of Mass; no speed-up at the end. When Mass
+     starts, points are lost for everyone still waiting.
+   - Top 5 high scores with initials, like Blessed!.
 4. **Sanctum Siege**: tactics, like chess or Fire Emblem: famous Catholic
    battles, units move one space at a time (might reuse Rosary Rescue's
    grid movement).
