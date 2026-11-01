@@ -138,7 +138,7 @@ If it's already running, `npm start` just opens the page.
   I pick, M select (Delete clears it), . / , next / previous frame; Export frame (PNG, enlarged) or animation (GIF, made by
   ffmpeg at `/api/sprite/gif`)). Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
-  Pixel animation, a `sprite` scene (`move: stay | hop | across`, `size`);
+  Pixel animation, a `sprite` scene (`move: stay | hop | across | across-left`, `size`; across-left mirrors it);
   prepare.mjs copies the drawing into the props. With `motion: dance` it
   changes frame on the beat. **Sketch** mode (same tab, `studio/sketch.js`):
   free drawing with brush sizes and the same tools, saved as one PNG per
@@ -198,7 +198,7 @@ If it's already running, `npm start` just opens the page.
   hands-up); Blender draws the looping clip the first time (a few seconds, only
   on the Mac with Blender) into `characters/<slug>/<anim>/NN.png`, after which it
   works anywhere and is backed up with the rest of `characters/`. The scene
-  (`figure: jesus`, `anim: walk`, `view: front | front-left | left | back-left | back | back-right | right | front-right`, `move: stay | hop | across`, `size`; the view says which way they face on screen, so a walk that crosses the screen uses `right`) plays through
+  (`figure: jesus`, `anim: walk`, `view: front | front-left | left | back-left | back | back-right | right | front-right`, `move: stay | hop | across | across-left`, `size`; the view says which way they face on screen; walking across with the front view turns them three-quarters the way they go, `front-right` or `front-left` for across-left, so the face shows) plays through
   the Sprite scene, so it behaves like her sketches. New characters: add them to
   the library in Blender, list them in `blender/characters.json`, run the build.
   Mix rule for new art: Claude may script recolors, outfit swaps and props; she

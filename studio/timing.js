@@ -29,6 +29,9 @@
   const lines = (v) => String(v || '').split('\n').map((x) => x.trim()).filter(Boolean);
   const pair = (l) => l.split('|').map((x) => x.trim());
   const nl = (a) => (a || []).join('\n');
+  const MOVES = [['stay', 'stays'], ['hop', 'hops'], ['across', 'walks across, left to right'], ['across-left', 'walks across, right to left']];
+  // A character walking across turns three-quarters the way it goes, so the face still shows (unless she picked another view).
+  const figureView = (v) => (!v.view || v.view === 'front') && /^across/.test(v.move || '') ? (v.move === 'across' ? 'front-right' : 'front-left') : v.view || 'front';
   // Each kind of picture: its boxes ([name, label, kind, options]), how to make the scene from
   // them (make), and how to fill them from a scene already in the lesson (read, for editing).
   // Box kinds: text, lines (one per line), check, select, areas, sprite, icon (one, with a picker),
@@ -79,7 +82,7 @@
     timeline: {label: 'Timeline', fields: [['years', 'Years, one per line', 'lines'], ['events', 'What happened, one per line in the same order', 'lines']],
       make: (v) => { const e = lines(v.events); return {type: 'timeline', items: lines(v.years).map((year, i) => ({year, label: e[i] || ''}))}; },
       read: (sc) => ({years: nl((sc.items || []).map((x) => x.year)), events: nl((sc.items || []).map((x) => x.label || ''))})},
-    sprite: {label: 'Pixel animation (from the Pixel art tab)', fields: [['sprite', 'Which drawing', 'sprite'], ['colors', 'Colors (just in this picture)', 'colors', 'sprite'], ['move', 'How it moves', 'select', ['stay', 'hop', 'across']],
+    sprite: {label: 'Pixel animation (from the Pixel art tab)', fields: [['sprite', 'Which drawing', 'sprite'], ['colors', 'Colors (just in this picture)', 'colors', 'sprite'], ['move', 'How it moves', 'select', MOVES],
       ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
       make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
         return {type: 'sprite', sprite: v.sprite, ...(colorsOf(v) ? {colors: v.colors} : {}), ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
@@ -91,10 +94,11 @@
         if (!Number.isFinite(f) || f < 0 || (t !== null && (!Number.isFinite(t) || t <= f))) throw new Error('The stop time must be after the start time');
         return {type: 'battle', battle: v.battle, ...(f || t !== null ? {clip: [f, t ?? 9999]} : {}), ...(v.palette && v.palette !== 'pico' ? {palette: v.palette} : {})}; },
       read: (sc) => ({battle: typeof sc.battle === 'string' ? sc.battle : sc.battle?.name || '', from: sc.clip ? String(sc.clip[0]) : '0', to: sc.clip && sc.clip[1] < 9999 ? String(sc.clip[1]) : '', palette: sc.palette || 'pico'})},
-    figure: {label: 'Character (from your Blender library)', fields: [['figure', 'Who, and what they do', 'figure'], ['move', 'How it moves', 'select', ['stay', 'hop', 'across']],
+    figure: {label: 'Character (from your Blender library)', fields: [['figure', 'Who, and what they do', 'figure'], ['move', 'How it moves', 'select', MOVES],
       ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
       make: (v) => { if (!v.figure || !v.anim) throw new Error('Pick a character and what it does');
-        return {type: 'figure', figure: v.figure, anim: v.anim, ...(v.view && v.view !== 'front' ? {view: v.view} : {}), ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
+        const view = figureView(v);
+        return {type: 'figure', figure: v.figure, anim: v.anim, ...(view !== 'front' ? {view} : {}), ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
       read: (sc) => ({figure: sc.figure || '', anim: sc.anim || '', view: sc.view || 'front', move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
     puppet: {label: 'Puppet (a character you play with the keys)', fields: [['character', 'Which character', 'character'], ['colors', 'Colors (just in this picture; every pose follows)', 'colors', 'character'], ['item', 'The item it points to (P)', 'item'],
       ['size', 'Size', 'select', ['medium', 'small', 'big']], ['start', 'Stands at first', 'select', ['center', 'left', 'right']]],
@@ -649,7 +653,7 @@
           const value = start[name];
           if (type === 'lines') { input = h('textarea', {rows: 3}); input.value = value || ''; }
           else if (type === 'check') input = h('input', {type: 'checkbox', checked: value === undefined ? true : value || null});
-          else if (type === 'select') { input = h('select', {}, extra.map((o) => h('option', {value: o, text: o, selected: o === value}))); }
+          else if (type === 'select') { input = h('select', {}, extra.map((o) => { const [val, text] = Array.isArray(o) ? o : [o, o]; return h('option', {value: val, text, selected: val === value}); })); }
           else if (type === 'areas') {
             // The highlight box, with every name it knows a click away.
             const box = h('textarea', {rows: 3}); box.value = value || '';
@@ -724,7 +728,7 @@
               pic.src = c && c.rest ? c.rest : '';
               const keep = what.value || start.anim;
               what.replaceChildren(...(c ? c.anims.map((a) => h('option', {value: a.id, text: a.id.replace(/-/g, ' ') + (a.kind === 'loop' ? ' (loops)' : '') + (a.views.includes(viewSel.value) ? '' : ' •'), selected: a.id === keep})) : []));
-              note.textContent = (!cast.blender ? 'Blender isn’t installed on this Mac, so only clips marked without • can be used. ' : 'A clip marked • is drawn by Blender the first time (a few seconds). ') + 'For a walk that crosses the screen, pick “Profile, looking right”.';
+              note.textContent = (!cast.blender ? 'Blender isn’t installed on this Mac, so only clips marked without • can be used. ' : 'A clip marked • is drawn by Blender the first time (a few seconds). ') + 'A character that walks across turns the way it goes by itself (three-quarters, so the face shows; the side views show only the back of the head).';
             };
             api('/api/figures').then((cast) => {
               viewSel.replaceChildren(...cast.views.map((v) => h('option', {value: v, text: VIEW_NAMES[v] || v, selected: v === (start.view || 'front')})));
@@ -768,7 +772,7 @@
           // A character's clip is drawn by Blender the first time it's used.
           if ((old ? kind : T.addType) === 'figure' && v.figure && v.anim) {
             busy.textContent = 'Drawing it in Blender…';
-            try { await post('/api/figure', {slug: v.figure, anim: v.anim, view: v.view || 'front'}); } finally { busy.textContent = ''; }
+            try { await post('/api/figure', {slug: v.figure, anim: v.anim, view: figureView(v)}); } finally { busy.textContent = ''; }
           }
           let scene;
           if (!old && T.addType === 'image') {

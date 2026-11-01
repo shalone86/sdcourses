@@ -7,11 +7,11 @@ import {Center} from './Center';
 import type {SceneProps} from '.';
 
 // One of her pixel animations (studio Pixel art tab → sprites/<name>.json, put in `art` by prepare.mjs).
-//   move: stay (default) | hop (little jumps) | across (walks across the screen)
+//   move: stay (default) | hop (little jumps) | across (walks across the screen, left to right) | across-left (right to left)
 //   size: small | medium (default) | big | full (fills the slide, for a wide scene)
 // A sketch (kind: 'sketch') has a picture per frame instead of pixel rows.
 export type Art = {kind?: 'sketch'; width: number; height: number; fps: number; palette: string[]; frames: string[][] | string[]};
-type SpriteScene = {sprite: string; art: Art; colors?: Colors; move?: 'stay' | 'hop' | 'across'; size?: 'small' | 'medium' | 'big' | 'full'; caption?: string};
+type SpriteScene = {sprite: string; figure?: string; art: Art; colors?: Colors; move?: 'stay' | 'hop' | 'across' | 'across-left'; size?: 'small' | 'medium' | 'big' | 'full'; caption?: string};
 
 const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
 
@@ -70,16 +70,20 @@ export const Sprite: React.FC<SceneProps<SpriteScene>> = ({scene, duration}) => 
   const t = f / fps;
   let dx = 0, dy = 0;
   if (scene.move === 'hop') dy = -Math.abs(Math.sin(Math.PI * t * Math.max(1, art.fps / 2))) * px * 3;
-  if (scene.move === 'across') dx = (ramp(f, 0, Math.max(1, duration)) - 0.5) * Math.max(0, stage.w - 320 - b.w * px);
+  const across = scene.move === 'across' || scene.move === 'across-left';
+  const width = art.kind === 'sketch' ? art.width * scale : b.w * px;
+  if (across) dx = (ramp(f, 0, Math.max(1, duration)) - 0.5) * Math.max(0, stage.w - 320 - width) * (scene.move === 'across-left' ? -1 : 1);
+  // Her drawings face right, so going left they're mirrored (a Blender character is drawn from the left instead).
+  const mirror = scene.move === 'across-left' && !scene.figure ? ' scaleX(-1)' : '';
   return (
     <Center style={{flexDirection: 'column', gap: 26}}>
       {art.kind === 'sketch' ? (
         // A sketch: its own picture for each frame, smooth (not blocky) when scaled.
         <Img src={staticFile(art.frames[i] as string)} style={{width: art.width * scale, height: art.height * scale, opacity: ramp(f, 0, 10),
-          transform: `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`}} />
+          transform: `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)${mirror}`}} />
       ) : (
       <svg width={b.w * px} height={b.h * px} viewBox={`${b.x} ${b.y} ${b.w} ${b.h}`} shapeRendering="crispEdges"
-        style={{opacity: ramp(f, 0, 10), transform: `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`, overflow: 'visible'}}>
+        style={{opacity: ramp(f, 0, 10), transform: `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)${mirror}`, overflow: 'visible'}}>
         <Frame art={art} rows={art.frames[i] as string[]} />
       </svg>
       )}
