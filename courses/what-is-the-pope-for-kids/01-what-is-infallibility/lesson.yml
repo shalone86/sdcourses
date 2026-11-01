@@ -1,0 +1,166 @@
+# Kids version of what-is-the-pope/03: the same sources, shorter
+# quotations, simpler words, about half as long (explanations ~35 words).
+status: draft
+course: what-is-the-pope-for-kids
+number: 1
+slug: what-is-infallibility-for-kids
+title: What Is Infallibility?
+excerpt: >-
+  What it means that the Pope is infallible, and what it doesn't mean, for
+  kids.
+
+sources:
+  - id: ccc-magisterium
+    label: Catechism of the Catholic Church, 889–891
+    url: https://www.vatican.va/archive/ENG0015/__P2A.HTM
+  - id: luke-22
+    label: Luke 22:31–32 (NABRE)
+    url: https://bible.usccb.org/bible/luke/22
+  - id: ce-infallibility
+    label: "Catholic Encyclopedia: Infallibility"
+    url: https://www.newadvent.org/cathen/07790a.htm
+
+intro:
+  # Shalone writes the start of the intro before this; it always ends with these words (hers).
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - Kids version of lesson 3 of What Is the Pope? Aim for about 40–50 words.
+    - "A question to open with: is the Pope ever wrong? Can he get a math problem wrong? (Yes!)"
+    - "Infallible means can't be wrong. It's a gift from Jesus to his Church, for teaching about faith and morals, and only for solemn teaching, not everything the Pope says."
+  scenes:
+    - type: title
+    - type: host
+      at: I'm your host
+    - type: trinity
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: A gift from Jesus
+    quote:
+      lead: The Catechism says Jesus gave his Church
+      text: >-
+        a share in his own infallibility.
+      source: ccc-magisterium
+      cite: Catechism 889
+      highlight: infallibility
+    text: >-
+      Infallible means "can't be wrong." Jesus is the Truth. He shares this
+      gift with his whole Church, so that what he taught the apostles is kept
+      safe for us.
+    visuals:
+      - type: term
+        term: Infallible
+        origin: Latin
+        meaning: can't be wrong
+      - type: sprite
+        sprite: pope-point
+        size: small
+        with: over
+    quiz:
+      type: blank
+      question: Infallible means can't be ____.
+      accept: [wrong, mistaken]
+      why: >-
+        Infallible means unable to be wrong. Catechism 889: Jesus gave his
+        Church "a share in his own infallibility."
+
+  - heading: Jesus prayed for Peter
+    quote:
+      lead: Jesus told Saint Peter,
+      text: >-
+        you must strengthen your brothers.
+      source: luke-22
+      cite: Luke 22:32
+      highlight: strengthen your brothers
+    text: >-
+      Jesus prayed that Peter's faith would not fail. Then he gave Peter a
+      job: help the other apostles stay strong. The Pope does that same job
+      for the Church today.
+    visuals:
+      - type: sprite
+        sprite: saint-peter
+        size: full
+      - type: sprite
+        sprite: pope-walk
+        move: across
+        size: small
+        with: over
+    quiz:
+      type: choice
+      question: What job did Jesus give Peter?
+      options:
+        - Strengthen his brothers
+        - Build a boat
+        - Count the fish
+      answer: 0
+      why: >-
+        Luke 22:32: "you must strengthen your brothers."
+
+  - heading: About faith and being good
+    quote:
+      lead: The Pope's special gift is for teaching
+      text: >-
+        a doctrine pertaining to faith or morals
+      source: ccc-magisterium
+      cite: Catechism 891
+      highlight: faith or morals
+    text: >-
+      Faith is what we believe about God. Morals are how God wants us to live.
+      The gift isn't for math homework, the weather, or who wins the big game!
+    visuals:
+      - type: compare
+        left: { kicker: Yes, title: Faith and morals, note: What we believe and how to live, icon: church }
+        right: { kicker: "No", title: Everything else, note: Math, weather, sports, icon: x }
+        emphasis: left
+      - type: sprite
+        sprite: pope-look-up
+        size: small
+        with: over
+    quiz:
+      type: truefalse
+      question: Infallibility means the Pope always knows who will win the big game.
+      answer: false
+      why: >-
+        False! Catechism 891: the gift is for "a doctrine pertaining to faith
+        or morals."
+
+  - heading: Not everything he says
+    quote:
+      lead: A Catholic book says infallibility
+      text: >-
+        is not attributed to every doctrinal act of the pope
+      source: ce-infallibility
+      cite: Catholic Encyclopedia, Infallibility
+      highlight: not
+    text: >-
+      The Pope is a person like us. He can make mistakes, and he goes to
+      confession too. Only his rare, solemn teaching for the whole Church is
+      infallible.
+    visuals:
+      - type: chain
+        items: [Rare, Solemn, For the whole Church]
+        caption: When the Pope can't be wrong
+      - type: sprite
+        sprite: pope-blessing
+        size: small
+        with: over
+    quiz:
+      type: truefalse
+      question: The Pope never makes any mistakes at all.
+      answer: false
+      why: >-
+        False! The Catholic Encyclopedia says infallibility "is not attributed
+        to every doctrinal act of the pope."
+
+outro:
+  # Shalone writes the start of the outro before this; it always ends with these words (hers).
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: a gift from Jesus · Jesus prayed for Peter · about faith and being good · not everything he says."
+  scenes:
+    - type: recap
+thumb:
+  sprite: pope-blessing

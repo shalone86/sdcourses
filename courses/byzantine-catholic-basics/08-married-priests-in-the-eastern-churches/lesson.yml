@@ -1,0 +1,222 @@
+# Quote-anchored lesson. Draft by Claude; Shalone writes the intro and outro.
+status: draft
+course: byzantine-catholic-basics
+number: 8
+slug: married-priests-in-the-eastern-churches
+title: Married Priests in the Eastern Churches
+excerpt: >-
+  Why many Byzantine Catholic priests are married: Peter's family, married
+  presbyters in Saint Paul's letters, and the Church's two lawful disciplines,
+  East and West.
+
+sources:
+  - id: mark-1
+    label: Mark 1:29–31 (NABRE)
+    url: https://bible.usccb.org/bible/mark/1
+  - id: titus-1
+    label: Titus 1:5–6 (NABRE)
+    url: https://bible.usccb.org/bible/titus/1
+  - id: ccc-orders
+    label: Catechism of the Catholic Church, 1579–1580
+    url: https://www.vatican.va/archive/ENG0015/__P4X.HTM
+  - id: po
+    label: Second Vatican Council, Presbyterorum Ordinis, 16
+    url: https://www.vatican.va/archive/hist_councils/ii_vatican_council/documents/vat-ii_decree_19651207_presbyterorum-ordinis_en.html
+
+intro:
+  # Shalone writes the start of the intro before this; it always ends with these words (hers).
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - "A question to open with: did you know that many Byzantine Catholic priests are married, with children? And that this is fully Catholic?"
+    - Five points, from Peter's family to the Second Vatican Council's praise of married Eastern priests.
+    - "In the Eastern Churches, married men can be ordained deacons and priests; bishops are chosen from celibates (Catechism 1580)."
+    - "Background, not quoted (check with your parish before saying it): a priest's wife often has a traditional title, e.g. Pani or Pani-matka (Ukrainian and Ruthenian), Khouria (Melkite), Presbytera (Greek)."
+    - "Background, not quoted: for much of the 20th century married Eastern Catholic priests were restricted outside their home lands, including in North America; in 2014 the Holy See allowed them to serve everywhere."
+  scenes:
+    - type: title
+    - type: host
+      at: I'm your host
+    - type: trinity
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: Peter had a family
+    quote:
+      lead: Mark's Gospel tells of a visit to Peter's house.
+      text: >-
+        Simon's mother-in-law lay sick with a fever.
+      source: mark-1
+      cite: Mark 1:30
+      highlight: mother-in-law
+    text: >-
+      Simon is Peter, the first of the apostles. If he had a mother-in-law, he
+      had a wife. Jesus came to the house, took her by the hand, and the fever
+      left her. Saint Paul later mentions that Cephas, which is Peter, took a
+      wife along on his travels. So from the very start, the men Christ chose
+      to lead his Church included married men.
+    visuals:
+      - type: sprite
+        sprite: saint-peter
+        size: full
+      - type: sprite
+        sprite: east-priest-point
+        size: small
+        with: over
+    quiz:
+      type: choice
+      question: In Mark's Gospel, whose mother-in-law lay sick with a fever?
+      options: [Simon Peter's, John's, Paul's]
+      answer: 0
+      why: >-
+        Mark 1:30: "Simon's mother-in-law lay sick with a fever."
+
+  - heading: Married presbyters
+    quote:
+      lead: Saint Paul tells Titus whom to choose.
+      text: >-
+        appoint presbyters in every town, as I directed you, on condition that
+        a man be blameless, married only once
+      source: titus-1
+      cite: Titus 1:5–6
+      highlight: married only once
+    text: >-
+      Presbyter comes from the Greek word for elder, and it is where our
+      English word priest comes from. Paul's letters to Titus and Timothy
+      expect that many presbyters will be married men with children. They ask
+      that each be faithful to one wife and a good father at home. Scholars
+      read "married only once" in more than one way, but the letters show
+      married men serving the Church in its first generations.
+    visuals:
+      - type: term
+        term: Presbyter
+        origin: Greek presbyteros
+        meaning: elder
+      - type: sprite
+        sprite: thick-beard-guy-point
+        size: small
+        with: over
+    quiz:
+      type: truefalse
+      question: Saint Paul told Titus to appoint presbyters who were married only once.
+      answer: true
+      why: >-
+        True. Titus 1:5–6: "appoint presbyters in every town, as I directed
+        you, on condition that a man be blameless, married only once."
+
+  - heading: Two disciplines, East and West
+    quote:
+      lead: The Catechism describes the Eastern Churches' practice.
+      text: >-
+        while bishops are chosen solely from among celibates, married men can
+        be ordained as deacons and priests.
+      source: ccc-orders
+      cite: Catechism 1580
+      highlight: married men can be ordained as deacons and priests
+    text: >-
+      In the Latin Church, priests are normally chosen from men who will live
+      celibate "for the sake of the kingdom of heaven." In the Eastern
+      Churches, including the Byzantine Catholic Churches, a married man may
+      be ordained a deacon or a priest. Bishops, though, are chosen only from
+      celibate men. The Catechism calls the Eastern practice legitimate and
+      says these priests "exercise a fruitful ministry within their
+      communities."
+    visuals:
+      - type: compare
+        left:
+          kicker: Latin Church
+          title: Celibate priests
+          note: Married men may be permanent deacons
+          icon: user
+        right:
+          kicker: Eastern Churches
+          title: Married or celibate priests
+          note: Bishops are always celibate
+          icon: users
+        emphasis: none
+      - type: sprite
+        sprite: east-priest-idle
+        size: small
+        with: over
+    quiz:
+      type: choice
+      question: In the Eastern Churches, bishops are chosen from...
+      options: [Celibate men, Married men, Anyone who is ordained]
+      answer: 0
+      why: >-
+        Catechism 1580: "bishops are chosen solely from among celibates."
+
+  - heading: Marriage comes first
+    quote:
+      lead: The Catechism adds a rule kept in East and West alike.
+      text: >-
+        a man who has already received the sacrament of Holy Orders can no
+        longer marry.
+      source: ccc-orders
+      cite: Catechism 1580
+      highlight: can no longer marry
+    text: >-
+      The order matters. A Byzantine seminarian who hopes to marry must marry
+      before he is ordained a deacon. After ordination he can no longer marry,
+      even if he is still single, and a priest whose wife dies does not marry
+      again. The Catechism also notes that priestly celibacy is "held in great
+      honor in the Eastern Churches," and many Eastern priests freely choose
+      it.
+    visuals:
+      - type: chain
+        items: [Marriage, Deacon, Priest]
+        caption: Marriage comes before ordination
+      - type: sprite
+        sprite: east-deacon-point
+        size: small
+        with: over
+    quiz:
+      type: blank
+      question: In the East as in the West, a man who has received Holy Orders can no longer ____.
+      accept: [marry, get married]
+      why: >-
+        Catechism 1580: "a man who has already received the sacrament of Holy
+        Orders can no longer marry."
+
+  - heading: Priests of highest merit
+    quote:
+      lead: The Second Vatican Council spoke of the Eastern Churches, where
+      text: >-
+        there are also married priests of highest merit.
+      source: po
+      cite: Presbyterorum Ordinis 16
+      highlight: married priests of highest merit
+    text: >-
+      The Council praised celibacy for priests. In the same passage it said
+      celibacy "is not demanded by the very nature of the priesthood," and
+      pointed to the early Church and the Eastern traditions. It added that it
+      "in no way intends to alter that different discipline" of the East. In
+      many Byzantine parishes, the priest's wife and children are a familiar
+      part of parish life.
+    visuals:
+      - type: union
+        center: One priesthood
+        items: [Married priests, Celibate priests]
+        caption: Both honored by the Church
+      - type: sprite
+        sprite: east-priest-blessing
+        size: small
+        with: over
+    quiz:
+      type: truefalse
+      question: The Second Vatican Council wanted to end the Eastern practice of married priests.
+      answer: false
+      why: >-
+        False. Presbyterorum Ordinis 16: the Council "in no way intends to
+        alter that different discipline which legitimately flourishes in the
+        Eastern Churches."
+
+outro:
+  # Shalone writes the start of the outro before this; it always ends with these words (hers).
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: Peter had a family · married presbyters · two disciplines, East and West · marriage comes first · priests of highest merit."
+  scenes:
+    - type: recap

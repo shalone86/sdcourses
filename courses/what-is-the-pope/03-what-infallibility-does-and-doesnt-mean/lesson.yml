@@ -1,0 +1,226 @@
+# Quote-anchored lesson. Draft by Claude; Shalone writes the intro and outro.
+status: draft
+course: what-is-the-pope
+number: 3
+slug: what-infallibility-does-and-doesnt-mean
+title: What Infallibility Does (and Doesn't) Mean
+excerpt: >-
+  What the Church means when it calls the Pope infallible: a gift Christ gave
+  the whole Church, used only for definitive teaching on faith and morals,
+  and not a promise that the Pope never sins or never errs.
+
+sources:
+  - id: ccc-magisterium
+    label: Catechism of the Catholic Church, 889–891
+    url: https://www.vatican.va/archive/ENG0015/__P2A.HTM
+  - id: luke-22
+    label: Luke 22:31–32 (NABRE)
+    url: https://bible.usccb.org/bible/luke/22
+  - id: ce-infallibility
+    label: "Catholic Encyclopedia: Infallibility"
+    url: https://www.newadvent.org/cathen/07790a.htm
+  - id: munificentissimus
+    label: Pius XII, Munificentissimus Deus, 44 (1950)
+    url: https://www.vatican.va/content/pius-xii/en/apost_constitutions/documents/hf_p-xii_apc_19501101_munificentissimus-deus.html
+
+intro:
+  # Shalone writes the start of the intro before this; it always ends with these words (hers).
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - "A question to open with: does infallibility mean the Pope is never wrong about anything? (No.)"
+    - Five points, from a gift to the whole Church to a rare example, the Assumption in 1950.
+    - "Infallible means unable to err. The First Vatican Council defined papal infallibility in 1870 (Catholic Encyclopedia)."
+    - "Background, not quoted: it is commonly said that popes have spoken ex cathedra only rarely; the two examples nearly everyone agrees on are the Immaculate Conception (1854) and the Assumption (1950). Lists beyond those two differ, so don't give a number."
+  scenes:
+    - type: title
+    - type: host
+      at: I'm your host
+    - type: trinity
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: A gift to the whole Church
+    quote:
+      lead: The Catechism begins with the Church, not the Pope.
+      text: >-
+        Christ who is the Truth willed to confer on her a share in his own
+        infallibility.
+      source: ccc-magisterium
+      cite: Catechism 889
+      highlight: a share in his own infallibility
+    text: >-
+      Infallible means unable to err. The Catechism says Christ gave this
+      gift "to preserve the Church in the purity of the faith handed on by the
+      apostles." So infallibility belongs first to the Church as a whole.
+      The People of God, guided by the Church's teachers, holds on to the
+      faith without failing. The Pope's infallibility is one way this gift
+      to the whole Church is used.
+    visuals:
+      - type: term
+        term: Infallible
+        origin: Latin in- + fallere
+        meaning: not able to be deceived or to err
+      - type: sprite
+        sprite: pope-point
+        size: small
+        with: over
+    quiz:
+      type: choice
+      question: According to the Catechism, who first received a share in Christ's infallibility?
+      options: [The Church, Only the Pope, Every Christian on his own]
+      answer: 0
+      why: >-
+        Catechism 889: Christ "willed to confer on her a share in his own
+        infallibility," that is, on the Church.
+
+  - heading: Strengthen your brothers
+    quote:
+      lead: At the Last Supper, Jesus tells Peter,
+      text: >-
+        I have prayed that your own faith may not fail; and once you have
+        turned back, you must strengthen your brothers.
+      source: luke-22
+      cite: Luke 22:32
+      highlight: strengthen your brothers
+    text: >-
+      Jesus knew Peter would deny him that very night. Still, he prayed that
+      Peter's faith would not fail, and gave him a task: to strengthen the
+      other apostles. The Church reads this promise, together with Jesus
+      calling Peter the rock in Matthew 16, as the root of the Pope's role. As Peter's successor, the
+      Pope "confirms his brethren in the faith."
+    visuals:
+      - type: sprite
+        sprite: saint-peter
+        size: full
+      - type: sprite
+        sprite: pope-look-up
+        size: small
+        with: over
+    quiz:
+      type: blank
+      question: Jesus told Peter, "once you have turned back, you must strengthen your ____."
+      accept: [brothers, brethren]
+      why: >-
+        Luke 22:32: "once you have turned back, you must strengthen your
+        brothers."
+
+  - heading: When the Pope is infallible
+    quote:
+      lead: The Catechism says the Pope enjoys this gift when
+      text: >-
+        he proclaims by a definitive act a doctrine pertaining to faith or
+        morals
+      source: ccc-magisterium
+      cite: Catechism 891
+      highlight: by a definitive act
+    text: >-
+      Three things must come together. The Pope speaks as "supreme pastor and
+      teacher of all the faithful," not as a private theologian. He teaches
+      on faith or morals, not science, politics or sports. And he gives a
+      definitive, final decision for the whole Church. This is called
+      teaching ex cathedra, "from the chair" of Peter. The bishops together
+      with the Pope, above all in an ecumenical council, share the same gift.
+    visuals:
+      - type: chain
+        items: [As shepherd of all, On faith or morals, A definitive act]
+        caption: All three together
+      - type: term
+        term: Ex cathedra
+        origin: Latin
+        meaning: from the chair
+    quiz:
+      type: choice
+      question: Papal infallibility covers teaching on...
+      options: [Faith or morals, Science and history, Politics and elections]
+      answer: 0
+      why: >-
+        Catechism 891: the Pope proclaims "by a definitive act a doctrine
+        pertaining to faith or morals."
+
+  - heading: What it doesn't mean
+    quote:
+      lead: The Catholic Encyclopedia is careful to say what is claimed for the Pope.
+      text: >-
+        infallibility is not attributed to every doctrinal act of the pope,
+        but only to his ex cathedra teaching
+      source: ce-infallibility
+      cite: Catholic Encyclopedia, Infallibility
+      highlight: not attributed to every doctrinal act
+    text: >-
+      Infallibility is not sinlessness. The Encyclopedia says it "does not
+      require holiness of life"; popes go to confession like everyone else.
+      It is not new revelation either: the Pope guards and explains the faith
+      handed down, he does not invent it. And most of what a pope says,
+      in homilies, interviews or letters, is not infallible, though Catholics
+      still listen to it with respect.
+    visuals:
+      - type: compare
+        left:
+          kicker: It does mean
+          title: Protected from error
+          note: In definitive teaching on faith or morals
+          icon: shield-check
+        right:
+          kicker: It doesn't mean
+          title: Never sins, never wrong
+          note: Not every word a pope says
+          icon: x
+        emphasis: none
+      - type: sprite
+        sprite: pope-idle
+        size: small
+        with: over
+    quiz:
+      type: truefalse
+      question: Infallibility means the Pope never sins.
+      answer: false
+      why: >-
+        False. The Catholic Encyclopedia says infallibility "does not require
+        holiness of life."
+
+  - heading: A rare example
+    quote:
+      lead: In 1950, Pope Pius XII used these solemn words.
+      text: >-
+        we pronounce, declare, and define it to be a divinely revealed dogma:
+        that the Immaculate Mother of God, the ever Virgin Mary, having
+        completed the course of her earthly life, was assumed body and soul
+        into heavenly glory.
+      source: munificentissimus
+      cite: Munificentissimus Deus 44
+      highlight: pronounce, declare, and define
+    text: >-
+      This is what an ex cathedra definition sounds like: the Pope says
+      plainly that he is defining a dogma for the whole Church. Pius XII did
+      not invent the Assumption. Christians had believed and celebrated it
+      for many centuries, and he consulted the bishops of the world first.
+      Solemn definitions like this are rare; most of the faith is never
+      defined this way.
+    visuals:
+      - type: timeline
+        items:
+          - { year: "1870", label: First Vatican Council defines papal infallibility }
+          - { year: "1950", label: Pius XII defines the Assumption }
+      - type: sprite
+        sprite: pope-blessing
+        size: small
+        with: over
+    quiz:
+      type: choice
+      question: In 1950, Pope Pius XII solemnly defined which dogma?
+      options: [The Assumption of Mary, The Trinity, The date of Easter]
+      answer: 0
+      why: >-
+        Munificentissimus Deus 44: Mary "was assumed body and soul into
+        heavenly glory."
+
+outro:
+  # Shalone writes the start of the outro before this; it always ends with these words (hers).
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: a gift to the whole Church · strengthen your brothers · when the Pope is infallible · what it doesn't mean · a rare example."
+  scenes:
+    - type: recap

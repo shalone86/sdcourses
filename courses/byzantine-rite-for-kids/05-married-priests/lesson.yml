@@ -1,0 +1,163 @@
+# Kids version of byzantine-catholic-basics/08: the same sources, shorter
+# quotations, simpler words, about half as long (explanations ~35 words).
+status: draft
+course: byzantine-rite-for-kids
+number: 5
+slug: married-priests-for-kids
+title: Married Priests
+excerpt: >-
+  Why many Byzantine Catholic priests have a wife and children, and why that
+  is fully Catholic, for kids.
+
+sources:
+  - id: mark-1
+    label: Mark 1:29–31 (NABRE)
+    url: https://bible.usccb.org/bible/mark/1
+  - id: ccc-orders
+    label: Catechism of the Catholic Church, 1580
+    url: https://www.vatican.va/archive/ENG0015/__P4X.HTM
+  - id: po
+    label: Second Vatican Council, Presbyterorum Ordinis, 16
+    url: https://www.vatican.va/archive/hist_councils/ii_vatican_council/documents/vat-ii_decree_19651207_presbyterorum-ordinis_en.html
+
+intro:
+  # Shalone writes the start of the intro before this; it always ends with these words (hers).
+  text: >-
+    I'm your host Shalone Cason, and let's begin in the name of the Father and of the Son and of the Holy Spirit.
+  notes:
+    - Kids version of lesson 8 of The Byzantine Rite. Aim for about 40–50 words.
+    - "A question to open with: did you know some Catholic priests have a wife and kids? Have you ever met a priest's family?"
+    - Peter had a family; married men can become Byzantine priests; marriage comes first; the Church honors both ways.
+  scenes:
+    - type: title
+    - type: host
+      at: I'm your host
+    - type: trinity
+      at: in the name of the Father
+      cues: {son: the Son, spirit: the Holy Spirit}
+
+points:
+  - heading: Saint Peter had a family
+    quote:
+      lead: The Bible tells us about Peter's family.
+      text: >-
+        Simon's mother-in-law
+      source: mark-1
+      cite: Mark 1:30
+      highlight: mother-in-law
+    text: >-
+      Simon is Saint Peter. A mother-in-law is your wife's mom, so Peter had a
+      wife! Jesus visited his house and healed Peter's mother-in-law when she
+      was sick.
+    visuals:
+      - type: sprite
+        sprite: saint-peter
+        size: full
+      - type: sprite
+        sprite: thick-woman-point
+        size: small
+        with: over
+    quiz:
+      type: truefalse
+      question: Saint Peter had a mother-in-law, so he had a wife.
+      answer: true
+      why: >-
+        True! Mark 1:30 tells us about "Simon's mother-in-law."
+
+  - heading: Married priests
+    quote:
+      lead: The Catechism says that in the Eastern Churches,
+      text: >-
+        married men can be ordained as deacons and priests.
+      source: ccc-orders
+      cite: Catechism 1580
+      highlight: married men
+    text: >-
+      In Byzantine Catholic Churches, a man with a wife and children can
+      become a priest. Bishops are chosen from men who are not married.
+    visuals:
+      - type: compare
+        left: { kicker: Priests, title: Married or not, note: Both can be priests, icon: users }
+        right: { kicker: Bishops, title: Not married, note: Chosen from celibate men, icon: user }
+        emphasis: left
+      - type: sprite
+        sprite: east-priest-point
+        size: small
+        with: over
+    quiz:
+      type: choice
+      question: In Byzantine Catholic Churches, who can become a priest?
+      options:
+        - Married men and unmarried men
+        - Only unmarried men
+        - Only bishops
+      answer: 0
+      why: >-
+        Catechism 1580: "married men can be ordained as deacons and priests."
+
+  - heading: Marriage comes first
+    quote:
+      lead: The Catechism says a man who is already ordained
+      text: >-
+        can no longer marry.
+      source: ccc-orders
+      cite: Catechism 1580
+      highlight: no longer marry
+    text: >-
+      The order matters! A man who wants a wife marries first. Then he can
+      become a deacon and a priest. After that, he can't get married.
+    visuals:
+      - type: chain
+        items: [Wedding, Deacon, Priest]
+        caption: Marriage comes first
+      - type: sprite
+        sprite: east-deacon-walk
+        move: across
+        size: small
+        with: over
+    quiz:
+      type: blank
+      question: A man who is already a priest can no longer ____.
+      accept: [marry, get married]
+      why: >-
+        Catechism 1580: a man who has received Holy Orders "can no longer
+        marry."
+
+  - heading: Both are good
+    quote:
+      lead: The Church's bishops said that in the Eastern Churches
+      text: >-
+        there are also married priests of highest merit.
+      source: po
+      cite: Presbyterorum Ordinis 16
+      highlight: highest merit
+    text: >-
+      Highest merit means very, very good! Some priests are married and some
+      are not. Both serve God and his people, and the Church loves them both.
+    visuals:
+      - type: union
+        center: One priesthood
+        items: [Married priests, Unmarried priests]
+        caption: Both are good
+      - type: sprite
+        sprite: east-priest-blessing
+        size: small
+        with: over
+    quiz:
+      type: truefalse
+      question: The Church says married Eastern priests are bad priests.
+      answer: false
+      why: >-
+        False! Presbyterorum Ordinis 16: "there are also married priests of
+        highest merit."
+
+outro:
+  # Shalone writes the start of the outro before this; it always ends with these words (hers).
+  text: >-
+    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+  notes:
+    - "Recap: Saint Peter had a family · married priests · marriage comes first · both are good."
+  scenes:
+    - type: recap
+thumb:
+  sprite: east-priest-blessing
