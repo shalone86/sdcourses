@@ -1,0 +1,17 @@
+slug: all-about-popes
+title: All About Popes
+summary: >-
+  Short videos for kids about the Pope: who he is, how he is chosen, and what
+  Jesus asked Saint Peter and his successors to do.
+# Kids look: bright colors, rounded letters, pictures that bounce on the beat.
+style: kids
+# Already a series on kids.sdcason.com (3 videos before this course folder
+# existed: Who Was Pope Francis?, What Is a Conclave?, Who Is Pope Leo XIV?).
+series: All About Popes
+# The drawing on its kids-site thumbnails (a lesson.yml `thumb:` can choose another).
+thumb: {sprite: pope-blessing}
+# Same track as the grown-up Pope course.
+music: music/hail-mary-ambient-instrumental.mp3
+cover: {icon: key-round, eyebrow: Catholic Course for Kids}
+planned:
+  - What Is Infallibility?
