@@ -8,6 +8,7 @@ import {ROOT, ffprobeDuration, lessonDir, loadLesson, loadSite, outDir, smartSce
 import {detectBeats} from './beats.mjs';
 import {loadSprite, publishSketch, puppetArt, recolorArt} from './sprites.mjs';
 import {battleProps} from './battles.mjs';
+import {figureArt} from './characters.mjs';
 import {phraseSpan, phraseTime, transcribe, trimLead, trimVoice, whisperAvailable} from './voice.mjs';
 
 const FPS = 30;
@@ -67,6 +68,8 @@ export function prepare(arg) {
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'image' && sc.src && !sc.src.startsWith(id + '/')) sc.src = path.posix.join(id, sc.src);
   // Pixel animations: the drawing itself goes into the props (sprites/<name>.json).
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'sprite') sc.art = recolorArt(publishSketch(loadSprite(sc.sprite), publicDir, id), sc.colors);
+  // Her Blender characters: a clip's pictures, played by the same scene as a sketch.
+  for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'figure') sc.art = figureArt(sc, publicDir, id);
   // The keyboard puppet: every drawing named <character>-<action>, and the items it points to.
   // (`colors:` recolors it for this scene only, every pose alike.)
   for (const seg of out) for (const sc of seg.scenes) if (sc.type === 'puppet') {

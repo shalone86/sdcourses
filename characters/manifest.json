@@ -1,0 +1,5901 @@
+{
+ "fps": 12,
+ "size": 512,
+ "views": [
+  "front",
+  "front-left",
+  "left",
+  "back-left",
+  "back",
+  "back-right",
+  "right",
+  "front-right"
+ ],
+ "characters": [
+  {
+   "slug": "adrianna",
+   "name": "Adrianna",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-dominican",
+   "name": "Ancient Dominican",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-dominican-2",
+   "name": "Ancient Dominican 2",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    },
+    {
+     "id": "key-26",
+     "kind": "pose"
+    },
+    {
+     "id": "key-27",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-queen-princess",
+   "name": "Ancient queen/princess",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-robe-beard-short-hair",
+   "name": "Ancient robe beard short hair",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-robe-beard-short-hair-2",
+   "name": "Ancient robe beard short hair 2",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    },
+    {
+     "id": "key-26",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-robe-girl",
+   "name": "Ancient robe girl",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-robe-girl-2",
+   "name": "Ancient robe girl 2",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-robe-guy",
+   "name": "Ancient robe guy",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-robe-guy-2",
+   "name": "Ancient robe guy 2",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-robe-long-hair-beard",
+   "name": "Ancient robe long hair beard",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-robe-long-hair-guy",
+   "name": "Ancient robe long hair guy",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "ancient-saint-with-halo",
+   "name": "Ancient saint with halo",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "angel",
+   "name": "Angel",
+   "category": "character",
+   "origin": "scaffold",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "flap",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "augustinian-monk",
+   "name": "Augustinian monk",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "bald-guy",
+   "name": "Bald guy",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "base-guy-hair",
+   "name": "Base guy hair",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "base-shalone",
+   "name": "Base Shalone",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "happy-2",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "beggar",
+   "name": "Beggar",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "bishop",
+   "name": "Bishop",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "cardinal",
+   "name": "Cardinal",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "christ-on-cross",
+   "name": "Christ on cross",
+   "category": "character",
+   "origin": "hers",
+   "fit": true,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "float",
+     "kind": "pose"
+    },
+    {
+     "id": "head-down",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "dominican",
+   "name": "Dominican",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "eastern-deacon-with-censer",
+   "name": "Eastern deacon with censer",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "incense",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "eastern-priest-chasuble",
+   "name": "Eastern priest chasuble",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "eastern-priest-white-vestments",
+   "name": "Eastern priest white vestments",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "eucharist",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "eastern-priest-with-communion",
+   "name": "Eastern priest with communion",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "eucharist",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "girl",
+   "name": "Girl",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "girl-2",
+   "name": "Girl 2",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "girl-3",
+   "name": "Girl 3",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "head-up",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "guy-praying-worried",
+   "name": "Guy praying worried",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "guy-with-hair",
+   "name": "Guy with Hair",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "sit",
+     "kind": "pose"
+    },
+    {
+     "id": "key-26",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "jesus",
+   "name": "Jesus",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "mary-of-egypt",
+   "name": "Mary of egypt",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "moses",
+   "name": "Moses",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "nun",
+   "name": "Nun",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "nun-2",
+   "name": "Nun 2",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "pope",
+   "name": "Pope",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "pope-in-casket",
+   "name": "Pope in casket",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "pope-waving",
+   "name": "Pope waving",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "pope-writing",
+   "name": "Pope Writing",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    },
+    {
+     "id": "sit-and-write",
+     "kind": "pose"
+    },
+    {
+     "id": "writing-2",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "priest",
+   "name": "Priest",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "priest-baptizing",
+   "name": "Priest baptizing",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "head-back",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "priest-basic",
+   "name": "Priest basic",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "head-back",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "priest-in-chasuble",
+   "name": "Priest in chasuble",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "risen-christ-floating",
+   "name": "Risen christ floating",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "float",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "saint-nicholas",
+   "name": "Saint nicholas",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    },
+    {
+     "id": "key-26",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "saint-peter",
+   "name": "Saint peter",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "nu",
+     "kind": "pose"
+    },
+    {
+     "id": "key-26",
+     "kind": "pose"
+    },
+    {
+     "id": "key-27",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "saint-peter-2",
+   "name": "Saint peter 2",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "nu",
+     "kind": "pose"
+    },
+    {
+     "id": "key-26",
+     "kind": "pose"
+    },
+    {
+     "id": "key-27",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "shalone-talk-long",
+   "name": "Shalone Talk Long",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "happy-2",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "head-move",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "shalone-talk-long-2",
+   "name": "Shalone Talk Long 2",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "happy-2",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "head-move",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "talking-shalone",
+   "name": "Talking shalone",
+   "category": "character",
+   "origin": "hers",
+   "fit": false,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "key-25",
+     "kind": "pose"
+    },
+    {
+     "id": "key-27-001",
+     "kind": "pose"
+    },
+    {
+     "id": "key-27",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "cross",
+   "name": "Cross",
+   "category": "prop",
+   "origin": "hers",
+   "fit": true,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "crucifix",
+   "name": "Crucifix",
+   "category": "prop",
+   "origin": "hers",
+   "fit": true,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    },
+    {
+     "id": "walk",
+     "kind": "loop"
+    },
+    {
+     "id": "wave",
+     "kind": "loop"
+    },
+    {
+     "id": "talk",
+     "kind": "loop"
+    },
+    {
+     "id": "sad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "mad-face",
+     "kind": "pose"
+    },
+    {
+     "id": "concerned",
+     "kind": "pose"
+    },
+    {
+     "id": "happy",
+     "kind": "pose"
+    },
+    {
+     "id": "look-up",
+     "kind": "pose"
+    },
+    {
+     "id": "look-down",
+     "kind": "pose"
+    },
+    {
+     "id": "look-left",
+     "kind": "pose"
+    },
+    {
+     "id": "look-right",
+     "kind": "pose"
+    },
+    {
+     "id": "hands-up",
+     "kind": "pose"
+    },
+    {
+     "id": "behind-back",
+     "kind": "pose"
+    },
+    {
+     "id": "shrug",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer",
+     "kind": "pose"
+    },
+    {
+     "id": "prayer-down",
+     "kind": "pose"
+    },
+    {
+     "id": "cover-mouth",
+     "kind": "pose"
+    },
+    {
+     "id": "point-forward",
+     "kind": "pose"
+    },
+    {
+     "id": "point-right",
+     "kind": "pose"
+    },
+    {
+     "id": "point-left",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-down",
+     "kind": "pose"
+    },
+    {
+     "id": "kneel-head-up",
+     "kind": "pose"
+    },
+    {
+     "id": "genuflect",
+     "kind": "pose"
+    },
+    {
+     "id": "float",
+     "kind": "pose"
+    },
+    {
+     "id": "head-down",
+     "kind": "pose"
+    }
+   ]
+  },
+  {
+   "slug": "earth",
+   "name": "Earth",
+   "category": "prop",
+   "origin": "hers",
+   "fit": true,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    }
+   ]
+  },
+  {
+   "slug": "key",
+   "name": "Key",
+   "category": "prop",
+   "origin": "hers",
+   "fit": true,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    }
+   ]
+  },
+  {
+   "slug": "phone",
+   "name": "Phone",
+   "category": "prop",
+   "origin": "hers",
+   "fit": true,
+   "anims": [
+    {
+     "id": "idle",
+     "kind": "loop"
+    }
+   ]
+  }
+ ]
+}

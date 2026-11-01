@@ -43,6 +43,7 @@ const registry: Record<string, React.FC<SceneProps<any>>> = {
   iconostasis: Iconostasis,
   trinity: Trinity,
   sprite: Sprite,
+  figure: Sprite, // her Blender characters: prepare.mjs puts the clip's pictures in `art`
   puppet: Puppet,
   battle: BattleScene,
   icons: IconsView,

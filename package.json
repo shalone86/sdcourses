@@ -17,6 +17,7 @@
     "covers": "node scripts/covers.mjs",
     "publish-page": "node scripts/publish-page.mjs",
     "new": "node scripts/new.mjs",
+    "characters": "node scripts/characters.mjs",
     "studio-export": "node scripts/studio.mjs export",
     "studio-import": "node scripts/studio.mjs import",
     "split": "node scripts/split-audio.mjs",

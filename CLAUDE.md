@@ -72,6 +72,7 @@ HANDOFF.md.**
 | `npm run publish-course -- <course>` | create/update the course tag in Ghost |
 | `npm run publish-page -- <name>` | save `pages/<name>.md` as a Ghost draft page |
 | `npm run studio-export` / `studio-import` | sync a lesson with the Lesson Studio |
+| `npm run characters -- <character> <animation>` | draw a Blender character's clip now (the studio does it on demand); `-- --manifest`, `-- --all-rest`, `-- --build <old.blend>` (see `blender/README.md`) |
 | `npm run split -- <c>/<l> <file>` | split a one-take recording into sections |
 
 Rendering on the Mac needs nothing extra (Remotion downloads its own
@@ -190,6 +191,20 @@ If it's already running, `npm start` just opens the page.
 - **Puppet** (`type: puppet`, PUPPET.md): an 8 × 8 character she draws as
   `<name>-<action>` drawings (actions include blessing, B, and kneel, K), played with the keys while the video runs on the
   Timing tab; recorded in timing.yml (`scenes.<i>.puppet`).
+- **Characters (Blender)** (`type: figure`, `blender/README.md`): her 3D low-poly
+  characters, kept in `blender/library.blend` (57 characters and props, one
+  collection each). Timing tab → + Add a picture here → Character: pick who and
+  what they do (idle, walk, wave, talk, or any pose such as prayer or
+  hands-up); Blender draws the looping clip the first time (a few seconds, only
+  on the Mac with Blender) into `characters/<slug>/<anim>/NN.png`, after which it
+  works anywhere and is backed up with the rest of `characters/`. The scene
+  (`figure: jesus`, `anim: walk`, `view: front | front-left | left | back-left | back | back-right | right | front-right`, `move: stay | hop | across`, `size`; the view says which way they face on screen, so a walk that crosses the screen uses `right`) plays through
+  the Sprite scene, so it behaves like her sketches. New characters: add them to
+  the library in Blender, list them in `blender/characters.json`, run the build.
+  Mix rule for new art: Claude may script recolors, outfit swaps and props; she
+  models anything with a face. Not counted as hand-drawn pixel art in the credits.
+  Anything Claude blocked out is `origin: scaffold` in the manifest and shows as a draft
+  in the picker (so far: `angel`); don't put drafts in a lesson she is publishing.
 - **Nudging:** clicking any scene block shows Move ← ↑ ↓ → / Smaller / Bigger
   (Shift moves further), and lets her drag it on the video (mouse wheel there: size), saved in timing.yml as `scenes.<i>.nudge: {x, y, size}`
   (pixels of 1920×1080, %), e.g. to lift a scene off the progress bar.

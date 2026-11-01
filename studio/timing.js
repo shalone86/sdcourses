@@ -5,7 +5,7 @@
 'use strict';
 (function () {
   const FPS = 30;
-  const LABELS = {battle: 'Battle', puppet: 'Puppet', icons: 'Icons', image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
+  const LABELS = {figure: 'Character', battle: 'Battle', puppet: 'Puppet', icons: 'Icons', image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
     recap: 'Lesson summary', union: 'Union', partners: 'Partners', title: 'Title card', host: 'Your photo', trinity: 'Trinity', term: 'Word', keys: 'Keys', college: 'College', iconostasis: 'Iconostasis'};
 
   function h(tag, attrs, kids) {
@@ -91,6 +91,11 @@
         if (!Number.isFinite(f) || f < 0 || (t !== null && (!Number.isFinite(t) || t <= f))) throw new Error('The stop time must be after the start time');
         return {type: 'battle', battle: v.battle, ...(f || t !== null ? {clip: [f, t ?? 9999]} : {}), ...(v.palette && v.palette !== 'pico' ? {palette: v.palette} : {})}; },
       read: (sc) => ({battle: typeof sc.battle === 'string' ? sc.battle : sc.battle?.name || '', from: sc.clip ? String(sc.clip[0]) : '0', to: sc.clip && sc.clip[1] < 9999 ? String(sc.clip[1]) : '', palette: sc.palette || 'pico'})},
+    figure: {label: 'Character (from your Blender library)', fields: [['figure', 'Who, and what they do', 'figure'], ['move', 'How it moves', 'select', ['stay', 'hop', 'across']],
+      ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
+      make: (v) => { if (!v.figure || !v.anim) throw new Error('Pick a character and what it does');
+        return {type: 'figure', figure: v.figure, anim: v.anim, ...(v.view && v.view !== 'front' ? {view: v.view} : {}), ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
+      read: (sc) => ({figure: sc.figure || '', anim: sc.anim || '', view: sc.view || 'front', move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
     puppet: {label: 'Puppet (a character you play with the keys)', fields: [['character', 'Which character', 'character'], ['colors', 'Colors (just in this picture; every pose follows)', 'colors', 'character'], ['item', 'The item it points to (P)', 'item'],
       ['size', 'Size', 'select', ['medium', 'small', 'big']], ['start', 'Stands at first', 'select', ['center', 'left', 'right']]],
       make: (v) => { if (!v.character) throw new Error('Draw a character first: <name>-idle and <name>-walk on the Pixel art tab');
@@ -706,6 +711,35 @@
             api('/api/battles').then((list) => input.replaceChildren(...(list.length ? list.map((b) => h('option', {value: b.name, text: b.title + ' (' + b.seconds + ' s)', selected: b.name === value}))
               : [h('option', {value: '', text: 'None yet: make one on the Battles tab'})])));
           }
+          else if (type === 'figure') {
+            // Her Blender characters (characters/manifest.json): pick who, see them, then pick what they do.
+            const who = h('select', {'aria-label': 'Character'}, [h('option', {value: '', text: 'Loading…'})]);
+            const what = h('select', {'aria-label': 'What they do'});
+            const VIEW_NAMES = {front: 'Facing you', 'front-left': 'Turned a little to the left', left: 'Profile, looking left', 'back-left': 'Turned away, to the left', back: 'Back to you', 'back-right': 'Turned away, to the right', right: 'Profile, looking right', 'front-right': 'Turned a little to the right'};
+            const viewSel = h('select', {'aria-label': 'Which way they face'});
+            const pic = h('img', {alt: '', style: {height: '140px', width: '140px', objectFit: 'contain', background: 'var(--card, #eef)', borderRadius: '8px'}});
+            const note = h('div', {class: 'small muted'});
+            const fillWhat = (cast) => {
+              const c = cast.characters.find((x) => x.slug === who.value);
+              pic.src = c && c.rest ? c.rest : '';
+              const keep = what.value || start.anim;
+              what.replaceChildren(...(c ? c.anims.map((a) => h('option', {value: a.id, text: a.id.replace(/-/g, ' ') + (a.kind === 'loop' ? ' (loops)' : '') + (a.views.includes(viewSel.value) ? '' : ' •'), selected: a.id === keep})) : []));
+              note.textContent = (!cast.blender ? 'Blender isn’t installed on this Mac, so only clips marked without • can be used. ' : 'A clip marked • is drawn by Blender the first time (a few seconds). ') + 'For a walk that crosses the screen, pick “Profile, looking right”.';
+            };
+            api('/api/figures').then((cast) => {
+              viewSel.replaceChildren(...cast.views.map((v) => h('option', {value: v, text: VIEW_NAMES[v] || v, selected: v === (start.view || 'front')})));
+              viewSel.addEventListener('change', () => fillWhat(cast));
+              const people = cast.characters.filter((c) => c.category === 'character'), props = cast.characters.filter((c) => c.category !== 'character');
+              const opt = (c) => h('option', {value: c.slug, text: c.name + (c.draft ? ' (draft: blocked out, not finished)' : ''), selected: c.slug === value});
+              who.replaceChildren(h('optgroup', {label: 'Characters'}, people.map(opt)), h('optgroup', {label: 'Props'}, props.map(opt)));
+              if (!value) who.value = people[0] ? people[0].slug : '';
+              fillWhat(cast);
+              who.addEventListener('change', () => { what.value = ''; fillWhat(cast); });
+            });
+            vals.figure = who; vals.anim = what; vals.view = viewSel;
+            note.textContent = '';
+            return h('div', {class: 'tl-field', style: {gap: '8px'}}, [h('span', {text: label}), h('div', {class: 'row', style: {alignItems: 'flex-start', gap: '12px'}}, [pic, h('div', {class: 'stack', style: {gap: '8px', flex: '1'}}, [who, what, viewSel, note])])]);
+          }
           else if (type === 'sprite') {
             // Her saved pixel animations and sketches.
             input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);
@@ -726,10 +760,16 @@
       const place = h('select', {'aria-label': 'Where it shows', onchange: (e) => { T.addWith = e.target.value; }},
         WITH.map(([v, face, label]) => h('option', {value: v || '', text: face + ' ' + label, selected: (T.addWith || '') === (v || '')})));
       const close = () => { T.adding = false; T.editing = null; draw(); };
+      const busy = h('span', {class: 'small muted'});
       const save = async () => {
         const v = Object.fromEntries(Object.entries(vals).map(([k, el]) => [k, el.type === 'checkbox' ? el.checked : el.value]));
         try {
           await persist();
+          // A character's clip is drawn by Blender the first time it's used.
+          if ((old ? kind : T.addType) === 'figure' && v.figure && v.anim) {
+            busy.textContent = 'Drawing it in Blender…';
+            try { await post('/api/figure', {slug: v.figure, anim: v.anim, view: v.view || 'front'}); } finally { busy.textContent = ''; }
+          }
           let scene;
           if (!old && T.addType === 'image') {
             if (!T.picked) { alert('Pick a picture first.'); return; }
@@ -751,7 +791,7 @@
             h('label', {class: 'tl-field', style: {flexDirection: 'row', alignItems: 'center', gap: '8px'}}, [h('span', {text: 'Shows'}), place])]),
         fields,
         h('div', {class: 'row'}, [h('span', {class: 'small muted', text: old ? 'Its place and timing stay as they are.' : 'Items appear when you say them. You can drag it afterwards.'}),
-          h('span', {}, [h('button', {class: 'btn', text: 'Cancel', onclick: close}), ' ', h('button', {class: 'btn primary', text: old ? 'Save changes' : 'Add it', onclick: save})])]),
+          h('span', {}, [busy, ' ', h('button', {class: 'btn', text: 'Cancel', onclick: close}), ' ', h('button', {class: 'btn primary', text: old ? 'Save changes' : 'Add it', onclick: save})])]),
       ]);
     }
 

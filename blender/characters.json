@@ -1,0 +1,536 @@
+[
+ {
+  "slug": "adrianna",
+  "name": "Adrianna",
+  "category": "character",
+  "source": "Adrianna",
+  "also": []
+ },
+ {
+  "slug": "ancient-dominican",
+  "name": "Ancient Dominican",
+  "category": "character",
+  "source": "Ancient Dominican.001",
+  "also": []
+ },
+ {
+  "slug": "ancient-dominican-2",
+  "name": "Ancient Dominican 2",
+  "category": "character",
+  "source": "Ancient Dominican.002",
+  "also": []
+ },
+ {
+  "slug": "ancient-queen-princess",
+  "name": "Ancient queen/princess",
+  "category": "character",
+  "source": "ancient queen/princess",
+  "also": [],
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ],
+  "halo_above_all": true
+ },
+ {
+  "slug": "ancient-robe-beard-short-hair",
+  "name": "Ancient robe beard short hair",
+  "category": "character",
+  "source": "ancient robe beard short hair",
+  "also": []
+ },
+ {
+  "slug": "ancient-robe-beard-short-hair-2",
+  "name": "Ancient robe beard short hair 2",
+  "category": "character",
+  "source": "ancient robe beard short hair.001",
+  "also": []
+ },
+ {
+  "slug": "ancient-robe-girl",
+  "name": "Ancient robe girl",
+  "category": "character",
+  "source": "ancient robe girl",
+  "also": []
+ },
+ {
+  "slug": "ancient-robe-girl-2",
+  "name": "Ancient robe girl 2",
+  "category": "character",
+  "source": "ancient robe girl.001",
+  "also": []
+ },
+ {
+  "slug": "ancient-robe-guy",
+  "name": "Ancient robe guy",
+  "category": "character",
+  "source": "ancient robe guy",
+  "also": []
+ },
+ {
+  "slug": "ancient-robe-guy-2",
+  "name": "Ancient robe guy 2",
+  "category": "character",
+  "source": "ancient robe guy.001",
+  "also": []
+ },
+ {
+  "slug": "ancient-robe-long-hair-beard",
+  "name": "Ancient robe long hair beard",
+  "category": "character",
+  "source": "ancient robe long hair beard",
+  "also": []
+ },
+ {
+  "slug": "ancient-robe-long-hair-guy",
+  "name": "Ancient robe long hair guy",
+  "category": "character",
+  "source": "ancient robe long hair guy.001",
+  "also": [
+   "ancient robe long hair guy"
+  ]
+ },
+ {
+  "slug": "ancient-saint-with-halo",
+  "name": "Ancient saint with halo",
+  "category": "character",
+  "source": "ancient saint with halo",
+  "also": [],
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ],
+  "squash_top": [
+   1.3,
+   1.28
+  ]
+ },
+ {
+  "slug": "augustinian-monk",
+  "name": "Augustinian monk",
+  "category": "character",
+  "source": "augustinian monk.001",
+  "also": []
+ },
+ {
+  "slug": "bald-guy",
+  "name": "Bald guy",
+  "category": "character",
+  "source": "Bald guy.001",
+  "also": [
+   "Bald guy",
+   "Bald guy.002",
+   "Bald guy.003"
+  ]
+ },
+ {
+  "slug": "base-guy-hair",
+  "name": "Base guy hair",
+  "category": "character",
+  "source": "base guy hair.001",
+  "also": [
+   "base guy hair"
+  ]
+ },
+ {
+  "slug": "base-shalone",
+  "name": "Base Shalone",
+  "category": "character",
+  "source": "Base Shalone",
+  "also": [
+   "Base Shalone.001"
+  ]
+ },
+ {
+  "slug": "beggar",
+  "name": "Beggar",
+  "category": "character",
+  "source": "Beggar",
+  "also": []
+ },
+ {
+  "slug": "bishop",
+  "name": "Bishop",
+  "category": "character",
+  "source": "bishop",
+  "also": []
+ },
+ {
+  "slug": "cardinal",
+  "name": "Cardinal",
+  "category": "character",
+  "source": "cardinal.001",
+  "also": [
+   "cardinal"
+  ]
+ },
+ {
+  "slug": "christ-on-cross",
+  "name": "Christ on cross",
+  "category": "character",
+  "source": "Christ on cross",
+  "also": [],
+  "fit": true,
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ],
+  "head_exclude": [
+   "Hair.001"
+  ],
+  "material_fix": {
+   "Hair": {
+    "emission_strength": 0
+   }
+  }
+ },
+ {
+  "slug": "dominican",
+  "name": "Dominican",
+  "category": "character",
+  "source": "Dominican.001",
+  "also": []
+ },
+ {
+  "slug": "eastern-deacon-with-censer",
+  "name": "Eastern deacon with censer",
+  "category": "character",
+  "source": "eastern deacon with censer.001",
+  "also": [
+   "eastern deacon with censer"
+  ]
+ },
+ {
+  "slug": "eastern-priest-chasuble",
+  "name": "Eastern priest chasuble",
+  "category": "character",
+  "source": "eastern priest chasuble",
+  "also": []
+ },
+ {
+  "slug": "eastern-priest-white-vestments",
+  "name": "Eastern priest white vestments",
+  "category": "character",
+  "source": "eastern priest white vestments",
+  "also": []
+ },
+ {
+  "slug": "eastern-priest-with-communion",
+  "name": "Eastern priest with communion",
+  "category": "character",
+  "source": "eastern priest with communion.001",
+  "also": [
+   "eastern priest with communion",
+   "eastern priest with communion.002"
+  ]
+ },
+ {
+  "slug": "girl",
+  "name": "Girl",
+  "category": "character",
+  "source": "Girl.001",
+  "also": []
+ },
+ {
+  "slug": "girl-2",
+  "name": "Girl 2",
+  "category": "character",
+  "source": "Girl.002",
+  "also": []
+ },
+ {
+  "slug": "girl-3",
+  "name": "Girl 3",
+  "category": "character",
+  "source": "Girl.003",
+  "also": [
+   "Girl",
+   "Girl.004"
+  ]
+ },
+ {
+  "slug": "guy-praying-worried",
+  "name": "Guy praying worried",
+  "category": "character",
+  "source": "guy praying worried",
+  "also": []
+ },
+ {
+  "slug": "guy-with-hair",
+  "name": "Guy with Hair",
+  "category": "character",
+  "source": "Guy with Hair.001",
+  "also": []
+ },
+ {
+  "slug": "jesus",
+  "name": "Jesus",
+  "category": "character",
+  "source": "Jesus.001",
+  "also": [
+   "Jesus",
+   "Jesus.002",
+   "Jesus.003",
+   "Jesus.004",
+   "Jesus.015",
+   "Jesus.016",
+   "Jesus.023"
+  ],
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ],
+  "squash_top": [
+   1.3,
+   1.28
+  ]
+ },
+ {
+  "slug": "mary-of-egypt",
+  "name": "Mary of egypt",
+  "category": "character",
+  "source": "mary of egypt",
+  "also": [],
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ]
+ },
+ {
+  "slug": "moses",
+  "name": "Moses",
+  "category": "character",
+  "source": "moses",
+  "also": []
+ },
+ {
+  "slug": "nun",
+  "name": "Nun",
+  "category": "character",
+  "source": "nun",
+  "also": [],
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ],
+  "squash_top": [
+   1.3,
+   1.28
+  ]
+ },
+ {
+  "slug": "nun-2",
+  "name": "Nun 2",
+  "category": "character",
+  "source": "nun.002",
+  "also": [],
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ],
+  "squash_top": [
+   1.3,
+   1.28
+  ]
+ },
+ {
+  "slug": "pope",
+  "name": "Pope",
+  "category": "character",
+  "source": "pope.001",
+  "also": [
+   "pope"
+  ]
+ },
+ {
+  "slug": "pope-in-casket",
+  "name": "Pope in casket",
+  "category": "character",
+  "source": "pope in casket",
+  "also": []
+ },
+ {
+  "slug": "pope-waving",
+  "name": "Pope waving",
+  "category": "character",
+  "source": "Pope waving",
+  "also": []
+ },
+ {
+  "slug": "pope-writing",
+  "name": "Pope Writing",
+  "category": "character",
+  "source": "Pope Writing",
+  "also": []
+ },
+ {
+  "slug": "priest",
+  "name": "Priest",
+  "category": "character",
+  "source": "priest.001",
+  "also": [
+   "priest",
+   "priest.003"
+  ]
+ },
+ {
+  "slug": "priest-baptizing",
+  "name": "Priest baptizing",
+  "category": "character",
+  "source": "priest baptizing",
+  "also": []
+ },
+ {
+  "slug": "priest-basic",
+  "name": "Priest basic",
+  "category": "character",
+  "source": "Priest basic.002",
+  "also": []
+ },
+ {
+  "slug": "priest-in-chasuble",
+  "name": "Priest in chasuble",
+  "category": "character",
+  "source": "Priest in chasuble",
+  "also": []
+ },
+ {
+  "slug": "risen-christ-floating",
+  "name": "Risen christ floating",
+  "category": "character",
+  "source": "risen christ floating",
+  "also": [],
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ],
+  "squash_top": [
+   1.3,
+   1.28
+  ]
+ },
+ {
+  "slug": "saint-nicholas",
+  "name": "Saint nicholas",
+  "category": "character",
+  "source": "saint nicholas.001",
+  "also": [
+   "saint nicholas"
+  ],
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ],
+  "halo_also_on": [
+   "Eyes"
+  ]
+ },
+ {
+  "slug": "saint-peter",
+  "name": "Saint peter",
+  "category": "character",
+  "source": "saint peter.002",
+  "also": [
+   "saint peter.004"
+  ]
+ },
+ {
+  "slug": "saint-peter-2",
+  "name": "Saint peter 2",
+  "category": "character",
+  "source": "saint peter.003",
+  "also": [
+   "saint peter",
+   "saint peter.001"
+  ],
+  "float_halo": true,
+  "parts": [
+   "halo"
+  ],
+  "squash_top": [
+   1.29,
+   1.27
+  ]
+ },
+ {
+  "slug": "shalone-talk-long",
+  "name": "Shalone Talk Long",
+  "category": "character",
+  "source": "Shalone Talk Long",
+  "also": []
+ },
+ {
+  "slug": "shalone-talk-long-2",
+  "name": "Shalone Talk Long 2",
+  "category": "character",
+  "source": "Shalone Talk Long.001",
+  "also": []
+ },
+ {
+  "slug": "talking-shalone",
+  "name": "Talking shalone",
+  "category": "character",
+  "source": "talking shalone",
+  "also": []
+ },
+ {
+  "slug": "cross",
+  "name": "Cross",
+  "category": "prop",
+  "source": "cross",
+  "also": [],
+  "fit": true
+ },
+ {
+  "slug": "crucifix",
+  "name": "Crucifix",
+  "category": "prop",
+  "source": "crucifix",
+  "also": [],
+  "fit": true
+ },
+ {
+  "slug": "earth",
+  "name": "Earth",
+  "category": "prop",
+  "source": "Earth",
+  "also": []
+ },
+ {
+  "slug": "key",
+  "name": "Key",
+  "category": "prop",
+  "source": "key",
+  "also": []
+ },
+ {
+  "slug": "phone",
+  "name": "Phone",
+  "category": "prop",
+  "source": "phone",
+  "also": []
+ },
+ {
+  "slug": "angel",
+  "name": "Angel",
+  "category": "character",
+  "derive": "ancient-robe-guy",
+  "recolor": {
+   "robe color 1": [
+    1.0,
+    0.98,
+    0.92
+   ],
+   "robe color 2": [
+    0.95,
+    0.72,
+    0.25
+   ]
+  },
+  "parts": [
+   "halo",
+   "wings"
+  ],
+  "origin": "scaffold"
+ }
+]

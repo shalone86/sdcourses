@@ -25,6 +25,7 @@ import {battleProps, battleSlug, listBattles, newBattle, saveBattle} from '../sc
 import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCast, saveColors, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
+import {ensureFigure, figureCast} from '../scripts/characters.mjs';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -586,6 +587,8 @@ async function handle(req, res) {
     }
     if (p === '/battles.js') return sendFile(req, res, path.join(ROOT, 'studio/battles.js'));
     if (p === '/api/puppet-bases') return json(res, 200, {...puppetBases(), cast: puppetCast().characters});
+    if (p === '/api/figures') return json(res, 200, figureCast());
+    if (/^\/characters\/[a-z0-9-]+\/rest(@[a-z-]+)?\.png$/.test(p)) return sendFile(req, res, path.join(ROOT, p.slice(1)));
     if (p === '/api/icons') {
       // Lucide icons whose name matches, with a small drawing of each, for the Icons picker.
       const q = (url.searchParams.get('q') ?? '').trim().toLowerCase().replace(/\s+/g, '-');
@@ -632,6 +635,14 @@ async function handle(req, res) {
     // Anything that changes a lesson or a drawing: back it up a few minutes after the last change.
     if (id && /^\/api\/(save|use-spoken|quiz|slide|timing|scene|audio|take|ask|images\/import)$/.test(p)) backupSoon(id, lessonPaths(id), id);
     if (/^\/api\/sprite(\/delete|\/favorite)?$/.test(p)) backupSoon('sprites', ['sprites'], 'drawings');
+    if (p === '/api/figure') {
+      // Draw a character's clip with Blender if it isn't drawn yet (a few seconds the first time).
+      const {slug, anim, view} = await readJson(req);
+      let clip;
+      try { clip = await ensureFigure(String(slug), String(anim), String(view || 'front')); } catch (e) { throw httpError(409, e.message); }
+      backupSoon('characters', ['characters'], 'characters');
+      return json(res, 200, {clip, cast: figureCast()});
+    }
     if (/^\/api\/battle(\/new)?$/.test(p)) backupSoon('battles', ['battles'], 'battles');
     if (p === '/api/battle') {
       const body = await readJson(req);
