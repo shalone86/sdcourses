@@ -74,12 +74,12 @@ points:
 
   - heading: Married presbyters
     quote:
-      lead: Saint Paul tells Titus whom to choose.
+      lead: Saint Paul tells Titus to appoint presbyters in every town,
       text: >-
-        appoint presbyters in every town, as I directed you, on condition that
-        a man be blameless, married only once
+        on condition that a man be blameless, married only once, with
+        believing children
       source: titus-1
-      cite: Titus 1:5–6
+      cite: Titus 1:6
       highlight: married only once
     text: >-
       Presbyter comes from the Greek word for elder, and it is where our
@@ -102,8 +102,8 @@ points:
       question: Saint Paul told Titus to appoint presbyters who were married only once.
       answer: true
       why: >-
-        True. Titus 1:5–6: "appoint presbyters in every town, as I directed
-        you, on condition that a man be blameless, married only once."
+        True. Titus 1:6: "on condition that a man be blameless, married only
+        once, with believing children."
 
   - heading: Two disciplines, East and West
     quote:
