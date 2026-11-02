@@ -10,8 +10,8 @@ style: kids
 series: All About Popes
 # The drawing on its kids-site thumbnails (a lesson.yml `thumb:` can choose another).
 thumb: {sprite: pope-blessing}
-# Same track as the grown-up Pope course.
-music: music/hail-mary-ambient-instrumental.mp3
+# Her own track for the kids Pope videos (chosen 2026-11-02).
+music: music/saxaul-sparrow-6-feb-2026.mp3
 cover: {icon: key-round, eyebrow: Catholic Course for Kids}
 planned:
   - What Is Infallibility?
