@@ -117,7 +117,8 @@
   const WITH = [[null, '▢', 'On its own'], ['side', '◫', 'Beside the picture before'], ['over', '⧉', 'Over the picture before']];
 
   /** Short name for an item cue ("Antioch", "Title 2", "Check"). */
-  function cueLabel(scene, k) {
+  function cueLabel(scene, k, headings) {
+    if (scene.type === 'recap') return headings?.[+k] || 'Point ' + (+k + 1);
     if (scene.type === 'compare' && k === 'decide') return 'Check';
     if (scene.type === 'quote') return k === 'start' ? 'Quote starts' : 'Quote ends';
     if (scene.type === 'trinity') return k === 'son' ? 'Cross' : k === 'spirit' ? 'Dove' : k;
@@ -160,6 +161,18 @@
         // The puppet's key presses (seconds into the recording) → frames from the scene's start.
         if (Array.isArray(o.puppet)) sc.puppet = o.puppet.map(([t, k, d]) => [Math.round(seg.audioOffsetInFrames + t * FPS) - from, k, d]); else delete sc.puppet;
         if (Object.keys(cues).length) sc.cues = cues; else delete sc.cues;
+      });
+      // The lesson summary: every point gets a diamond, even one not heard in the recording, so she
+      // can set when each appears (same spacing as video/scenes/Recap.tsx for the ones not heard).
+      seg.scenes.forEach((sc) => {
+        if (sc.type !== 'recap' || seg.kind !== 'outro') return;
+        const n = (props.headings || []).length;
+        if (!n) return;
+        const next = Math.min(seg.durationInFrames, sc.until ?? Infinity, ...seg.scenes.filter((o) => o !== sc && !o.with && (o.from || 0) > (sc.from || 0)).map((o) => o.from));
+        const gap = Math.floor(((next - (sc.from || 0)) * 0.5) / n);
+        const cues = sc.cues || {};
+        for (let k = 0; k < n; k++) if (cues[k] == null) cues[k] = 8 + k * gap;
+        sc.cues = cues;
       });
       // Pictures can pass each other; the heading settles when the first one (by time) begins.
       if (seg.kind === 'point' && seg.scenes.length) seg.headingFrames = Math.min(...seg.scenes.map((sc) => sc.from || 0));
@@ -299,7 +312,7 @@
           const at = sc.from + v;
           const moved = touched && touched.cues && touched.cues[k] != null;
           const m = h('div', {class: 'tl-cue' + (moved ? ' moved' : ''), style: {left: x(at) + 'px'}, title: 'Drag to change when it appears'},
-            [h('i'), h('span', {text: cueLabel(sc, k)})]);
+            [h('i'), h('span', {text: cueLabel(sc, k, T.props.headings)})]);
           drag(m, at, (f) => setCue(i, k, f), () => T.player.seek(segStart(T.seg) + Math.max(0, at - 10)));
           cuesRow.append(m);
         }
