@@ -920,7 +920,14 @@ async function ensureMic() {
   const audio = {echoCancellation: false, noiseSuppression: true, autoGainControl: false, channelCount: 1};
   if (S.deviceId) audio.deviceId = {exact: S.deviceId};
   const video = S.camera ? {width: {ideal: 1280}, height: {ideal: 720}, frameRate: {ideal: 30}, ...(S.camId ? {deviceId: {exact: S.camId}} : {facingMode: 'user'})} : false;
-  S.stream = await navigator.mediaDevices.getUserMedia({audio, video});
+  try { S.stream = await navigator.mediaDevices.getUserMedia({audio, video}); }
+  catch (e) {
+    // The microphone or camera she picked before is gone (unplugged, or its id changed): use the usual one.
+    if (e.name !== 'OverconstrainedError' || (!S.deviceId && !S.camId)) throw e;
+    S.deviceId = ''; S.camId = ''; store.set('mic', ''); store.set('cam', '');
+    delete audio.deviceId;
+    S.stream = await navigator.mediaDevices.getUserMedia({audio, video: S.camera ? {...video, deviceId: undefined, facingMode: 'user'} : false});
+  }
   if (S.camera) {
     S.camId = S.stream.getVideoTracks()[0]?.getSettings().deviceId || S.camId;
     store.set('cam', S.camId);
