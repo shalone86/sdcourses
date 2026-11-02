@@ -86,7 +86,7 @@ async function fetchImage(res, address) {
   try { u = new URL(address); } catch { throw httpError(400, 'That isn\'t a web address'); }
   if (!/^https?:$/.test(u.protocol)) throw httpError(400, 'Only http and https links');
   if (/^(localhost|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.|\[?::1\]?$|\[?f[cd])/i.test(u.hostname) || u.hostname.endsWith('.local')) throw httpError(400, 'Only public web addresses');
-  const r = await fetch(u, {headers: {'User-Agent': 'sdcourses-lesson-studio/1.0 (https://courses.sdcason.com)', Accept: 'image/*'}, redirect: 'follow', signal: AbortSignal.timeout(20000)})
+  const r = await fetch(u, {headers: {'User-Agent': 'sdcourses-lesson-studio/1.0 (https://courses.methodiusmedia.com)', Accept: 'image/*'}, redirect: 'follow', signal: AbortSignal.timeout(20000)})
     .catch((e) => { throw httpError(502, `Couldn't get it (${e.message})`); });
   const type = r.headers.get('content-type') ?? '';
   if (!r.ok) throw httpError(502, `That site answered ${r.status}`);

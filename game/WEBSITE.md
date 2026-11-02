@@ -29,7 +29,7 @@ It writes `kids-theme-with-games.zip` next to the original.
 `kids-theme-with-games.zip`. If Ghost asks, let it overwrite the theme
 of the same name, and keep it active. Check that the game opens at:
 
-    https://kids.sdcason.com/assets/games/blessed.html
+    https://kids.methodiusmedia.com/assets/games/blessed.html
 
 ## 5. A page for it (Ghost)
 Make a page or post, add an **HTML** card, and paste:

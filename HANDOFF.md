@@ -51,7 +51,7 @@ check now reports those quotes as "couldn't be checked" (still blocks
 publishing) instead of wrong; it usually works again a little later. All of
 lesson 1's sources are cached in `sources/` on this Mac now.
 
-**Ghost:** connected (`.env` on the Mac, Free Catholic Courses, courses.sdcason.com).
+**Ghost:** connected (`.env` on the Mac, Free Catholic Courses, courses.methodiusmedia.com).
 Lesson 1 is approved and saved there as a draft.
 
 **New Ghost theme:** `theme/sdcourses` (from her Novel theme). Previewed on a

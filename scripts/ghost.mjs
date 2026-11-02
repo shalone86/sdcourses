@@ -1,6 +1,7 @@
 // Minimal Ghost Admin API client (no dependencies). Two sites:
-//   courses  courses.sdcason.com  COURSES_GHOST_URL, COURSES_GHOST_ADMIN_API_KEY
-//   kids     kids.sdcason.com     KIDS_GHOST_URL, KIDS_GHOST_ADMIN_API_KEY
+//   courses  courses.methodiusmedia.com  COURSES_GHOST_URL, COURSES_GHOST_ADMIN_API_KEY
+//   kids     kids.methodiusmedia.com     KIDS_GHOST_URL, KIDS_GHOST_ADMIN_API_KEY
+// (formerly courses. and kids.sdcason.com, which forward there; a site that has moved is followed, see `home`)
 // (names specific to each site, so the keys live in the same .env without mix-ups); see README.
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -19,8 +20,13 @@ export function ghost(which = 'courses') {
   if (!GHOST_URL || !GHOST_ADMIN_API_KEY) {
     throw new Error(`${p}_GHOST_URL and ${p}_GHOST_ADMIN_API_KEY are not set. On the Mac, put them in the .env file at the top of the project; in the cloud, in the environment settings (see README → Publishing from chat).`);
   }
-  const site = GHOST_URL.replace(/\/$/, '');
-  const api = `${site}/ghost/api/admin`;
+  let site = GHOST_URL.replace(/\/$/, '');
+  // If the site has moved to a new address (the old one forwards), use the new one: a forwarded
+  // request loses its key and a forwarded POST turns into a GET. Asked once, without the key.
+  let moved;
+  const home = () => (moved ??= fetch(`${site}/ghost/api/admin/site/`, {redirect: 'follow', signal: AbortSignal.timeout(20000)})
+    .then((r) => { const now = new URL(r.url).origin; if (now !== new URL(site).origin) { console.log(`${which} Ghost site has moved: ${site} -> ${now} (update ${p}_GHOST_URL in .env)`); site = now; } })
+    .catch(() => {}));
 
   const token = () => {
     const [id, secret] = GHOST_ADMIN_API_KEY.split(':');
@@ -31,8 +37,9 @@ export function ghost(which = 'courses') {
   };
 
   async function call(method, url, body) {
+    await home();
     const isForm = body instanceof FormData;
-    const res = await fetch(`${api}${url}`, {
+    const res = await fetch(`${site}/ghost/api/admin${url}`, {
       method,
       headers: {Authorization: `Ghost ${token()}`, 'Accept-Version': 'v5.0', ...(isForm ? {} : {'Content-Type': 'application/json'})},
       body: isForm ? body : body && JSON.stringify(body),
@@ -44,7 +51,7 @@ export function ghost(which = 'courses') {
   const find = (resource, slug) => call('GET', `/${resource}/slug/${slug}/`).then((r) => r[resource][0]).catch(() => null);
 
   return {
-    site,
+    get site() { return site; },
     call,
     find,
     async upload(kind, file, type) {

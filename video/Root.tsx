@@ -36,7 +36,7 @@ export const Root: React.FC = () => (
   {/* Course cover image for Ghost (npm run cover -- <course>) */}
   <Composition id="Cover" component={Cover} fps={30} width={1200} height={675} durationInFrames={1}
     defaultProps={{title: 'Course title', icon: 'book-open'} satisfies CoverProps} />
-  {/* Thumbnail for kids.sdcason.com (scripts/kids-thumb.mjs) */}
+  {/* Thumbnail for kids.methodiusmedia.com (scripts/kids-thumb.mjs) */}
   <Composition id="KidsThumb" component={KidsThumb} fps={30} width={1280} height={720} durationInFrames={1}
     defaultProps={{lead: 'What is', title: 'the Byzantine Rite?'} satisfies KidsThumbProps} />
   </>

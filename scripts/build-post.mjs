@@ -88,7 +88,7 @@ export function buildPost(arg, {videoUrl = VIDEO_PLACEHOLDER, posterUrl = POSTER
 }
 
 /**
- * The same lesson for kids.sdcason.com, written the way that site's theme reads quizzes
+ * The same lesson for kids.methodiusmedia.com, written the way that site's theme reads quizzes
  * (its assets/js/quiz.js turns them into tap-to-answer cards with a score): a "Quiz: …"
  * heading, each question a paragraph, choices a bulleted list with the right one in bold,
  * "Answer: a / b" for a blank (____), "Why: …", and a divider to end it. Then the words of

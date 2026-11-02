@@ -1,6 +1,6 @@
 # Course roadmap
 
-Every course on courses.sdcason.com, redone one at a time as video lessons
+Every course on courses.methodiusmedia.com, redone one at a time as video lessons
 (quote-anchored script → Lesson Studio recording → video + quiz). Order: easiest
 first, by number of lessons. Old quiz posts are folded into their lessons now, so
 they don't count (old Review posts are quizzes too). Read from the live site on 2026-10-15.

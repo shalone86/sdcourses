@@ -81,7 +81,7 @@ Chrome). In the cloud container, prefix with
 
 Ghost publishing needs `COURSES_GHOST_URL` and `COURSES_GHOST_ADMIN_API_KEY`
 (the courses site, not Shalone's other Ghost site). Kids lessons (`style:
-kids`) also go to kids.sdcason.com with `KIDS_GHOST_URL` and
+kids`) also go to kids.methodiusmedia.com with `KIDS_GHOST_URL` and
 `KIDS_GHOST_ADMIN_API_KEY` (skipped, with a note, until those are set). There
 the post is built from Ghost's own cards (`buildKidsSitePost`): video, an
 accent "Quiz" header, one toggle per question, the words in a toggle. Tags

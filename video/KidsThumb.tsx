@@ -2,7 +2,7 @@ import {AbsoluteFill, Img, staticFile} from 'remotion';
 import {bounds, Frame, type Art} from './scenes/Sprite';
 import './theme'; // loads the fonts
 
-// Thumbnail for kids.sdcason.com in the look of her kids thumbnails there: turquoise, soft
+// Thumbnail for kids.methodiusmedia.com in the look of her kids thumbnails there: turquoise, soft
 // blobs, chunky pale-yellow capitals with a shadow ("WHAT IS" small, the rest big), and one of
 // her pixel drawings. 1280×720.
 // Everything stays inside the SAFE zone (x 175–1105): the kids site's home page crops

@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 
-const UA = 'sdcourses-lesson-studio/1.0 (https://courses.sdcason.com; Shalone Cason)';
+const UA = 'sdcourses-lesson-studio/1.0 (https://courses.methodiusmedia.com; Shalone Cason)';
 const get = async (url, headers = {}) => {
   const res = await fetch(url, {headers: {'User-Agent': UA, Accept: 'application/json', ...headers}, signal: AbortSignal.timeout(15000)});
   if (!res.ok) throw new Error(`${new URL(url).host} answered ${res.status}`);
