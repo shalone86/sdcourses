@@ -1,0 +1,280 @@
+{
+ "stamp": "2:2384718:1793659895335",
+ "words": [
+  {
+   "w": "So,",
+   "start": 0.16,
+   "end": 0.35
+  },
+  {
+   "w": "can",
+   "start": 0.35,
+   "end": 0.63
+  },
+  {
+   "w": "the",
+   "start": 0.63,
+   "end": 1
+  },
+  {
+   "w": "Pope",
+   "start": 1,
+   "end": 1.36
+  },
+  {
+   "w": "ever",
+   "start": 1.36,
+   "end": 1.64
+  },
+  {
+   "w": "be",
+   "start": 1.64,
+   "end": 1.82
+  },
+  {
+   "w": "wrong?",
+   "start": 1.82,
+   "end": 2.6
+  },
+  {
+   "w": "Yes,",
+   "start": 2.6,
+   "end": 2.95
+  },
+  {
+   "w": "if",
+   "start": 2.95,
+   "end": 3.19
+  },
+  {
+   "w": "he's",
+   "start": 3.19,
+   "end": 3.38
+  },
+  {
+   "w": "predicting",
+   "start": 3.38,
+   "end": 4.16
+  },
+  {
+   "w": "whether",
+   "start": 4.16,
+   "end": 4.64
+  },
+  {
+   "w": "we're",
+   "start": 4.64,
+   "end": 4.79
+  },
+  {
+   "w": "doing",
+   "start": 4.79,
+   "end": 5.21
+  },
+  {
+   "w": "a",
+   "start": 5.21,
+   "end": 5.33
+  },
+  {
+   "w": "math",
+   "start": 5.33,
+   "end": 5.7
+  },
+  {
+   "w": "problem,",
+   "start": 5.7,
+   "end": 6.55
+  },
+  {
+   "w": "but",
+   "start": 6.55,
+   "end": 6.9
+  },
+  {
+   "w": "he",
+   "start": 6.9,
+   "end": 7.08
+  },
+  {
+   "w": "can't",
+   "start": 7.08,
+   "end": 7.4
+  },
+  {
+   "w": "be",
+   "start": 7.4,
+   "end": 7.6
+  },
+  {
+   "w": "wrong",
+   "start": 7.6,
+   "end": 8.33
+  },
+  {
+   "w": "if",
+   "start": 8.33,
+   "end": 8.58
+  },
+  {
+   "w": "he",
+   "start": 8.58,
+   "end": 8.78
+  },
+  {
+   "w": "teaches",
+   "start": 8.78,
+   "end": 9.59
+  },
+  {
+   "w": "on",
+   "start": 9.59,
+   "end": 9.7
+  },
+  {
+   "w": "faith",
+   "start": 9.7,
+   "end": 10.21
+  },
+  {
+   "w": "or",
+   "start": 10.21,
+   "end": 10.41
+  },
+  {
+   "w": "morals,",
+   "start": 10.41,
+   "end": 11.31
+  },
+  {
+   "w": "and",
+   "start": 11.31,
+   "end": 11.52
+  },
+  {
+   "w": "that",
+   "start": 11.52,
+   "end": 11.93
+  },
+  {
+   "w": "is",
+   "start": 11.93,
+   "end": 12.17
+  },
+  {
+   "w": "papal",
+   "start": 12.17,
+   "end": 12.63
+  },
+  {
+   "w": "infallibility",
+   "start": 12.63,
+   "end": 13.94
+  },
+  {
+   "w": "in",
+   "start": 13.94,
+   "end": 14.24
+  },
+  {
+   "w": "a",
+   "start": 14.24,
+   "end": 14.24
+  },
+  {
+   "w": "nutshell.",
+   "start": 14.24,
+   "end": 15.48
+  },
+  {
+   "w": "Thanks",
+   "start": 15.48,
+   "end": 15.78
+  },
+  {
+   "w": "for",
+   "start": 15.78,
+   "end": 16.07
+  },
+  {
+   "w": "learning",
+   "start": 16.07,
+   "end": 16.33
+  },
+  {
+   "w": "with",
+   "start": 16.33,
+   "end": 16.53
+  },
+  {
+   "w": "us.",
+   "start": 16.53,
+   "end": 16.8
+  },
+  {
+   "w": "I've",
+   "start": 16.8,
+   "end": 17.09
+  },
+  {
+   "w": "been",
+   "start": 17.09,
+   "end": 17.39
+  },
+  {
+   "w": "your",
+   "start": 17.39,
+   "end": 17.81
+  },
+  {
+   "w": "host,",
+   "start": 17.81,
+   "end": 18.16
+  },
+  {
+   "w": "Shalone,",
+   "start": 18.16,
+   "end": 18.75
+  },
+  {
+   "w": "and",
+   "start": 18.75,
+   "end": 18.97
+  },
+  {
+   "w": "until",
+   "start": 18.97,
+   "end": 19.53
+  },
+  {
+   "w": "next",
+   "start": 19.53,
+   "end": 19.62
+  },
+  {
+   "w": "time,",
+   "start": 19.62,
+   "end": 20.12
+  },
+  {
+   "w": "stay",
+   "start": 20.12,
+   "end": 20.46
+  },
+  {
+   "w": "holy,",
+   "start": 20.46,
+   "end": 20.97
+  },
+  {
+   "w": "my",
+   "start": 20.97,
+   "end": 21.14
+  },
+  {
+   "w": "friend.",
+   "start": 21.14,
+   "end": 21.92
+  }
+ ]
+}

@@ -160,7 +160,10 @@ points:
 outro:
   # Shalone writes the start of the outro before this; it always ends with these words (hers).
   text: >-
-    Thanks for learning with us. I've been your host Shalone, and until next time, stay holy, my friends.
+    So can the Pope ever be wrong? Yes, if he's predicting the weather or
+    answering a math problem. But he can't be wrong if he teaches on Faith or
+    Morals. Thanks for learning with us. I've been your host, Shalone, and
+    until next time, stay holy, my friends.
   notes:
     - "Recap: a gift from Jesus · Jesus prayed for Peter · about faith and being good · not everything he says."
   scenes:
