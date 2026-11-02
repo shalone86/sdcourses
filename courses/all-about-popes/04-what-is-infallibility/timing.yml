@@ -1,0 +1,4 @@
+# Hand-tuned timing from the studio's Timing tab, in seconds into each
+# section's recording. Scenes not listed keep their automatic timing.
+intro:
+  end: 17.13
