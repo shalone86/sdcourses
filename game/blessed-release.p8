@@ -14,8 +14,8 @@ parts={
  priest=split",hair,eyes,,,,,,,,,,,,skin",
  deacon=split",hair,,eyes,,,vestment,,,,,,,,skin",
  child=split"eyes,,,,,,,,hair,,,,clothes,,skin",
- player=split",hair,,,,,,,,,,,,,skin",
 }
+plooks={"bbdefghijklmnop,bbmefghijklmnop,bbbefghijklmnop,bfdefghijklmnop,bfmefghijklmnop,bfbefghijklmnop,bedefghijklmnop,bemefghijklmnop,bebefghijklmnop,bgdefghijklmnop,bgmefghijklmnop,bgbefghijklmnop,bhdefghijklmnop,bhmefghijklmnop,bhbefghijklmnop,bkdefghijklmnop,bkmefghijklmnop,bkbefghijklmnop,bbbefghijklmnoj,bfbefghijklmnoj,bebefghijklmnoj,bgbefghijklmnoj,bhbefghijklmnoj,bbbefghijklmnoe,bfbefghijklmnoe,bgbefghijklmnoe,bhbefghijklmnoe","bcdefghijklmnop,bcdpbghijklmnop,bcdpfghijklmnop,bcdpeghijklmnop,bcdpgghijklmnop,bcdphghijklmnop,bcdpkghijklmnop,bcdjbghijklmnop,bcdjfghijklmnop,bcdjeghijklmnop,bcdjgghijklmnop,bcdjhghijklmnop,bcdebghijklmnop,bcdegghijklmnop,bcdehghijklmnop","bcdefghijklmnop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijklmboj,bcdefghijklmboe","bcdefghijjlmnop,bcdefghijblmdop,bcdefghijblmmop,bcdefghijblmbop,bcdefghijflmdop,bcdefghijflmmop,bcdefghijflmbop,bcdefghijelmdop,bcdefghijelmmop,bcdefghijelmbop,bcdefghijglmdop,bcdefghijglmmop,bcdefghijglmbop,bcdefghijhlmdop,bcdefghijhlmmop,bcdefghijhlmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijblmboj,bcdefghijflmboj,bcdefghijelmboj,bcdefghijglmboj,bcdefghijhlmboj,bcdefghijblmboe,bcdefghijflmboe,bcdefghijglmboe,bcdefghijhlmboe","bcdefghijklmnop,bcdefgbijklmdop,bcdefgbijklmmop,bcdefgbijklmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefgbijklmboj,bcdefghijklmboj,bcdefgbijklmboe,bcdefghijklmboe","bcdefghijklmnop,bcdefghijkldnop,bcdefghijklbnop,bcdefghijklbnoj,bcdefghijklbnoe","bcdehghijklmnop,bcmehghijklmnop,bcbehghijklmnop,bcbehghijklmnoj,bcbehghijklmnoe"}
 tops=split",,,,,,,,,,,,,,,12,,14,,10,,14,,12,,9"
 bigart="33333333333333333333333333333333333333333333333332777733335bbb533325bbb9433307bbb9433304bbbb8433304bbbb8433305bbba533307777633304=7@@=633314>5@@?433324>4@@@433324>4=k|@>k{433324>4=k|@>k{433324>4=k|@>k{433324>4=k|@>k{433324>4@@@433324>4@@@433324>4@kv?433324>4@kv?433324>4@kv?433324>4@kv?433324>4@kuk?433324>4@kv?433324>5?kv?433324=7>kv>53332777743323333333333333333333333333333333333333333333333333307777433326bbb533316bbb9431776bbb9774ba5bbb95a6bb84bbb94b85bb6bbb5b87777776b7@>7@@>776@@5@k{l{?5?604@@=4@nk?4@=504@@=4@k{l{?4@>404@@=4@=k@>4@>404@@=4@@@4@>404?k|?4k|@?k{4>k|=404?k|?4k|@?k{4>k|=404?k|?4k|@?k{4>k|=404?k|?4k|=ltk=k{4>k|=404@k@4=k>kv>k4?k>404@@=4@kv?4@>404@@=4@kv?4@>404@@=4@kuk?4@>404@@=4@kv?4@>404@@=4@kv?4@>405@?6?ltk>6@507777777603333333333333333333fe333333+ffd,33329fffd83332+8fd8ff3332ffffc3332e8ff8f3332fe+ff+3332fffd+c83332c8fffe3332f8fff3332fffe8+33330ff+f33332fffc33332fffc33332+8ffc9333330ffc333332+8fc8+333332,fc,33333309h833333328j3333332jg3333332jg3333332jg33333328j33333329h83333333i33333330i33333330i333333308h333333308h3332333333333333333333333333333333333333333333333333333333333333333333333333333333333ffffc3332f+ffc8fd332ffffd+d331ff8fc+fe331e+fd+fff330ffffff33fc0+8ffc9c2c33c2c1ffe0c2c33c2c1d8fc8d0c2c33c2c1ffe0c2c33c31c0cb8c32c33c31c18jd8f333f8d0jgci+d333ffjgchf333d+cicjgc0c2c333fcjj1c2c333c30c09h8182c333c30c1i32c33383081i33333330i333333308h333333308h33323333333333333333333333333333333333333333333333333333333333333333333333333333333330g33333333i33333333g33333330ji33jg333ji32g3333g1g1h31jg3330g30h2jg0g3331g30jjg2g3330g1jjg31g3333jjg31g3332h2b831g3332g38j333331g3jjg33331g3jjh33331i0jg3g33331jjg3g33331g29h83333333i33333330i33333330i333333308h333333308h3332333333333332,33333330f3333331fe+333333c+fc+333333ff3333338fc+c3333308fff+33331fd8fd+33331fffd33331fffd3332fd+fd8fc+333ffffe+333f8fffc8c3338fffc+fc332ffd+ffd+331fffffd331c8e+fffd+c331ff8fffc3308fffffd+33ffcb8fe8c+33e+fc8je+fd33ffcjgffd33c0d0d0fe0d0d0d338090908jg809090933338jg33333329h83333333i33333330i33333330i333333308h33333339h3332333333333333333333333333333333333333333333333333333333333333333333333333332g333333282g830h33333g1g2g0h3333308i28h3333330h3g333330jh3j3g3332j2j80i333308h2j1g33308h3i1i1h3333g2j0h1i33330g8g0jh0i833331jjj333330ji9g3333328jh3333331jh3333332jg33333318jg33333329h83333333i33333330i33333330i333333308h33333339h33323333333333333333333333333333333333333333333333333333333333333333333331d33333331cg0f30fd30fd2cg0f30fd30ffdg0chc30fd30ehdhcgegc30egd2gcgdhdhf0ge3c0gfchejhfcgd1c0d0gegchc1gdjgdid0gcjgcjgd2fe30c0gcgfcgdhd0fff1c1cgfjdgejgdjh2cgf0h0dgf0fcichc1cieh0fc0ehfdh3iehfdgehd0c1e2fjgfcicicgcjc1fdjcgeichdjhc1c0hfejhffegc1c2c30c8jg0c1c1c1e33319h83c32c3332i30c333332i33333330i333333308h33333339h3332333333333332&33333331(s3333333*s3333333)3333333&0c0&3333332+f3333331ff3333338fc+c3333308fe:e+33331d:d8c:e+33331d:ffd33331fffd3332fd+c:e8:e+333c:fc:f:e+333c:c8fdxfc8c3338fxfxc+cxd332fdxc(fdxd+331ffc(ffe331xd(ff(f+c331xd(d8fc(fd3308fffffd+33ffcb8fe8c+33d(fc8je+c(e33d(fcjgfc(e33c0d0d0fe0d0d0d338090908jg809090933331i33333330i33333330i333333308h33333339h333233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333077776s63304ffffcscsc43304f8d+f8c+esd43304ffffdsd43304e+d&d8c+d&esd43304fffffc433077777633"
 alpha="0123456789abcdefghijklmnopqrstuvwxyz!#$%&()*+,-./:;<=>?@[]^_{|}~"
@@ -59,7 +59,7 @@ looks={
  hair={1,2,4,5,6,7,9,10},
  clothes={1,2,3,8,9,11,12,13,14},
 }
-skins={{4,15},{15,1},{9,1},{4,1}}
+skins={{15,12},{15,1},{9,1},{4,1},{15,3}}
 grounds={138,139,134,6}
 walls={13,6,9,12,14,4}
 roofs={2,8,4,5,12,3}
@@ -77,10 +77,7 @@ function _init()
  dlooks={} cdlooks={}
  chap=false bishop=false cath=false
  relics=false garden=0 pow=1
- van=false chapter=false rosary_group=false
- hosp_relic=false house_calls=false pilgrim=false
- procession=false rounds=false sick_calls=false
- drive_through=false had_coffee=false
+ van=false had_coffee=false
  hosp_need=0 hosp_priests=0 sick_healed=0
  patience=1 popemode=false
  chapel=false chapel_relic=false
@@ -95,7 +92,7 @@ function _init()
  t=0 missed=0 msg="" msg_t=0
  state="play" page=1
  p2=nil
- if not booted then booted=true state="title" lk1,lk2=new_look"player",new_look"player" end
+ if not booted then booted=true state="title" end
  angel_t=0
  reload(0x3200,0x3200,0x1100) hurry=false
  music(0,0,7)
@@ -218,32 +215,23 @@ combos={
   ok=function() return l("a car")>=2 and l("guardian angel")>=2 end,
   f=function() van=true p.mag*=2 end},
  {n="cathedral chapter",r="cathedral + bishop",h="cathedral",d="church grace comes to you",
-  ok=function() return bishop end,
-  f=function() chapter=true end},
+  ok=function() return bishop end,},
  {n="rosary group",r="garden + 2 church deacons",h="marian garden",d="all grace comes, often",
-  ok=function() return garden>0 and deacons>=2 end,
-  f=function() rosary_group=true end},
+  ok=function() return garden>0 and deacons>=2 end,},
  {n="healing relics",r="church relics + chaplain",h="church relics",d="the hospital heals too",
-  ok=function() return relics and chap end,
-  f=function() hosp_relic=true end},
+  ok=function() return relics and chap end,},
  {n="house calls",r="a car + quick hands 2",h="quick hands",d="house blessings take half",
-  ok=function() return l("a car")>0 and l("quick hands")>=2 end,
-  f=function() house_calls=true end},
+  ok=function() return l("a car")>0 and l("quick hands")>=2 end,},
  {n="pilgrimage",r="marian garden + chapel",h="marian garden",d="church & chapel: grace x2",
-  ok=function() return garden>0 and chapel end,
-  f=function() pilgrim=true end},
+  ok=function() return garden>0 and chapel end,},
  {n="procession",r="church relics + chapel relic",h="chapel relic",d="each minute: bless walkers",
-  ok=function() return relics and chapel_relic end,
-  f=function() procession=true end},
+  ok=function() return relics and chapel_relic end,},
  {n="deacons' rounds",r="church deacon + chapel deacon",h="chapel deacon",d="deacons bring piles to you",
-  ok=function() return deacons>0 and chapel_deacons>0 end,
-  f=function() rounds=true end},
+  ok=function() return deacons>0 and chapel_deacons>0 end,},
  {n="sick calls",r="a car + hospital priest",h="hospital priest",d="hospital priests go out",
-  ok=function() return l("a car")>0 and hosp_priests>0 end,
-  f=function() sick_calls=true end},
+  ok=function() return l("a car")>0 and hosp_priests>0 end,},
  {n="drive-through",r="coffee + a car",h="coffee",d="coffee lasts twice as long",
-  ok=function() return l("a car")>0 and had_coffee end,
-  f=function() drive_through=true end},
+  ok=function() return l("a car")>0 and had_coffee end,},
 }
 events={
  {n="a grieving widow",at="house",need=12},
@@ -313,9 +301,15 @@ function near(ax,ay,bx,by,r)
   and dx*dx+dy*dy<r*r
 end
 -->8
+function pick_look(w,i,pl)
+ local L,l=split(plooks[w]),{}
+ i=cyc(i or 1,#L,pl,2)
+ for c=1,15 do l[c]=ord(L[i],c)-97 end
+ return i,l
+end
 function new_look(g)
  local sk,l,h=rnd(skins),{},rnd(looks.hair)
- if h==sk[1] then h=1 end
+ if h==sk[1] or h==10 and sk[1]!=15 then h=1 end
  look_hair=h
  local v={skin=sk[1],eyes=sk[2],hair=h,vestment=vests[season]}
  for c,k in pairs(parts[g]) do
@@ -348,7 +342,7 @@ function spawn_home()
  if b.k!="house" or b.who then return end
  local q=person(b.x+8,b.y+18,"home")
  q.need=3+lvl\4 q.wait=1500+rnd(450)
- if house_calls then q.need=ceil(q.need/2) end
+ if got["house calls"] then q.need=ceil(q.need/2) end
  q.b=b b.who=q
 end
 function spawn_event()
@@ -376,7 +370,7 @@ function spawn_event()
  sfx(5)
 end
 function spawn_church()
- if pilgrim and rnd(1)<.5 then spawn_chapel() end
+ if got.pilgrimage and rnd(1)<.5 then spawn_chapel() end
  local b=rnd(bldg)
  local q=person(b.x+8,b.y+18,"church")
  q.tx=church_x-8+rnd(32)
@@ -405,7 +399,7 @@ function hit(q)
  if q.b then q.b.who=nil end
  local v=1
  if q.ev then v=10 elseif q.k=="home" then v=3
- elseif pilgrim and q.tx then v=2 end
+ elseif got.pilgrimage and q.tx then v=2 end
  drop_grace(q.x,q.y-4,v)
  if q.ev then
   add(items,{x=q.x,y=q.y+4,k="chest"})
@@ -470,7 +464,7 @@ function use(k)
   say("holy water for everyone!")
  elseif k=="coffee" then
   had_coffee=true
-  p.fast=drive_through and 600 or 300
+  p.fast=got["drive-through"] and 600 or 300
   say("coffee! go go go")
  end
 end
@@ -503,19 +497,20 @@ function levelup()
  offer("level "..lvl.."! choose one")
 end
 -->8
-function cyc(v,n,pl)
- if btnp(0,pl) then v-=1 end
- if btnp(1,pl) then v+=1 end
+function cyc(v,n,pl,a)
+ a=a or 0
+ if btnp(a,pl) then v-=1 end
+ if btnp(a+1,pl) then v+=1 end
  return (v-1)%n+1
 end
 function _update()
  if state=="title" then
   who=cyc(who,#chars)
-  if btnp(2) then lk1=new_look"player" end
+  li1,lk1=pick_look(who,li1)
   if btnp(5,1) then p2on=not p2on end
   if p2on then
    who2=cyc(who2,#chars,1)
-   if btnp(2,1) then lk2=new_look"player" end
+   li2,lk2=pick_look(who2,li2,1)
   end
   if btnp(5) then
    if unlocked(who) and (not p2on or unlocked(who2)) then
@@ -555,7 +550,7 @@ function _update()
   return
  end
  if state=="pick" then
-  pick=cyc(pick+tonum(btnp(3))-tonum(btnp(2)),#choices)
+  pick=cyc(cyc(pick,#choices),#choices,nil,2)
   if btnp(4) or btnp(5) then
    local u=choices[pick]
    lv[u.n]=l(u.n)+1
@@ -565,7 +560,7 @@ function _update()
      if combos[i]==u then dset(1,dget(1)|(1<<i)) end
     end
    end
-   u.f() state="play"
+   ;(u.f or l)() state="play"
   end
   return
  end
@@ -648,22 +643,22 @@ function _update()
  if t%120==0 then
   if relics then bless(church_x+8,church_y+22,24,"church") end
   if chapel_relic then bless(chapel_x+8,chapel_y+24,24,"chapel") end
-  if hosp_relic then heal(1) end
+  if got["healing relics"] then heal(1) end
  end
- if rosary_group and t%900==0 then
+ if got["rosary group"] and t%900==0 then
   for g in all(graces) do g.pull=true end
   say("rosary group: grace comes")
  end
- if procession and t%1800==0 then
+ if got.procession and t%1800==0 then
   for q in all(people) do
    if q.tx and not q.there then q.need=1 hit(q) end
   end
   say("procession: walkers blessed")
  end
- if chapter or rounds or near(p.x,p.y,church_x+8,church_y+24,22) then
+ if got["cathedral chapter"] or got["deacons' rounds"] or near(p.x,p.y,church_x+8,church_y+24,22) then
   if church_pile>0 then xp+=church_pile church_pile=0 sfx(1) end
  end
- if hosp_relic or rounds or near(p.x,p.y,hosp_x+8,hosp_y+24,22) then
+ if got["healing relics"] or got["deacons' rounds"] or near(p.x,p.y,hosp_x+8,hosp_y+24,22) then
   if hosp_pile>0 then xp+=hosp_pile hosp_pile=0 sfx(1) end
  end
  for h in all(helpers) do helper(h) end
@@ -724,7 +719,7 @@ function helper(h)
  local tg,tx,ty,r,sp
  if h.hosp then
   tx,ty,r,sp=hosp_x+8+h.ox/2,hosp_y+22,3,1.5
-  if sick_calls and hosp_need==0 then
+  if got["sick calls"] and hosp_need==0 then
    tg=closest(people,h,function(q) return q.k=="home" end)
   end
  else
@@ -794,7 +789,7 @@ function draw_person(q)
  sprite(n,q.x,q.y,q.fl)
  pal()
  if q.m then pal(q.ml) sprite(q.m,q.x+7,q.y,q.fl) pal() end
- if q.ev and t%16<10 then circ(q.x,q.y-4,7,9) end
+ if q.ev and t%16<10 then circ(q.x+(q.m and 3 or 0),q.y-4,q.m and 10 or 7,9) end
  if q.wait>150 or t%8<4 then
   local y=q.y-15
   if q.ev then print(q.need,q.x-3,y-2,9)
@@ -815,8 +810,9 @@ function draw_map()
   end
  end
  for q in all(people) do
-  if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or 7)
-  elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or 7) end
+  local c=q.wait<150 and 8 or 7
+  if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or c)
+  elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or c) end
  end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  rectfill(0,112,127,127,1)
@@ -869,6 +865,7 @@ function draw_title()
  sspr(n%16*8,n\16*8,8,8,48,38,32,32)
  pal()
  print("\139         \145",38,52,7)
+ print("\148",60,33,6) print("\131",60,71,6)
  if time()\4%2==1 and dget(10)>0 then
   rectfill(30,73,97,111,1)
   top5(38,70,10)
@@ -900,8 +897,7 @@ function _draw()
  for b in all(bldg) do
   at(b.x,b.y)
   if b.s then
-   local w=b.who and b.who.wait<150 and t%8<4 and 8 or b.wc
-   pal(13,w) pal(6,w) pal(2,b.rc)
+   pal(13,b.wc) pal(6,b.wc) pal(2,b.rc)
    bigspr(art(b),b.x-8,b.y-16)
    pal()
    if b.who and t%20<14 then print("\138",b.x+5,b.y-22,b.who.ev and 9 or 10) end
@@ -1079,20 +1075,20 @@ __gfx__
 0004e000000e40000004c00000014000004eee0000ee4e00000111000004cc000004100000014000004eee0000ee4e0000455500004555000045550000545500
 00033000003030000001100000101000000330000033030000110100000111000003300000303000000330000033030000111100001111000011110001101100
 00000000000000000004444000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000040000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000400040409acca00000000000000000000000000000000000000000000000000000000000000000000000000000000000009900000000000
-00000000000a8a000040404009aaaa000004440000000000000e000000eae00000000000bbbbbbbb03b003b0000000000000000000000000001ff00000099000
-00000000001171000004000009aaaa0000555500008080000008000000080000000e00003bbb3bbbb33b03330000000009000a000000000000f1f000001ff000
-00000000001777000a004000009aa00000055500000800000000000000000000000800003bbb3bbb33343343000b30009090a0a000040000001ff00000f1f000
-0000000000117100aaa4000000000000000000000000000000000000000000000000000033bb33bb343433430b3333000b000b000099900000ddd000001ff000
-00000000000000000a0000000000000000000000000000000000000000000000000000000240024000400400033333300b000b000099900000fd000000fdd000
+000000000000000000400004000000000000000000a0a000000000000000000000a0a00000000000000000000000000000000000000000000000000000000000
+00000000000a8a000400040409acca000000000009aaaa0000a0a00000a0a00009aaaa0000000000000000000000000000000000000000000009990000000000
+00000000001171000040404009aaaa0000044400009aa00009aaaa0009aaaa00009aa0000bbbbbbb03b003b0000000000000000000000000001fff0000099900
+00000000001777000004000009aaaa000055550000090000009aa000009aa000000900000bbb3bbbb33b03330000000009000a000000000000f1f100001fff00
+00000000001171000a004000009aa00000055500000000000009000000090000000000000bbb3bbb33343343000b30009090a0a000040000001fff0000f1f100
+0000000000000000aaa4000000000000000000000000000000000000000000000000000033bb33bb343433430b3333000b000b000099900000ddd000001fff00
+00000000000000000a0000000000000000000000000100000001000000010000000100000240024000400400033333300b000b000099900000fdd00000fdd000
 0000000000000000000000000000000000000000000000000000000000000000000ddd00000ddd00000ddd00000ddd0000055500000000000005550000000000
 0000000000000000000000000000000000000000000000000000000000000000007fff00007fff00007fff00007fff00005fff0000055500005fff0000055500
-000990000000000000000000000000000000000000000000000000000000000000f3f3f000f3f30000f3f30000f3f30000fdfd00005fff0000fdfd00005fff00
-001ff00000099000000000000000000000000000000000000000000000000000007fff10007fff00007fff00007fff00005f5f0000fdfd00005f5f0000fdfd00
-00f1f000001ff0000000000000000000000000000000000000000000000000000011710000117100001171000011710000755500005f5f0000755500005f5f00
-001ff00000f1f00000000000000000000000000000000000000000000000000000111100001111f00011f1000011111f00077000007555000007700000755500
-00ddf000001ff00000000000000000000000000000000000000000000000000000fddd0000fddd0000fddd0000fddd00000f7000000f7000000f70000007f000
+000999000000000000000000000000000000000000000000000000000000000000f3f3f000f3f30000f3f30000f3f30000fdfd00005fff0000fdfd00005fff00
+001fff0000099900000000000000000000000000000000000000000000000000007fff10007fff00007fff00007fff00005f5f0000fdfd00005f5f0000fdfd00
+00f1f100001fff000000000000000000000000000000000000000000000000000011710000117100001171000011710000755500005f5f0000755500005f5f00
+001fff0000f1f10000000000000000000000000000000000000000000000000000111100001111f00011f1000011111f00077000007555000007700000755500
+00ddf000001fff0000000000000000000000000000000000000000000000000000fddd0000fddd0000fddd0000fddd00000f7000000f7000000f70000007f000
 0dd0d00000fdd0000000000000000000000000000000000000000000000000000001100000011000000110000001100000077000000770000007700000707000
 000aaa0000000000000aaa000000000000111100000000000011110000000000000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000
 00afff00000aaa0000afff00000aaa00001fff0000111100001fff000011110000544400000ccc0000544400000eee0000544400000aaa0000544450000eee00
