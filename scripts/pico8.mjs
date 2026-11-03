@@ -15,6 +15,9 @@ const PICO = ['000000', '1d2b53', '7e2553', '008751', 'ab5236', '5f574f', 'c2c3c
 const rgb = (h) => [0, 2, 4].map((i) => parseInt(h.replace('#', '').slice(i, i + 2), 16));
 const nearest = (hex) => {
   if (hex.toUpperCase() in force) return force[hex.toUpperCase()];
+  return closest(hex);
+};
+const closest = (hex) => {
   const c = rgb(hex);
   let best = 1, bd = Infinity;
   for (let i = 1; i < 16; i++) { // never 0: that one is see-through
@@ -50,7 +53,38 @@ for (const [slot, name] of Object.entries(cfg.slots)) {
 // parts: per group (people, priest, deacon), which PICO-8 colors the
 // game swaps. Two different kinds on one color can't be told apart.
 const groups = [];
+// p1-p7 (the playable characters): every look each can have on the start
+// screen, worked out here so the cart only reads them. Rules (hers): skin
+// peach, tan or brown; hair dark blue, dark brown, brown, gray, white or
+// yellow, yellow only with peach skin, never hair the
+// skin's own color; blue or green eyes only with peach skin; the eastern
+// monk's beard white, or dark blue with dark blue hair; "white" always
+// white (the pope's hair). Looks that would show the same on a character
+// are dropped, so every up/down press changes something. The first is her
+// drawing's own colors. One string per look: the
+// color each of PICO-8's 1-15 becomes, as letters (a = 0).
+const plooks = [];
 for (const [group, hexes] of Object.entries(cfg.parts || {})) {
+  if (!/^p\d$/.test(group)) continue;
+  const kind = {}, drawn = {};
+  for (const [hex, k] of Object.entries(hexes)) {
+    kind[nearest(hex)] = k;
+    // her own color for it (hair forced to its own color for the swap,
+    // like the priest's, shows as its nearest)
+    drawn[nearest(hex)] = k === 'white' ? 7 : k === 'hair' ? closest(hex) : nearest(hex);
+  }
+  const own = Array.from({length: 15}, (_, i) => String.fromCharCode(97 + (drawn[i + 1] ?? i + 1))).join('');
+  const seen = new Set([own]), list = [own];
+  for (const sk of [15, 9, 4]) for (const h of [1, 5, 4, 6, 7, 10]) for (const e of [3, 12, 1]) {
+    if (h === sk || (sk !== 15 && (h === 10 || e !== 1))) continue;
+    const v = {skin: sk, hair: h, eyes: e, beard: h === 1 ? 1 : 7, white: 7};
+    const look = Array.from({length: 15}, (_, i) => String.fromCharCode(97 + (kind[i + 1] ? v[kind[i + 1]] : i + 1))).join('');
+    if (!seen.has(look)) { seen.add(look); list.push(look); }
+  }
+  plooks[Number(group.slice(1)) - 1] = list.join(',');
+}
+for (const [group, hexes] of Object.entries(cfg.parts || {})) {
+  if (/^p\d$/.test(group)) continue;
   const parts = {};
   for (const [hex, kind] of Object.entries(hexes)) {
     const n = nearest(hex);
@@ -64,6 +98,7 @@ for (const [group, hexes] of Object.entries(cfg.parts || {})) {
   groups.push(`${group}=split"${kinds.join(',')}"`);
 }
 const partsLua = `parts={\n ${groups.join(',\n ')},\n}`;
+const plooksLua = `plooks={${plooks.map((l) => `"${l}"`).join(',')}}`;
 
 // tops: the top-of-head color of each listed people slot (the most
 // used color in its first row), so a person can wear it as hair or a hat
@@ -111,7 +146,7 @@ if (cfg.big?.length) {
 }
 
 const gfx = sheet.map((r) => r.map((c) => c.toString(16)).join('')).join('\n');
-const out = text.replace(/(-- @parts.*\n)[\s\S]*?(?=-- @end)/, `$1${partsLua}\n${topsLua}\n`)
+const out = text.replace(/(-- @parts.*\n)[\s\S]*?(?=-- @end)/, `$1${partsLua}\n${plooksLua}\n${topsLua}\n`)
   .replace(/(-- @big.*\n)[\s\S]*?(?=-- @end big)/, `$1${bigLua}\n`).replace(/__gfx__\n[\s\S]*?(?=\n__\w+__|$)/, `__gfx__\n${gfx}`);
 fs.writeFileSync(cart, out.endsWith('\n') ? out : out + '\n');
 console.log(`wrote ${cart}`);

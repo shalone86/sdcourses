@@ -71,7 +71,7 @@
     "christmas-tree",
     "marian-garden"
   ],
-  "_parts": "Per group, which of her colors the game swaps for each one. people: every person gets random hair, skin (with matching eyes) and clothes. priest: the bishop's priests get their own skin and eyes. deacon: new deacons get their own skin and eyes; 'vestment' follows the season (spring white, summer green, fall green, winter purple). child: the baby at a baptism gets its own hair, skin and clothes. player: the players' own skin and (the priest's) hair, picked on the start screen with up.",
+  "_parts": "Per group, which of her colors the game swaps for each one. people: every person gets random hair, skin (with matching eyes) and clothes. priest: the bishop's priests get their own skin and eyes. deacon: new deacons get their own skin and eyes; 'vestment' follows the season (spring white, summer green, fall green, winter purple). child: the baby at a baptism gets its own hair, skin and clothes. p1-p7: each playable character's own look, picked on the start screen with up/down (in chars order: priest, benedictine, dominican, franciscan, eastern monk, cardinal, pope). skin: peach, tan or brown. hair: yellow only with peach skin; brown, dark blue, gray, white with any (never the skin's own color). eyes: blue, green or dark blue with peach skin, dark blue otherwise. beard (eastern monk): white, or dark blue with dark blue hair. white: always white (the pope's hair). The benedictine's hair color is also his belt; the dominican's hair is also his cappa, so his hair stays.",
   "parts": {
     "people": {
       "#5A3825": "hair",
@@ -103,10 +103,37 @@
       "#222E53": "eyes",
       "#82759A": "clothes"
     },
-    "player": {
+    "p1": {
       "#FFCCAA": "skin",
+      "#1D2B53": "hair",
+      "#008751": "eyes"
+    },
+    "p2": {
+      "#A86B3C": "skin",
+      "#5A3825": "hair"
+    },
+    "p3": {
       "#F2C6A0": "skin",
-      "#1D2B53": "hair"
+      "#7B5CFF": "eyes"
+    },
+    "p4": {
+      "#F2C6A0": "skin",
+      "#FFB300": "hair",
+      "#7B5CFF": "eyes"
+    },
+    "p5": {
+      "#F2C6A0": "skin",
+      "#FFFFFF": "beard",
+      "#7B5CFF": "eyes"
+    },
+    "p6": {
+      "#F2C6A0": "skin",
+      "#2F8CFF": "eyes"
+    },
+    "p7": {
+      "#F2C6A0": "skin",
+      "#5A3825": "white",
+      "#18B7A6": "eyes"
     }
   },
   "_tops": "People slots whose top row (the top of the head) is hair or a hat: each person gets one at random.",

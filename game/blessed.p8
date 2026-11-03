@@ -37,8 +37,8 @@ parts={
  priest=split",hair,eyes,,,,,,,,,,,,skin",
  deacon=split",hair,,eyes,,,vestment,,,,,,,,skin",
  child=split"eyes,,,,,,,,hair,,,,clothes,,skin",
- player=split",hair,,,,,,,,,,,,,skin",
 }
+plooks={"bbdefghijklmnop,bbmefghijklmnop,bbbefghijklmnop,bfdefghijklmnop,bfmefghijklmnop,bfbefghijklmnop,bedefghijklmnop,bemefghijklmnop,bebefghijklmnop,bgdefghijklmnop,bgmefghijklmnop,bgbefghijklmnop,bhdefghijklmnop,bhmefghijklmnop,bhbefghijklmnop,bkdefghijklmnop,bkmefghijklmnop,bkbefghijklmnop,bbbefghijklmnoj,bfbefghijklmnoj,bebefghijklmnoj,bgbefghijklmnoj,bhbefghijklmnoj,bbbefghijklmnoe,bfbefghijklmnoe,bgbefghijklmnoe,bhbefghijklmnoe","bcdefghijklmnop,bcdpbghijklmnop,bcdpfghijklmnop,bcdpeghijklmnop,bcdpgghijklmnop,bcdphghijklmnop,bcdpkghijklmnop,bcdjbghijklmnop,bcdjfghijklmnop,bcdjeghijklmnop,bcdjgghijklmnop,bcdjhghijklmnop,bcdebghijklmnop,bcdegghijklmnop,bcdehghijklmnop","bcdefghijklmnop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijklmboj,bcdefghijklmboe","bcdefghijjlmnop,bcdefghijblmdop,bcdefghijblmmop,bcdefghijblmbop,bcdefghijflmdop,bcdefghijflmmop,bcdefghijflmbop,bcdefghijelmdop,bcdefghijelmmop,bcdefghijelmbop,bcdefghijglmdop,bcdefghijglmmop,bcdefghijglmbop,bcdefghijhlmdop,bcdefghijhlmmop,bcdefghijhlmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijblmboj,bcdefghijflmboj,bcdefghijelmboj,bcdefghijglmboj,bcdefghijhlmboj,bcdefghijblmboe,bcdefghijflmboe,bcdefghijglmboe,bcdefghijhlmboe","bcdefghijklmnop,bcdefgbijklmdop,bcdefgbijklmmop,bcdefgbijklmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefgbijklmboj,bcdefghijklmboj,bcdefgbijklmboe,bcdefghijklmboe","bcdefghijklmnop,bcdefghijkldnop,bcdefghijklbnop,bcdefghijklbnoj,bcdefghijklbnoe","bcdehghijklmnop,bcmehghijklmnop,bcbehghijklmnop,bcbehghijklmnoj,bcbehghijklmnoe"}
 tops=split",,,,,,,,,,,,,,,12,,14,,10,,14,,12,,9"
 -- @end
 
@@ -107,7 +107,8 @@ looks={
  hair={1,2,4,5,6,7,9,10},
  clothes={1,2,3,8,9,11,12,13,14},
 }
-skins={{4,15},{15,1},{9,1},{4,1}} -- skin, eyes
+skins={{15,12},{15,1},{9,1},{4,1},{15,3}} -- skin, eyes
+-- (dark skin: dark blue eyes)
 
 -- sounds (sfx editor): 0 bless,
 -- 1 pick up, 2 level up, 3 gift
@@ -145,11 +146,9 @@ function _init()
  dlooks={} cdlooks={}
  chap=false bishop=false cath=false
  relics=false garden=0 pow=1
- -- combos start off each day
- van=false chapter=false rosary_group=false
- hosp_relic=false house_calls=false pilgrim=false
- procession=false rounds=false sick_calls=false
- drive_through=false had_coffee=false
+ -- combos start off each day (got,
+ -- below: most are just got["name"])
+ van=false had_coffee=false
  -- the hospital: a number of sick
  -- people that grows all day
  hosp_need=0 hosp_priests=0 sick_healed=0
@@ -170,7 +169,7 @@ function _init()
  p2=nil -- player 2 joins from the start screen
  -- the start screen, when the
  -- game is first switched on
- if not booted then booted=true state="title" lk1,lk2=new_look"player",new_look"player" end
+ if not booted then booted=true state="title" end
  angel_t=0
  -- her song: music pattern 0 on,
  -- using channels 0-2 (mask 7) so
@@ -339,32 +338,23 @@ combos={
   ok=function() return l("a car")>=2 and l("guardian angel")>=2 end,
   f=function() van=true p.mag*=2 end},
  {n="cathedral chapter",r="cathedral + bishop",h="cathedral",d="church grace comes to you",
-  ok=function() return bishop end,
-  f=function() chapter=true end},
+  ok=function() return bishop end,},
  {n="rosary group",r="garden + 2 church deacons",h="marian garden",d="all grace comes, often",
-  ok=function() return garden>0 and deacons>=2 end,
-  f=function() rosary_group=true end},
+  ok=function() return garden>0 and deacons>=2 end,},
  {n="healing relics",r="church relics + chaplain",h="church relics",d="the hospital heals too",
-  ok=function() return relics and chap end,
-  f=function() hosp_relic=true end},
+  ok=function() return relics and chap end,},
  {n="house calls",r="a car + quick hands 2",h="quick hands",d="house blessings take half",
-  ok=function() return l("a car")>0 and l("quick hands")>=2 end,
-  f=function() house_calls=true end},
+  ok=function() return l("a car")>0 and l("quick hands")>=2 end,},
  {n="pilgrimage",r="marian garden + chapel",h="marian garden",d="church & chapel: grace x2",
-  ok=function() return garden>0 and chapel end,
-  f=function() pilgrim=true end},
+  ok=function() return garden>0 and chapel end,},
  {n="procession",r="church relics + chapel relic",h="chapel relic",d="each minute: bless walkers",
-  ok=function() return relics and chapel_relic end,
-  f=function() procession=true end},
+  ok=function() return relics and chapel_relic end,},
  {n="deacons' rounds",r="church deacon + chapel deacon",h="chapel deacon",d="deacons bring piles to you",
-  ok=function() return deacons>0 and chapel_deacons>0 end,
-  f=function() rounds=true end},
+  ok=function() return deacons>0 and chapel_deacons>0 end,},
  {n="sick calls",r="a car + hospital priest",h="hospital priest",d="hospital priests go out",
-  ok=function() return l("a car")>0 and hosp_priests>0 end,
-  f=function() sick_calls=true end},
+  ok=function() return l("a car")>0 and hosp_priests>0 end,},
  {n="drive-through",r="coffee + a car",h="coffee",d="coffee lasts twice as long",
-  ok=function() return l("a car")>0 and had_coffee end,
-  f=function() drive_through=true end},
+  ok=function() return l("a car")>0 and had_coffee end,},
 }
 
 -- big needs: they stay in one
@@ -475,10 +465,24 @@ end
 
 -- a random look for group g
 -- (people, priest or deacon)
+-- up/down (player pl) steps through
+-- the looks character w can have
+-- (plooks, worked out by npm run
+-- pico8; the first is her drawing's
+-- own): one letter per color 1-15,
+-- the color it becomes (a = 0)
+function pick_look(w,i,pl)
+ local L,l=split(plooks[w]),{}
+ i=cyc(i or 1,#L,pl,2)
+ for c=1,15 do l[c]=ord(L[i],c)-97 end
+ return i,l
+end
+
 function new_look(g)
  local sk,l,h=rnd(skins),{},rnd(looks.hair)
- -- hair never the skin's color
- if h==sk[1] then h=1 end
+ -- hair never the skin's color;
+ -- yellow hair only with peach skin
+ if h==sk[1] or h==10 and sk[1]!=15 then h=1 end
  look_hair=h -- for the top of the head
  local v={skin=sk[1],eyes=sk[2],hair=h,vestment=vests[season]}
  for c,k in pairs(parts[g]) do
@@ -524,7 +528,7 @@ function spawn_home()
  if b.k!="house" or b.who then return end
  local q=person(b.x+8,b.y+18,"home")
  q.need=3+lvl\4 q.wait=1500+rnd(450)
- if house_calls then q.need=ceil(q.need/2) end
+ if got["house calls"] then q.need=ceil(q.need/2) end
  q.b=b b.who=q
 end
 
@@ -557,7 +561,7 @@ end
 
 function spawn_church()
  -- pilgrims go to the chapel too
- if pilgrim and rnd(1)<.5 then spawn_chapel() end
+ if got.pilgrimage and rnd(1)<.5 then spawn_chapel() end
  local b=rnd(bldg)
  local q=person(b.x+8,b.y+18,"church")
  q.tx=church_x-8+rnd(32)
@@ -594,7 +598,7 @@ function hit(q)
  if q.b then q.b.who=nil end
  local v=1
  if q.ev then v=10 elseif q.k=="home" then v=3
- elseif pilgrim and q.tx then v=2 end
+ elseif got.pilgrimage and q.tx then v=2 end
  drop_grace(q.x,q.y-4,v)
  if q.ev then
   add(items,{x=q.x,y=q.y+4,k="chest"})
@@ -685,7 +689,7 @@ function use(k)
   say("holy water for everyone!")
  elseif k=="coffee" then
   had_coffee=true
-  p.fast=drive_through and 600 or 300
+  p.fast=got["drive-through"] and 600 or 300
   say("coffee! go go go")
  end
 end
@@ -727,9 +731,11 @@ end
 
 -- left/right (for player pl) steps
 -- v round 1..n
-function cyc(v,n,pl)
- if btnp(0,pl) then v-=1 end
- if btnp(1,pl) then v+=1 end
+function cyc(v,n,pl,a)
+ -- left/right; a=2: up/down
+ a=a or 0
+ if btnp(a,pl) then v-=1 end
+ if btnp(a+1,pl) then v+=1 end
  return (v-1)%n+1
 end
 
@@ -737,15 +743,15 @@ function _update()
  if state=="title" then
   -- left/right: who you play
   who=cyc(who,#chars)
-  -- up: a new look (skin, hair)
-  if btnp(2) then lk1=new_look"player" end
+  -- up/down: your look
+  li1,lk1=pick_look(who,li1)
   -- player 2: x on their controls
   -- joins (or leaves), left/right
   -- picks their own character
   if btnp(5,1) then p2on=not p2on end
   if p2on then
    who2=cyc(who2,#chars,1)
-   if btnp(2,1) then lk2=new_look"player" end
+   li2,lk2=pick_look(who2,li2,1)
   end
   if btnp(5) then
    if unlocked(who) and (not p2on or unlocked(who2)) then
@@ -793,7 +799,7 @@ function _update()
  end
  if state=="pick" then
   -- any arrow moves (and wraps around)
-  pick=cyc(pick+tonum(btnp(3))-tonum(btnp(2)),#choices)
+  pick=cyc(cyc(pick,#choices),#choices,nil,2)
   if btnp(4) or btnp(5) then
    local u=choices[pick]
    lv[u.n]=l(u.n)+1
@@ -804,7 +810,7 @@ function _update()
      if combos[i]==u then dset(1,dget(1)|(1<<i)) end
     end
    end
-   u.f() state="play"
+   ;(u.f or l)() state="play" -- most combos have no f
   end
   return
  end
@@ -922,24 +928,24 @@ function _update()
  if t%120==0 then
   if relics then bless(church_x+8,church_y+22,24,"church") end
   if chapel_relic then bless(chapel_x+8,chapel_y+24,24,"chapel") end
-  if hosp_relic then heal(1) end
+  if got["healing relics"] then heal(1) end
  end
- if rosary_group and t%900==0 then
+ if got["rosary group"] and t%900==0 then
   for g in all(graces) do g.pull=true end
   say("rosary group: grace comes")
  end
 
  -- piles: go there to collect them
- if procession and t%1800==0 then
+ if got.procession and t%1800==0 then
   for q in all(people) do
    if q.tx and not q.there then q.need=1 hit(q) end
   end
   say("procession: walkers blessed")
  end
- if chapter or rounds or near(p.x,p.y,church_x+8,church_y+24,22) then
+ if got["cathedral chapter"] or got["deacons' rounds"] or near(p.x,p.y,church_x+8,church_y+24,22) then
   if church_pile>0 then xp+=church_pile church_pile=0 sfx(1) end
  end
- if hosp_relic or rounds or near(p.x,p.y,hosp_x+8,hosp_y+24,22) then
+ if got["healing relics"] or got["deacons' rounds"] or near(p.x,p.y,hosp_x+8,hosp_y+24,22) then
   if hosp_pile>0 then xp+=hosp_pile hosp_pile=0 sfx(1) end
  end
 
@@ -1023,7 +1029,7 @@ function helper(h)
  local tg,tx,ty,r,sp
  if h.hosp then
   tx,ty,r,sp=hosp_x+8+h.ox/2,hosp_y+22,3,1.5
-  if sick_calls and hosp_need==0 then
+  if got["sick calls"] and hosp_need==0 then
    tg=closest(people,h,function(q) return q.k=="home" end)
   end
  else
@@ -1128,7 +1134,7 @@ function draw_person(q)
  pal()
  if q.m then pal(q.ml) sprite(q.m,q.x+7,q.y,q.fl) pal() end
  -- a big need glows
- if q.ev and t%16<10 then circ(q.x,q.y-4,7,9) end
+ if q.ev and t%16<10 then circ(q.x+(q.m and 3 or 0),q.y-4,q.m and 10 or 7,9) end
  -- "+" asks for a blessing; a number
  -- is how many more it needs
  if q.wait>150 or t%8<4 then
@@ -1156,8 +1162,10 @@ function draw_map()
   end
  end
  for q in all(people) do
-  if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or 7)
-  elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or 7) end
+  -- red in its last 5 seconds
+  local c=q.wait<150 and 8 or 7
+  if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or c)
+  elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or c) end
  end
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  -- the legend, then the buttons
@@ -1222,6 +1230,8 @@ function draw_title()
  sspr(n%16*8,n\16*8,8,8,48,38,32,32)
  pal()
  print("\139         \145",38,52,7)
+ -- up/down: your look
+ print("\148",60,33,6) print("\131",60,71,6)
  -- every few seconds: the top 5;
  -- otherwise the character's skill,
  -- or how to unlock them
@@ -1264,10 +1274,7 @@ function _draw()
    -- door where the 16x16 one was
    -- her walls (13 houses, 6 church
    -- and hospital) and roof (2)
-   -- red, flashing, in the last 5
-   -- seconds before it's missed
-   local w=b.who and b.who.wait<150 and t%8<4 and 8 or b.wc
-   pal(13,w) pal(6,w) pal(2,b.rc)
+   pal(13,b.wc) pal(6,b.wc) pal(2,b.rc)
    bigspr(art(b),b.x-8,b.y-16)
    pal()
    if b.who and t%20<14 then print("\138",b.x+5,b.y-22,b.who.ev and 9 or 10) end
@@ -1483,20 +1490,20 @@ __gfx__
 0004e000000e40000004c00000014000004eee0000ee4e00000111000004cc000004100000014000004eee0000ee4e0000455500004555000045550000545500
 00033000003030000001100000101000000330000033030000110100000111000003300000303000000330000033030000111100001111000011110001101100
 00000000000000000004444000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000040000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000400040409acca00000000000000000000000000000000000000000000000000000000000000000000000000000000000009900000000000
-00000000000a8a000040404009aaaa000004440000000000000e000000eae00000000000bbbbbbbb03b003b0000000000000000000000000001ff00000099000
-00000000001171000004000009aaaa0000555500008080000008000000080000000e00003bbb3bbbb33b03330000000009000a000000000000f1f000001ff000
-00000000001777000a004000009aa00000055500000800000000000000000000000800003bbb3bbb33343343000b30009090a0a000040000001ff00000f1f000
-0000000000117100aaa4000000000000000000000000000000000000000000000000000033bb33bb343433430b3333000b000b000099900000ddd000001ff000
-00000000000000000a0000000000000000000000000000000000000000000000000000000240024000400400033333300b000b000099900000fd000000fdd000
+000000000000000000400004000000000000000000a0a000000000000000000000a0a00000000000000000000000000000000000000000000000000000000000
+00000000000a8a000400040409acca000000000009aaaa0000a0a00000a0a00009aaaa0000000000000000000000000000000000000000000009990000000000
+00000000001171000040404009aaaa0000044400009aa00009aaaa0009aaaa00009aa0000bbbbbbb03b003b0000000000000000000000000001fff0000099900
+00000000001777000004000009aaaa000055550000090000009aa000009aa000000900000bbb3bbbb33b03330000000009000a000000000000f1f100001fff00
+00000000001171000a004000009aa00000055500000000000009000000090000000000000bbb3bbb33343343000b30009090a0a000040000001fff0000f1f100
+0000000000000000aaa4000000000000000000000000000000000000000000000000000033bb33bb343433430b3333000b000b000099900000ddd000001fff00
+00000000000000000a0000000000000000000000000100000001000000010000000100000240024000400400033333300b000b000099900000fdd00000fdd000
 0000000000000000000000000000000000000000000000000000000000000000000ddd00000ddd00000ddd00000ddd0000055500000000000005550000000000
 0000000000000000000000000000000000000000000000000000000000000000007fff00007fff00007fff00007fff00005fff0000055500005fff0000055500
-000990000000000000000000000000000000000000000000000000000000000000f3f3f000f3f30000f3f30000f3f30000fdfd00005fff0000fdfd00005fff00
-001ff00000099000000000000000000000000000000000000000000000000000007fff10007fff00007fff00007fff00005f5f0000fdfd00005f5f0000fdfd00
-00f1f000001ff0000000000000000000000000000000000000000000000000000011710000117100001171000011710000755500005f5f0000755500005f5f00
-001ff00000f1f00000000000000000000000000000000000000000000000000000111100001111f00011f1000011111f00077000007555000007700000755500
-00ddf000001ff00000000000000000000000000000000000000000000000000000fddd0000fddd0000fddd0000fddd00000f7000000f7000000f70000007f000
+000999000000000000000000000000000000000000000000000000000000000000f3f3f000f3f30000f3f30000f3f30000fdfd00005fff0000fdfd00005fff00
+001fff0000099900000000000000000000000000000000000000000000000000007fff10007fff00007fff00007fff00005f5f0000fdfd00005f5f0000fdfd00
+00f1f100001fff000000000000000000000000000000000000000000000000000011710000117100001171000011710000755500005f5f0000755500005f5f00
+001fff0000f1f10000000000000000000000000000000000000000000000000000111100001111f00011f1000011111f00077000007555000007700000755500
+00ddf000001fff0000000000000000000000000000000000000000000000000000fddd0000fddd0000fddd0000fddd00000f7000000f7000000f70000007f000
 0dd0d00000fdd0000000000000000000000000000000000000000000000000000001100000011000000110000001100000077000000770000007700000707000
 000aaa0000000000000aaa000000000000111100000000000011110000000000000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000
 00afff00000aaa0000afff00000aaa00001fff0000111100001fff000011110000544400000ccc0000544400000eee0000544400000aaa0000544450000eee00
