@@ -9,26 +9,18 @@ __lua__
 -- choose, x or z take it.
 
 -- sprite slots: game/sprites.json
--- says which drawing goes where.
--- a slot with no drawing yet shows
--- as a dot or a plain shape.
-s_priest=0 s_priest_walk=6
-s_priest_bless=8 -- 4 frames
-s_bishop=2 s_bishop_walk=12
-s_bishop_bless=56 -- 4 frames
-s_deacon=4
--- people walking; the same people
--- standing are 56 slots later
-s_people={16,18,20,22,24,26}
-stand=56
-s_grace=32 s_chest=33
-s_rosary=34 s_bucket=35
-s_coffee=36
-s_car=96 s_van=104 -- 16x16, 4 frames
-s_angel=84 -- 4 frames
--- 16x16 buildings
-s_house=48 s_church=50 s_hosp=52
-s_chapel=54
+-- says which drawing goes where
+-- ("_slots" lists them all). most
+-- slot numbers are written right
+-- where they're drawn: 0 priest,
+-- 6 walking, 8 blessing (4 frames),
+-- 2/12/56 the same for the bishop,
+-- 4 deacon, 33 gift box, 34 rosary,
+-- 35 bucket, 36 coffee, 84 angel,
+-- 96 car, 104 van (16x16, 4 frames)
+-- people walking (16-26); the same
+-- people standing are 56 slots later.
+-- 32 is grace (drawn as a yellow dot)
 
 world=512   -- town size in pixels
             -- (it wraps around)
@@ -81,16 +73,29 @@ end
 
 -- draw big picture n
 -- with its top left at x,y
-function bigspr(n,x,y,fl)
- if n<8 then
-  sspr(n%4*32,64+n\4*32,32,32,x,y,32,32,fl)
-  return
+function bigspr(n,x,y)
+ local sx,sy=n%4*32,64+n\4*32
+ if n>7 then
+  n-=8
+  poke(0x5f54,n<16 and 0x80 or 0xa0)
+  sy=n%16\4*32
  end
- n-=8
- poke(0x5f54,n<16 and 0x80 or 0xa0)
- local c=n%16
- sspr(c%4*32,c\4*32,32,32,x,y,32,32,fl)
- poke(0x5f54,0x00)
+ shade(sx,sy,32,x,y)
+ sspr(sx,sy,32,32,x,y)
+ poke(0x5f54,0)
+end
+
+-- a shadow on the ground, falling
+-- left: the w x w picture at sx,sy
+-- flattened, in dark blue (1),
+-- drawn under it. the colors in use
+-- are kept at 0x4300 meanwhile
+function shade(sx,sy,w,x,y)
+ local h=(w+40)\24 -- 3 rows tall; 2 for a bush
+ memcpy(0x4300,0x5f00,16)
+ for i=1,15 do pal(i,1) end
+ sspr(sx,sy,w,w,x-w\4,y+w-h,w,h)
+ memcpy(0x5f00,0x4300,16)
 end
 
 -- random looks for the people:
@@ -218,7 +223,7 @@ ups={
   ok=function() return hosp_priests>0 end,
   f=function()
    chapel=true
-   add(bldg,{x=chapel_x,y=chapel_y,s=s_chapel,k="chapel",
+   add(bldg,{x=chapel_x,y=chapel_y,s=1,k="chapel",
     wc=hosp_wc,rc=hosp_rc}) -- matches the hospital
   end},
  {n="chapel relic",d="draws more; heals",max=1,
@@ -269,7 +274,16 @@ function top5(x,y,c)
  for i=1,5 do
   if dget(9+i)>0 then
    local v=dget(9+i)
-   print(i.." "..initials(dget(14+i)).." "..v\1 ..(v%1>0 and " 2p" or ""),x,y+i*7,c)
+   local s=i.." "..initials(dget(14+i)).." "..v\1 .." "
+   -- the characters played: p priest,
+   -- b benedictine, d dominican,
+   -- f franciscan, e eastern monk,
+   -- c cardinal, + pope (2 letters:
+   -- 2 players)
+   for m in all{16,256} do
+    s..=split" ,p,b,d,f,e,c,+,2p"[v*m%16\1+1]
+   end
+   print(s,x,y+i*7,c)
   end
  end
 end
@@ -296,16 +310,18 @@ end
 
 -- your character's head start
 function start_skill()
- local n=chars[who].n
- patience=n=="benedictine" and 1.5 or 1
- if n=="dominican" then garden=1 lv["marian garden"]=1 end
- if n=="franciscan" then chap=true lv["chaplain"]=1 end
- if n=="eastern monk" then lv["guardian angel"]=1 p.mag+=10 end
- if n=="cardinal" then
+ -- who: 2 benedictine, 3 dominican,
+ -- 4 franciscan, 5 eastern monk,
+ -- 6 cardinal, 7 pope
+ patience=who==2 and 1.5 or 1
+ if who==3 then garden=1 lv["marian garden"]=1 end
+ if who==4 then chap=true lv["chaplain"]=1 end
+ if who==5 then lv["guardian angel"]=1 p.mag+=10 end
+ if who==6 then
   church=3 cath=true lv["fix the church"]=2 lv["cathedral"]=1
   bishop=true lv["bishop"]=1 add_helper(false)
  end
- popemode=n=="pope"
+ popemode=who==7
 end
 
 -- combos: two upgrades that work
@@ -376,10 +392,10 @@ function make_town()
  -- her buildings get random wall and
  -- roof colors (she designed them in
  -- lavender or grey walls, purple roofs)
- add(bldg,{x=church_x,y=church_y,s=s_church,k="church",
+ add(bldg,{x=church_x,y=church_y,s=1,k="church",
   wc=rnd(walls),rc=rnd(roofs)})
- hosp_wc,hosp_rc=rnd(walls),rnd(roofs)
- add(bldg,{x=hosp_x,y=hosp_y,s=s_hosp,k="hosp",wc=hosp_wc,rc=hosp_rc})
+ hosp_wc,hosp_rc=rnd(walls),rnd(split"2,4,5,12,3") -- no red roof
+ add(bldg,{x=hosp_x,y=hosp_y,s=1,k="hosp",wc=hosp_wc,rc=hosp_rc})
  -- keep these spots clear of houses:
  -- where you start, the marian
  -- garden, the hospital chapel
@@ -391,7 +407,7 @@ function make_town()
   if free(x,y) then
    -- one of 4 kinds of house, in
    -- its own wall and roof colors
-   add(bldg,{x=x,y=y,s=s_house,k="house",
+   add(bldg,{x=x,y=y,s=1,k="house",
     v=flr(rnd(4))+1,wc=rnd(walls),rc=rnd(roofs)})
   end
  end
@@ -475,7 +491,7 @@ end
 -- (walks to mass, waits there),
 -- sick (at the hospital)
 function person(x,y,k)
- local q={x=x,y=y,k=k,s=rnd(s_people),
+ local q={x=x,y=y,k=k,s=rnd{16,18,20,22,24,26},
   look=new_look("people"),need=1,hit=0,
   wait=(900+rnd(300))*patience,spd=.2+rnd(.2)}
  -- the top of the head: hair, or
@@ -646,7 +662,7 @@ end
 function drop_item(x,y)
  add(items,{x=x%world,y=y%world,
   k=rnd({"rosary","bucket","coffee","coffee",
-   chars[who].n=="dominican" and "rosary" or "coffee"})})
+   who==3 and "rosary" or "coffee"})})
 end
 
 function use(k)
@@ -674,7 +690,7 @@ function say(s) msg=s msg_t=90 end
 function offer(title)
  local pool={}
  for u in all(ups) do
-  if (lv[u.n] or 0)<u.max
+  if l(u.n)<u.max
    and (not u.ok or u.ok()) then
    add(pool,u)
   end
@@ -744,9 +760,10 @@ function _update()
    while i>1 and score>dget(8+i) do
     dset(9+i,dget(8+i)) dset(14+i,dget(13+i)) i-=1
    end
-   -- a 2-player score is saved with
-   -- an extra half point, to mark it
-   dset(9+i,score+(p2 and .5 or 0)) dset(14+i,nl[1]*1024+nl[2]*32+nl[3])
+   -- the character is saved in the
+   -- score's fraction: who/16, and
+   -- player 2's who2/256
+   dset(9+i,score+who/16+(p2 and who2/256 or 0)) dset(14+i,nl[1]*1024+nl[2]*32+nl[3])
    state="over"
   end
   return
@@ -1034,7 +1051,7 @@ end
 -- with that combo) in today's paint
 function drive(o)
  pal(13,car_c) pal(2,car_r)
- spr((van and s_van or s_car)+flr(t/4)%4*2,o.x-8,o.y-14,2,2,o.fl)
+ spr((van and 104 or 96)+flr(t/4)%4*2,o.x-8,o.y-14,2,2,o.fl)
  pal()
 end
 
@@ -1056,7 +1073,7 @@ end
 -- grace has no drawing: a yellow dot
 function thing(n,x,y,z)
  z=z or 1
- if n==s_grace then circfill(x,y,2,10)
+ if n==32 then circfill(x,y,2,10)
  else sspr(n%16*8,n\16*8,8,8,x-4*z,y-4*z,8*z,8*z) end
 end
 
@@ -1096,7 +1113,7 @@ function draw_person(q)
  -- walking, or standing still
  local n=q.s
  if (q.there or not q.tx) and q.k!="walk" then
-  n=q.s+stand
+  n=q.s+56
  end
  sprite(n,q.x,q.y,q.fl)
  pal()
@@ -1226,7 +1243,9 @@ function _draw()
  -- this season's ground color
  cls(0)
  camera(p.x-64,p.y-64)
- for d in all(decor) do at(d.x,d.y) spr(d.s,d.x,d.y) end
+ for d in all(decor) do
+  at(d.x,d.y) shade(d.s%16*8,d.s\16*8,8,d.x,d.y) spr(d.s,d.x,d.y)
+ end
  for b in all(bldg) do
   at(b.x,b.y)
   if b.s then
@@ -1248,7 +1267,7 @@ function _draw()
  end
  -- grace piled up, waiting for you
  if church_pile>0 then
-  thing(s_grace,church_x+8,church_y+26)
+  thing(32,church_x+8,church_y+26)
   print(church_pile,church_x+12,church_y+24,10)
  end
  at(hosp_x,hosp_y)
@@ -1260,10 +1279,10 @@ function _draw()
   print("+"..hosp_need,hosp_x+3,hosp_y-12,c)
  end
  for i=1,chapel_deacons do
-  figure(s_deacon,0,false,chapel_x+i*6,chapel_y+24,false,cdlooks[i])
+  figure(4,0,false,chapel_x+i*6,chapel_y+24,false,cdlooks[i])
  end
  if hosp_pile>0 then
-  thing(s_grace,hosp_x+8,hosp_y+26)
+  thing(32,hosp_x+8,hosp_y+26)
   print(hosp_pile,hosp_x+12,hosp_y+24,10)
  end
  camera(p.x-64,p.y-64)
@@ -1271,18 +1290,18 @@ function _draw()
 
  for it in all(items) do
   at(it.x,it.y)
-  local s=({rosary=s_rosary,bucket=s_bucket,coffee=s_coffee})[it.k] or s_chest
-  thing(s,it.x,it.y+sin(t/40),s==s_coffee and 2)
+  local s=({rosary=34,bucket=35,coffee=36})[it.k] or 33
+  thing(s,it.x,it.y+sin(t/40),s==36 and 2)
  end
- for g in all(graces) do at(g.x,g.y) thing(s_grace,g.x,g.y) end
+ for g in all(graces) do at(g.x,g.y) thing(32,g.x,g.y) end
  for q in all(people) do draw_person(q) end
  at(church_x,church_y)
  for i=1,deacons do
-  figure(s_deacon,0,false,church_x-6+i*6,church_y+22,false,dlooks[i])
+  figure(4,0,false,church_x-6+i*6,church_y+22,false,dlooks[i])
  end
  for h in all(helpers) do
   at(h.x,h.y)
-  figure(s_priest,s_priest_walk,h.mv,h.x,h.y,h.fl,h.look)
+  figure(0,6,h.mv,h.x,h.y,h.fl,h.look)
  end
  -- player 2: their own blessing circle,
  -- and the car too once you have it
@@ -1302,11 +1321,11 @@ function _draw()
  -- you: blessing (4 frames, just
  -- after each blessing), walking,
  -- or standing. bishop once you are.
- local st,wk,bl=chars[who].s,chars[who].w,who==1 and s_priest_bless
+ local st,wk,bl=chars[who].s,chars[who].w,who==1 and 8
  -- the priest dresses as a bishop
  -- once the cathedral is built
  if who==1 and (bishop or cath) then
-  st,wk,bl=s_bishop,s_bishop_walk,s_bishop_bless
+  st,wk,bl=2,12,56
  end
  local since=p.rate-p.cd
  if bl and since<12 then
@@ -1318,7 +1337,7 @@ function _draw()
  -- your guardian angel, bringing grace
  if angel_t>0 then
   angel_t-=1
-  spr(s_angel+flr(t/4)%4,p.x+(p.fl and -12 or 4),p.y-16,1,1,p.fl)
+  spr(84+flr(t/4)%4,p.x+(p.fl and -12 or 4),p.y-16,1,1,p.fl)
  end
  for d in all(drops) do
   at(d.x,d.y) pset(d.x,d.y,d.t%2==0 and 12 or 7)
@@ -1528,13 +1547,13 @@ f777221f77122221777f221777f1111177ff22177f122221ff77221ff7711111f777221f77122221
 00001166661777777756661100000000116111666617777777566611166666111161116666177777775666111666661111611166661777777756661116666611
 00001111111111111111111100000000111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 00111111111111111111111111000000000000000000000000000000000000000001111111111111111111111100000000000000000000000000000000000000
-00111222222222222222222111000000000000000000000000000000000000000001222222222222222222221100000000000000000000000000000000000000
+00111222222227772222222111000000000000000000000000000000000000000001222222222222222222221100000000000000000000000000000000000000
 00112222222227772222222211000000000000000000000000000000000000000001221111111111111111111100000000000111111000000000000000000000
-0012222222227777722222222100000000000000000000000000000000000000000121111d11dddddddddd111000000000000011110000000000000000000000
-001212222222777772222221210000000000000000000000000000000000000000011111dd1dddddddddddd10000000000000012110000000000000000000000
-001122222222777772222222110000000000000000000000000000000000000000000001dd1dddddddddddd10000000000111112210000000000000000000000
+0012222222777777777222222100000000000000000000000000000000000000000121111d11dddddddddd111000000000000011110000000000000000000000
+001212222277777777722221210000000000000000000000000000000000000000011111dd1dddddddddddd10000000000000012110000000000000000000000
+001122222277777777722222110000000000000000000000000000000000000000000001dd1dddddddddddd10000000000111112210000000000000000000000
 001122222222277722222222110000000000000000000000000000000000000000011111111d5ffdddd5ffd10000000000011112211111111111111111000000
-001112222222222222222221110000000000000000000000000000000000000000012222211d5ffdddd5ffd10000000000012112211122222222222211000000
+001112222222277722222221110000000000000000000000000000000000000000012222211d5ffdddd5ffd10000000000012112211122222222222211000000
 011111111111111111111111110000000000000000000000000000000000000000011222111d55fdddd55fd10000000000012112111222222222222221000000
 0116666666666666666666110000000000000000000000000000000000000000000012221d1dddddddddddd10000000011111111111222222222222221000000
 0166f666f666f666f666f6610000000000000000000000000000000000000000000012221d1dddddddddddd10000000011222222211222222222222221000000
