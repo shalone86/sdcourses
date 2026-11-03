@@ -57,7 +57,11 @@ for (const [group, hexes] of Object.entries(cfg.parts || {})) {
     if (parts[n] && parts[n] !== kind) console.warn(`${group}: ${parts[n]} and ${kind} both became PICO-8 color ${n}; set one in "colors"`);
     parts[n] = kind;
   }
-  groups.push(`${group}={${Object.entries(parts).map(([n, k]) => `[${n}]="${k}"`).join(',')}}`);
+  // one string per group, a kind per PICO-8 color 1-15 ("" = keep),
+  // split at start: far fewer tokens than a table
+  const kinds = Array.from({length: 15}, (_, i) => parts[i + 1] || '');
+  while (kinds.length && !kinds[kinds.length - 1]) kinds.pop();
+  groups.push(`${group}=split"${kinds.join(',')}"`);
 }
 const partsLua = `parts={\n ${groups.join(',\n ')},\n}`;
 
@@ -69,9 +73,10 @@ for (const slot of cfg.tops || []) {
   const count = {};
   for (const ch of s.frames[0][0]) if (ch !== '.') count[ch] = (count[ch] || 0) + 1;
   const ch = Object.keys(count).sort((a, b) => count[b] - count[a])[0];
-  if (ch !== undefined) tops.push(`[${slot}]=${nearest(s.palette[parseInt(ch, 36)])}`);
+  if (ch !== undefined) tops[slot - 1] = nearest(s.palette[parseInt(ch, 36)]);
 }
-const topsLua = `tops={${tops.join(',')}}`;
+// one string too, indexed by slot
+const topsLua = `tops=split"${Array.from(tops, (v) => v ?? '').join(',')}"`;
 
 // big: her 32x32 art. The first 8 go on the bottom half of the sprite
 // sheet (sprites 128-255; the game reads only the top half of the map, so

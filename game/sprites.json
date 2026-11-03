@@ -1,6 +1,6 @@
 {
   "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide and 2 tall). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
-  "_slots": "0 priest idle, 2 bishop idle, 4 deacon idle, 6 priest walk, 8 priest blessing (4 frames), 12 bishop walk, 14 deacon walk, 16-27 people walking (6 bases), 32 grace, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 56 bishop blessing (4 frames), 84 angel (4 frames), 96 car and 104 parish van (16x16, 4 frames each), 72-83 people standing (6 bases, same order as walking), characters to unlock (standing, walking): 28/30 benedictine, 60/62 dominican, 64/66 franciscan, 68/70 eastern monk, 88/90 cardinal, 92/94 pope",
+  "_slots": "0 priest idle, 2 bishop idle, 4 deacon idle, 6 priest walk, 8 priest blessing (4 frames), 12 bishop walk, 14 deacon walk, 16-27 people walking (6 bases), 37 grace (a heart, 4 frames), 46 child standing, 48 child walking, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 56 bishop blessing (4 frames), 84 angel (4 frames), 96 car and 104 parish van (her first car) (16x16, 4 frames each), 72-83 people standing (6 bases, same order as walking), characters to unlock (standing, walking): 28/30 benedictine, 60/62 dominican, 64/66 franciscan, 68/70 eastern monk, 88/90 cardinal, 92/94 pope",
   "slots": {
     "0": "priest-idle",
     "2": "bishop-idle",
@@ -44,8 +44,11 @@
     "90": "cardinal-walk",
     "92": "pope-idle",
     "94": "pope-walk",
-    "96": "car",
-    "104": "parish-van"
+    "96": "town-car",
+    "104": "car",
+    "37": "grace-heart",
+    "46": "child-idle",
+    "48": "child-walk"
   },
   "_big": "Her 32x32 art: the first 8 on the bottom half of the sprite sheet, the rest stored in the code and unpacked at start into an extra sprite sheet (upper memory). Order is fixed: add new ones at the end.",
   "big": [
@@ -68,7 +71,7 @@
     "christmas-tree",
     "marian-garden"
   ],
-  "_parts": "Per group, which of her colors the game swaps for each one. people: every person gets random hair, skin (with matching eyes) and clothes. priest: the bishop's priests get their own skin and eyes. deacon: new deacons get their own skin and eyes; 'vestment' follows the season (spring white, summer green, fall green, winter purple).",
+  "_parts": "Per group, which of her colors the game swaps for each one. people: every person gets random hair, skin (with matching eyes) and clothes. priest: the bishop's priests get their own skin and eyes. deacon: new deacons get their own skin and eyes; 'vestment' follows the season (spring white, summer green, fall green, winter purple). child: the baby at a baptism gets its own hair, skin and clothes. player: the players' own skin and (the priest's) hair, picked on the start screen with up.",
   "parts": {
     "people": {
       "#5A3825": "hair",
@@ -85,12 +88,25 @@
     },
     "priest": {
       "#FFCCAA": "skin",
-      "#008751": "eyes"
+      "#008751": "eyes",
+      "#1D2B53": "hair"
     },
     "deacon": {
       "#FFCCAA": "skin",
       "#AB5236": "eyes",
-      "#FFF1E8": "vestment"
+      "#FFF1E8": "vestment",
+      "#1D2B53": "hair"
+    },
+    "child": {
+      "#FFA108": "hair",
+      "#FFCAA8": "skin",
+      "#222E53": "eyes",
+      "#82759A": "clothes"
+    },
+    "player": {
+      "#FFCCAA": "skin",
+      "#F2C6A0": "skin",
+      "#1D2B53": "hair"
     }
   },
   "_tops": "People slots whose top row (the top of the head) is hair or a hat: each person gets one at random.",
@@ -102,9 +118,10 @@
     "24",
     "26"
   ],
-  "_colors": "Force one of her colors onto a PICO-8 color number (0-15) when the nearest match is wrong or two colors land on the same one.",
+  "_colors": "Force one of her colors onto a PICO-8 color number (0-15) when the nearest match is wrong or two colors land on the same one. #1D2B53 (the priest's and deacon's hair) goes to 2, its own color, so hair can change apart from the black cassock.",
   "colors": {
     "#FFB300": 10,
-    "#18B7A6": 3
+    "#18B7A6": 3,
+    "#1D2B53": 2
   }
 }
