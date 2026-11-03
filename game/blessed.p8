@@ -38,7 +38,7 @@ parts={
  deacon=split",hair,,eyes,,,vestment,,,,,,,,skin",
  child=split"eyes,,,,,,,,hair,,,,clothes,,skin",
 }
-plooks={"bbdefghijklmnop,bbmefghijklmnop,bbbefghijklmnop,bfdefghijklmnop,bfmefghijklmnop,bfbefghijklmnop,bedefghijklmnop,bemefghijklmnop,bebefghijklmnop,bgdefghijklmnop,bgmefghijklmnop,bgbefghijklmnop,bhdefghijklmnop,bhmefghijklmnop,bhbefghijklmnop,bkdefghijklmnop,bkmefghijklmnop,bkbefghijklmnop,bbbefghijklmnoj,bfbefghijklmnoj,bebefghijklmnoj,bgbefghijklmnoj,bhbefghijklmnoj,bbbefghijklmnoe,bfbefghijklmnoe,bgbefghijklmnoe,bhbefghijklmnoe","bcdefghijklmnop,bcdpbghijklmnop,bcdpfghijklmnop,bcdpeghijklmnop,bcdpgghijklmnop,bcdphghijklmnop,bcdpkghijklmnop,bcdjbghijklmnop,bcdjfghijklmnop,bcdjeghijklmnop,bcdjgghijklmnop,bcdjhghijklmnop,bcdebghijklmnop,bcdegghijklmnop,bcdehghijklmnop","bcdefghijklmnop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijklmboj,bcdefghijklmboe","bcdefghijjlmnop,bcdefghijblmdop,bcdefghijblmmop,bcdefghijblmbop,bcdefghijflmdop,bcdefghijflmmop,bcdefghijflmbop,bcdefghijelmdop,bcdefghijelmmop,bcdefghijelmbop,bcdefghijglmdop,bcdefghijglmmop,bcdefghijglmbop,bcdefghijhlmdop,bcdefghijhlmmop,bcdefghijhlmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijblmboj,bcdefghijflmboj,bcdefghijelmboj,bcdefghijglmboj,bcdefghijhlmboj,bcdefghijblmboe,bcdefghijflmboe,bcdefghijglmboe,bcdefghijhlmboe","bcdefghijklmnop,bcdefgbijklmdop,bcdefgbijklmmop,bcdefgbijklmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefgbijklmboj,bcdefghijklmboj,bcdefgbijklmboe,bcdefghijklmboe","bcdefghijklmnop,bcdefghijkldnop,bcdefghijklbnop,bcdefghijklbnoj,bcdefghijklbnoe","bcdehghijklmnop,bcmehghijklmnop,bcbehghijklmnop,bcbehghijklmnoj,bcbehghijklmnoe"}
+plooks={"bbdefghijklmnop,bbmefghijklmnop,bbbefghijklmnop,bfdefghijklmnop,bfmefghijklmnop,bfbefghijklmnop,bedefghijklmnop,bemefghijklmnop,bebefghijklmnop,bgdefghijklmnop,bgmefghijklmnop,bgbefghijklmnop,bhdefghijklmnop,bhmefghijklmnop,bhbefghijklmnop,bkdefghijklmnop,bkmefghijklmnop,bkbefghijklmnop,bbbefghijklmnoj,bfbefghijklmnoj,bebefghijklmnoj,bgbefghijklmnoj,bhbefghijklmnoj,bbbefghijklmnoe,bfbefghijklmnoe,bgbefghijklmnoe,bhbefghijklmnoe","bcbefghijklmnop,bcdpfghijklmnop,bcmpfghijklmnop,bcbpfghijklmnop,bcbjfghijklmnop","bcdefghijklmnop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijklmboj,bcdefghijklmboe","bcdefghijklmnop,bcdefghijblmdop,bcdefghijblmmop,bcdefghijblmbop,bcdefghijflmdop,bcdefghijflmmop,bcdefghijflmbop,bcdefghijelmdop,bcdefghijelmmop,bcdefghijelmbop,bcdefghijglmdop,bcdefghijglmmop,bcdefghijglmbop,bcdefghijhlmdop,bcdefghijhlmmop,bcdefghijhlmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijblmboj,bcdefghijflmboj,bcdefghijelmboj,bcdefghijglmboj,bcdefghijhlmboj,bcdefghijblmboe,bcdefghijflmboe,bcdefghijglmboe,bcdefghijhlmboe","bcdefghijklmnop,bcdefgfijklmdop,bcdefgfijklmmop,bcdefgfijklmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefgfijklmboj,bcdefghijklmboj,bcdefgfijklmboe,bcdefghijklmboe","bcdefghijklmnop,bcdefghijkldnop,bcdefghijklbnop,bcdefghijklbnoj,bcdefghijklbnoe","bcdehghijklmnop,bcmehghijklmnop,bcbehghijklmnop,bcbehghijklmnoj,bcbehghijklmnoe"}
 tops=split",,,,,,,,,,,,,,,12,,14,,10,,14,,12,,9"
 -- @end
 
@@ -72,6 +72,7 @@ function load_big()
  end
  poke(0x5f55,0x60) -- back to the screen
 end
+load_big()
 
 -- draw big picture n
 -- with its top left at x,y
@@ -104,8 +105,8 @@ end
 -- each part's color is swapped
 -- for one of these colors
 looks={
- hair={1,2,4,5,6,7,9,10},
- clothes={1,2,3,8,9,11,12,13,14},
+ hair=split"1,2,4,5,6,7,9,10",
+ clothes=split"1,2,3,8,9,11,12,13,14",
 }
 skins={{15,12},{15,1},{9,1},{4,1},{15,3}} -- skin, eyes
 -- (dark skin: dark blue eyes)
@@ -122,18 +123,17 @@ skins={{15,12},{15,1},{9,1},{4,1},{15,3}} -- skin, eyes
 -- green, tan, snowy grey (white
 -- flakes fall on it). her leaves
 -- are color 3, so not that
-grounds={138,139,134,6}
+grounds=split"138,139,134,6"
 -- building colors to pick from
 -- (not 15 or 7: her windows and
 -- doors use those)
-walls={13,6,9,12,14,4}
-roofs={2,8,4,5,12,3}
-vests={7,11,11,2} -- white, green, green, purple
+walls=split"13,6,9,12,14,4"
+roofs=split"2,8,4,5,12,3"
+vests=split"7,11,11,2" -- white, green, green, purple
 
 cartdata("sdcason_blessed")
 
 function _init()
- if not big_loaded then load_big() big_loaded=true end
  -- the season comes first: it
  -- changes the trees and flowers
  season=flr(rnd(4))+1
@@ -163,7 +163,7 @@ function _init()
  score=0 xp=0 need=3 lvl=1
  b2=0 -- blessings by player 2 (co-op)
  lost={0,0,0} lost_t=0 lost_c=0 -- time lost
- car_c,car_r=rnd({8,9,10,11,12,14,6,13}),rnd(roofs)
+ car_c,car_r=rnd(split"8,9,10,11,12,14,6,13"),rnd(roofs)
  t=0 missed=0 msg="" msg_t=0
  state="play" page=1
  p2=nil -- player 2 joins from the start screen
@@ -365,7 +365,7 @@ events={
  {n="a new house to bless",at="house",need=8},
  {n="a wedding",at="church",need=10,s=24,m=74,g="people"},
  {n="a baptism",at="church",need=6,m=46,g="child"},
- {n="a sick child",at="hosp",need=8},
+ {n="a sick child",at="hosp",need=8,s=-10,l="child"},
 }
 
 -- the bishop's priests: your priest
@@ -420,7 +420,7 @@ function make_town()
  for i=1,60 do
   local x,y=rnd(world),rnd(world)
   if free(x-8,y-16) then
-   add(trees,{x=x,y=y,k=rnd({1,2,4,6}),
+   add(trees,{x=x,y=y,k=rnd(split"1,2,4,6"),
     bare=rnd({3,5}),xmas=rnd(1)<.3})
   end
  end
@@ -496,7 +496,7 @@ end
 -- (walks to mass, waits there),
 -- sick (at the hospital)
 function person(x,y,k)
- local q={x=x,y=y,k=k,s=rnd{16,18,20,22,24,26},
+ local q={x=x,y=y,k=k,s=rnd(split"16,18,20,22,24,26"),
   look=new_look("people"),need=1,hit=0,
   wait=(900+rnd(300))*patience,spd=.2+rnd(.2)}
  -- the top of the head: hair, or
@@ -552,7 +552,8 @@ function spawn_event()
  q.need=e.need+lvl\2 q.wait=1800 q.ev=e.n
  -- a wedding's bride, a baptism's
  -- child: stands beside them (m)
- q.s=e.s or q.s
+ q.s=e.s or q.s -- -10: the child (46) standing
+ if e.l then q.look=new_look(e.l) end
  if e.m then q.m,q.ml=e.m,new_look(e.g) end
  if b then q.b=b b.who=q end
  say(e.n.."! (z: map)")
@@ -1277,7 +1278,7 @@ function _draw()
    pal(13,b.wc) pal(6,b.wc) pal(2,b.rc)
    bigspr(art(b),b.x-8,b.y-16)
    pal()
-   if b.who and t%20<14 then print("\138",b.x+5,b.y-22,b.who.ev and 9 or 10) end
+   if b.who and t%20<14 then print("\138",b.x+5,b.y-22,b.who.wait<150 and 8 or b.who.ev and 9 or 10) end
   end
  end
  for tr in all(trees) do at(tr.x,tr.y) tree(tr) end
@@ -1393,8 +1394,10 @@ function _draw()
  -- blessing, ★ a big need
  local marks={}
  for q in all(people) do
-  if q.ev then add(marks,{q.x,q.y,9,"\146"})
-  elseif q.k=="home" then add(marks,{q.x,q.y,10,"\138"}) end
+  -- red in its last 5 seconds
+  local c=q.wait<150 and 8
+  if q.ev then add(marks,{q.x,q.y,c or 9,"\146"})
+  elseif q.k=="home" then add(marks,{q.x,q.y,c or 10,"\138"}) end
  end
  -- always: the church (white +) and
  -- the hospital (red +, flashing
@@ -1483,8 +1486,8 @@ __gfx__
 00011000000110000001100000011000000220000002200000011000001010000001100000011000000110000001100000011000001101000002200000220200
 000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000000ccc0000000000000999000000000000055500000000000005550000000000
 00544400000ccc0000544400000eee0000544400000aaa0000544450000eee0000544400000ccc00005444000009990000544400000555000054440000055500
-004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450004f4f0000544400004f4f000054440000414100005444000041410000544400
-0054a400004f4f0005544450054f4f0000549400004f4f0005544400054f4f5000545400004f4f0000545400004f4f0000544400004141000054440000414100
+004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450004f4f0000544400004f4f000054440000434300005444000043430000544400
+0054a400004f4f0005544450054f4f0000549400004f4f0005544400054f4f5000545400004f4f0000545400004f4f0000544400004343000054440000434300
 000d70000054a400000370000554445000d17100005494000053770005544400005555000054540000d555000054540000111100005444000011110000544400
 000d1000000d7000000310000003700000d11100001d7100000c4c0000537700000a70000055550000d1a100001d550000111100001111000011110000111100
 0004e000000e40000004c00000014000004eee0000ee4e00000111000004cc000004100000014000004eee0000ee4e0000455500004555000045550000545500

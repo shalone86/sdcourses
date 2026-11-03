@@ -15,7 +15,7 @@ parts={
  deacon=split",hair,,eyes,,,vestment,,,,,,,,skin",
  child=split"eyes,,,,,,,,hair,,,,clothes,,skin",
 }
-plooks={"bbdefghijklmnop,bbmefghijklmnop,bbbefghijklmnop,bfdefghijklmnop,bfmefghijklmnop,bfbefghijklmnop,bedefghijklmnop,bemefghijklmnop,bebefghijklmnop,bgdefghijklmnop,bgmefghijklmnop,bgbefghijklmnop,bhdefghijklmnop,bhmefghijklmnop,bhbefghijklmnop,bkdefghijklmnop,bkmefghijklmnop,bkbefghijklmnop,bbbefghijklmnoj,bfbefghijklmnoj,bebefghijklmnoj,bgbefghijklmnoj,bhbefghijklmnoj,bbbefghijklmnoe,bfbefghijklmnoe,bgbefghijklmnoe,bhbefghijklmnoe","bcdefghijklmnop,bcdpbghijklmnop,bcdpfghijklmnop,bcdpeghijklmnop,bcdpgghijklmnop,bcdphghijklmnop,bcdpkghijklmnop,bcdjbghijklmnop,bcdjfghijklmnop,bcdjeghijklmnop,bcdjgghijklmnop,bcdjhghijklmnop,bcdebghijklmnop,bcdegghijklmnop,bcdehghijklmnop","bcdefghijklmnop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijklmboj,bcdefghijklmboe","bcdefghijjlmnop,bcdefghijblmdop,bcdefghijblmmop,bcdefghijblmbop,bcdefghijflmdop,bcdefghijflmmop,bcdefghijflmbop,bcdefghijelmdop,bcdefghijelmmop,bcdefghijelmbop,bcdefghijglmdop,bcdefghijglmmop,bcdefghijglmbop,bcdefghijhlmdop,bcdefghijhlmmop,bcdefghijhlmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijblmboj,bcdefghijflmboj,bcdefghijelmboj,bcdefghijglmboj,bcdefghijhlmboj,bcdefghijblmboe,bcdefghijflmboe,bcdefghijglmboe,bcdefghijhlmboe","bcdefghijklmnop,bcdefgbijklmdop,bcdefgbijklmmop,bcdefgbijklmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefgbijklmboj,bcdefghijklmboj,bcdefgbijklmboe,bcdefghijklmboe","bcdefghijklmnop,bcdefghijkldnop,bcdefghijklbnop,bcdefghijklbnoj,bcdefghijklbnoe","bcdehghijklmnop,bcmehghijklmnop,bcbehghijklmnop,bcbehghijklmnoj,bcbehghijklmnoe"}
+plooks={"bbdefghijklmnop,bbmefghijklmnop,bbbefghijklmnop,bfdefghijklmnop,bfmefghijklmnop,bfbefghijklmnop,bedefghijklmnop,bemefghijklmnop,bebefghijklmnop,bgdefghijklmnop,bgmefghijklmnop,bgbefghijklmnop,bhdefghijklmnop,bhmefghijklmnop,bhbefghijklmnop,bkdefghijklmnop,bkmefghijklmnop,bkbefghijklmnop,bbbefghijklmnoj,bfbefghijklmnoj,bebefghijklmnoj,bgbefghijklmnoj,bhbefghijklmnoj,bbbefghijklmnoe,bfbefghijklmnoe,bgbefghijklmnoe,bhbefghijklmnoe","bcbefghijklmnop,bcdpfghijklmnop,bcmpfghijklmnop,bcbpfghijklmnop,bcbjfghijklmnop","bcdefghijklmnop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijklmboj,bcdefghijklmboe","bcdefghijklmnop,bcdefghijblmdop,bcdefghijblmmop,bcdefghijblmbop,bcdefghijflmdop,bcdefghijflmmop,bcdefghijflmbop,bcdefghijelmdop,bcdefghijelmmop,bcdefghijelmbop,bcdefghijglmdop,bcdefghijglmmop,bcdefghijglmbop,bcdefghijhlmdop,bcdefghijhlmmop,bcdefghijhlmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijblmboj,bcdefghijflmboj,bcdefghijelmboj,bcdefghijglmboj,bcdefghijhlmboj,bcdefghijblmboe,bcdefghijflmboe,bcdefghijglmboe,bcdefghijhlmboe","bcdefghijklmnop,bcdefgfijklmdop,bcdefgfijklmmop,bcdefgfijklmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefgfijklmboj,bcdefghijklmboj,bcdefgfijklmboe,bcdefghijklmboe","bcdefghijklmnop,bcdefghijkldnop,bcdefghijklbnop,bcdefghijklbnoj,bcdefghijklbnoe","bcdehghijklmnop,bcmehghijklmnop,bcbehghijklmnop,bcbehghijklmnoj,bcbehghijklmnoe"}
 tops=split",,,,,,,,,,,,,,,12,,14,,10,,14,,12,,9"
 bigart="33333333333333333333333333333333333333333333333332777733335bbb533325bbb9433307bbb9433304bbbb8433304bbbb8433305bbba533307777633304=7@@=633314>5@@?433324>4@@@433324>4=k|@>k{433324>4=k|@>k{433324>4=k|@>k{433324>4=k|@>k{433324>4@@@433324>4@@@433324>4@kv?433324>4@kv?433324>4@kv?433324>4@kv?433324>4@kuk?433324>4@kv?433324>5?kv?433324=7>kv>53332777743323333333333333333333333333333333333333333333333333307777433326bbb533316bbb9431776bbb9774ba5bbb95a6bb84bbb94b85bb6bbb5b87777776b7@>7@@>776@@5@k{l{?5?604@@=4@nk?4@=504@@=4@k{l{?4@>404@@=4@=k@>4@>404@@=4@@@4@>404?k|?4k|@?k{4>k|=404?k|?4k|@?k{4>k|=404?k|?4k|@?k{4>k|=404?k|?4k|=ltk=k{4>k|=404@k@4=k>kv>k4?k>404@@=4@kv?4@>404@@=4@kv?4@>404@@=4@kuk?4@>404@@=4@kv?4@>404@@=4@kv?4@>405@?6?ltk>6@507777777603333333333333333333fe333333+ffd,33329fffd83332+8fd8ff3332ffffc3332e8ff8f3332fe+ff+3332fffd+c83332c8fffe3332f8fff3332fffe8+33330ff+f33332fffc33332fffc33332+8ffc9333330ffc333332+8fc8+333332,fc,33333309h833333328j3333332jg3333332jg3333332jg33333328j33333329h83333333i33333330i33333330i333333308h333333308h3332333333333333333333333333333333333333333333333333333333333333333333333333333333333ffffc3332f+ffc8fd332ffffd+d331ff8fc+fe331e+fd+fff330ffffff33fc0+8ffc9c2c33c2c1ffe0c2c33c2c1d8fc8d0c2c33c2c1ffe0c2c33c31c0cb8c32c33c31c18jd8f333f8d0jgci+d333ffjgchf333d+cicjgc0c2c333fcjj1c2c333c30c09h8182c333c30c1i32c33383081i33333330i333333308h333333308h33323333333333333333333333333333333333333333333333333333333333333333333333333333333330g33333333i33333333g33333330ji33jg333ji32g3333g1g1h31jg3330g30h2jg0g3331g30jjg2g3330g1jjg31g3333jjg31g3332h2b831g3332g38j333331g3jjg33331g3jjh33331i0jg3g33331jjg3g33331g29h83333333i33333330i33333330i333333308h333333308h3332333333333332,33333330f3333331fe+333333c+fc+333333ff3333338fc+c3333308fff+33331fd8fd+33331fffd33331fffd3332fd+fd8fc+333ffffe+333f8fffc8c3338fffc+fc332ffd+ffd+331fffffd331c8e+fffd+c331ff8fffc3308fffffd+33ffcb8fe8c+33e+fc8je+fd33ffcjgffd33c0d0d0fe0d0d0d338090908jg809090933338jg33333329h83333333i33333330i33333330i333333308h33333339h3332333333333333333333333333333333333333333333333333333333333333333333333333332g333333282g830h33333g1g2g0h3333308i28h3333330h3g333330jh3j3g3332j2j80i333308h2j1g33308h3i1i1h3333g2j0h1i33330g8g0jh0i833331jjj333330ji9g3333328jh3333331jh3333332jg33333318jg33333329h83333333i33333330i33333330i333333308h33333339h33323333333333333333333333333333333333333333333333333333333333333333333331d33333331cg0f30fd30fd2cg0f30fd30ffdg0chc30fd30ehdhcgegc30egd2gcgdhdhf0ge3c0gfchejhfcgd1c0d0gegchc1gdjgdid0gcjgcjgd2fe30c0gcgfcgdhd0fff1c1cgfjdgejgdjh2cgf0h0dgf0fcichc1cieh0fc0ehfdh3iehfdgehd0c1e2fjgfcicicgcjc1fdjcgeichdjhc1c0hfejhffegc1c2c30c8jg0c1c1c1e33319h83c32c3332i30c333332i33333330i333333308h33333339h3332333333333332&33333331(s3333333*s3333333)3333333&0c0&3333332+f3333331ff3333338fc+c3333308fe:e+33331d:d8c:e+33331d:ffd33331fffd3332fd+c:e8:e+333c:fc:f:e+333c:c8fdxfc8c3338fxfxc+cxd332fdxc(fdxd+331ffc(ffe331xd(ff(f+c331xd(d8fc(fd3308fffffd+33ffcb8fe8c+33d(fc8je+c(e33d(fcjgfc(e33c0d0d0fe0d0d0d338090908jg809090933331i33333330i33333330i333333308h33333339h333233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333077776s63304ffffcscsc43304f8d+f8c+esd43304ffffdsd43304e+d&d8c+d&esd43304fffffc433077777633"
 alpha="0123456789abcdefghijklmnopqrstuvwxyz!#$%&()*+,-./:;<=>?@[]^_{|}~"
@@ -37,6 +37,7 @@ function load_big()
  end
  poke(0x5f55,0x60)
 end
+load_big()
 function bigspr(n,x,y)
  local sx,sy=n%4*32,64+n\4*32
  if n>7 then
@@ -56,17 +57,16 @@ function shade(sx,sy,w,x,y)
  memcpy(0x5f00,0x4300,16)
 end
 looks={
- hair={1,2,4,5,6,7,9,10},
- clothes={1,2,3,8,9,11,12,13,14},
+ hair=split"1,2,4,5,6,7,9,10",
+ clothes=split"1,2,3,8,9,11,12,13,14",
 }
 skins={{15,12},{15,1},{9,1},{4,1},{15,3}}
-grounds={138,139,134,6}
-walls={13,6,9,12,14,4}
-roofs={2,8,4,5,12,3}
-vests={7,11,11,2}
+grounds=split"138,139,134,6"
+walls=split"13,6,9,12,14,4"
+roofs=split"2,8,4,5,12,3"
+vests=split"7,11,11,2"
 cartdata("sdcason_blessed")
 function _init()
- if not big_loaded then load_big() big_loaded=true end
  season=flr(rnd(4))+1
  make_town()
  p={x=256,y=272,spd=1,r=14,cd=0,
@@ -88,7 +88,7 @@ function _init()
  score=0 xp=0 need=3 lvl=1
  b2=0
  lost={0,0,0} lost_t=0 lost_c=0
- car_c,car_r=rnd({8,9,10,11,12,14,6,13}),rnd(roofs)
+ car_c,car_r=rnd(split"8,9,10,11,12,14,6,13"),rnd(roofs)
  t=0 missed=0 msg="" msg_t=0
  state="play" page=1
  p2=nil
@@ -238,7 +238,7 @@ events={
  {n="a new house to bless",at="house",need=8},
  {n="a wedding",at="church",need=10,s=24,m=74,g="people"},
  {n="a baptism",at="church",need=6,m=46,g="child"},
- {n="a sick child",at="hosp",need=8},
+ {n="a sick child",at="hosp",need=8,s=-10,l="child"},
 }
 function add_helper(hosp)
  add(helpers,{x=p.x,y=p.y,cd=0,hosp=hosp,
@@ -272,7 +272,7 @@ function make_town()
  for i=1,60 do
   local x,y=rnd(world),rnd(world)
   if free(x-8,y-16) then
-   add(trees,{x=x,y=y,k=rnd({1,2,4,6}),
+   add(trees,{x=x,y=y,k=rnd(split"1,2,4,6"),
     bare=rnd({3,5}),xmas=rnd(1)<.3})
   end
  end
@@ -318,7 +318,7 @@ function new_look(g)
  return l
 end
 function person(x,y,k)
- local q={x=x,y=y,k=k,s=rnd{16,18,20,22,24,26},
+ local q={x=x,y=y,k=k,s=rnd(split"16,18,20,22,24,26"),
   look=new_look("people"),need=1,hit=0,
   wait=(900+rnd(300))*patience,spd=.2+rnd(.2)}
  local tc=tops[q.s]
@@ -364,6 +364,7 @@ function spawn_event()
  local q=person(x,y,"event")
  q.need=e.need+lvl\2 q.wait=1800 q.ev=e.n
  q.s=e.s or q.s
+ if e.l then q.look=new_look(e.l) end
  if e.m then q.m,q.ml=e.m,new_look(e.g) end
  if b then q.b=b b.who=q end
  say(e.n.."! (z: map)")
@@ -900,7 +901,7 @@ function _draw()
    pal(13,b.wc) pal(6,b.wc) pal(2,b.rc)
    bigspr(art(b),b.x-8,b.y-16)
    pal()
-   if b.who and t%20<14 then print("\138",b.x+5,b.y-22,b.who.ev and 9 or 10) end
+   if b.who and t%20<14 then print("\138",b.x+5,b.y-22,b.who.wait<150 and 8 or b.who.ev and 9 or 10) end
   end
  end
  for tr in all(trees) do at(tr.x,tr.y) tree(tr) end
@@ -990,8 +991,9 @@ function _draw()
  end
  local marks={}
  for q in all(people) do
-  if q.ev then add(marks,{q.x,q.y,9,"\146"})
-  elseif q.k=="home" then add(marks,{q.x,q.y,10,"\138"}) end
+  local c=q.wait<150 and 8
+  if q.ev then add(marks,{q.x,q.y,c or 9,"\146"})
+  elseif q.k=="home" then add(marks,{q.x,q.y,c or 10,"\138"}) end
  end
  add(marks,{church_x+8,church_y+8,7,"+"})
  add(marks,{hosp_x+8,hosp_y+8,chap and hosp_need>0 and t%10<5 and 7 or 8,"+"})
@@ -1068,8 +1070,8 @@ __gfx__
 00011000000110000001100000011000000220000002200000011000001010000001100000011000000110000001100000011000001101000002200000220200
 000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000000ccc0000000000000999000000000000055500000000000005550000000000
 00544400000ccc0000544400000eee0000544400000aaa0000544450000eee0000544400000ccc00005444000009990000544400000555000054440000055500
-004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450004f4f0000544400004f4f000054440000414100005444000041410000544400
-0054a400004f4f0005544450054f4f0000549400004f4f0005544400054f4f5000545400004f4f0000545400004f4f0000544400004141000054440000414100
+004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450004f4f0000544400004f4f000054440000434300005444000043430000544400
+0054a400004f4f0005544450054f4f0000549400004f4f0005544400054f4f5000545400004f4f0000545400004f4f0000544400004343000054440000434300
 000d70000054a400000370000554445000d17100005494000053770005544400005555000054540000d555000054540000111100005444000011110000544400
 000d1000000d7000000310000003700000d11100001d7100000c4c0000537700000a70000055550000d1a100001d550000111100001111000011110000111100
 0004e000000e40000004c00000014000004eee0000ee4e00000111000004cc000004100000014000004eee0000ee4e0000455500004555000045550000545500

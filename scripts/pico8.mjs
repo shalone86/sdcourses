@@ -58,7 +58,7 @@ const groups = [];
 // peach, tan or brown; hair dark blue, dark brown, brown, gray, white or
 // yellow, yellow only with peach skin, never hair the
 // skin's own color; blue or green eyes only with peach skin; the eastern
-// monk's beard white, or dark blue with dark blue hair; "white" always
+// monk's beard white or dark gray (with dark hair); "white" always
 // white (the pope's hair). Looks that would show the same on a character
 // are dropped, so every up/down press changes something. The first is her
 // drawing's own colors. One string per look: the
@@ -71,13 +71,13 @@ for (const [group, hexes] of Object.entries(cfg.parts || {})) {
     kind[nearest(hex)] = k;
     // her own color for it (hair forced to its own color for the swap,
     // like the priest's, shows as its nearest)
-    drawn[nearest(hex)] = k === 'white' ? 7 : k === 'hair' ? closest(hex) : nearest(hex);
+    drawn[nearest(hex)] = k === 'white' ? 7 : (cfg.separate || []).includes(hex.toUpperCase()) ? closest(hex) : nearest(hex);
   }
   const own = Array.from({length: 15}, (_, i) => String.fromCharCode(97 + (drawn[i + 1] ?? i + 1))).join('');
   const seen = new Set([own]), list = [own];
   for (const sk of [15, 9, 4]) for (const h of [1, 5, 4, 6, 7, 10]) for (const e of [3, 12, 1]) {
     if (h === sk || (sk !== 15 && (h === 10 || e !== 1))) continue;
-    const v = {skin: sk, hair: h, eyes: e, beard: h === 1 ? 1 : 7, white: 7};
+    const v = {skin: sk, hair: h, eyes: e, beard: h === 1 || h === 5 ? 5 : 7, white: 7};
     const look = Array.from({length: 15}, (_, i) => String.fromCharCode(97 + (kind[i + 1] ? v[kind[i + 1]] : i + 1))).join('');
     if (!seen.has(look)) { seen.add(look); list.push(look); }
   }
