@@ -4,13 +4,29 @@ The game is served from your own Ghost site, inside your theme, so no
 other company is involved.
 
 ## 1. Export the web version (PICO-8)
-In PICO-8, type:
+The site plays the 1-player cart (phones, tablets and a keyboard are
+one player anyway). In PICO-8, type:
 
     load blessed-release
     export blessed.html
 
 That makes two files in the carts folder (type `folder` to open it):
 `blessed.html` and `blessed.js`. Keep them together.
+
+## 1b. The downloads (PICO-8)
+Both carts as programs that run without PICO-8 (Windows, Mac, Linux,
+Raspberry Pi), and as .p8.png carts for PICO-8, RetroPie and handhelds:
+
+    load blessed-release
+    export blessed.bin
+    save blessed.p8.png
+    load blessed4-release
+    export blessed4.bin
+    save blessed4.p8.png
+
+`export ….bin` makes a `….bin` folder with one zip per computer. If PICO-8
+says the code is too big to save as .png, tell Claude (that's the
+compressed-size limit, separate from tokens).
 
 ## 2. Get your kids site's theme (Ghost)
 In the kids site's Ghost admin: **Settings → Design & branding →
@@ -47,12 +63,15 @@ Make a page or post, add an **HTML** card, and paste:
 Under it, the controls and the credit line (change them to your words):
 
 > **How to play:** arrow keys walk; **Z** opens the town map; **X** takes
-> upgrades. Player 2 joins on the start screen with their own X
-> (keyboard: S F E D to move, A or Q for X). On a phone, use the on-screen
-> buttons.
+> upgrades. On a phone, use the on-screen buttons.
 >
 > *Art, music and game design by Shalone Cason. Code written with AI help
 > (Claude).*
+
+Then the downloads: type `/file` in the editor for a **File** card and
+upload each zip (and the two .p8.png carts), with a line saying which is
+which: *Blessed! (1 player)* and *Blessed! (4 players: players 2–4 press X
+on their own controller on the start screen to join)*.
 
 ## Updating the game later
 Repeat 1, 3 and 4 with the theme zip you already have (or a fresh

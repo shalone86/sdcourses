@@ -7,6 +7,13 @@ __lua__
 -- z (the o button): town map.
 -- level up / gift box: arrows
 -- choose, x or z take it.
+-- this is the 1-player cart; npm run --1p
+-- pico8-release also makes the --1p
+-- 4-player one (blessed4.p8): lines --1p
+-- ending --1p are left out of it, --1p
+-- lines starting --4p are only in it. --1p
+--4p -- the 4-player cart, made from
+--4p -- blessed.p8 (edit that one)
 
 -- sprite slots: game/sprites.json
 -- says which drawing goes where
@@ -38,7 +45,7 @@ parts={
  deacon=split",hair,,eyes,,,vestment,,,,,,,,skin",
  child=split"eyes,,,,,,,,hair,,,,clothes,,skin",
 }
-plooks={"bbdefghijklmnop,bbmefghijklmnop,bbbefghijklmnop,bfdefghijklmnop,bfmefghijklmnop,bfbefghijklmnop,bedefghijklmnop,bemefghijklmnop,bebefghijklmnop,bgdefghijklmnop,bgmefghijklmnop,bgbefghijklmnop,bhdefghijklmnop,bhmefghijklmnop,bhbefghijklmnop,bkdefghijklmnop,bkmefghijklmnop,bkbefghijklmnop,bbbefghijklmnoj,bfbefghijklmnoj,bebefghijklmnoj,bgbefghijklmnoj,bhbefghijklmnoj,bbbefghijklmnoe,bfbefghijklmnoe,bgbefghijklmnoe,bhbefghijklmnoe","bcbefghijklmnop,bcdpfghijklmnop,bcmpfghijklmnop,bcbpfghijklmnop,bcbjfghijklmnop","bcdefghijklmnop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijklmboj,bcdefghijklmboe","bcdefghijklmnop,bcdefghijblmdop,bcdefghijblmmop,bcdefghijblmbop,bcdefghijflmdop,bcdefghijflmmop,bcdefghijflmbop,bcdefghijelmdop,bcdefghijelmmop,bcdefghijelmbop,bcdefghijglmdop,bcdefghijglmmop,bcdefghijglmbop,bcdefghijhlmdop,bcdefghijhlmmop,bcdefghijhlmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijblmboj,bcdefghijflmboj,bcdefghijelmboj,bcdefghijglmboj,bcdefghijhlmboj,bcdefghijblmboe,bcdefghijflmboe,bcdefghijglmboe,bcdefghijhlmboe","bcdefghijklmnop,bcdefgfijklmdop,bcdefgfijklmmop,bcdefgfijklmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefgfijklmboj,bcdefghijklmboj,bcdefgfijklmboe,bcdefghijklmboe","bcdefghijklmnop,bcdefghijkldnop,bcdefghijklbnop,bcdefghijklbnoj,bcdefghijklbnoe","bcdegghijklmnop,bcmegghijklmnop,bcbegghijklmnop,bcbegghijklmnoj,bcbegghijklmnoe"}
+plooks={"bbdefghijklmnop,bbmefghijklmnop,bbbefghijklmnop,bfdefghijklmnop,bfmefghijklmnop,bfbefghijklmnop,bedefghijklmnop,bemefghijklmnop,bebefghijklmnop,bgdefghijklmnop,bgmefghijklmnop,bgbefghijklmnop,bhdefghijklmnop,bhmefghijklmnop,bhbefghijklmnop,bkdefghijklmnop,bkmefghijklmnop,bkbefghijklmnop,bbbefghijklmnoj,bfbefghijklmnoj,bebefghijklmnoj,bgbefghijklmnoj,bhbefghijklmnoj,bbbefghijklmnoe,bfbefghijklmnoe,bgbefghijklmnoe,bhbefghijklmnoe","bcbefghijklmnop,bcdpfghijklmnop,bcmpfghijklmnop,bcbpfghijklmnop,bcbjfghijklmnop","bcdefghijklmnop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijklmboj,bcdefghijklmboe","bcdefghijklmnop,bcdefghijblmdop,bcdefghijblmmop,bcdefghijblmbop,bcdefghijflmdop,bcdefghijflmmop,bcdefghijflmbop,bcdefghijelmdop,bcdefghijelmmop,bcdefghijelmbop,bcdefghijglmdop,bcdefghijglmmop,bcdefghijglmbop,bcdefghijhlmdop,bcdefghijhlmmop,bcdefghijhlmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefghijblmboj,bcdefghijflmboj,bcdefghijelmboj,bcdefghijglmboj,bcdefghijhlmboj,bcdefghijblmboe,bcdefghijflmboe,bcdefghijglmboe,bcdefghijhlmboe","bcdefghijklmnop,bcdefgfijklmdop,bcdefgfijklmmop,bcdefgfijklmbop,bcdefghijklmdop,bcdefghijklmmop,bcdefghijklmbop,bcdefgfijklmboj,bcdefghijklmboj,bcdefgfijklmboe,bcdefghijklmboe","bcdefghijklmnop,bcdefghijkldnop,bcdefghijklbnop,bcdefghijklbnoj,bcdefghijklbnoe","bcdegghijklmnop,bcmegghijklmnop,bcbegghijklmnop,bcbegghijklmnoj,bcbegghijklmnoe","bcdefghijklmnop,bcdefghijbldnop,bcdefghijblmnop,bcdefghijblbnop,bcdefghijfldnop,bcdefghijflmnop,bcdefghijflbnop,bcdefghijeldnop,bcdefghijelmnop,bcdefghijelbnop,bcdefghijgldnop,bcdefghijglmnop,bcdefghijglbnop,bcdefghijhldnop,bcdefghijhlmnop,bcdefghijhlbnop,bcdefghijkldnop,bcdefghijklbnop,bcdefghijblbnoj,bcdefghijflbnoj,bcdefghijelbnoj,bcdefghijglbnoj,bcdefghijhlbnoj,bcdefghijblbnoe,bcdefghijflbnoe,bcdefghijglbnoe,bcdefghijhlbnoe","bcdefghijklmnop,bcdebghijkldnop,bcdebghijklmnop,bcdebghijklbnop,bcdefghijkldnop,bcdefghijklbnop,bcdeeghijkldnop,bcdeeghijklmnop,bcdeeghijklbnop,bcdegghijkldnop,bcdegghijklmnop,bcdegghijklbnop,bcdehghijkldnop,bcdehghijklmnop,bcdehghijklbnop,bcdekghijkldnop,bcdekghijklmnop,bcdekghijklbnop,bcdebghijklbnoj,bcdefghijklbnoj,bcdeeghijklbnoj,bcdegghijklbnoj,bcdehghijklbnoj,bcdebghijklbnoe,bcdefghijklbnoe,bcdegghijklbnoe,bcdehghijklbnoe"}
 tops=split",,,,,,,,,,,,,,,12,,14,,10,,14,,12,,9"
 -- @end
 
@@ -161,12 +168,12 @@ function _init()
  got={} -- combos taken this day
  lv={} -- level of each upgrade
  score=0 xp=0 need=3 lvl=1
- b2=0 -- blessings by player 2 (co-op)
  lost={0,0,0} lost_t=0 lost_c=0 -- time lost
  car_c,car_r=rnd(split"8,9,10,11,12,14,6,13"),rnd(roofs)
  t=0 missed=0 msg="" msg_t=0
  state="play" page=1
- p2=nil -- player 2 joins from the start screen
+ -- some days are nights
+ night=rnd(4)<1
  -- the start screen, when the
  -- game is first switched on
  if not booted then booted=true state="title" end
@@ -182,8 +189,9 @@ function _init()
 end
 
 -- upgrades: name, what it does,
--- most times you can take it,
--- and (ok) when it can show up
+-- most times you can take it
+-- (when each can show up: ready(),
+-- below the combos)
 ups={
  {n="holy water",d="bless farther",max=5,
   f=function() p.r+=5 end},
@@ -200,39 +208,30 @@ ups={
  {n="fix the church",d="more come to mass",max=2,
   f=function() church+=1 end},
  {n="cathedral",d="a bishop's seat",max=1,
-  ok=function() return church>=2 and relics end,
   f=function() church=3 cath=true end},
  {n="bishop",d="ordain a priest to help",max=5,
-  ok=function() return cath end,
   f=function() bishop=true add_helper(false) end},
  {n="marian garden",d="more come to pray",max=3,
-  ok=function() return church>0 end,
   f=function() garden+=1 end},
  {n="church deacon",d="blesses at the church",max=4,
-  ok=function() return garden>0 end,
-  f=function() deacons+=1 add(dlooks,new_look("deacon")) end},
+  f=function() deacons+=1 add(dlooks,new_look"deacon") end},
  {n="church relics",d="the church heals too",max=1,
-  ok=function() return deacons>0 end,
   f=function() relics=true end},
  -- the hospital path
  {n="chaplain",d="bless the sick there",max=1,
   f=function() chap=true end},
  {n="hospital priest",d="blesses the sick for you",max=3,
-  ok=function() return chap end,
   f=function() hosp_priests+=1 add_helper(true) end},
  {n="hospital chapel",d="people come to pray",max=1,
-  ok=function() return hosp_priests>0 end,
   f=function()
    chapel=true
    add(bldg,{x=chapel_x,y=chapel_y,s=1,k="chapel",
     wc=hosp_wc,rc=hosp_rc}) -- matches the hospital
   end},
  {n="chapel relic",d="draws more; heals",max=1,
-  ok=function() return chapel end,
   f=function() chapel_relic=true end},
  {n="chapel deacon",d="blesses at the chapel",max=2,
-  ok=function() return chapel end,
-  f=function() chapel_deacons+=1 add(cdlooks,new_look("deacon")) end},
+  f=function() chapel_deacons+=1 add(cdlooks,new_look"deacon") end},
 }
 
 function l(n) return lv[n] or 0 end
@@ -254,11 +253,17 @@ chars={
   u="build the cathedral"},
  {n="pope",s=92,w=94,d="blesses all, each minute",
   u="bless 500 in a day"},
+ {n="java priest",s=50,w=50,d="faster; coffee lasts longer",
+  u="take drive-through"},
+ {n="saintly priest",s=52,w=52,d="blesses farther and faster",
+  u="find all 13 combos"},
 }
 -- who: the character you play
 -- (the last one you played)
 who=max(1,dget(3))
-who2=1 -- player 2's character
+--4p -- players 2-4 (by controller,
+--4p -- 1-3): joined on the start screen
+--4p xs={}
 
 function unlocked(i) return i==1 or dget(2)&(1<<i)>0 end
 
@@ -279,10 +284,11 @@ function top5(x,y,c)
    -- the characters played: p priest,
    -- b benedictine, d dominican,
    -- f franciscan, e eastern monk,
-   -- c cardinal, + pope (2 letters:
-   -- 2 players)
-   for m in all{16,256} do
-    s..=split" ,p,b,d,f,e,c,+,2p"[v*m%16\1+1]
+   -- c cardinal, + pope, j java,
+   -- s saintly (one per player, 4
+   -- at most)
+   for i=1,4 do
+    v*=16 s..=split" ,p,b,d,f,e,c,+,j,s"[v%16\1+1]
    end
    print(s,x,y+i*7,c)
   end
@@ -299,8 +305,8 @@ end
 -- end of the day: anything new?
 function check_unlocks()
  local f=found()
- local won={false,missed<=30 and score>=50,l("marian garden")>=3,
-  sick_healed>=50,f>=3,cath,score>=500}
+ local won={false,missed<=30 and score>=50,l"marian garden">=3,
+  sick_healed>=50,f>=3,cath,score>=500,got["drive-through"],f>=#combos}
  newchar=nil
  for i=2,#chars do
   if won[i] and not unlocked(i) then
@@ -313,7 +319,8 @@ end
 function start_skill()
  -- who: 2 benedictine, 3 dominican,
  -- 4 franciscan, 5 eastern monk,
- -- 6 cardinal, 7 pope
+ -- 6 cardinal, 7 pope, 8 java
+ -- priest, 9 saintly priest
  patience=who==2 and 1.5 or 1
  if who==3 then garden=1 lv["marian garden"]=1 end
  if who==4 then chap=true lv["chaplain"]=1 end
@@ -323,6 +330,8 @@ function start_skill()
   bishop=true lv["bishop"]=1 add_helper(false)
  end
  popemode=who==7
+ if who==8 then p.spd=1.25 end
+ if who==9 then p.r=21 p.rate=33 end
 end
 
 -- combos: two upgrades that work
@@ -332,30 +341,41 @@ end
 -- saved, so players can collect them.
 combos={
  {n="aspergillum",r="holy water 3 + quick hands 3",h="holy water",d="each blessing counts 2",
-  ok=function() return l("holy water")>=3 and l("quick hands")>=3 end,
   f=function() pow=2 end},
  {n="parish van",r="a car 2 + guardian angel 2",h="a car",d="priests ride, angel x2",
-  ok=function() return l("a car")>=2 and l("guardian angel")>=2 end,
   f=function() van=true p.mag*=2 end},
- {n="cathedral chapter",r="cathedral + bishop",h="cathedral",d="church grace comes to you",
-  ok=function() return bishop end,},
- {n="rosary group",r="garden + 2 church deacons",h="marian garden",d="all grace comes, often",
-  ok=function() return garden>0 and deacons>=2 end,},
- {n="healing relics",r="church relics + chaplain",h="church relics",d="the hospital heals too",
-  ok=function() return relics and chap end,},
- {n="house calls",r="a car + quick hands 2",h="quick hands",d="house blessings take half",
-  ok=function() return l("a car")>0 and l("quick hands")>=2 end,},
- {n="pilgrimage",r="marian garden + chapel",h="marian garden",d="church & chapel: grace x2",
-  ok=function() return garden>0 and chapel end,},
- {n="procession",r="church relics + chapel relic",h="chapel relic",d="each minute: bless walkers",
-  ok=function() return relics and chapel_relic end,},
- {n="deacons' rounds",r="church deacon + chapel deacon",h="chapel deacon",d="deacons bring piles to you",
-  ok=function() return deacons>0 and chapel_deacons>0 end,},
- {n="sick calls",r="a car + hospital priest",h="hospital priest",d="hospital priests go out",
-  ok=function() return l("a car")>0 and hosp_priests>0 end,},
- {n="drive-through",r="coffee + a car",h="coffee",d="coffee lasts twice as long",
-  ok=function() return l("a car")>0 and had_coffee end,},
+ {n="cathedral chapter",r="cathedral + bishop",h="cathedral",d="church grace comes to you"},
+ {n="rosary group",r="garden + 2 church deacons",h="marian garden",d="all grace comes, often"},
+ {n="healing relics",r="church relics + chaplain",h="church relics",d="the hospital heals too"},
+ {n="house calls",r="a car + quick hands 2",h="quick hands",d="house blessings take half"},
+ {n="pilgrimage",r="marian garden + chapel",h="marian garden",d="church & chapel: grace x2"},
+ {n="procession",r="church relics + chapel relic",h="chapel relic",d="each minute: bless walkers"},
+ {n="deacons' rounds",r="church deacon + chapel deacon",h="chapel deacon",d="deacons bring piles to you"},
+ {n="sick calls",r="a car + hospital priest",h="hospital priest",d="hospital priests go out"},
+ {n="drive-through",r="coffee + a car",h="coffee",d="coffee lasts twice as long"},
+ {n="anointing",r="chaplain + quick hands",h="chaplain",d="hospital blessings count 2"},
+ {n="catholic hospital",r="bishop + hospital priest",h="bishop",d="bishop's priests heal too"},
 }
+
+-- which upgrades can show up, and
+-- which combos are ready (in the
+-- same order as ups and combos)
+function ready()
+ return {true,true,true,true,true,church>=2 and relics,cath,church>0,garden>0,deacons>0,true,chap,hosp_priests>0,chapel,chapel},{
+  l"holy water">=3 and l"quick hands">=3,
+  l"a car">=2 and l"guardian angel">=2,
+  bishop,
+  garden>0 and deacons>=2,
+  relics and chap,
+  l"a car">0 and l"quick hands">=2,
+  garden>0 and chapel,
+  relics and chapel_relic,
+  deacons>0 and chapel_deacons>0,
+  l"a car">0 and hosp_priests>0,
+  l"a car">0 and had_coffee,
+  chap and l"quick hands">0,
+  bishop and hosp_priests>0}
+end
 
 -- big needs: they stay in one
 -- place; find them (z: map) and
@@ -373,7 +393,7 @@ events={
 -- skin and eyes
 function add_helper(hosp)
  add(helpers,{x=p.x,y=p.y,cd=0,hosp=hosp,
-  ox=rnd(24)-12,oy=rnd(16)-8,look=new_look("priest")})
+  ox=rnd(24)-12,oy=rnd(16)-8,look=new_look"priest"})
 end
 
 -->8
@@ -497,7 +517,7 @@ end
 -- sick (at the hospital)
 function person(x,y,k)
  local q={x=x,y=y,k=k,s=rnd(split"16,18,20,22,24,26"),
-  look=new_look("people"),need=1,hit=0,
+  look=new_look"people",need=1,hit=0,
   wait=(900+rnd(300))*patience,spd=.2+rnd(.2)}
  -- the top of the head: hair, or
  -- a hat (its own random color)
@@ -581,6 +601,7 @@ end
 -- the sick in the hospital: one
 -- blessing makes the number 1 less
 function heal(n)
+ if got.anointing then n*=2 end
  n=min(n,hosp_need)
  if n<=0 then return end
  hosp_need-=n score+=n sick_healed+=n
@@ -598,7 +619,7 @@ function hit(q)
  q.need-=pow q.hit=4 q.wait+=p.rate
  if q.need>0 then return end
  del(people,q) score+=1
- if by2 then b2+=1 end
+--4p if by then by.b+=1 end
  if q.b then q.b.who=nil end
  local v=1
  if q.ev then v=10 elseif q.k=="home" then v=3
@@ -681,20 +702,20 @@ end
 function use(k)
  sfx(1)
  if k=="chest" then
-  sfx(3) offer("a gift box!")
+  sfx(3) offer"a gift box!"
  elseif k=="rosary" then
   for g in all(graces) do g.pull=true end
-  say("rosary: all grace comes")
+  say"rosary: all grace comes"
  elseif k=="bucket" then
   for q in all(people) do
    if not q.ev then q.need=1 end
   end
   sb(p.x,p.y,90)
-  say("holy water for everyone!")
+  say"holy water for everyone!"
  elseif k=="coffee" then
   had_coffee=true
-  p.fast=got["drive-through"] and 600 or 300
-  say("coffee! go go go")
+  p.fast=(got["drive-through"] and 600 or 300)*(who==8 and 1.5 or 1)
+  say"coffee! go go go"
  end
 end
 
@@ -702,16 +723,16 @@ function say(s) msg=s msg_t=90 end
 
 function offer(title)
  local pool={}
- for u in all(ups) do
-  if l(u.n)<u.max
-   and (not u.ok or u.ok()) then
+ local can,k=ready()
+ for i,u in pairs(ups) do
+  if l(u.n)<u.max and can[i] then
    add(pool,u)
   end
  end
  choices={}
  -- a combo that's ready comes first
- for c in all(combos) do
-  if not got[c.n] and c.ok() and #choices==0 then
+ for i,c in pairs(combos) do
+  if not got[c.n] and k[i] and #choices==0 then
    c.combo=true add(choices,c)
   end
  end
@@ -749,18 +770,22 @@ function _update()
   who=cyc(who,#chars)
   -- up/down: your look
   li1,lk1=pick_look(who,li1)
-  -- player 2: x on their controls
-  -- joins (or leaves), left/right
-  -- picks their own character
-  if btnp(5,1) then p2on=not p2on end
-  if p2on then
-   who2=cyc(who2,#chars,1)
-   li2,lk2=pick_look(who2,li2,1)
-  end
+--4p  -- players 2-4: x on their own
+--4p  -- controls joins (or leaves),
+--4p  -- left/right picks from the
+--4p  -- unlocked characters
+--4p  for i=1,3 do
+--4p   if btnp(5,i) then xs[i]=not xs[i] and {w=1,n=i} or nil end
+--4p   local o=xs[i]
+--4p   if o then
+--4p    repeat o.w=cyc(o.w,#chars,i) until unlocked(o.w)
+--4p    o.li,o.lk=pick_look(o.w,o.li,i)
+--4p   end
+--4p  end
   if btnp(5) then
-   if unlocked(who) and (not p2on or unlocked(who2)) then
+   if unlocked(who) then
     dset(3,who) _init() start_skill() state="play"
-    if p2on then p2={x=p.x+12,y=p.y,cd=0} end
+--4p    for _,o in pairs(xs) do o.x,o.y,o.cd,o.b=p.x+9*o.n,p.y,0,0 end
    else sfx(4) end
   elseif btnp(4) then book_from="title" state="book" end
   return
@@ -778,10 +803,12 @@ function _update()
    while i>1 and score>dget(8+i) do
     dset(9+i,dget(8+i)) dset(14+i,dget(13+i)) i-=1
    end
-   -- the character is saved in the
-   -- score's fraction: who/16, and
-   -- player 2's who2/256
-   dset(9+i,score+who/16+(p2 and who2/256 or 0)) dset(14+i,nl[1]*1024+nl[2]*32+nl[3])
+   -- the characters are saved in the
+   -- score's fraction: who/16, then
+   -- players 2-4 /256, /4096, /65536
+   local v=score+who/16 --1p
+--4p   local v=score+who/16 for _,o in pairs(xs) do v+=o.w>>4+4*o.n end
+   dset(9+i,v) dset(14+i,nl[1]*1024+nl[2]*32+nl[3])
    state="over"
   end
   return
@@ -797,7 +824,7 @@ function _update()
   return
  end
  if state=="book" then
-  page=cyc(page,4) -- 2 pages of upgrades, 2 of combos
+  page=cyc(page,5) -- 2 pages of upgrades, 3 of combos
   if btnp(4) or btnp(5) then state=book_from end
   return
  end
@@ -824,7 +851,7 @@ function _update()
  -- last minute: the music hurries
  -- (her song's notes play faster)
  if not hurry and t>=(day_len-60)*30 then
-  hurry=true say("one minute left!")
+  hurry=true say"one minute left!"
   for i=8,63 do
    local a=0x3200+i*68+65
    poke(a,max(1,peek(a)*3\4))
@@ -838,29 +865,22 @@ function _update()
  end
 
  -- walk (coffee doubles it)
- local dx,dy=0,0
- if btn(0) then dx-=1 p.fl=true end
- if btn(1) then dx+=1 p.fl=false end
- if btn(2) then dy-=1 end
- if btn(3) then dy+=1 end
+ local dx,dy=dir(p)
  local sp=p.spd
  if p.fast>0 then sp*=2 p.fast-=1 end
- p.mv=dx!=0 or dy!=0
  local nx,ny=(p.x+dx*sp)%world,(p.y+dy*sp)%world
  if not solid(nx,p.y) then p.x=nx end
  if not solid(p.x,ny) then p.y=ny end
 
- -- player 2: walks on your screen
- -- and blesses as far as you do
- if p2 then
-  local dx,dy=tonum(btn(1,1))-tonum(btn(0,1)),tonum(btn(3,1))-tonum(btn(2,1))
-  if dx!=0 then p2.fl=dx<0 end
-  p2.mv=dx!=0 or dy!=0
-  p2.x=(p.x+mid(-60,wd(p2.x+dx*sp,p.x),60))%world
-  p2.y=(p.y+mid(-52,wd(p2.y+dy*sp,p.y),60))%world
-  p2.cd-=1
-  if p2.cd<=0 then p2.cd=p.rate by2=1 sb(p2.x,p2.y-4,p.r) by2=nil end
- end
+--4p -- players 2-4: walk on your
+--4p -- screen and bless as far as you
+--4p for _,o in pairs(xs) do
+--4p  local dx,dy=dir(o,o.n)
+--4p  o.x=(p.x+mid(-60,wd(o.x+dx*sp,p.x),60))%world
+--4p  o.y=(p.y+mid(-52,wd(o.y+dy*sp,p.y),60))%world
+--4p  o.cd-=1
+--4p  if o.cd<=0 then o.cd=p.rate by=o sb(o.x,o.y-4,p.r) by=nil end
+--4p end
 
  -- who asks, and how often
  -- (crowds come faster for the pope)
@@ -868,7 +888,7 @@ function _update()
  -- the pope blesses everyone on
  -- screen, once a minute
  if popemode and t%1800==0 then
-  sb(p.x,p.y,90) say("urbi et orbi!")
+  sb(p.x,p.y,90) say"urbi et orbi!"
  end
  if t%240==0 then spawn_home() end
  if t%max(20,150-church*20-garden*20)==0 then spawn_church() end
@@ -893,9 +913,10 @@ function _update()
  -- walkers come to you, churchgoers
  -- go to mass; the rest stay put
  for q in all(people) do
-  -- walkers head for the nearer player
-  local o=p
-  if touch(q,60) and not near(q.x,q.y,p.x,p.y,40) then o=p2 end
+  local o=p --1p
+--4p  -- walkers head for the nearer player
+--4p  local o=touch(q,60)
+--4p  if not o or near(q.x,q.y,p.x,p.y,40) then o=p end
   local tx,ty=o.x,o.y
   if q.tx then tx,ty=q.tx,q.ty end
   if q.k=="walk" or q.tx then
@@ -936,7 +957,7 @@ function _update()
  end
  if got["rosary group"] and t%900==0 then
   for g in all(graces) do g.pull=true end
-  say("rosary group: grace comes")
+  say"rosary group: grace comes"
  end
 
  -- piles: go there to collect them
@@ -944,7 +965,7 @@ function _update()
   for q in all(people) do
    if q.tx and not q.there then q.need=1 hit(q) end
   end
-  say("procession: walkers blessed")
+  say"procession: walkers blessed"
  end
  if got["cathedral chapter"] or got["deacons' rounds"] or near(p.x,p.y,church_x+8,church_y+24,22) then
   if church_pile>0 then xp+=church_pile church_pile=0 sfx(1) end
@@ -961,15 +982,17 @@ function _update()
    step(g,p.x,p.y-4,3)
   end
   -- either player picks it up
-  if near(g.x,g.y,p.x,p.y-4,5) or touch(g,6) then
+  if near(g.x,g.y,p.x,p.y-4,5) then --1p
+--4p  if near(g.x,g.y,p.x,p.y-4,5) or touch(g,6) then
    del(graces,g) xp+=g.v sfx(1)
    -- the angel brought it
-   if g.pull or l("guardian angel")>0 then angel_t=30 end
+   if g.pull or l"guardian angel">0 then angel_t=30 end
   end
  end
 
  for it in all(items) do
-  if near(it.x,it.y,p.x,p.y-4,8) or touch(it,8) then
+  if near(it.x,it.y,p.x,p.y-4,8) then --1p
+--4p  if near(it.x,it.y,p.x,p.y-4,8) or touch(it,8) then
    del(items,it) use(it.k)
    if state=="pick" then break end
   end
@@ -984,6 +1007,15 @@ function _update()
  end
  msg_t=max(0,msg_t-1)
  if xp>=need and state=="play" then levelup() end
+end
+
+-- the arrows of controller n:
+-- which way, and o faces that way
+function dir(o,n)
+ local dx,dy=tonum(btn(1,n))-tonum(btn(0,n)),tonum(btn(3,n))-tonum(btn(2,n))
+ if dx!=0 then o.fl=dx<0 end
+ o.mv=dx!=0 or dy!=0
+ return dx,dy
 end
 
 function deacon(n,cd,x,y,k)
@@ -1013,10 +1045,13 @@ function closest(list,o,ok)
  return tg
 end
 
--- is player 2 touching o?
-function touch(o,r)
- return p2 and near(o.x,o.y,p2.x,p2.y-4,r)
-end
+--4p -- which of players 2-4 is
+--4p -- touching o?
+--4p function touch(o,r)
+--4p  for _,x in pairs(xs) do
+--4p   if near(o.x,o.y,x.x,x.y-4,r) then return x end
+--4p  end
+--4p end
 
 function onscreen(q)
  return abs(wd(q.x,p.x))<60 and abs(wd(q.y,p.y))<60
@@ -1031,7 +1066,9 @@ end
 function helper(h)
  h.mv=false
  local tg,tx,ty,r,sp
- if h.hosp then
+ -- (catholic hospital: the bishop's
+ -- priests go when it's busy)
+ if h.hosp or got["catholic hospital"] and hosp_need>3 then
   tx,ty,r,sp=hosp_x+8+h.ox/2,hosp_y+22,3,1.5
   if got["sick calls"] and hosp_need==0 then
    tg=closest(people,h,function(q) return q.k=="home" end)
@@ -1211,7 +1248,7 @@ function draw_book()
    end
   end
  end
- print("\139\145 page "..page.."/4        \142 back",4,121,6)
+ print("\139\145 page "..page.."/5        \142 back",4,121,6)
 end
 
 -- the start screen
@@ -1220,9 +1257,9 @@ function draw_title()
  cls(12)
  circfill(64,150,90,3)
  -- falling grace
- for i=0,40 do
-  pset(i*53%128,(i*37+time()*20)%140-8,i%3==0 and 10 or 7)
- end
+ for i=0,40 do --1p
+  pset(i*53%128,(i*37+time()*20)%140-8,i%3==0 and 10 or 7) --1p
+ end --1p
  print("\^w\^tblessed!",33,21,1)
  print("\^w\^tblessed!",32,20,10)
  -- who you'll play, big (a dark
@@ -1249,18 +1286,20 @@ function draw_title()
   print(d,64-#d*2,u and 84 or 90,7)
  end
  print("\151 start   \142 book",26,114,7)
- -- player 2, small, on the right
- if p2on then
-  local n=chars[who2].s
-  pal(lk2) sspr(n%16*8,n\16*8,8,8,100,54,16,16) pal()
-  print("p2",104,46,unlocked(who2) and 12 or 5)
- else
-  print("p2:\151",101,60,6)
- end
+--4p -- players 2-4, small, at the
+--4p -- sides (x on their controls)
+--4p for i=1,3 do
+--4p  local x,y,o=i%2*84+10,i\3*24+40,xs[i]
+--4p  print("p"..i+1 ..(o and "" or ":\151"),x+2,y-7,o and 12 or 6)
+--4p  if o then
+--4p   local n=chars[o.w].s
+--4p   pal(o.lk) sspr(n%16*8,n\16*8,8,8,x,y,16,16) pal()
+--4p  end
+--4p end
 end
 
 function _draw()
- pal(0,0,1)
+ pal()
  if state=="title" then draw_title() return end
  if state=="map" then draw_map() return end
  if state=="book" then draw_book() return end
@@ -1328,19 +1367,19 @@ function _draw()
   at(h.x,h.y)
   figure(0,6,h.mv,h.x,h.y,h.fl,h.look)
  end
- -- player 2: their own blessing circle,
- -- and the car too once you have it
- if p2 then
-  at(p2.x,p2.y)
-  circ(p2.x,p2.y-4,p.r,11)
-  if l("a car")>0 and p2.mv then drive(p2)
-  else figure(chars[who2].s,chars[who2].w,p2.mv,p2.x,p2.y,p2.fl,lk2) end
- end
+--4p -- players 2-4: their own blessing
+--4p -- circle, and the car too
+--4p for _,o in pairs(xs) do
+--4p  at(o.x,o.y)
+--4p  circ(o.x,o.y-4,p.r,11)
+--4p  if l"a car">0 and o.mv then drive(o)
+--4p  else figure(chars[o.w].s,chars[o.w].w,o.mv,o.x,o.y,o.fl,o.lk) end
+--4p end
  camera(p.x-64,p.y-64)
  ovalfill(p.x-3,p.y-1,p.x+3,p.y+1,1)
  -- driving: her car (the parish van
  -- with that combo), you inside
- if l("a car")>0 and p.mv then
+ if l"a car">0 and p.mv then
   drive(p)
  else
  -- you: blessing (4 frames, just
@@ -1376,19 +1415,19 @@ function _draw()
 
  -- winter: snow falls (it drifts
  -- past as you walk)
- if season==4 then
-  for i=1,50 do
-   pset((i*37+t*.3-p.x)%128,(i*53+t*(.5+i%3*.2)-p.y)%128,7)
-  end
- end
+ if season==4 then --1p
+  for i=1,50 do --1p
+   pset((i*37+t*.3-p.x)%128,(i*53+t*(.5+i%3*.2)-p.y)%128,7) --1p
+  end --1p
+ end --1p
  -- spring: showers come and go
  -- (about 40 s of rain, 40 s dry)
- if season==1 and t\1200%2==1 then
-  for i=1,40 do
-   local x,y=(i*41-t-p.x)%128,(i*29+t*4-p.y)%128
-   line(x,y,x-1,y+3,12)
-  end
- end
+ if season==1 and t\1200%2==1 then --1p
+  for i=1,40 do --1p
+   local x,y=(i*41-t-p.x)%128,(i*29+t*4-p.y)%128 --1p
+   line(x,y,x-1,y+3,12) --1p
+  end --1p
+ end --1p
 
  -- off the screen: who's waiting
  -- at home or at the hospital
@@ -1463,20 +1502,26 @@ function _draw()
   print("the day is done",34,36,10)
   print("blessed: "..score,34,46,7)
   print("missed: "..missed,34,53,6)
-  -- in co-op: player 2's own
-  -- blessings; player 1 has the rest
-  if p2 then print("p1 "..score-b2.."   p2 "..b2,26,90,12) end
   print("best: "..dget(10)\1,34,60,9)
   -- where the time went
-  print("time lost:",34,68,8)
-  print("home "..lost[1].." sick "..lost[2].." need "..lost[3].."s",16,75,8)
+  print("time lost:",34,68,8) --1p
+  print("home "..lost[1].." sick "..lost[2].." need "..lost[3].."s",16,75,8) --1p
+--4p  -- each player's blessings
+--4p  -- (player 1 has the rest)
+--4p  local s=""
+--4p  for _,o in pairs(xs) do s..="p"..o.n+1 .." "..o.b.."  " end
+--4p  print(s,16,72,12)
   print("combos found: "..found().."/"..#combos,26,83,10)
   if newchar then print("unlocked: "..newchar.."!",64-(#newchar+11)*2,22,10) end
   print("\142 book  \151 play again",18,98,6)
  end
  -- show color 0 as the ground
- -- (set last: pal() resets it)
- pal(0,grounds[season],1)
+ -- (set last: pal() resets it).
+ -- at night: everything darker but
+ -- white, yellow and orange (lit
+ -- windows, grace, the clock)
+ if night then pal(split"1,130,131,132,133,13,7,136,9,10,139,140,141,141,143",1) end
+ pal(0,night and 129 or grounds[season],1)
 end
 __gfx__
 0002220000000000000ddd00000000000006660000000000000222000000000000022200000222000002220000022200000ddd00000000000006660000000000
@@ -1503,14 +1548,14 @@ __gfx__
 00000000001171000a004000009aa00000055500000000000009000000090000000000000bbb3bbb33343343000b30009090a0a000040000001fff0000f1f100
 0000000000000000aaa4000000000000000000000000000000000000000000000000000033bb33bb343433430b3333000b000b000099900000ddd000001fff00
 00000000000000000a0000000000000000000000000100000001000000010000000100000240024000400400033333300b000b000099900000fdd00000fdd000
-0000000000000000000000000000000000000000000000000000000000000000000ddd00000ddd00000ddd00000ddd0000055500000000000005550000000000
-0000000000000000000000000000000000000000000000000000000000000000007fff00007fff00007fff00007fff00005fff0000055500005fff0000055500
-000999000000000000000000000000000000000000000000000000000000000000f3f3f000f3f30000f3f30000f3f30000fdfd00005fff0000fdfd00005fff00
-001fff0000099900000000000000000000000000000000000000000000000000007fff10007fff00007fff00007fff00005f5f0000fdfd00005f5f0000fdfd00
-00f1f100001fff000000000000000000000000000000000000000000000000000011710000117100001171000011710000755500005f5f0000755500005f5f00
-001fff0000f1f10000000000000000000000000000000000000000000000000000111100001111f00011f1000011111f00077000007555000007700000755500
-00ddf000001fff0000000000000000000000000000000000000000000000000000fddd0000fddd0000fddd0000fddd00000f7000000f7000000f70000007f000
-0dd0d00000fdd0000000000000000000000000000000000000000000000000000001100000011000000110000001100000077000000770000007700000707000
+0000000000000000000aaaa0000000000000000000aaa7000000000000000000000ddd00000ddd00000ddd00000ddd0000055500000000000005550000000000
+000000000000000000afff00000aaaa0007aaa00000000000000000000000000007fff00007fff00007fff00007fff00005fff0000055500005fff0000055500
+000999000000000000fcfc0000afff0000000000005fff00000000000000000000f3f3f000f3f30000f3f30000f3f30000fdfd00005fff0000fdfd00005fff00
+001fff000009990000afff0000fcfc00005fff0000fcfc000000000000000000007fff10007fff00007fff00007fff00005f5f0000fdfd00005f5f0000fdfd00
+00f1f100001fff000001704000afff0000fcfc00005fff0000000000000000000011710000117100001171000011710000755500005f5f0000755500005f5f00
+001fff0000f1f10000011f5000017040005fff0000017000000000000000000000111100001111f00011f1000011111f00077000007555000007700000755500
+00ddf000001fff00000f1000000f1f5000017000000f1000000000000000000000fddd0000fddd0000fddd0000fddd00000f7000000f7000000f70000007f000
+0dd0d00000fdd0000001100000011000000f10000001100000000000000000000001100000011000000110000001100000077000000770000007700000707000
 000aaa0000000000000aaa000000000000111100000000000011110000000000000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000
 00afff00000aaa0000afff00000aaa00001fff0000111100001fff000011110000544400000ccc0000544400000eee0000544400000aaa0000544450000eee00
 00fdfd0000afff0000fdfd0000afff0000fdfd00001fff0000fdfd00001fff00004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450
