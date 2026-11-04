@@ -2,3 +2,30 @@
 # section's recording. Scenes not listed keep their automatic timing.
 intro:
   end: 17.13
+  scenes:
+    "1":
+      start: 1.83
+      nudge:
+        x: -387
+        y: 254
+        size: 100
+    "2":
+      start: 3.73
+      nudge:
+        x: 660
+        y: -150
+        size: 45
+point-1:
+  scenes:
+    "2":
+      start: 8.03
+      nudge:
+        x: -412
+        y: 189
+        size: 110
+    "3":
+      start: 10.53
+      nudge:
+        x: -305
+        y: 223
+        size: 115

@@ -33,6 +33,17 @@ intro:
     - "Infallible means can't be wrong. It's a gift from Jesus to his Church, for teaching about faith and morals, and only for solemn teaching, not everything the Pope says."
   scenes:
     - type: title
+    - type: sprite
+      sprite: pope-idle
+      size: small
+      with: over
+    - type: image
+      src: images/sdcason-apostolic-blessing-and-plenary-indulgenc-003da318cc.jpg
+      aspect: 0.652
+      credit: The Free Catholic Gallery (sdcason.com)
+      fit: cover
+      focus: top
+      with: over
     - type: host
       at: I'm your host
     - type: trinity
@@ -61,6 +72,11 @@ points:
         sprite: pope-point
         size: small
         with: over
+      - type: image
+        src: images/wikimedia-image-59102398.jpg
+        aspect: 1.289
+        credit: Petar Milošević · Wikimedia Commons · CC BY-SA 4.0
+        focus: top
     quiz:
       type: blank
       question: Infallible means can't be ____.
