@@ -102,6 +102,9 @@ points:
       for the Church today.
     visuals:
       - type: sprite
+        sprite: jesus-and-peter
+        with: over
+      - type: sprite
         sprite: saint-peter
         size: full
       - type: sprite

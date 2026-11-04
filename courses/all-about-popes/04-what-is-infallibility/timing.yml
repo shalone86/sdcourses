@@ -16,6 +16,7 @@ intro:
         y: -150
         size: 45
 point-1:
+  end: 21.2
   scenes:
     "2":
       start: 8.03
@@ -31,3 +32,11 @@ point-1:
         size: 103
     "4":
       start: 14.6
+      nudge:
+        x: 104
+        y: -39
+        size: 115
+point-2:
+  scenes:
+    "1":
+      start: 2.8
