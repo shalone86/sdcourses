@@ -11,18 +11,27 @@
 // From bar --part-wins-from (default 8) on, the part keeps its notes and
 // drums only fill its rests. With a part left out (--without melody) the
 // drums get the free channel to themselves.
+// Drum tracks named snare, kick, hat etc. count too, and several drum
+// tracks are played as one kit. Two tracks both named melody: the one with
+// more notes is the melody, the other plays as the harmony.
 // Usage: npm run music -- <file.mid> [<drums.mid>] [--part-wins-from 8]
 //   [--without melody]
 //   [--wave melody=3,harmony=0,bass=0] [--no-fx] (no slides, vibrato, fades)
+//   [--cart game/other.p8] (default game/blessed.p8)
+//   [--append] (keep the songs already in the cart: this one goes in the
+//   free sfx after them and the music patterns after theirs, looping on
+//   its own; it prints its first pattern, for music(n) in the code)
 import fs from 'node:fs';
 
 const args = process.argv.slice(2);
-const files = args.filter((a, i) => !a.startsWith('--') && !['--wave', '--part-wins-from', '--without'].includes(args[i - 1]));
+const files = args.filter((a, i) => !a.startsWith('--') && !['--wave', '--part-wins-from', '--without', '--cart'].includes(args[i - 1]));
 const wo = args.indexOf('--without');
 const without = wo >= 0 ? args[wo + 1].split(',') : [];
 const pw = args.indexOf('--part-wins-from');
 const partWinsFrom = pw >= 0 ? +args[pw + 1] : 8; // bar number, 1 = first
-const cart = 'game/blessed.p8';
+const ci = args.indexOf('--cart');
+const cart = ci >= 0 ? args[ci + 1] : 'game/blessed.p8';
+const append = args.includes('--append');
 const FIRST = 8;
 const useFx = !args.includes('--no-fx');
 // PICO-8 waveforms: 0 triangle, 1 tilted saw, 2 saw, 3 square, 4 pulse,
@@ -75,10 +84,22 @@ for (const file of files) {
     pos = end;
     if (!notes.length) continue;
     name = name.toLowerCase();
-    const drums = /kit|drum/.test(name) || /drum/i.test(file);
+    const drums = /kit|drum|snare|kick|hat|perc|cymbal|clap/.test(name) || /drum/i.test(file);
     tracks.push({name: drums ? 'drums' : name, drums, notes});
   }
 }
+// short names (Logic adds the instrument's settings); several drum tracks
+// become one kit; a second melody (the one with fewer notes) is the harmony
+for (const t of tracks) if (!t.drums) t.name = (t.name.match(/melody|harmony|bass/) || [t.name])[0];
+const kit = tracks.filter((t) => t.drums);
+if (kit.length > 1) {
+  kit[0].notes = kit.flatMap((t) => t.notes);
+  for (const t of kit.slice(1)) tracks.splice(tracks.indexOf(t), 1);
+}
+const mels = tracks.filter((t) => t.name === 'melody').sort((a, b) => b.notes.length - a.notes.length);
+for (const t of mels.slice(1)) if (!tracks.some((x) => x.name === 'harmony')) t.name = 'harmony';
+const lead = tracks.find((t) => t.name === 'melody');
+if (lead) { tracks.splice(tracks.indexOf(lead), 1); tracks.unshift(lead); }
 const bpm = 60e6 / tempo;
 const step = division / 4; // ticks per 16th
 const steps = Math.ceil(Math.max(...tracks.flatMap((t) => t.notes.map((n) => n.end))) / step / 32) * 32;
@@ -160,7 +181,6 @@ const channels = parts.map((part) => {
   }
   return {...part, ids};
 });
-if (FIRST + sfx.length > 64) throw new Error(`needs ${sfx.length} sfx; only ${64 - FIRST} fit`);
 
 // --- write into the cart: sfx 8 and up, music patterns from 0
 let text = fs.readFileSync(cart, 'utf8');
@@ -168,13 +188,19 @@ const section = (name) => { const m = text.match(new RegExp(`__${name}__\\n([\\s
 const empty = '00' + hex(16, 2) + '0000' + '0'.repeat(160);
 const sfxLines = section('sfx');
 while (sfxLines.length < 64) sfxLines.push(empty);
-for (let i = FIRST; i < 64; i++) sfxLines[i] = empty;
-sfx.forEach((body, i) => { sfxLines[FIRST + i] = '00' + hex(speed, 2) + '0000' + body; });
+// appending: after the last sfx in use (8 at least), and after the
+// patterns already there
+let base = FIRST;
+if (append) for (let i = 63; i >= FIRST; i--) if (sfxLines[i].slice(8) !== '0'.repeat(160)) { base = i + 1; break; }
+if (base + sfx.length > 64) throw new Error(`needs ${sfx.length} sfx; only ${64 - base} are free`);
+if (!append) for (let i = FIRST; i < 64; i++) sfxLines[i] = empty;
+sfx.forEach((body, i) => { sfxLines[base + i] = '00' + hex(speed, 2) + '0000' + body; });
 const patterns = channels[0].ids.length;
-const musicLines = [];
+const musicLines = append ? section('music') : [];
+const first = musicLines.length;
 for (let i = 0; i < patterns; i++) {
   const flags = (i === 0 ? 1 : 0) | (i === patterns - 1 ? 2 : 0); // loop start / loop back
-  const ch = [0, 1, 2, 3].map((c) => hex(channels[c] ? channels[c].ids[i] : 0x40, 2));
+  const ch = [0, 1, 2, 3].map((c) => hex(channels[c] ? channels[c].ids[i] - FIRST + base : 0x40, 2));
   musicLines.push(hex(flags, 2) + ' ' + ch.join(''));
 }
 const put = (name, lines) => {
@@ -190,4 +216,4 @@ const names = ['triangle', 'tilted saw', 'saw', 'square', 'pulse', 'organ', 'noi
 console.log(`${Math.round(bpm)} BPM → PICO-8 speed ${speed}; ${steps / 16} bars → ${patterns} patterns`);
 channels.forEach((c) => console.log(`  ${c.name}: ${names[c.wave]}`));
 if (drumNote) console.log('  ' + drumNote);
-console.log(`${sfx.length} sfx used (${FIRST}–${FIRST + sfx.length - 1}); repeats stored once. Wrote ${cart}`);
+console.log(`${sfx.length} sfx used (${base}–${base + sfx.length - 1}); repeats stored once. Music patterns ${first}–${first + patterns - 1}: music(${first}) plays it. Wrote ${cart}`);
