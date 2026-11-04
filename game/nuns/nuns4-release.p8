@@ -61,7 +61,7 @@ function _init()
  p={x=256,y=272,spd=1,r=14,cd=0,
   rate=45,fl=false,fast=0,mag=14,
   cl=150,cn=2,dt=0}
- cands={} shrines={} np=1 shr=20
+ cands={} shrines={} np=1 shr=20 carry=nil
  people={} fx={} drops={}
  helpers={} graces={} items={}
  deacons=0 church=0 dcd=0
@@ -96,7 +96,7 @@ ups={
  {n="more candles",d="more burn at once",max=4,
   f=function() p.cn+=1 end},
  {n="a shrine",d="candles that never go out",max=3,
-  f=function() add(shrines,{x=p.x,y=p.y,s=50+#shrines*2}) end},
+  f=function() carry=1 say"\151: put the shrine here" end},
  {n="shrine candles",d="shrines light farther",max=3,
   f=function() shr+=8 end},
  {n="a car",d="drive faster",max=3,
@@ -202,7 +202,7 @@ combos={
  {n="catholic hospital",r="convent + nursing sister",h="convent",d="novices nurse too"},
 }
 function ready()
- return {true,true,true,true,true,shrines[1],true,true,true,church>=2 and relics,cath,church>0,garden>0,deacons>0,true,chap,hosp_priests>0,chapel,chapel},{
+ return {true,true,true,true,not carry,shrines[1],true,true,true,church>=2 and relics,cath,church>0,garden>0,deacons>0,true,chap,hosp_priests>0,chapel,chapel},{
   l"bigger flame">=3 and l"quick prayers">=3,
   l"a car">=2 and l"guardian angel">=2,
   bishop,
@@ -325,6 +325,7 @@ function spawn_home()
  q.need=3+lvl\4 q.wait=1500+rnd(450)
  if got["house calls"] then q.need=ceil(q.need/2) end
  q.b=b b.who=q
+ q.c=12
 end
 function spawn_event()
  local e=rnd(events)
@@ -346,6 +347,7 @@ function spawn_event()
  q.need=e.need+lvl\2 q.wait=1800 q.ev=e.n
  q.s=e.s or q.s
  if e.l then q.look=new_look(e.l) end
+ q.c=e.at=="church" and 10 or e.at=="house" and 12
  if e.m then q.m,q.ml=e.m,new_look(e.g) end
  if b then q.b=b b.who=q end
  say(e.n.."! (z: map)")
@@ -385,7 +387,7 @@ if by then by.b+=1 end
  drop_grace(q.x,q.y-4,v)
  if q.ev then
   add(items,{x=q.x,y=q.y+4,k="chest"})
-  say(q.ev.." prayed for!")
+  say((q.c==10 and "the priest blessed " or q.c and "the deacon blessed " or "you prayed for ")..q.ev.."!")
  end
  add(fx,{x=q.x,y=q.y-12,t=20,s="\143",c=10})
  sfx(0)
@@ -502,7 +504,7 @@ function _update()
     dset(3,who) _init() start_skill() state="play"
    for _,o in pairs(xs) do o.x,o.y,o.cd,o.b,o.dt=p.x+9*o.n,p.y,0,0,0 np+=1 end
    else sfx(4) end
-  elseif btnp(4) then book_from="title" state="book" end
+  end
   return
  end
  if state=="name" then
@@ -521,18 +523,11 @@ function _update()
   return
  end
  if state=="over" then
-  if btnp(4) then book_from="over" state="book"
-  elseif btnp(5) then booted=nil _init() end
+ if btnp(5) then booted=nil _init() end
   return
  end
  if state=="map" then
-  if btnp(4) then state="play"
-  elseif btnp(5) then book_from="map" state="book" end
-  return
- end
- if state=="book" then
-  page=cyc(page,5)
-  if btnp(4) or btnp(5) then state=book_from end
+ if btnp(4) then state="play" end
   return
  end
  if state=="pick" then
@@ -551,6 +546,9 @@ function _update()
   return
  end
  if btnp(4) then state="map" return end
+ if carry and btnp(5) then
+  add(shrines,{x=p.x,y=p.y,s=50+#shrines*2}) carry=nil
+ end
  t+=1
  if not hurry and t>=(day_len-60)*30 then
   hurry=true say"one minute left!" music(20,0,7)
@@ -794,6 +792,7 @@ function draw_person(q)
  sprite(n,q.x,q.y,q.fl)
  pal()
  if q.m then pal(q.ml) sprite(q.m,q.x+7,q.y,q.fl) pal() end
+ if q.c then sprite(q.c,q.x-7,q.y) end
  if q.ev and t%16<10 then circ(q.x+(q.m and 3 or 0),q.y-4,q.m and 10 or 7,9) end
  if q.wait>300 or t%8<4 then
   local y=q.y-15
@@ -822,50 +821,21 @@ function draw_map()
  circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
  rectfill(0,112,127,127,1)
  print("\fcyou  \fa\138 house  \f9\146 need",2,114)
- print("\142 back   \151 book",2,121,6)
-end
-function draw_book()
- cls(1)
- rect(0,0,127,127,10)
- if page<3 then
-  print("book of prayers: upgrades",4,3,10)
-  for i=page*11-10,min(#ups,page*11) do
-   local u=ups[i]
-   local y=4+(i-page*11+11)*9
-   print(u.n,4,y,7)
-   print(l(u.n).."/"..u.max,108,y,9)
-   print(u.d,8,y+4,13)
-  end
- else
-  local f=dget(1)
-  print("book of prayers: combos",4,3,10)
-  local first=(page-3)*6+1
-  for i=first,min(#combos,first+5) do
-   local c=combos[i]
-   local y=-4+(i-first+1)*19
-   if f&(1<<i)>0 or got[c.n] then
-    print("\146 "..c.n,4,y,10)
-    print(c.r,8,y+6,7)
-    print(c.d,8,y+12,13)
-   else
-    print("\146 ???",4,y,5)
-    print("needs "..c.h.." + ?",8,y+6,6)
-   end
-  end
- end
- print("\139\145 page "..page.."/5        \142 back",4,121,6)
+print("\142 back",2,121,6)
 end
 function draw_title()
- cls(12)
+ cls(1)
  circfill(64,150,90,3)
+ glow(72,58,28)
  print("\^w\^tcandles!",33,21,1)
  print("\^w\^tcandles!",32,20,10)
  local c,u=chars[who],unlocked(who)
  local n=c.s+flr(time()*2)%2
  pal(lk1)
- if not u then for i=1,15 do pal(i,1) end end
+ if not u then for i=1,15 do pal(i,0) end end
  sspr(n%16*8,n\16*8,8,8,48,38,32,32)
  pal()
+ if u then sspr(64+time()*8%8\1*8,40,8,8,60,38+flr(time()*2)%2*4,32,32) end
  print("\139         \145",38,52,7)
  print("\148",60,33,6) print("\131",60,71,6)
  if time()\4%2==1 and dget(10)>0 then
@@ -877,7 +847,7 @@ function draw_title()
   if not u then print("to unlock:",44,84,6) end
   print(d,64-#d*2,u and 84 or 90,7)
  end
- print("\151 start   \142 book",26,114,7)
+print("\151 start",48,114,7)
 for i=1,3 do
  local x,y,o=i%2*84+10,i\3*24+40,xs[i]
  print("p"..i+1 ..(o and "" or ":\151"),x+2,y-7,o and pc[i+1] or 6)
@@ -891,7 +861,6 @@ function _draw()
  pal()
  if state=="title" then draw_title() return end
  if state=="map" then draw_map() return end
- if state=="book" then draw_book() return end
  cls(0)
  camera(p.x-64,p.y-64)
  glow(p.x,p.y-4,p.r)
@@ -1004,6 +973,7 @@ if next(xs) then print(1,p.x-1,p.y-17,11) end
   print("-"..lost_c.."s",90,1,8)
  end
  print(left\60 ..":"..sub("0"..left%60,-2),108,1,lc)
+ if carry then print("\151 put the shrine here",20,121,10) end
  rectfill(0,8,127,9,1)
  rectfill(0,8,127*min(1,xp/need),9,10)
  if msg_t>0 then
@@ -1047,20 +1017,20 @@ if next(xs) then print(1,p.x-1,p.y-17,11) end
  print(s,16,72,12)
   print("combos found: "..found().."/"..#combos,26,83,10)
   if newchar then print("unlocked: "..newchar.."!",64-(#newchar+11)*2,22,10) end
-  print("\142 book  \151 play again",18,98,6)
+ print("\151 play again",38,98,6)
  end
- pal(split(night and "1,130,131,132,133,13,7,136,9,10,139,140,141,141,143" or "1,2,131,4,5,13,7,8,9,10,139,140,13,14,15"),1)
+ pal(split(night and "1,130,131,132,133,13,7,136,9,10,139,140,141,141,143" or "1,2,131,4,5,6,7,8,9,10,139,140,13,14,15"),1)
  pal(0,night and 129 or 131,1)
 end
 __gfx__
-00111110000000000077777000000000001111100000000000111110000000000011111000000000000000000000000000000000000000000000000000000000
-0777777000111110077ccc700077777001177710001111100117771000111110011fff1000111110000000000000000000000000000000000000000000000000
-077cfc70077777700773f370077ccc70011cfc1001177710011cfc1001177710011cfc10011fff10000000000000000000000000000000000000000000000000
-777fff77077cfc70777fff770773f370111fff11011cfc10111fff11011cfc10111fff11011cfc10000000000000000000000000000000000000000000000000
-00777000777fff770077c000777fff7700111000111fff1100777000111fff1100077000111fff11000000000000000000000000000000000000000000000000
-00111f700077700000cc7f700077c00000111f700011100000744f700077700000044f7000077000000000000000000000000000000000000000000000000000
-001f100000111f7000cf700000cc7f70001f100000111f70007f400000744f70000f700000044f70000000000000000000000000000000000000000000000000
-00111000001f100000c7700000cf700000111000001f100000744000007f400000044000000f7000000000000000000000000000000000000000000000000000
+00111110000000000077777000000000001111100000000000111110000000000011111000000000000222000000000000066600000000000000000000000000
+0777777000111110077ccc700077777001177710001111100117771000111110011fff1000111110002fff0000022200006fff00000666000000000000000000
+077cfc70077777700773f370077ccc70011cfc1001177710011cfc1001177710011cfc10011fff1000f3f300002fff0000f4f400006fff000000000000000000
+777fff77077cfc70777fff770773f370111fff11011cfc10111fff11011cfc10111fff11011cfc10002fff0000f3f300006fff0000f4f4000000000000000000
+00777000777fff770077c000777fff7700111000111fff1100777000111fff1100077000111fff1100017000002fff0000777900006fff000000000000000000
+00111f700077700000cc7f700077c00000111f700011100000744f700077700000044f700007700000011000000170000077a700007779000000000000000000
+001f100000111f7000cf700000cc7f70001f100000111f70007f400000744f70000f700000044f70000f1000000f100000f9770000f7a7000000000000000000
+00111000001f100000c7700000cf700000111000001f100000744000007f400000044000000f7000000110000001100000022000000220000000000000000000
 000ccc0000000000000eee0000000000000aaa0000000000000eee0000000000000ccc0000000000000999000000000000000000000000000000000000000000
 00544400000ccc0000544400000eee0000544400000aaa0000544450000eee0000544400000ccc00005444000009990000000000000000000000000000000000
 004f4f0000544400054f4f0000544400004f4f0000544400054f4f5000544450004f4f0000544400004f4f000054440000000000000000000000000000000000

@@ -1,12 +1,14 @@
 {
   "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide and 2 tall). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
-  "_slots": "0 benedictine, 2 sister of charity, 4 missionary sister, 6 discalced carmelite, 8 poor clare (2 frames each; walking uses the same), 88 candle (8 frames, 8x8: the bottom left of her 16x16 candle), 50/52/54 shrines 1-3 (16x16), 16-27 people walking (6 bases), 37 grace (a heart, 4 frames), 46 child standing, 48 child walking, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 84 angel (4 frames), 96 car and 104 parish van (16x16, 4 frames each), 72-83 people standing (6 bases, same order as walking)",
+  "_slots": "0 benedictine, 2 sister of charity, 4 missionary sister, 6 discalced carmelite, 8 poor clare (2 frames each; walking uses the same), 10 the priest (at weddings and baptisms), 12 the deacon (at house blessings), 88 candle (8 frames, 8x8: the bottom left of her 16x16 candle), 50/52/54 shrines 1-3 (16x16), 16-27 people walking (6 bases), 37 grace (a heart, 4 frames), 46 child standing, 48 child walking, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 84 angel (4 frames), 96 car and 104 parish van (16x16, 4 frames each), 72-83 people standing (6 bases, same order as walking)",
   "slots": {
     "0": "nun-benedictine-idle",
     "2": "nun-sister-of-charity-idle",
     "4": "nun-missionary-sister-idle",
     "6": "nun-discalced-carmelite-idle",
     "8": "nun-poor-clare-idle",
+    "10": "priest-idle",
+    "12": "deacon-idle",
     "16": "skinny-guy-walk",
     "18": "skinny-woman-walk",
     "20": "thick-guy-walk",
