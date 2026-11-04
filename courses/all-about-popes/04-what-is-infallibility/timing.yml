@@ -39,4 +39,8 @@ point-1:
 point-2:
   scenes:
     "1":
-      start: 2.8
+      start: 1.63
+      nudge:
+        x: 393
+        y: 226
+        size: 65

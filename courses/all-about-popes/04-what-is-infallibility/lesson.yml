@@ -105,7 +105,7 @@ points:
         sprite: jesus-and-peter
         with: over
       - type: sprite
-        sprite: saint-peter
+        sprite: peter-and-apostles
         size: full
       - type: sprite
         sprite: pope-walk
