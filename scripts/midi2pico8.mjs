@@ -18,13 +18,22 @@
 //   [--without melody]
 //   [--wave melody=3,harmony=0,bass=0] [--no-fx] (no slides, vibrato, fades)
 //   [--cart game/other.p8] (default game/blessed.p8)
+//   [--piano] (one piano-like sound for everything: all the notes, chords
+//   too, shared out over the 3 music channels: the top note always, the
+//   others in turn when there are more than 2; each note fades like a
+//   struck key) [--reverb 0-2] (PICO-8's reverb filter, every sfx)
+//   [--bars 16] (the song's length, rests at the end included)
+//   [--at 0 --sfx 32] (write the patterns from 0 and the sfx from 32,
+//   leaving the rest of the cart alone)
 //   [--append] (keep the songs already in the cart: this one goes in the
 //   free sfx after them and the music patterns after theirs, looping on
 //   its own; it prints its first pattern, for music(n) in the code)
 import fs from 'node:fs';
 
 const args = process.argv.slice(2);
-const files = args.filter((a, i) => !a.startsWith('--') && !['--wave', '--part-wins-from', '--without', '--cart'].includes(args[i - 1]));
+const files = args.filter((a, i) => !a.startsWith('--') && !['--wave', '--part-wins-from', '--without', '--cart', '--reverb', '--bars', '--at', '--sfx'].includes(args[i - 1]));
+const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? +args[i + 1] : undefined; };
+const piano = args.includes('--piano');
 const wo = args.indexOf('--without');
 const without = wo >= 0 ? args[wo + 1].split(',') : [];
 const pw = args.indexOf('--part-wins-from');
@@ -102,14 +111,37 @@ const lead = tracks.find((t) => t.name === 'melody');
 if (lead) { tracks.splice(tracks.indexOf(lead), 1); tracks.unshift(lead); }
 const bpm = 60e6 / tempo;
 const step = division / 4; // ticks per 16th
-const steps = Math.ceil(Math.max(...tracks.flatMap((t) => t.notes.map((n) => n.end))) / step / 32) * 32;
+const steps = opt('--bars') ? opt('--bars') * 16 : Math.ceil(Math.max(...tracks.flatMap((t) => t.notes.map((n) => n.end))) / step / 32) * 32;
 // a 16th at this tempo, in PICO-8 speed units (183 samples at 22050 Hz)
 const speed = Math.max(1, Math.round((60 / bpm / 4) / (183 / 22050)));
 const at = (n) => Math.round(n.start / step);
 const until = (n) => Math.max(Math.round(n.end / step), at(n) + 1);
 
+// --- piano: every note, one sound, shared out over 3 channels
+const pianoParts = () => {
+  const wave = waves.all ?? 1;
+  const all = tracks.filter((t) => !t.drums).flatMap((t) => t.notes);
+  const grids = [0, 1, 2].map(() => Array(steps).fill(null));
+  for (let s = 0; s < steps; s++) {
+    const live = all.filter((n) => at(n) <= s && until(n) > s).sort((a, b) => b.key - a.key);
+    if (!live.length) continue;
+    const rest = live.slice(1);
+    // the top note; the next; the others take turns in the third
+    const pick = [live[0], rest[0], rest.length > 2 ? rest[1 + s % (rest.length - 1)] : rest[1]];
+    pick.forEach((n, v) => {
+      if (!n) return;
+      let p = n.key - 36; while (p < 0) p += 12; while (p > 63) p -= 12;
+      const i = s - at(n), last = s === until(n) - 1;
+      // struck: loud at first, a step quieter each step, fading out
+      const vol = Math.max(1, Math.min(7, Math.round(n.vel / 127 * 7) + (v === 0 ? 1 : 0) - i));
+      grids[v][s] = {p, wave, vol, fx: last ? 5 : 0};
+    });
+  }
+  return grids.map((grid, v) => ({name: v ? `chord ${v}` : 'top note', wave, grid}));
+};
+
 // --- one note per step per part
-const parts = tracks.filter((t) => !t.drums && !without.includes(t.name)).slice(0, 3).map((tr, ti) => {
+const parts = piano ? pianoParts() : tracks.filter((t) => !t.drums && !without.includes(t.name)).slice(0, 3).map((tr, ti) => {
   const wave = waves[tr.name] ?? [3, 0, 0][ti];
   const grid = Array.from({length: steps}, (_, s) => {
     const live = tr.notes.filter((n) => at(n) <= s && until(n) > s);
@@ -146,7 +178,7 @@ const parts = tracks.filter((t) => !t.drums && !without.includes(t.name)).slice(
 });
 
 // --- drums: into the part with the most rests where they hit
-const drum = tracks.find((t) => t.drums);
+const drum = piano ? null : tracks.find((t) => t.drums);
 let drumNote = '';
 if (drum) {
   const hits = drum.notes.map((n) => ({s: at(n), key: n.key, vel: n.vel})).filter((h) => h.s < steps);
@@ -190,18 +222,21 @@ const sfxLines = section('sfx');
 while (sfxLines.length < 64) sfxLines.push(empty);
 // appending: after the last sfx in use (8 at least), and after the
 // patterns already there
-let base = FIRST;
+let base = opt('--sfx') ?? FIRST;
 if (append) for (let i = 63; i >= FIRST; i--) if (sfxLines[i].slice(8) !== '0'.repeat(160)) { base = i + 1; break; }
 if (base + sfx.length > 64) throw new Error(`needs ${sfx.length} sfx; only ${64 - base} are free`);
-if (!append) for (let i = FIRST; i < 64; i++) sfxLines[i] = empty;
-sfx.forEach((body, i) => { sfxLines[base + i] = '00' + hex(speed, 2) + '0000' + body; });
+if (!append && opt('--sfx') === undefined) for (let i = FIRST; i < 64; i++) sfxLines[i] = empty;
+// the first byte: the sfx editor's filters (reverb counts 24 a step)
+const filters = hex((opt('--reverb') || 0) * 24, 2);
+sfx.forEach((body, i) => { sfxLines[base + i] = filters + hex(speed, 2) + '0000' + body; });
 const patterns = channels[0].ids.length;
-const musicLines = append ? section('music') : [];
-const first = musicLines.length;
+const musicLines = append || opt('--at') !== undefined ? section('music') : [];
+const first = opt('--at') ?? musicLines.length;
+while (musicLines.length < first + patterns) musicLines.push('00 40404040');
 for (let i = 0; i < patterns; i++) {
   const flags = (i === 0 ? 1 : 0) | (i === patterns - 1 ? 2 : 0); // loop start / loop back
   const ch = [0, 1, 2, 3].map((c) => hex(channels[c] ? channels[c].ids[i] - FIRST + base : 0x40, 2));
-  musicLines.push(hex(flags, 2) + ' ' + ch.join(''));
+  musicLines[first + i] = hex(flags, 2) + ' ' + ch.join('');
 }
 const put = (name, lines) => {
   const block = `__${name}__\n${lines.join('\n')}`;

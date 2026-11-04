@@ -46,20 +46,22 @@ they go out.
 
 ## Music
 
-Shalone finished the music in PICO-8 herself, so `nuns.p8` is the source
-for it: don't rerun `npm run music` on this cart (it would replace her
-work). The game plays the home screen on the title, the world map in town
-and the fast one for the last minute. Her songs:
+Her two songs, one bright piano sound (tilted saw, each note fading like
+a struck key, PICO-8's reverb filter at 2), all three music channels
+(channel 3 stays free for sound effects):
 
-| song | music patterns | in the code |
-|---|---|---|
-| home screen | 8-11 | `music(8)` |
-| world map | 12-15 | `music(12)` |
-| world map, fast (the last minute) | 20-23 | `music(20)` |
+| song | file | music patterns | plays |
+|---|---|---|---|
+| slow (16 bars) | `music/slow.mid` | 0-7, `music(0)` | home screen and town |
+| fast (8 bars) | `music/fast.mid` | 8-11, `music(8)` | the last minute |
 
-Patterns 0-7 and 16-19 are lead-ins: when a song reaches its last
-pattern, PICO-8 jumps back to the nearest earlier pattern marked "loop
-start" (8, 12 and 20: each song loops on its own).
+Her chords have 4 notes; PICO-8 plays 3 at once here, so the top note
+always sounds and the chord's other notes share the other two channels
+(the lowest two take turns). To redo them after changing a MIDI:
 
-sfx 0-7 are Blessed!'s sound effects (the game will reuse them). Her
-original MIDIs are in `music/`.
+    npm run music -- game/nuns/music/slow.mid --cart game/nuns/nuns.p8 --piano --reverb 2 --bars 16
+    npm run music -- game/nuns/music/fast.mid --cart game/nuns/nuns.p8 --piano --reverb 2 --bars 8 --append
+
+(The first clears every song sfx, 8-63, and the music patterns; sfx 0-7
+are Blessed!'s sound effects, kept. The older MIDIs in `music/` are no
+longer in the cart.)
