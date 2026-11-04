@@ -108,10 +108,8 @@ points:
         sprite: peter-and-apostles
         size: full
       - type: sprite
-        sprite: pope-walk
-        move: across
-        size: small
-        with: over
+        sprite: pope-and-bishops
+        size: full
     quiz:
       type: choice
       question: What job did Jesus give Peter?
@@ -135,14 +133,13 @@ points:
       Faith is what we believe about God. Morals are how God wants us to live.
       The gift isn't for math homework, the weather, or who wins the big game!
     visuals:
+      - type: sprite
+        sprite: pope-point
+        with: over
       - type: compare
         left: { kicker: Yes, title: Faith and morals, note: What we believe and how to live, icon: church }
         right: { kicker: "No", title: Everything else, note: Math, weather, sports, icon: x }
         emphasis: left
-      - type: sprite
-        sprite: pope-look-up
-        size: small
-        with: over
     quiz:
       type: truefalse
       question: Infallibility means the Pope always knows who will win the big game.
