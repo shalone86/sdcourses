@@ -13,6 +13,10 @@ and big needs work as in Blessed!, in the words of prayer.
 - `npm run nuns` puts her drawings in (per `sprites.json` here), makes
   the 4-player cart and the `-release` copies of both.
 - Saves (`cartdata("sdcason_nuns")`) are separate from Blessed!'s.
+- `label.png` is the cart picture (the label PICO-8 asks for when
+  exporting): her benedictine with her candle lit. To change it:
+  `npm run pico8-label -- game/nuns/label.png game/nuns/nuns.p8`, then
+  `npm run nuns`.
 
 ## The sisters
 
