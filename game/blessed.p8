@@ -264,6 +264,10 @@ who=max(1,dget(3))
 --4p -- players 2-4 (by controller,
 --4p -- 1-3): joined on the start screen
 --4p xs={}
+--4p -- each player's color: green,
+--4p -- blue, pink, orange (circle,
+--4p -- number over the head)
+--4p pc=split"11,12,14,9"
 
 function unlocked(i) return i==1 or dget(2)&(1<<i)>0 end
 
@@ -1290,7 +1294,7 @@ function draw_title()
 --4p -- sides (x on their controls)
 --4p for i=1,3 do
 --4p  local x,y,o=i%2*84+10,i\3*24+40,xs[i]
---4p  print("p"..i+1 ..(o and "" or ":\151"),x+2,y-7,o and 12 or 6)
+--4p  print("p"..i+1 ..(o and "" or ":\151"),x+2,y-7,o and pc[i+1] or 6)
 --4p  if o then
 --4p   local n=chars[o.w].s
 --4p   pal(o.lk) sspr(n%16*8,n\16*8,8,8,x,y,16,16) pal()
@@ -1371,7 +1375,8 @@ function _draw()
 --4p -- circle, and the car too
 --4p for _,o in pairs(xs) do
 --4p  at(o.x,o.y)
---4p  circ(o.x,o.y-4,p.r,11)
+--4p  circ(o.x,o.y-4,p.r,pc[o.n+1])
+--4p  print(o.n+1,o.x-1,o.y-17,pc[o.n+1])
 --4p  if l"a car">0 and o.mv then drive(o)
 --4p  else figure(chars[o.w].s,chars[o.w].w,o.mv,o.x,o.y,o.fl,o.lk) end
 --4p end
@@ -1400,6 +1405,9 @@ function _draw()
  end
  pal()
  end
+--4p -- with others playing: your
+--4p -- number over your head too
+--4p if next(xs) then print(1,p.x-1,p.y-17,11) end
  -- your guardian angel, bringing grace
  if angel_t>0 then
   angel_t-=1

@@ -155,6 +155,7 @@ chars={
 }
 who=max(1,dget(3))
 xs={}
+pc=split"11,12,14,9"
 function unlocked(i) return i==1 or dget(2)&(1<<i)>0 end
 abc="abcdefghijklmnopqrstuvwxyz"
 function initials(v)
@@ -885,7 +886,7 @@ function draw_title()
  print("\151 start   \142 book",26,114,7)
 for i=1,3 do
  local x,y,o=i%2*84+10,i\3*24+40,xs[i]
- print("p"..i+1 ..(o and "" or ":\151"),x+2,y-7,o and 12 or 6)
+ print("p"..i+1 ..(o and "" or ":\151"),x+2,y-7,o and pc[i+1] or 6)
  if o then
   local n=chars[o.w].s
   pal(o.lk) sspr(n%16*8,n\16*8,8,8,x,y,16,16) pal()
@@ -952,7 +953,8 @@ function _draw()
  end
 for _,o in pairs(xs) do
  at(o.x,o.y)
- circ(o.x,o.y-4,p.r,11)
+ circ(o.x,o.y-4,p.r,pc[o.n+1])
+ print(o.n+1,o.x-1,o.y-17,pc[o.n+1])
  if l"a car">0 and o.mv then drive(o)
  else figure(chars[o.w].s,chars[o.w].w,o.mv,o.x,o.y,o.fl,o.lk) end
 end
@@ -974,6 +976,7 @@ end
  end
  pal()
  end
+if next(xs) then print(1,p.x-1,p.y-17,11) end
  if angel_t>0 then
   angel_t-=1
   spr(84+flr(t/4)%4,p.x+(p.fl and -12 or 4),p.y-16,1,1,p.fl)
