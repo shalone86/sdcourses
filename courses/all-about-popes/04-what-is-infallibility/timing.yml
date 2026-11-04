@@ -54,7 +54,7 @@ point-2:
         y: -26
         size: 108
 point-3:
-  end: 15.87
+  end: 16.67
   side: left
   scenes:
     "0":
@@ -67,4 +67,8 @@ point-3:
         size: 79
     "2":
       start: 10.83
-      end: 15.7
+      end: 16.5
+point-4:
+  scenes:
+    "1":
+      start: 6.4

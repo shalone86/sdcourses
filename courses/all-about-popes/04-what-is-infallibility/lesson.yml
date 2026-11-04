@@ -137,8 +137,16 @@ points:
         sprite: pope-point
         with: over
       - type: compare
-        left: { kicker: Yes, title: Faith and morals, note: What we believe and how to live, icon: church }
-        right: { kicker: "No", title: Everything else, note: Math, weather, sports, icon: x }
+        left:
+          kicker: Yes
+          title: Faith and morals
+          note: What we believe and how to live
+          icon: church
+        right:
+          kicker: No
+          title: Everything else
+          note: Math, weather, who will win the game
+          icon: x
         emphasis: left
     quiz:
       type: truefalse
@@ -161,6 +169,10 @@ points:
       confession too. Only his rare, solemn teaching for the whole Church is
       infallible.
     visuals:
+      - type: image
+        src: images/wikimedia-pope-leo-xiv-in-popemobile-at-inaugurati-196850108.jpg
+        aspect: 0.817
+        credit: Congressman Michael McCaul (R-Texas) · Wikimedia Commons · Public domain
       - type: chain
         items: [Rare, Solemn, For the whole Church]
         caption: When the Pope can't be wrong
