@@ -54,7 +54,7 @@ point-2:
         y: -26
         size: 108
 point-3:
-  end: 16.67
+  end: 16.8
   side: left
   scenes:
     "0":
@@ -67,8 +67,25 @@ point-3:
         size: 79
     "2":
       start: 10.83
-      end: 16.5
+      end: 16.63
 point-4:
   scenes:
     "1":
       start: 6.4
+      nudge:
+        x: 198
+        y: 194
+        size: 182
+    "2":
+      cues:
+        "1": 16.37
+        "2": 17.83
+    "3":
+      nudge:
+        x: 825
+        y: -133
+        size: 100
+        flip: true
+outro:
+  camera: only
+  end: 22.67

@@ -201,3 +201,10 @@ outro:
     - type: recap
 thumb:
   sprite: pope-blessing
+  pics:
+    - sprite: pope-blessing
+      x: 645
+      y: 403
+      size: 593
+      frame: 0
+      flip: true
