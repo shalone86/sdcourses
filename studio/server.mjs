@@ -298,10 +298,11 @@ function saveTiming(id, timing) {
       if (Number.isFinite(o.end)) out.end = Math.round(o.end * 100) / 100;
       const cues = Object.fromEntries(Object.entries(o.cues ?? {}).filter(([, t]) => Number.isFinite(t)).map(([k, t]) => [k, Math.round(t * 100) / 100]));
       if (Object.keys(cues).length) out.cues = cues;
-      // Moved/resized in the Timing tab (pixels of 1920×1080, size in %).
+      // Moved/resized/flipped in the Timing tab (pixels of 1920×1080, size in %).
       const n = o.nudge ?? {};
       const nx = Math.round(Number(n.x) || 0), ny = Math.round(Number(n.y) || 0), size = Math.min(200, Math.max(30, Math.round(Number(n.size) || 100)));
-      if (nx || ny || size !== 100) out.nudge = {x: nx, y: ny, size};
+      // (flip: mirrored left to right, for pictures and her drawings)
+      if (nx || ny || size !== 100 || n.flip) out.nudge = {x: nx, y: ny, size, ...(n.flip ? {flip: true} : {})};
       // The keyboard puppet's recording: [seconds into the recording, key, down 1/0].
       const KEYS = ['left', 'right', 'shift', 'up', 'down', 'p', 't', 'a', 'x', 'h', 'i'];
       if (Array.isArray(o.puppet)) {

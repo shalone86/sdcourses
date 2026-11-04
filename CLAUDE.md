@@ -206,13 +206,13 @@ If it's already running, `npm start` just opens the page.
   Anything Claude blocked out is `origin: scaffold` in the manifest and shows as a draft
   in the picker (so far: `angel`); don't put drafts in a lesson she is publishing.
 - **Nudging:** clicking any scene block shows Move ← ↑ ↓ → / Smaller / Bigger
-  (Shift moves further), and lets her drag it on the video (its corner handles or the mouse wheel there: size), saved in timing.yml as `scenes.<i>.nudge: {x, y, size}`
+  (Shift moves further), and lets her drag it on the video (its corner handles or the mouse wheel there: size), saved in timing.yml as `scenes.<i>.nudge: {x, y, size, flip}` (⇋ Flip mirrors a picture or drawing, not its caption or credit)
   (pixels of 1920×1080, %), e.g. to lift a scene off the progress bar.
 - **Stacking:** in the Timing tab, a picture's ◫/⧉ button shows it beside or
   over the picture before (`with: side | over` on the scene); the add form's "Shows"
   sets it when adding (remembered for the next one).
 - **Trimming:** in the Timing tab, a picture's right edge ends it sooner
-  (`scenes.<i>.end`) and the End marker shortens the slide (`<section>.end`).
+  (`scenes.<i>.end`) and the End marker shortens or lengthens the slide (`<section>.end`; up to 10 s past its recording).
 - **Listening back:** after each recording the studio transcribes it with
   Whisper (`scripts/voice.mjs`; whisper-cli + the ggml-small model, cached as
   `audio/<section>.words.json`) and shows what she said vs. the script, with

@@ -214,7 +214,9 @@
     function timeline() {
       const s = seg();
       const px = T.zoom / FPS; // pixels per frame
-      const W = Math.ceil(s.durationInFrames * px) + 40;
+      // Room past the end, so a slide made too short can be made longer again (up to 10 s past its recording).
+      const room = Math.max(s.durationInFrames, T.data.segments[T.seg].autoDuration ?? 0) + 10 * FPS;
+      const W = Math.ceil(room * px) + 40;
       const words = T.data.segments[T.seg].words;
       const x = (f) => 20 + f * px;
       const wrap = h('div', {class: 'tl', style: {width: W + 'px'}});
@@ -319,9 +321,9 @@
       });
       // The slide's end: drag left to make the whole slide shorter (double-click to undo).
       const cut = (T.timing[s.name] || {}).end != null;
-      const endMark = h('div', {class: 'tl-end' + (cut ? ' moved' : ''), style: {left: x(s.durationInFrames) + 'px'}, title: 'End of this slide: drag to make it shorter · double-click to undo',
+      const endMark = h('div', {class: 'tl-end' + (cut ? ' moved' : ''), style: {left: x(s.durationInFrames) + 'px'}, title: 'End of this slide: drag left to make it shorter, right to make it longer · double-click to undo',
         ondblclick: () => { if (cut) { delete T.timing[s.name].end; updatePlayer(); draw(); setDirty(); } }}, [h('span', {text: 'End'})]);
-      drag(endMark, s.durationInFrames, (f) => setSlideEnd(Math.max(s.audioOffsetInFrames + 30, f)), () => T.player.seek(segStart(T.seg) + Math.max(0, s.durationInFrames - 30)));
+      drag(endMark, s.durationInFrames, (f) => setSlideEnd(Math.max(s.audioOffsetInFrames + 30, f)), () => T.player.seek(segStart(T.seg) + Math.max(0, s.durationInFrames - 30)), undefined, room);
       wrap.append(endMark);
       const head = h('div', {class: 'tl-head', 'data-playhead': '', title: 'Drag to scrub'}, [h('i')]);
       scrubFrom(head);
@@ -330,7 +332,7 @@
 
       // Drag horizontally; on release, apply and redraw.
       // `resize`: dragging a block's right edge, so the block grows/shrinks instead of moving.
-      function drag(node, startFrame, set, after, resize) {
+      function drag(node, startFrame, set, after, resize, limit = s.durationInFrames - 5) {
         node.addEventListener('pointerdown', (e) => {
           e.preventDefault();
           try { node.setPointerCapture(e.pointerId); } catch { /* still drags while the pointer stays on it */ }
@@ -342,7 +344,7 @@
             // (a click that wobbles a few pixels is still a click)
             if (!moved && Math.abs(ev.clientX - x0) < 5) return;
             moved = true;
-            f = snap(Math.max(0, Math.min(s.durationInFrames - 5, startFrame + (ev.clientX - x0) / px)));
+            f = snap(Math.max(0, Math.min(limit, startFrame + (ev.clientX - x0) / px)));
             if (resize) resize.style.width = Math.max(24, width0 + (f - startFrame) * px) + 'px';
             else node.style.left = left0 + (f - startFrame) * px + 'px';
             T.player.seek(segStart(T.seg) + f);
@@ -525,7 +527,7 @@
       const set = (fn) => {
         const o = (((T.timing[s.name] ||= {}).scenes ||= {})[i] ||= {});
         const n = fn({x: 0, y: 0, size: 100, ...o.nudge});
-        if (!n.x && !n.y && n.size === 100) delete o.nudge; else o.nudge = n;
+        if (!n.x && !n.y && n.size === 100 && !n.flip) delete o.nudge; else o.nudge = n;
         if (!Object.keys(o).length) delete T.timing[s.name].scenes[i];
         updatePlayer(); draw(); setDirty();
         T.player.seek(segStart(T.seg) + Math.max(sc.from || 0, Math.min(T.player.frame() - segStart(T.seg), s.durationInFrames - 1)));
@@ -542,8 +544,11 @@
         btn('→', 'Right (Shift: further)', (v, d) => ({...v, x: v.x + d})),
         btn('Smaller', 'Smaller', (v) => ({...v, size: Math.max(30, v.size - 5)})),
         btn('Bigger', 'Bigger', (v) => ({...v, size: Math.min(200, v.size + 5)})),
-        h('span', {class: 'small muted', text: (n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made') + ' · or drag it on the video (a corner, or the mouse wheel: size)'}),
-        n.x || n.y || n.size !== 100 ? btn('Reset', 'Put it back', () => ({x: 0, y: 0, size: 100})) : null,
+        // Pictures and her drawings can be mirrored left to right.
+        ['image', 'sprite', 'figure'].includes(sc.type) ? h('button', {class: 'btn', title: 'Mirror it left to right', 'aria-pressed': n.flip ? 'true' : 'false',
+          text: n.flip ? '⇋ Flipped' : '⇋ Flip', onclick: () => set((v) => { const {flip, ...rest} = v; return flip ? rest : {...rest, flip: true}; })}) : null,
+        h('span', {class: 'small muted', text: (n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made') + (n.flip ? ' · flipped' : '') + ' · or drag it on the video (a corner, or the mouse wheel: size)'}),
+        n.x || n.y || n.size !== 100 || n.flip ? btn('Reset', 'Put it back', () => ({x: 0, y: 0, size: 100})) : null,
         h('button', {class: 'btn', text: 'Close', onclick: () => { T.nudge = null; draw(); }}),
       ]);
     }
@@ -565,7 +570,7 @@
         };
         const up = () => {
           layer.removeEventListener('pointermove', move); layer.removeEventListener('pointerup', up);
-          if (!o.nudge.x && !o.nudge.y && o.nudge.size === 100) delete o.nudge;
+          if (!o.nudge.x && !o.nudge.y && o.nudge.size === 100 && !o.nudge.flip) delete o.nudge;
           updatePlayer(); draw(); setDirty();
         };
         layer.addEventListener('pointermove', move); layer.addEventListener('pointerup', up);
@@ -589,7 +594,7 @@
           };
           const up = () => {
             grip.removeEventListener('pointermove', move); grip.removeEventListener('pointerup', up);
-            if (!o.nudge.x && !o.nudge.y && o.nudge.size === 100) delete o.nudge;
+            if (!o.nudge.x && !o.nudge.y && o.nudge.size === 100 && !o.nudge.flip) delete o.nudge;
             updatePlayer(); draw(); setDirty();
           };
           grip.addEventListener('pointermove', move); grip.addEventListener('pointerup', up);
