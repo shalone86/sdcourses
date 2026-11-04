@@ -46,22 +46,22 @@ they go out.
 
 ## Music
 
-Her two songs, one bright piano sound (tilted saw, each note fading like
-a struck key, PICO-8's reverb filter at 2), all three music channels
+Her three songs, one bright piano sound (tilted saw, each note fading like
+a struck key, PICO-8's reverb filter at 2), on the three music channels
 (channel 3 stays free for sound effects):
 
 | song | file | music patterns | plays |
 |---|---|---|---|
-| slow (16 bars) | `music/slow.mid` | 0-7, `music(0)` | home screen and town |
-| fast (8 bars) | `music/fast.mid` | 8-11, `music(8)` | the last minute |
+| slow (16 bars) | `music/slow.mid` | 0-7, `music(0)` | home screen |
+| fast (8 bars) | `music/fast.mid` | 8-11, `music(8)` | town |
+| fast 2 (8 bars) | `music/fast2.mid` | 12-15, `music(12)` | the last minute |
+
+She touched up the slow song's piano in PICO-8 (vibrato on some notes),
+so the cart is its source now: don't redo slow from the MIDI. Fast and
+fast 2 were made with:
+
+    npm run music -- game/nuns/music/fast2.mid --cart game/nuns/nuns.p8 --piano --reverb 2 --bars 8 --append
 
 Her chords have 4 notes; PICO-8 plays 3 at once here, so the top note
 always sounds and the chord's other notes share the other two channels
-(the lowest two take turns). To redo them after changing a MIDI:
-
-    npm run music -- game/nuns/music/slow.mid --cart game/nuns/nuns.p8 --piano --reverb 2 --bars 16
-    npm run music -- game/nuns/music/fast.mid --cart game/nuns/nuns.p8 --piano --reverb 2 --bars 8 --append
-
-(The first clears every song sfx, 8-63, and the music patterns; sfx 0-7
-are Blessed!'s sound effects, kept. The older MIDIs in `music/` are no
-longer in the cart.)
+(the lowest two take turns). sfx 0-7 are Blessed!'s sound effects.
