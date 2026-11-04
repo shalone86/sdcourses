@@ -1,4 +1,5 @@
 // Makes the 4-player cart from the 1-player one: game/blessed.p8 ->
+// (or game/nuns/nuns.p8 -> nuns4.p8, the same way)
 // game/blessed4.p8. In blessed.p8, lines ending in "--1p" are only in the
 // 1-player cart (the 4-player one leaves them out: spring rain, winter
 // snow, the title's falling grace, the time-lost line), and lines starting

@@ -1,0 +1,131 @@
+{
+  "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide and 2 tall). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
+  "_slots": "0 benedictine, 2 sister of charity, 4 missionary sister, 6 discalced carmelite, 8 poor clare (2 frames each; walking uses the same), 88 candle (8 frames, 8x8: the bottom left of her 16x16 candle), 50/52/54 shrines 1-3 (16x16), 16-27 people walking (6 bases), 37 grace (a heart, 4 frames), 46 child standing, 48 child walking, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 84 angel (4 frames), 96 car and 104 parish van (16x16, 4 frames each), 72-83 people standing (6 bases, same order as walking)",
+  "slots": {
+    "0": "nun-benedictine-idle",
+    "2": "nun-sister-of-charity-idle",
+    "4": "nun-missionary-sister-idle",
+    "6": "nun-discalced-carmelite-idle",
+    "8": "nun-poor-clare-idle",
+    "16": "skinny-guy-walk",
+    "18": "skinny-woman-walk",
+    "20": "thick-guy-walk",
+    "22": "thick-woman-walk",
+    "24": "guy-beard-walk",
+    "26": "thick-beard-guy-walk",
+    "33": "gift-box",
+    "34": "rosary",
+    "35": "holy-water-bucket",
+    "36": "coffee-mug",
+    "37": "grace-heart",
+    "41": "bush-1",
+    "42": "bush-2",
+    "43": "bush-3",
+    "44": "lilies",
+    "45": "pumpkin",
+    "46": "child-idle",
+    "48": "child-walk",
+    "50": "nun-shrine-1",
+    "52": "nun-shrine-2",
+    "54": "nun-shrine-3",
+    "72": "skinny-guy-idle",
+    "74": "skinny-woman-idle",
+    "76": "thick-guy-idle",
+    "78": "thick-woman-idle",
+    "80": "guy-beard-idle",
+    "82": "thick-beard-guy-idle",
+    "84": "angel",
+    "88": "nun-candle-small",
+    "96": "town-car",
+    "104": "car"
+  },
+  "_big": "Her 32x32 art: the first 8 on the bottom half of the sprite sheet, the rest stored in the code and unpacked at start into an extra sprite sheet (upper memory). Order is fixed: add new ones at the end.",
+  "big": [
+    "church-1",
+    "church-2",
+    "church-3",
+    "cathedral",
+    "hospital",
+    "chapel",
+    "house-1",
+    "house-2",
+    "house-3",
+    "house-4",
+    "tree-1",
+    "tree-2",
+    "tree-3",
+    "tree-4",
+    "tree-5",
+    "tree-6",
+    "christmas-tree",
+    "marian-garden"
+  ],
+  "_parts": "Which colors each group's looks swap: people and child as in Blessed!; nun for the helper sisters; p1-p5 the five nuns you can play (skin and eyes only: the habits stay hers).",
+  "parts": {
+    "people": {
+      "#5A3825": "hair",
+      "#A86B3C": "skin",
+      "#F2C6A0": "eyes",
+      "#2B2350": "clothes",
+      "#FF4F6D": "clothes",
+      "#2F8CFF": "clothes",
+      "#18B7A6": "clothes",
+      "#FFFFFF": "clothes",
+      "#FFB300": "clothes",
+      "#FF8A3D": "clothes",
+      "#7B5CFF": "clothes"
+    },
+    "child": {
+      "#FFA108": "hair",
+      "#FFCAA8": "skin",
+      "#222E53": "eyes",
+      "#82759A": "clothes"
+    },
+    "nun": {
+      "#FFCAA8": "skin",
+      "#2CABFE": "eyes",
+      "#008551": "eyes"
+    },
+    "p1": {
+      "#FFCAA8": "skin",
+      "#2CABFE": "eyes"
+    },
+    "p2": {
+      "#FFCAA8": "skin",
+      "#008551": "eyes"
+    },
+    "p3": {
+      "#FFCAA8": "skin",
+      "#2CABFE": "eyes"
+    },
+    "p4": {
+      "#FFCAA8": "skin",
+      "#2CABFE": "eyes"
+    },
+    "p5": {
+      "#FFCAA8": "skin",
+      "#2CABFE": "eyes"
+    }
+  },
+  "_tops": "People slots whose top row (the top of the head) is hair or a hat: each person gets one at random.",
+  "tops": [
+    "16",
+    "18",
+    "20",
+    "22",
+    "24",
+    "26"
+  ],
+  "_colors": "Force one of her colors onto a PICO-8 color number (0-15) when the nearest match is wrong or two colors land on the same one. #1D2B53 (the priest's and deacon's hair) goes to 2, its own color, so hair can change apart from the black cassock.",
+  "colors": {
+    "#FFB300": 10,
+    "#18B7A6": 3,
+    "#1D2B53": 2,
+    "#2B2351": 3
+  },
+  "separate": [
+    "#1D2B53",
+    "#2B2351"
+  ],
+  "_separate": "Colors forced above only so a part can be swapped apart from the same color elsewhere (the priest's hair from his cassock, the benedictine's eyes from his habit): their own look shows them as their nearest PICO-8 color."
+}

@@ -23,7 +23,9 @@ for (const line of lua.split('\n')) {
   if (code.trim()) out.push(code);
 }
 // the first two lines show on the cart label: title and author
-const label = `-- blessed!${/4\.p8$/.test(cart) ? ' (4 players)' : ''}\n-- by shalone cason\n`;
+// (the title from a "-- title: ..." line, else blessed!)
+const title = (lua.match(/^-- title: (.*)$/m) || [, 'blessed!'])[1];
+const label = `-- ${title}${/4\.p8$/.test(cart) ? ' (4 players)' : ''}\n-- by shalone cason\n`;
 const dest = cart.replace(/\.p8$/, '-release.p8');
 fs.writeFileSync(dest, `${head}__lua__\n${label}${out.join('\n')}${tail}`);
 console.log(`wrote ${dest}: code ${lua.length} -> ${out.join('\n').length} characters`);

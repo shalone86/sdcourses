@@ -168,5 +168,6 @@
     "#1D2B53",
     "#2B2351"
   ],
-  "_separate": "Colors forced above only so a part can be swapped apart from the same color elsewhere (the priest's hair from his cassock, the benedictine's eyes from his habit): their own look shows them as their nearest PICO-8 color."
+  "_separate": "Colors forced above only so a part can be swapped apart from the same color elsewhere (the priest's hair from his cassock, the benedictine's eyes from his habit): their own look shows them as their nearest PICO-8 color.",
+  "gray": "p7"
 }

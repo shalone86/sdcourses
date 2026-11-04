@@ -4,10 +4,13 @@
 // deacon's look). Colors snap to
 // PICO-8's 16 unless sprites.json's `colors` says otherwise; "." stays
 // see-through (color 0). Usage: npm run pico8 [-- game/blessed.p8]
+// Each game's sprites.json sits in its cart's folder (game/sprites.json
+// for Blessed!, game/nuns/sprites.json for the nun game).
 import fs from 'node:fs';
+import path from 'node:path';
 
 const cart = process.argv[2] || 'game/blessed.p8';
-const cfg = JSON.parse(fs.readFileSync('game/sprites.json', 'utf8'));
+const cfg = JSON.parse(fs.readFileSync(path.join(path.dirname(cart), 'sprites.json'), 'utf8'));
 const force = Object.fromEntries(Object.entries(cfg.colors || {}).map(([h, n]) => [h.toUpperCase(), n]));
 
 const PICO = ['000000', '1d2b53', '7e2553', '008751', 'ab5236', '5f574f', 'c2c3c7', 'fff1e8',
@@ -71,13 +74,13 @@ for (const [group, hexes] of Object.entries(cfg.parts || {})) {
     kind[nearest(hex)] = k;
     // her own color for it (hair forced to its own color for the swap,
     // like the priest's, shows as its nearest)
-    drawn[nearest(hex)] = k === 'white' ? (group === 'p7' ? 6 : 7) : (cfg.separate || []).includes(hex.toUpperCase()) ? closest(hex) : nearest(hex);
+    drawn[nearest(hex)] = k === 'white' ? (cfg.gray === group ? 6 : 7) : (cfg.separate || []).includes(hex.toUpperCase()) ? closest(hex) : nearest(hex);
   }
   const own = Array.from({length: 15}, (_, i) => String.fromCharCode(97 + (drawn[i + 1] ?? i + 1))).join('');
   const seen = new Set([own]), list = [own];
   for (const sk of [15, 9, 4]) for (const h of [1, 5, 4, 6, 7, 10]) for (const e of [3, 12, 1]) {
     if (h === sk || (sk !== 15 && (h === 10 || e !== 1))) continue;
-    const v = {skin: sk, hair: h, eyes: e, beard: h === 1 || h === 5 ? 5 : 7, white: group === 'p7' ? 6 : 7};
+    const v = {skin: sk, hair: h, eyes: e, beard: h === 1 || h === 5 ? 5 : 7, white: cfg.gray === group ? 6 : 7};
     const look = Array.from({length: 15}, (_, i) => String.fromCharCode(97 + (kind[i + 1] ? v[kind[i + 1]] : i + 1))).join('');
     if (!seen.has(look)) { seen.add(look); list.push(look); }
   }

@@ -1,14 +1,55 @@
-# Nun game (working title)
+# Candles! (the nun game, working title)
 
-Blessed! with nuns and a twist: nuns walk around with candles and leave
-light wherever they go. For now the cart (`nuns.p8`) holds only Shalone's
-music, with a little player: left/right picks a song.
+Blessed! with nuns and a twist. The sisters walk the town with candles
+and drop them as they go; everyone in a candle's light is prayed for, and
+people walk to the nearest light. Shrines (built as you level up) have
+candles that never go out. The town is always dark, dusk or night (each
+day picks one), so the candlelight shows. The church, hospital, houses
+and big needs work as in Blessed!, in the words of prayer.
+
+- `nuns.p8`: the 1-player cart, the one to edit (code, her music).
+- `nuns4.p8`: the 4-player cart, made from it (lines ending `--1p` left
+  out, lines starting `--4p` put in), like Blessed!'s.
+- `npm run nuns` puts her drawings in (per `sprites.json` here), makes
+  the 4-player cart and the `-release` copies of both.
+- Saves (`cartdata("sdcason_nuns")`) are separate from Blessed!'s.
+
+## The sisters
+
+| sister | drawing | start | to unlock |
+|---|---|---|---|
+| Benedictine | `nun-benedictine-idle` | ora et labora (none) | – |
+| Sister of Charity | `nun-sister-of-charity-idle` | starts at the hospital | pray for 50 sick in a day |
+| Missionary Sister | `nun-missionary-sister-idle` | walks faster | find 3 combos |
+| Discalced Carmelite | `nun-discalced-carmelite-idle` | candles burn twice as long | build 3 shrines in a day |
+| Poor Clare | `nun-poor-clare-idle` | 2 more candles at once | pray for 500 in a day |
+
+Players pick skin and eyes (up/down); the habits stay as she drew them.
+Each nun holds `nun-candle` (its bottom-left 8x8, `nun-candle-small`) on
+her white square; dropped candles use the same 8 frames and flicker before
+they go out.
+
+## Candles and shrines
+
+- You drop a candle every 40 frames while walking (or driving). At most
+  2 burn at once (the oldest goes out), each for 5 s.
+- Your own light prays for everyone in reach, as blessing did; dropped
+  candles and shrines pray half as often. Candles near the hospital pray
+  for the sick (once you're the hospital sister).
+- New upgrades: bigger flame (reach), quick prayers, longer wick (+3 s),
+  more candles (+1 at once), a shrine (built where you stand, up to 3:
+  her three drawings in turn), shrine candles (shrines reach farther).
+- The rest are Blessed!'s, renamed: convent (a novice joins you), church
+  sister, hospital sister, nursing sister, chapel sister.
+- Combos are Blessed!'s for now (renamed for sisters; anointing left out),
+  until she has her own.
 
 ## Music
 
-Shalone finished the music in PICO-8 herself, so `nuns.p8` is now the
-source for it: don't rerun `npm run music` on this cart (it would replace
-her work). Her songs:
+Shalone finished the music in PICO-8 herself, so `nuns.p8` is the source
+for it: don't rerun `npm run music` on this cart (it would replace her
+work). The game plays the home screen on the title, the world map in town
+and the fast one for the last minute. Her songs:
 
 | song | music patterns | in the code |
 |---|---|---|
@@ -18,8 +59,7 @@ her work). Her songs:
 
 Patterns 0-7 and 16-19 are lead-ins: when a song reaches its last
 pattern, PICO-8 jumps back to the nearest earlier pattern marked "loop
-start", which is 0 for the home screen (7 silent patterns, then the song
-again) and 16 for the fast song (her drums first).
+start" (8, 12 and 20: each song loops on its own).
 
 sfx 0-7 are Blessed!'s sound effects (the game will reuse them). Her
 original MIDIs are in `music/`.
