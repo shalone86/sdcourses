@@ -157,6 +157,9 @@ body.wide .wrap{max-width:1600px}
 .tl-player{max-width:600px;margin:0 auto}
 .tl-drag{position:absolute;inset:0;display:none;border-radius:10px;cursor:move;touch-action:none}
 .tl-drag.on{display:block;outline:3px dashed var(--accent);outline-offset:-3px}
+.tl-grip{position:absolute;width:18px;height:18px;background:var(--accent);border:3px solid #fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.4);touch-action:none}
+.tl-grip.nw{left:-6px;top:-6px;cursor:nwse-resize}.tl-grip.se{right:-6px;bottom:-6px;cursor:nwse-resize}
+.tl-grip.ne{right:-6px;top:-6px;cursor:nesw-resize}.tl-grip.sw{left:-6px;bottom:-6px;cursor:nesw-resize}
 .tl-scene.fixed{background:var(--bg);border-style:dashed;cursor:default;color:var(--muted)}
 .tl-scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
 .tl{position:relative;height:250px;user-select:none;-webkit-user-select:none}

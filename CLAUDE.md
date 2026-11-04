@@ -138,7 +138,7 @@ If it's already running, `npm start` just opens the page.
   I pick, M select (Delete clears it), . / , next / previous frame; Export frame (PNG, enlarged) or animation (GIF, made by
   ffmpeg at `/api/sprite/gif`)). Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
-  Pixel animation, a `sprite` scene (`move: stay | hop | across | across-left`, `size`; across-left mirrors it);
+  Pixel animation (picked from a search box and moving thumbnails, `SpriteGallery.picker` in studio/reference.js), a `sprite` scene (`move: stay | hop | across | across-left`, `size`; across-left mirrors it);
   prepare.mjs copies the drawing into the props. With `motion: dance` it
   changes frame on the beat. **Sketch** mode (same tab, `studio/sketch.js`):
   free drawing with brush sizes and the same tools, saved as one PNG per
@@ -206,7 +206,7 @@ If it's already running, `npm start` just opens the page.
   Anything Claude blocked out is `origin: scaffold` in the manifest and shows as a draft
   in the picker (so far: `angel`); don't put drafts in a lesson she is publishing.
 - **Nudging:** clicking any scene block shows Move ← ↑ ↓ → / Smaller / Bigger
-  (Shift moves further), and lets her drag it on the video (mouse wheel there: size), saved in timing.yml as `scenes.<i>.nudge: {x, y, size}`
+  (Shift moves further), and lets her drag it on the video (its corner handles or the mouse wheel there: size), saved in timing.yml as `scenes.<i>.nudge: {x, y, size}`
   (pixels of 1920×1080, %), e.g. to lift a scene off the progress bar.
 - **Stacking:** in the Timing tab, a picture's ◫/⧉ button shows it beside or
   over the picture before (`with: side | over` on the scene); the add form's "Shows"

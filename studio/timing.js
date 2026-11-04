@@ -84,7 +84,7 @@
       read: (sc) => ({years: nl((sc.items || []).map((x) => x.year)), events: nl((sc.items || []).map((x) => x.label || ''))})},
     sprite: {label: 'Pixel animation (from the Pixel art tab)', fields: [['sprite', 'Which drawing', 'sprite'], ['colors', 'Colors (just in this picture)', 'colors', 'sprite'], ['move', 'How it moves', 'select', MOVES],
       ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
-      make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
+      make: (v) => { if (!v.sprite) throw new Error('Pick a drawing (or make one on the Pixel art tab first)');
         return {type: 'sprite', sprite: v.sprite, ...(colorsOf(v) ? {colors: v.colors} : {}), ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
       read: (sc) => ({sprite: sc.sprite || '', colors: sc.colors || {}, move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
     battle: {label: 'Battle (game footage from the Battles tab)', fields: [['battle', 'Which battle', 'battlepick'], ['from', 'Starts at (seconds into the battle)', 'text'], ['to', 'Stops at (seconds into the battle; empty = the end)', 'text'],
@@ -542,7 +542,7 @@
         btn('→', 'Right (Shift: further)', (v, d) => ({...v, x: v.x + d})),
         btn('Smaller', 'Smaller', (v) => ({...v, size: Math.max(30, v.size - 5)})),
         btn('Bigger', 'Bigger', (v) => ({...v, size: Math.min(200, v.size + 5)})),
-        h('span', {class: 'small muted', text: (n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made') + ' · or drag it on the video (mouse wheel: size)'}),
+        h('span', {class: 'small muted', text: (n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made') + ' · or drag it on the video (a corner, or the mouse wheel: size)'}),
         n.x || n.y || n.size !== 100 ? btn('Reset', 'Put it back', () => ({x: 0, y: 0, size: 100})) : null,
         h('button', {class: 'btn', text: 'Close', onclick: () => { T.nudge = null; draw(); }}),
       ]);
@@ -570,6 +570,32 @@
         };
         layer.addEventListener('pointermove', move); layer.addEventListener('pointerup', up);
       });
+      // Corner handles: drag one away from the middle to make it bigger, toward the middle for smaller.
+      for (const corner of ['nw', 'ne', 'sw', 'se']) {
+        const grip = h('div', {class: 'tl-grip ' + corner, title: 'Drag to make it bigger or smaller'});
+        grip.addEventListener('pointerdown', (e) => {
+          const s = seg(), i = T.nudge?.i;
+          if (!T.nudge || T.nudge.seg !== T.seg || !s.scenes[i]) return;
+          e.preventDefault(); e.stopPropagation();
+          try { grip.setPointerCapture(e.pointerId); } catch { /* fine */ }
+          const r = layer.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+          const d0 = Math.max(20, Math.hypot(e.clientX - cx, e.clientY - cy));
+          const o = (((T.timing[s.name] ||= {}).scenes ||= {})[i] ||= {});
+          const n0 = {x: 0, y: 0, size: 100, ...o.nudge};
+          let frame = 0;
+          const move = (ev) => {
+            o.nudge = {...n0, size: Math.max(30, Math.min(200, Math.round((n0.size * Math.hypot(ev.clientX - cx, ev.clientY - cy)) / d0)))};
+            if (!frame) frame = requestAnimationFrame(() => { frame = 0; updatePlayer(); });
+          };
+          const up = () => {
+            grip.removeEventListener('pointermove', move); grip.removeEventListener('pointerup', up);
+            if (!o.nudge.x && !o.nudge.y && o.nudge.size === 100) delete o.nudge;
+            updatePlayer(); draw(); setDirty();
+          };
+          grip.addEventListener('pointermove', move); grip.addEventListener('pointerup', up);
+        });
+        layer.append(grip);
+      }
       // The mouse wheel (or two fingers on the trackpad) over the video makes it bigger or smaller.
       layer.addEventListener('wheel', (e) => {
         const s = seg(), i = T.nudge?.i;
@@ -759,9 +785,12 @@
           }
           else if (type === 'sprite') {
             // Her saved pixel animations and sketches.
-            input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);
-            api('/api/sprites').then((list) => input.replaceChildren(...(list.length ? [...list].sort((x, y) => (y.favorite ? 1 : 0) - (x.favorite ? 1 : 0) || (y.at || 0) - (x.at || 0)).map((x) => h('option', {value: x.slug, text: (x.favorite ? '★ ' : '') + x.name, selected: x.slug === value}))
-              : [h('option', {value: '', text: 'None yet: draw one on the Pixel art tab'})])));
+            // A search box and moving thumbnails (there are too many for a list); the pick is held in a hidden box.
+            input = h('input', {type: 'hidden', value: value || ''});
+            const box = h('div', {class: 'small muted', text: 'Loading your drawings…'});
+            api('/api/sprites').then((list) => box.replaceWith(window.SpriteGallery.picker({items: list, value, input})));
+            vals[name] = input;
+            return h('div', {class: 'tl-field'}, [h('span', {text: label}), input, box]);
           }
           else input = h('input', {type: 'text', value: value ?? extra ?? ''});
           vals[name] = input;
