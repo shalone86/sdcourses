@@ -1,0 +1,64 @@
+{{!< default}}
+
+{{!-- "Games" template: the games home page (Page settings → Template → Games).
+  Shows every published page tagged #games (newest first), each playable
+  right here with its own content (how to play, downloads, credit) and a
+  link to its own page. The game is /assets/games/<slug>.html, as on the
+  Game template. --}}
+{{#post}}
+
+  <div class="container wrapper game-page games-hub">
+
+    <header class="game-head">
+      <h1 class="game-title">{{title}}</h1>
+      {{#if custom_excerpt}}<p class="game-tagline">{{custom_excerpt}}</p>{{/if}}
+    </header>
+
+    {{#if html}}
+      <div class="content game-content games-hub-intro">{{content}}</div>
+    {{/if}}
+
+  </div>
+
+{{/post}}
+
+{{#get "pages" filter="tag:hash-games" order="published_at desc" limit="all"}}
+  <div class="container wrapper game-page games-hub">
+
+    <nav class="games-shelf" aria-label="Games">
+      {{#foreach pages}}
+        <a class="games-shelf-cart" href="#{{slug}}">
+          {{#if feature_image}}<img src="{{img_url feature_image}}" alt="" loading="lazy">{{/if}}
+          <span>{{title}}</span>
+        </a>
+      {{/foreach}}
+    </nav>
+
+    {{#foreach pages}}
+      <section class="games-hub-game" id="{{slug}}">
+        <header class="game-head">
+          <h2 class="game-title"><a href="{{url}}">{{title}}</a></h2>
+          {{#if custom_excerpt}}<p class="game-tagline">{{custom_excerpt}}</p>{{/if}}
+        </header>
+
+        <div class="game-cabinet">
+          <div class="game-screen">
+            <iframe src="/assets/games/{{slug}}.html" title="{{title}}" loading="lazy"
+              allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <div class="content game-content">
+          {{content}}
+          <p class="games-hub-more"><a href="{{url}}">The {{title}} page &rarr;</a></p>
+        </div>
+      </section>
+    {{/foreach}}
+
+  </div>
+{{/get}}
+
+{{#contentFor "scripts"}}
+  <link rel="stylesheet" href="{{asset "css/game.css"}}">
+  <script src="{{asset "js/game.js"}}"></script>
+{{/contentFor}}

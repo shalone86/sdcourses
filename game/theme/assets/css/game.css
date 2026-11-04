@@ -15,6 +15,17 @@
   text-align: center;
 }
 
+.game-back {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-acc);
+  text-decoration: none;
+}
+
+.game-back:hover { color: var(--color-primary); }
+
 .game-title {
   margin: 0;
   font-size: clamp(2rem, 6vw, 3rem);
@@ -156,3 +167,60 @@
   text-align: center;
   grid-column: 1 / -1;
 }
+
+/* "Games" template (custom-games.hbs): a shelf of cartridges, then every
+   game playable in its own section */
+.games-hub + .games-hub { padding-top: 0; }
+
+.games-hub-intro { margin-top: 0; text-align: center; }
+
+.games-shelf {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  width: 100%;
+  margin: 0.5rem 0 1rem;
+}
+
+.games-shelf-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 120px;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: center;
+  text-decoration: none;
+}
+
+.games-shelf-cart img {
+  width: 96px;
+  height: auto;
+  image-rendering: pixelated;
+  transform: rotate(-3deg);
+  transition: transform 0.2s ease;
+}
+
+.games-shelf-cart:nth-child(even) img { transform: rotate(3deg); }
+.games-shelf-cart:hover img { transform: rotate(0) translateY(-4px) scale(1.05); }
+.games-shelf-cart:hover { color: var(--color-primary); }
+
+.games-hub-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 3rem 0 1rem;
+  border-top: 2px dashed var(--color-border);
+  scroll-margin-top: 1rem;
+}
+
+.games-hub-game:first-of-type { border-top: 0; }
+
+.games-hub-game .game-title { font-size: clamp(1.75rem, 5vw, 2.5rem); }
+.games-hub-game .game-title a { color: inherit; text-decoration: none; }
+.games-hub-game .game-title a:hover { color: var(--color-primary); }
+
+.games-hub-more { text-align: center; font-weight: 600; }
