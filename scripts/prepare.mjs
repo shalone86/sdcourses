@@ -191,7 +191,7 @@ function timeScenes(s, offset, seconds, durationInFrames, spoken) {
       case 'union': return (sc.items ?? []).map((it, i) => [String(i), it]);
       case 'icons': return (sc.items ?? []).map((it, i) => [String(i), it.label]).filter(([, l]) => l);
       case 'partners': return [...(sc.left?.items ?? []).map((it, i) => [`left-${i}`, it.label]), ...(sc.right?.items ?? []).map((it, i) => [`right-${i}`, it.label])];
-      case 'recap': return (s.kind === 'outro' ? lessonHeadings : []).map((h, i) => [String(i), h]);
+      case 'recap': return (s.kind === 'outro' ? (sc.items?.length ? sc.items : lessonHeadings) : []).map((h, i) => [String(i), h]);
       default: return [];
     }
   };

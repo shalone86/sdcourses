@@ -29,6 +29,7 @@
   const lines = (v) => String(v || '').split('\n').map((x) => x.trim()).filter(Boolean);
   const pair = (l) => l.split('|').map((x) => x.trim());
   const nl = (a) => (a || []).join('\n');
+  let recapDefault = []; // the points' headings, what the summary says until she changes it
   const MOVES = [['stay', 'stays'], ['hop', 'hops'], ['across', 'walks across, left to right'], ['across-left', 'walks across, right to left']];
   // A character walking across turns three-quarters the way it goes, so the face still shows (unless she picked another view).
   const figureView = (v) => (!v.view || v.view === 'front') && /^across/.test(v.move || '') ? (v.move === 'across' ? 'front-right' : 'front-left') : v.view || 'front';
@@ -105,6 +106,10 @@
       make: (v) => { if (!v.character) throw new Error('Draw a character first: <name>-idle and <name>-walk on the Pixel art tab');
         return {type: 'puppet', character: v.character, ...(colorsOf(v) ? {colors: v.colors} : {}), ...(v.item ? {item: v.item} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.start && v.start !== 'center' ? {start: v.start} : {})}; },
       read: (sc) => ({character: sc.character || '', colors: sc.colors || {}, item: sc.item || '', size: sc.size || 'medium', start: sc.start || 'center'})},
+    // The outro's summary: its lines are the points' headings until she writes her own (`items`).
+    recap: {label: 'Lesson summary', hidden: true, fields: [['items', 'What the summary says, one line per check mark, in order (empty: the points’ headings)', 'lines']],
+      make: (v) => { const l = lines(v.items); return {type: 'recap', ...(l.length && nl(l) !== nl(recapDefault) ? {items: l} : {})}; },
+      read: (sc) => ({items: nl(sc.items || recapDefault)})},
     term: {label: 'A word', fields: [['term', 'The word', 'text'], ['origin', 'From (e.g. Greek …)', 'text'], ['meaning', 'Meaning', 'text']],
       make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning}),
       read: (sc) => ({term: sc.term || '', origin: sc.origin || '', meaning: sc.meaning || ''})},
@@ -118,7 +123,7 @@
 
   /** Short name for an item cue ("Antioch", "Title 2", "Check"). */
   function cueLabel(scene, k, headings) {
-    if (scene.type === 'recap') return headings?.[+k] || 'Point ' + (+k + 1);
+    if (scene.type === 'recap') return (scene.items || headings)?.[+k] || 'Line ' + (+k + 1);
     if (scene.type === 'compare' && k === 'decide') return 'Check';
     if (scene.type === 'quote') return k === 'start' ? 'Quote starts' : 'Quote ends';
     if (scene.type === 'trinity') return k === 'son' ? 'Cross' : k === 'spirit' ? 'Dove' : k;
@@ -166,11 +171,12 @@
       // can set when each appears (same spacing as video/scenes/Recap.tsx for the ones not heard).
       seg.scenes.forEach((sc) => {
         if (sc.type !== 'recap' || seg.kind !== 'outro') return;
-        const n = (props.headings || []).length;
+        recapDefault = props.headings || [];
+        const n = (sc.items || recapDefault).length;
         if (!n) return;
         const next = Math.min(seg.durationInFrames, sc.until ?? Infinity, ...seg.scenes.filter((o) => o !== sc && !o.with && (o.from || 0) > (sc.from || 0)).map((o) => o.from));
         const gap = Math.floor(((next - (sc.from || 0)) * 0.5) / n);
-        const cues = sc.cues || {};
+        const cues = Object.fromEntries(Object.entries(sc.cues || {}).filter(([k]) => +k < n));
         for (let k = 0; k < n; k++) if (cues[k] == null) cues[k] = 8 + k * gap;
         sc.cues = cues;
       });
@@ -315,7 +321,11 @@
           const moved = touched && touched.cues && touched.cues[k] != null;
           const m = h('div', {class: 'tl-cue' + (moved ? ' moved' : ''), style: {left: x(at) + 'px'}, title: 'Drag to change when it appears'},
             [h('i'), h('span', {text: cueLabel(sc, k, T.props.headings)})]);
-          drag(m, at, (f) => setCue(i, k, f), () => T.player.seek(segStart(T.seg) + Math.max(0, at - 10)));
+          // A click seeks there; on the summary it also opens its lines to change the words.
+          drag(m, at, (f) => setCue(i, k, f), () => {
+            T.player.seek(segStart(T.seg) + Math.max(0, at - 10));
+            if (sc.type === 'recap') { T.editing = {seg: T.seg, i, line: +k}; T.adding = false; T.editPic = null; T.nudge = null; draw(); }
+          });
           cuesRow.append(m);
         }
       });
@@ -684,7 +694,7 @@
       const old = edit != null ? s.scenes[edit] : null;
       const kind = old ? old.type : (T.addType || 'map');
       const now = Math.max(0, secOf(T.player.frame() - segStart(T.seg)));
-      const typeSel = h('select', {'aria-label': 'Kind of picture', disabled: !!old}, Object.entries(ADD).map(([k, d]) => h('option', {value: k, text: d.label, selected: k === kind})));
+      const typeSel = h('select', {'aria-label': 'Kind of picture', disabled: !!old}, Object.entries(ADD).filter(([, d]) => !d.hidden).map(([k, d]) => h('option', {value: k, text: d.label, selected: k === kind})));
       const fields = h('div', {class: 'stack', style: {gap: '8px'}});
       const vals = {};
       const start = old && ADD[kind].read ? ADD[kind].read(old) : {};
@@ -695,7 +705,13 @@
           if (type === 'head') return h('div', {class: 'tl-head-row', text: label});
           let input;
           const value = start[name];
-          if (type === 'lines') { input = h('textarea', {rows: 3}); input.value = value || ''; }
+          if (type === 'lines') {
+            input = h('textarea', {rows: Math.max(3, String(value || '').split('\n').length)}); input.value = value || '';
+            // Opened from a diamond: that line is selected, ready to type over.
+            const line = T.editing?.line;
+            if (line != null) queueMicrotask(() => { delete T.editing?.line; const ls = input.value.split('\n'); if (line >= ls.length) return;
+              const a = ls.slice(0, line).join('\n').length + (line ? 1 : 0); input.focus(); input.setSelectionRange(a, a + ls[line].length); });
+          }
           else if (type === 'check') input = h('input', {type: 'checkbox', checked: value === undefined ? true : value || null});
           else if (type === 'select') { input = h('select', {}, extra.map((o) => { const [val, text] = Array.isArray(o) ? o : [o, o]; return h('option', {value: val, text, selected: val === value}); })); }
           else if (type === 'areas') {

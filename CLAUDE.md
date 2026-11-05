@@ -221,7 +221,7 @@ If it's already running, `npm start` just opens the page.
   `npm run render` times `at:`/`cues:` scenes from those word timings.
 - **Timing tab:** the lesson video (Remotion Player, `studio/player/entry.tsx`,
   built on start) above a timeline of one section: her words on time, scene
-  blocks and item diamonds she drags (the outro summary has a named one per point, even points not heard, and lists them in the order they appear). Saved to `<lesson>/timing.yml` (seconds
+  blocks and item diamonds she drags (the outro summary has a named one per line, even lines not heard, and lists them in the order they appear; clicking a diamond or the summary's block opens its lines to reword, add or remove, saved as the recap scene's `items:`, else the points' headings). Saved to `<lesson>/timing.yml` (seconds
   into each recording); `scripts/prepare.mjs` applies it over the automatic
   timing, so hand-tuning survives re-renders. Small timing tweaks are hers to
   make there; don't spend effort nudging frames by hand.
