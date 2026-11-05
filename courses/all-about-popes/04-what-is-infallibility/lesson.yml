@@ -1,6 +1,6 @@
 # Kids version of what-is-the-pope/03: the same sources, shorter
 # quotations, simpler words, about half as long (explanations ~35 words).
-status: reviewed
+status: draft
 course: all-about-popes
 number: 4
 slug: what-is-infallibility-for-kids
@@ -199,6 +199,10 @@ outro:
     - "Recap: a gift from Jesus · Jesus prayed for Peter · about faith and being good · not everything he says."
   scenes:
     - type: recap
+      items:
+        - Can the Pope be wrong?
+        - Yes, the Pope can be wrong about normal things!
+        - The Pope can't be wrong on faith or morals.
 thumb:
   sprite: pope-blessing
   pics:

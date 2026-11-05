@@ -87,5 +87,11 @@ point-4:
         size: 100
         flip: true
 outro:
-  camera: only
+  camera: bubble
   end: 22.67
+  scenes:
+    "0":
+      cues:
+        "0": 0.7
+        "1": 2.57
+        "2": 5.7
