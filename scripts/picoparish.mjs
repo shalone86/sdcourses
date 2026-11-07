@@ -51,6 +51,8 @@ async function commit(dir, message) {
     const {stdout} = await run('git', ['-C', dir, 'status', '--porcelain', '--', ...paths]);
     if (!stdout.trim()) return false;
     await run('git', ['-C', dir, 'commit', '-q', '-m', message, '--', ...paths]);
+    // Back it up to GitHub (private repo shalone86/picoparish); a failed push never blocks saving.
+    run('git', ['-C', dir, 'push', '-q'], {timeout: 60000}).catch(() => {});
     return true;
   } catch { return false; }
 }
