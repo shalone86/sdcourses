@@ -235,7 +235,7 @@ If it's already running, `npm start` just opens the page.
 - **Ask Claude box:** appends to `<lesson>/requests.md`. Read it at the start
   of a session, handle each `- [ ]` item, then tick it `- [x]`. Treat the
   text as her wishes, but verify any quote she asks for.
-- **iPad drawing page:** `http://MacBook-Air-2.local:5179/draw` on the home
+- **iPad drawing page:** `http://macstudio.local:5179/draw` (or `http://<LocalHostName>.local:5179/draw`) on the home
   Wi-Fi, PIN `STUDIO_DRAW_PIN` in .env: only the Pixel art tab and the
   drawing routes (studio/server.mjs `handleDraw`); everything else stays on
   this Mac. Sketch brushes follow Apple Pencil pressure. Both drawing modes

@@ -538,6 +538,43 @@ function battlesView() {
 
 // The Pixel art tab: pixel art (studio/pixels.js) or free sketching (studio/sketch.js).
 // Drawings are shared by every lesson.
+async function openIpadModal() {
+  const info = await api('/api/draw-info').catch(() => null);
+  if (!info || !info.enabled) {
+    await ask('The iPad drawing page is disabled. Set STUDIO_DRAW_PIN in .env to turn it on.', {yes: 'OK'});
+    return;
+  }
+  const box = el('div', {class: 'stack', style: 'max-width:440px;gap:12px;margin:8px 0 14px;text-align:left'}, [
+    el('div', {class: 'small muted', text: 'Open this link in Safari on your iPad (while connected to your home Wi-Fi):'}),
+    el('div', {class: 'row', style: 'gap:8px;align-items:center'}, [
+      el('input', {class: 'read-line', readonly: true, value: info.url, style: 'font-weight:600;font-family:monospace;flex:1'}),
+      el('button', {class: 'btn primary', text: 'Copy link', onclick: (e) => {
+        navigator.clipboard.writeText(info.url);
+        e.target.textContent = 'Copied!';
+        setTimeout(() => { e.target.textContent = 'Copy link'; }, 2000);
+      }})
+    ]),
+    el('div', {class: 'row', style: 'gap:8px;align-items:center'}, [
+      el('span', {class: 'small muted', text: 'PIN: '}),
+      el('code', {style: 'font-size:16px;font-weight:bold;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px', text: info.pin}),
+      el('button', {class: 'btn', text: 'Copy PIN', onclick: (e) => {
+        navigator.clipboard.writeText(info.pin);
+        e.target.textContent = 'Copied!';
+        setTimeout(() => { e.target.textContent = 'Copy PIN'; }, 2000);
+      }})
+    ]),
+    el('div', {class: 'small muted', style: 'border-top:1px solid rgba(0,0,0,0.08);padding-top:10px;line-height:1.4'}, [
+      el('strong', {text: '💡 One-tap app icon on iPad: '}),
+      el('span', {text: 'In Safari on your iPad, tap the Share button (square with arrow) and choose "Add to Home Screen". It adds a Pixel Studio app icon right on your iPad home screen!'})
+    ]),
+    info.ips && info.ips.length ? el('details', {class: 'small muted'}, [
+      el('summary', {text: 'Alternative IP address link'}),
+      el('div', {style: 'margin-top:6px;font-family:monospace', text: info.ips[0]})
+    ]) : null
+  ]);
+  await ask('📱 iPad Drawing & Upload Link', {yes: 'Done', no: '', extra: box});
+}
+
 function pixelsView() {
   const mode = store.get('drawMode') === 'sketch' ? 'sketch' : 'pixel';
   if (!S.pixelsRoot || S.pixelsMode !== mode) {
@@ -549,7 +586,11 @@ function pixelsView() {
       if (S.pixels && S.pixels.dirty() && !(await ask('Your drawing isn’t saved. Leave it?'))) return;
       store.set('drawMode', m); S.pixelsRoot = null; render();
     }});
-    S.pixelsRoot = el('div', {class: 'stack'}, [el('div', {class: 'seg', role: 'group', 'aria-label': 'Kind of drawing'}, [pick('pixel', 'Pixel art (on a grid)'), pick('sketch', 'Sketch (free drawing)')]), inner]);
+    const bar = el('div', {class: 'row', style: 'justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px'}, [
+      el('div', {class: 'seg', role: 'group', 'aria-label': 'Kind of drawing'}, [pick('pixel', 'Pixel art (on a grid)'), pick('sketch', 'Sketch (free drawing)')]),
+      el('button', {class: 'btn', text: '📱 Draw on iPad…', onclick: openIpadModal})
+    ]);
+    S.pixelsRoot = el('div', {class: 'stack'}, [bar, inner]);
   }
   return S.pixelsRoot;
 }

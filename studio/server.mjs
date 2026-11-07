@@ -606,6 +606,23 @@ async function handle(req, res) {
     }
     if (p === '/api/fetch-image') return fetchImage(res, url.searchParams.get('url') ?? '');
     if (p === '/api/courses') return json(res, 200, await courseChoices());
+    if (p === '/api/draw-info') {
+      const pin = process.env.STUDIO_DRAW_PIN;
+      if (!pin) return json(res, 200, {enabled: false});
+      const host = `${os.hostname().split('.')[0]}.local`;
+      const ips = Object.values(os.networkInterfaces()).flat().filter((i) => i.family === 'IPv4' && !i.internal).map((i) => `http://${i.address}:${DRAW_PORT}/draw`);
+      return json(res, 200, {
+        enabled: true,
+        host,
+        url: `http://${host}:${DRAW_PORT}/draw`,
+        shortUrl: `http://${host}:${DRAW_PORT}`,
+        pin,
+        ips,
+      });
+    }
+    if (p === '/icon.png' || p === '/apple-touch-icon.png') {
+      return sendFile(req, res, path.join(ROOT, 'theme', 'sdcourses', 'assets', 'icon-192x192.png'));
+    }
     if (p === '/pixels.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
     if (p === '/sketch.js') return sendFile(req, res, path.join(ROOT, 'studio/sketch.js'));
     if (p === '/reference.js') return sendFile(req, res, path.join(ROOT, 'studio/reference.js'));
@@ -925,9 +942,12 @@ const server = http.createServer((req, res) => {
 // http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
 // Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
 const DRAW_PORT = 5179;
-const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
+const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources|\/icon\.png|\/apple-touch-icon\.png)$/;
 const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
 const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
+function drawTokenForPin(pin) {
+  return crypto.createHmac('sha256', String(pin || '')).update('sdcourses-draw-session-v1').digest('hex').slice(0, 48);
+}
 
 function drawPage(res, signedIn, message = '') {
   const html = fs.readFileSync(path.join(ROOT, 'studio', 'index.html'), 'utf8');
@@ -962,7 +982,8 @@ show();
 <label for="pin">PIN</label><input id="pin" name="pin" class="read-line" inputmode="numeric" autocomplete="off" maxlength="12" autofocus>
 ${message ? `<div class="small bad">${message}</div>` : ''}<button class="btn primary">Open</button></form></main>`;
   res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store'});
-  res.end(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pixel art · Lesson Studio</title>${style}
+  res.end(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Pixel art · Lesson Studio</title>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Pixel Studio"><meta name="mobile-web-app-capable" content="yes"><link rel="apple-touch-icon" href="/icon.png">${style}
 <style>.draw-only{max-width:1200px;margin:0 auto;padding:18px}.draw-title{font:600 28px/1.2 var(--serif);margin:0 0 14px}body{-webkit-user-select:none;user-select:none}input,textarea{-webkit-user-select:text;user-select:text}</style></head><body class="wide">${body}</body></html>`);
 }
 
@@ -970,7 +991,11 @@ async function handleDraw(req, res) {
   const pin = process.env.STUDIO_DRAW_PIN;
   const url = new URL(req.url, 'http://draw');
   const p = url.pathname;
-  const signedIn = !!cookieToken(req) && draw.tokens.has(cookieToken(req));
+  if (p === '/icon.png' || p === '/apple-touch-icon.png') {
+    return sendFile(req, res, path.join(ROOT, 'theme', 'sdcourses', 'assets', 'icon-192x192.png'));
+  }
+  const tok = cookieToken(req);
+  const signedIn = !!tok && (draw.tokens.has(tok) || (pin && tok === drawTokenForPin(pin)));
   if (p === '/' || p === '/draw' || p === '/draw/') return drawPage(res, signedIn);
   if (p === '/draw/login' && req.method === 'POST') {
     if (Date.now() < draw.waitUntil) return drawPage(res, false, 'Too many tries. Wait a minute, then try again.');
@@ -981,7 +1006,7 @@ async function handleDraw(req, res) {
       return drawPage(res, false, 'That PIN isn’t right.');
     }
     draw.misses = 0;
-    const token = crypto.randomBytes(24).toString('hex');
+    const token = drawTokenForPin(pin);
     draw.tokens.add(token);
     res.writeHead(303, {Location: '/draw', 'Set-Cookie': `sd_draw=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000`});
     return res.end();
