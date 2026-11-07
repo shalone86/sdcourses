@@ -625,7 +625,13 @@ async function handle(req, res) {
       });
     }
     if (p === '/icon.png' || p === '/apple-touch-icon.png') {
-      return sendFile(req, res, path.join(ROOT, 'theme', 'sdcourses', 'assets', 'icon-192x192.png'));
+      return sendFile(req, res, path.join(ROOT, 'studio', 'icon.png'));
+    }
+    if (p === '/icon-192.png') {
+      return sendFile(req, res, path.join(ROOT, 'studio', 'icon-192.png'));
+    }
+    if (p === '/manifest.json') {
+      return sendFile(req, res, path.join(ROOT, 'studio', 'manifest.json'));
     }
     if (p === '/pixels.js' || p === '/studio-draw.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
     if (p === '/sketch.js') return sendFile(req, res, path.join(ROOT, 'studio/sketch.js'));
@@ -946,7 +952,7 @@ const server = http.createServer((req, res) => {
 // http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
 // Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
 const DRAW_PORT = 5179;
-const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/studio-draw\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources|\/icon\.png|\/apple-touch-icon\.png)$/;
+const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/studio-draw\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources|\/icon\.png|\/icon-192\.png|\/apple-touch-icon\.png|\/manifest\.json)$/;
 const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
 const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
 function drawTokenForPin(pin) {
@@ -987,7 +993,7 @@ show();
 ${message ? `<div class="small bad">${message}</div>` : ''}<button class="btn primary">Open</button></form></main>`;
   res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store'});
   res.end(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Pixel art · Lesson Studio</title>
-<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Pixel Studio"><meta name="mobile-web-app-capable" content="yes"><link rel="apple-touch-icon" href="/icon.png">${style}
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Pixel Studio"><meta name="mobile-web-app-capable" content="yes"><link rel="manifest" href="/manifest.json"><link rel="apple-touch-icon" href="/icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">${style}
 <style>.draw-only{max-width:1200px;margin:0 auto;padding:18px}.draw-title{font:600 28px/1.2 var(--serif);margin:0 0 14px}body{-webkit-user-select:none;user-select:none}input,textarea{-webkit-user-select:text;user-select:text}</style></head><body class="wide">${body}</body></html>`);
 }
 
@@ -996,7 +1002,13 @@ async function handleDraw(req, res) {
   const url = new URL(req.url, 'http://draw');
   const p = url.pathname;
   if (p === '/icon.png' || p === '/apple-touch-icon.png') {
-    return sendFile(req, res, path.join(ROOT, 'theme', 'sdcourses', 'assets', 'icon-192x192.png'));
+    return sendFile(req, res, path.join(ROOT, 'studio', 'icon.png'));
+  }
+  if (p === '/icon-192.png') {
+    return sendFile(req, res, path.join(ROOT, 'studio', 'icon-192.png'));
+  }
+  if (p === '/manifest.json') {
+    return sendFile(req, res, path.join(ROOT, 'studio', 'manifest.json'));
   }
   const tok = cookieToken(req);
   const signedIn = !!tok && (draw.tokens.has(tok) || (pin && tok === drawTokenForPin(pin)));

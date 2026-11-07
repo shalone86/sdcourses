@@ -1,0 +1,20 @@
+{
+  "name": "Pixel Studio",
+  "short_name": "Pixel Studio",
+  "start_url": "/draw",
+  "display": "standalone",
+  "background_color": "#FAF6EE",
+  "theme_color": "#1E2740",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
