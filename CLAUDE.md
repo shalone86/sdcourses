@@ -254,7 +254,8 @@ If it's already running, `npm start` just opens the page.
   drawings, gameplay GIF upload), the big buttons, TV, villagers (who can bless: priests only)
   and site links, all in its `catalog.json`. Save & build runs its `build.mjs`
   (template.html → index.html) and commits there; Check links opens every link. Preview at
-  /pp/index.html. Putting it online is still separate.
+  /pp/index.html. **Put online** runs its `deploy.mjs` (build, refuse uncommitted work,
+  `wrangler deploy` to the Cloudflare Worker `picoparish`, custom domains picoparish.com and www).
 - **"Are you sure?"** questions open beside the button she clicked
   (`studio/ask.js`, `ask(message)`), not the browser's box; use it for new ones.
 - **Video & Ghost:** "Make the video" runs `scripts/render.mjs`. "Approve and

@@ -2,7 +2,8 @@
 // The site is its own folder and git repo (PICOPARISH_DIR in .env, else the usual places):
 // catalog.json holds everything she edits (the games, videos, books and comics in "items", and the
 // page's own choices in "page"); its build.mjs turns template.html + catalog.json + her drawings
-// into index.html. Saving here writes catalog.json, builds, and commits in that repo.
+// into public/. Saving here writes catalog.json, builds, and commits in that repo; Put online
+// runs its deploy.mjs (Cloudflare).
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -27,7 +28,7 @@ export function siteState() {
   const catalog = JSON.parse(fs.readFileSync(path.join(dir, 'catalog.json'), 'utf8'));
   const gamesDir = path.join(dir, 'games');
   const gifs = fs.existsSync(gamesDir) ? fs.readdirSync(gamesDir).filter((f) => f.endsWith('.gif')).map((f) => 'games/' + f) : [];
-  const built = fs.existsSync(path.join(dir, 'index.html')) ? fs.statSync(path.join(dir, 'index.html')).mtimeMs : 0;
+  const built = fs.existsSync(path.join(dir, 'public/index.html')) ? fs.statSync(path.join(dir, 'public/index.html')).mtimeMs : 0;
   return {dir, catalog, gifs, built};
 }
 
@@ -45,10 +46,11 @@ export async function saveSite(catalog) {
 
 async function commit(dir, message) {
   try {
-    await run('git', ['-C', dir, 'add', 'catalog.json', 'index.html', 'games']);
-    const {stdout} = await run('git', ['-C', dir, 'status', '--porcelain', '--', 'catalog.json', 'index.html', 'games']);
+    const paths = ['catalog.json', 'public', 'games'];
+    await run('git', ['-C', dir, 'add', '-A', '--', ...paths]);
+    const {stdout} = await run('git', ['-C', dir, 'status', '--porcelain', '--', ...paths]);
     if (!stdout.trim()) return false;
-    await run('git', ['-C', dir, 'commit', '-q', '-m', message, '--', 'catalog.json', 'index.html', 'games']);
+    await run('git', ['-C', dir, 'commit', '-q', '-m', message, '--', ...paths]);
     return true;
   } catch { return false; }
 }
@@ -85,7 +87,15 @@ export async function checkLinks(catalog) {
 /** The built page and its GIFs, for the preview. */
 export function siteFile(rel) {
   const dir = siteDir();
-  if (rel === '' || rel === 'index.html') return path.join(dir, 'index.html');
-  if (/^games\/[a-z0-9-]+\.gif$/.test(rel)) return path.join(dir, rel);
+  if (rel === '' || rel === 'index.html') return path.join(dir, 'public/index.html');
+  if (/^games\/[a-z0-9-]+\.gif$/.test(rel)) return path.join(dir, 'public', rel);
   return null;
+}
+
+/** Puts the last saved version online (the site's deploy.mjs: build, refuse uncommitted work, wrangler deploy). */
+export async function deploySite() {
+  const dir = siteDir();
+  const {stdout, stderr} = await run(process.execPath, [path.join(dir, 'deploy.mjs')], {cwd: dir, timeout: 180000, maxBuffer: 1e7}).catch((e) => { throw new Error((e.stderr || e.message).trim().split('\n').slice(-6).join('\n')); });
+  const version = /version ([0-9a-f]+)/.exec(stdout)?.[1] || '';
+  return {version, url: 'https://picoparish.com', log: (stdout + stderr).trim().split('\n').slice(-8)};
 }

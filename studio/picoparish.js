@@ -130,6 +130,14 @@ window.PicoParishTab = (() => {
       } catch (e) { P.msg = {error: true, text: 'Not saved: ' + e.message}; }
       P.busy = false; draw();
     }
+    async function online() {
+      if (P.dirty) { P.msg = {error: true, text: 'Save & build first, then put it online.'}; draw(); return; }
+      if (!(await ask('Put the last saved version on picoparish.com for everyone?', {yes: 'Put it online'}))) return;
+      P.busy = true; P.msg = {text: 'Putting it online… (about half a minute)'}; draw();
+      try { const r = await post('/api/pp/deploy', {}); P.msg = {text: `It’s online at ${r.url}` + (r.version ? ` (version ${r.version}).` : '.'), link: r.url}; }
+      catch (e) { P.msg = {error: true, text: 'Not put online: ' + e.message}; }
+      P.busy = false; draw();
+    }
     async function links() {
       P.busy = true; P.msg = {text: 'Opening every link…'}; draw();
       try {
@@ -315,13 +323,15 @@ window.PicoParishTab = (() => {
         saveBtn,
         h('button', {class: 'btn', text: 'Check links', disabled: P.busy, onclick: links}),
         h('a', {class: 'btn', href: '/pp/index.html', target: '_blank', rel: 'noopener', text: 'Preview ↗', title: 'The page as it was last built'}),
+        h('button', {class: 'btn', text: 'Put online', disabled: P.busy, onclick: online, title: 'Send the last saved version to picoparish.com'}),
         status,
       ]);
-      const msg = P.msg ? h('div', {class: 'notice' + (P.msg.error ? ' error' : ''), role: P.msg.error ? 'alert' : 'status'}, [P.msg.text,
+      const msg = P.msg ? h('div', {class: 'notice' + (P.msg.error ? ' error' : ''), role: P.msg.error ? 'alert' : 'status', style: {whiteSpace: 'pre-line'}}, [P.msg.text,
+        P.msg.link ? h('div', {}, [h('a', {href: P.msg.link, target: '_blank', rel: 'noopener', text: 'Open ' + P.msg.link.replace('https://', '') + ' ↗'})]) : null,
         P.msg.list && P.msg.list.length ? h('ul', {}, P.msg.list.map((x) => h('li', {text: x}))) : null]) : null;
       root.replaceChildren(...[
         h('div', {class: 'card', style: {gap: '4px'}}, [h('h2', {text: 'Pico Parish'}), h('div', {class: 'small muted', text: 'picoparish.com · ' + P.dir}),
-          h('div', {class: 'small muted', text: 'Save builds the page and keeps a copy in git. Putting it online is a separate step.'})]),
+          h('div', {class: 'small muted', text: 'Save & build updates the preview and keeps a copy in git. Put online sends the last saved version to picoparish.com.'})]),
         bar, msg, itemsCard(), menuCard(), villagersCard(), tvCard(), siteCard()].filter(Boolean));
     }
     load();

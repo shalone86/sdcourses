@@ -26,7 +26,7 @@ import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCa
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
 import {ensureFigure, figureCast} from '../scripts/characters.mjs';
-import {checkLinks, saveGif, saveSite, siteFile, siteState} from '../scripts/picoparish.mjs';
+import {checkLinks, deploySite, saveGif, saveSite, siteFile, siteState} from '../scripts/picoparish.mjs';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -685,6 +685,7 @@ async function handle(req, res) {
       const {catalog} = await readJson(req);
       try { return json(res, 200, await saveSite(catalog)); } catch (e) { throw httpError(400, e.message); }
     }
+    if (p === '/api/pp/deploy') { try { return json(res, 200, await deploySite()); } catch (e) { throw httpError(409, e.message); } }
     if (p === '/api/pp/links') { const {catalog} = await readJson(req); return json(res, 200, await checkLinks(catalog)); }
     if (p === '/api/pp/gif') {
       const buf = await readBody(req, 15e6);
