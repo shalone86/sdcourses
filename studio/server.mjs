@@ -623,7 +623,7 @@ async function handle(req, res) {
     if (p === '/icon.png' || p === '/apple-touch-icon.png') {
       return sendFile(req, res, path.join(ROOT, 'theme', 'sdcourses', 'assets', 'icon-192x192.png'));
     }
-    if (p === '/pixels.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
+    if (p === '/pixels.js' || p === '/studio-draw.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
     if (p === '/sketch.js') return sendFile(req, res, path.join(ROOT, 'studio/sketch.js'));
     if (p === '/reference.js') return sendFile(req, res, path.join(ROOT, 'studio/reference.js'));
     if (p === '/ask.js') return sendFile(req, res, path.join(ROOT, 'studio/ask.js'));
@@ -942,7 +942,7 @@ const server = http.createServer((req, res) => {
 // http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
 // Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
 const DRAW_PORT = 5179;
-const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources|\/icon\.png|\/apple-touch-icon\.png)$/;
+const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/studio-draw\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources|\/icon\.png|\/apple-touch-icon\.png)$/;
 const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
 const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
 function drawTokenForPin(pin) {
@@ -954,7 +954,7 @@ function drawPage(res, signedIn, message = '') {
   const style = (/<style>[\s\S]*?<\/style>/.exec(html) ?? [''])[0];
   const body = signedIn
     ? `<main class="draw-only"><h1 class="draw-title">Pixel art</h1><div id="draw"></div></main>
-<script src="/ask.js"></script><script src="/reference.js"></script><script src="/pixels.js"></script><script src="/sketch.js"></script>
+<script src="/ask.js"></script><script src="/reference.js"></script><script src="/studio-draw.js"></script><script src="/sketch.js"></script>
 <script>
 'use strict';
 const api = (p, o = {}) => fetch(p, {...o, headers: {...(o.headers || {}), 'X-Studio': '1'}}).then((r) => r.json().catch(() => ({})).then((j) => { if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status); return j; }));
