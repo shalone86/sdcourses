@@ -26,6 +26,7 @@ import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCa
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
 import {ensureFigure, figureCast} from '../scripts/characters.mjs';
+import {checkLinks, saveGif, saveSite, siteFile, siteState} from '../scripts/picoparish.mjs';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -523,7 +524,7 @@ function errorMessage(log) {
 
 function httpError(status, message) { return Object.assign(new Error(message), {status}); }
 
-const TYPES = {'.js': 'text/javascript', '.mp3': 'audio/mpeg', '.png': 'image/png', '.html': 'text/html; charset=utf-8', '.wav': 'audio/wav', '.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml'};
+const TYPES = {'.js': 'text/javascript', '.mp3': 'audio/mpeg', '.png': 'image/png', '.html': 'text/html; charset=utf-8', '.wav': 'audio/wav', '.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.gif': 'image/gif'};
 
 /** Serve a file with Range support (Safari needs it to play audio and video). */
 function sendFile(req, res, file) {
@@ -587,6 +588,10 @@ async function handle(req, res) {
       catch (e) { throw httpError(404, e.message); }
     }
     if (p === '/battles.js') return sendFile(req, res, path.join(ROOT, 'studio/battles.js'));
+    // Pico Parish tab: the site's catalog, and its built page to preview.
+    if (p === '/picoparish.js') return sendFile(req, res, path.join(ROOT, 'studio/picoparish.js'));
+    if (p === '/api/pp') { try { return json(res, 200, siteState()); } catch (e) { throw httpError(404, e.message); } }
+    if (p.startsWith('/pp/')) { const f = siteFile(p.slice(4)); if (!f) throw httpError(404, 'Not found'); return sendFile(req, res, f); }
     if (p === '/api/puppet-bases') return json(res, 200, {...puppetBases(), cast: puppetCast().characters});
     if (p === '/api/figures') return json(res, 200, figureCast());
     if (/^\/characters\/[a-z0-9-]+\/rest(@[a-z-]+)?\.png$/.test(p)) return sendFile(req, res, path.join(ROOT, p.slice(1)));
@@ -675,6 +680,15 @@ async function handle(req, res) {
     if (p === '/api/battle') {
       const body = await readJson(req);
       try { const name = saveBattle(body.name, body.battle); return json(res, 200, {name, battles: listBattles()}); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/pp/save') {
+      const {catalog} = await readJson(req);
+      try { return json(res, 200, await saveSite(catalog)); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/pp/links') { const {catalog} = await readJson(req); return json(res, 200, await checkLinks(catalog)); }
+    if (p === '/api/pp/gif') {
+      const buf = await readBody(req, 15e6);
+      try { return json(res, 200, {gif: saveGif(id, buf)}); } catch (e) { throw httpError(400, e.message); }
     }
     if (p === '/api/battle/new') {
       const body = await readJson(req);

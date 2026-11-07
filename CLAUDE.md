@@ -248,6 +248,13 @@ If it's already running, `npm start` just opens the page.
   few minutes after her last change to it, and right after she sends it to
   Ghost (drawings too); the Video & Ghost tab shows the last backup. Commit
   messages start "Studio backup:". Pull before working elsewhere.
+- **Pico Parish tab** (`studio/picoparish.js`, `scripts/picoparish.mjs`): edits picoparish.com,
+  a separate folder and git repo (`PICOPARISH_DIR` in .env, else ~/Projects/picoparish or the
+  .gemini scratch copy). Games, videos, books and comics (live / coming soon / hidden, links,
+  drawings, gameplay GIF upload), the big buttons, TV, villagers (who can bless: priests only)
+  and site links, all in its `catalog.json`. Save & build runs its `build.mjs`
+  (template.html → index.html) and commits there; Check links opens every link. Preview at
+  /pp/index.html. Putting it online is still separate.
 - **"Are you sure?"** questions open beside the button she clicked
   (`studio/ask.js`, `ask(message)`), not the browser's box; use it for new ones.
 - **Video & Ghost:** "Make the video" runs `scripts/render.mjs`. "Approve and
