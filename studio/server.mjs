@@ -609,13 +609,17 @@ async function handle(req, res) {
     if (p === '/api/draw-info') {
       const pin = process.env.STUDIO_DRAW_PIN;
       if (!pin) return json(res, 200, {enabled: false});
+      const domain = process.env.STUDIO_DRAW_DOMAIN?.trim();
       const host = `${os.hostname().split('.')[0]}.local`;
+      const localUrl = `http://${host}:${DRAW_PORT}/draw`;
+      const url = domain ? `https://${domain}` : localUrl;
       const ips = Object.values(os.networkInterfaces()).flat().filter((i) => i.family === 'IPv4' && !i.internal).map((i) => `http://${i.address}:${DRAW_PORT}/draw`);
       return json(res, 200, {
         enabled: true,
+        domain: domain || null,
         host,
-        url: `http://${host}:${DRAW_PORT}/draw`,
-        shortUrl: `http://${host}:${DRAW_PORT}`,
+        url,
+        localUrl,
         pin,
         ips,
       });
@@ -1026,7 +1030,8 @@ if (process.env.STUDIO_DRAW_PIN) {
     if (!res.headersSent) json(res, e.status ?? 500, {error: e.message}); else res.end();
   }));
   drawServer.on('error', (e) => console.log(`iPad drawing page unavailable: ${e.message}`));
-  drawServer.listen(DRAW_PORT, '0.0.0.0', () => console.log(`iPad drawing page: http://${os.hostname().split('.')[0]}.local:${DRAW_PORT}/draw (PIN in .env)`));
+  const drawUrl = process.env.STUDIO_DRAW_DOMAIN ? `https://${process.env.STUDIO_DRAW_DOMAIN}` : `http://${os.hostname().split('.')[0]}.local:${DRAW_PORT}/draw`;
+  drawServer.listen(DRAW_PORT, '0.0.0.0', () => console.log(`iPad drawing page: ${drawUrl} (PIN in .env)`));
 }
 
 const open = !process.argv.includes('--no-open');

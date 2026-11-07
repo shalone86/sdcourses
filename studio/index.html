@@ -545,7 +545,7 @@ async function openIpadModal() {
     return;
   }
   const box = el('div', {class: 'stack', style: 'max-width:440px;gap:12px;margin:8px 0 14px;text-align:left'}, [
-    el('div', {class: 'small muted', text: 'Open this link in Safari on your iPad (while connected to your home Wi-Fi):'}),
+    el('div', {class: 'small muted', text: info.domain ? 'Open this link in Safari on your iPad or phone from anywhere:' : 'Open this link in Safari on your iPad (while connected to your home Wi-Fi):'}),
     el('div', {class: 'row', style: 'gap:8px;align-items:center'}, [
       el('input', {class: 'read-line', readonly: true, value: info.url, style: 'font-weight:600;font-family:monospace;flex:1'}),
       el('button', {class: 'btn primary', text: 'Copy link', onclick: (e) => {
@@ -564,15 +564,19 @@ async function openIpadModal() {
       }})
     ]),
     el('div', {class: 'small muted', style: 'border-top:1px solid rgba(0,0,0,0.08);padding-top:10px;line-height:1.4'}, [
-      el('strong', {text: '💡 One-tap app icon on iPad: '}),
-      el('span', {text: 'In Safari on your iPad, tap the Share button (square with arrow) and choose "Add to Home Screen". It adds a Pixel Studio app icon right on your iPad home screen!'})
+      el('strong', {text: '💡 One-tap app icon: '}),
+      el('span', {text: 'In Safari on your iPad or phone, tap Share ➔ "Add to Home Screen". It adds a Pixel Studio app icon right on your home screen!'})
     ]),
+    info.domain && info.localUrl ? el('details', {class: 'small muted'}, [
+      el('summary', {text: 'Local Wi-Fi link'}),
+      el('div', {style: 'margin-top:6px;font-family:monospace', text: info.localUrl})
+    ]) : null,
     info.ips && info.ips.length ? el('details', {class: 'small muted'}, [
       el('summary', {text: 'Alternative IP address link'}),
       el('div', {style: 'margin-top:6px;font-family:monospace', text: info.ips[0]})
     ]) : null
   ]);
-  await ask('📱 iPad Drawing & Upload Link', {yes: 'Done', no: '', extra: box});
+  await ask('📱 Drawing & Upload Link', {yes: 'Done', no: '', extra: box});
 }
 
 function pixelsView() {
