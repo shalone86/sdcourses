@@ -1,0 +1,23 @@
+{
+  "devices": [
+    {
+      "name": "handheld (muOS)",
+      "host": "root@192.168.1.127",
+      "dir": "/mnt/mmc/ROMS/PICO-8",
+      "scp": ["-O"],
+      "files": ["blessed.p8.png", "candles.p8.png"]
+    },
+    {
+      "name": "arcade (RetroPie)",
+      "host": "pi@retropie.local",
+      "dir": "/home/pi/RetroPie/roms/pico8",
+      "files": ["blessed.p8.png", "blessed4.p8.png", "candles.p8.png", "candles4.p8.png"]
+    },
+    {
+      "name": "laptop (Windows)",
+      "host": "shalo@192.168.1.32",
+      "dir": "C:/Users/shalo/AppData/Roaming/pico-8/carts",
+      "files": ["blessed.p8.png", "blessed4.p8.png", "candles.p8.png", "candles4.p8.png"]
+    }
+  ]
+}

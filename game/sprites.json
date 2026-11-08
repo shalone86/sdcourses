@@ -1,6 +1,6 @@
 {
   "_help": "Which of Shalone's drawings goes in which PICO-8 sprite slot. Each frame takes the next slot (2 frames fill N and N+1; a 16x16 drawing is 2 slots wide and 2 tall). Swap a name when she draws the real one, then: npm run pico8. Slots not listed are left alone, so things drawn in PICO-8's own editor stay.",
-  "_slots": "0 priest idle, 2 bishop idle, 4 deacon idle, 6 priest walk, 8 priest blessing (4 frames), 12 bishop walk, 14 deacon walk, 16-27 people walking (6 bases), 37 grace (a heart, 4 frames), 46 child standing, 48 child walking, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 56 bishop blessing (4 frames), 84 angel (4 frames), 96 car and 104 parish van (her first car) (16x16, 4 frames each), 72-83 people standing (6 bases, same order as walking), characters to unlock (standing, walking): 28/30 benedictine, 60/62 dominican, 64/66 franciscan, 68/70 eastern monk, 88/90 cardinal, 92/94 pope",
+  "_slots": "0 priest idle, 2 bishop idle, 4 deacon idle, 6 priest walk, 8 priest blessing (4 frames), 12 bishop walk, 14 deacon walk, 16-27 people walking (6 bases), 37 grace (a heart, 4 frames), 46 child standing, 48 child walking, 33 gift box, 34 rosary, 35 holy water bucket, 36 coffee, 41-43 bushes, 44 lilies (spring), 45 pumpkin (fall), 56 bishop blessing (4 frames), 84 angel (4 frames), 96 car and 104 parish van (her first car) (16x16, 4 frames each), 72-83 people standing (6 bases, same order as walking), characters to unlock (standing, walking): 28/30 benedictine, 60/62 dominican, 64/66 franciscan, 68/70 eastern monk, 88/90 cardinal, 92/94 pope, 50 java priest, 52 saintly priest (her 2-frame drawings; walking uses the same)",
   "slots": {
     "0": "priest-idle",
     "2": "bishop-idle",
@@ -48,7 +48,9 @@
     "104": "car",
     "37": "grace-heart",
     "46": "child-idle",
-    "48": "child-walk"
+    "48": "child-walk",
+    "50": "java-priest-idle",
+    "52": "saintly-priest-idle"
   },
   "_big": "Her 32x32 art: the first 8 on the bottom half of the sprite sheet, the rest stored in the code and unpacked at start into an extra sprite sheet (upper memory). Order is fixed: add new ones at the end.",
   "big": [
@@ -71,7 +73,7 @@
     "christmas-tree",
     "marian-garden"
   ],
-  "_parts": "Per group, which of her colors the game swaps for each one. people: every person gets random hair, skin (with matching eyes) and clothes. priest: the bishop's priests get their own skin and eyes. deacon: new deacons get their own skin and eyes; 'vestment' follows the season (spring white, summer green, fall green, winter purple). child: the baby at a baptism gets its own hair, skin and clothes. p1-p7: each playable character's own look, picked on the start screen with up/down (in chars order: priest, benedictine, dominican, franciscan, eastern monk, cardinal, pope). skin: peach, tan or brown. hair: yellow only with peach skin; brown, dark blue, gray, white with any (never the skin's own color). eyes: blue, green or dark blue with peach skin, dark blue otherwise. beard (eastern monk): white, or dark blue with dark blue hair. white: always white (the pope's hair). The benedictine's hair color is also his belt; the dominican's hair is also his cappa, so his hair stays.",
+  "_parts": "Per group, which of her colors the game swaps for each one. people: every person gets random hair, skin (with matching eyes) and clothes. priest: the bishop's priests get their own skin and eyes. deacon: new deacons get their own skin and eyes; 'vestment' follows the season (spring white, summer green, fall green, winter purple). child: the baby at a baptism gets its own hair, skin and clothes. p1-p7: each playable character's own look, picked on the start screen with up/down (in chars order: priest, benedictine, dominican, franciscan, eastern monk, cardinal, pope). skin: peach, tan or brown. hair: yellow only with peach skin; brown, dark blue, gray, white with any (never the skin's own color). eyes: blue, green or dark blue with peach skin, dark blue otherwise. beard (eastern monk): white or dark gray. white: always white (the pope's hair). The benedictine changes skin and eyes only; the dominican's hair is also his cappa, so his hair stays.",
   "parts": {
     "people": {
       "#5A3825": "hair",
@@ -110,7 +112,7 @@
     },
     "p2": {
       "#A86B3C": "skin",
-      "#5A3825": "hair"
+      "#2B2351": "eyes"
     },
     "p3": {
       "#F2C6A0": "skin",
@@ -134,6 +136,16 @@
       "#F2C6A0": "skin",
       "#5A3825": "white",
       "#18B7A6": "eyes"
+    },
+    "p8": {
+      "#FFCAA8": "skin",
+      "#FEEB2C": "hair",
+      "#2CABFE": "eyes"
+    },
+    "p9": {
+      "#FFCAA8": "skin",
+      "#5F5750": "hair",
+      "#2CABFE": "eyes"
     }
   },
   "_tops": "People slots whose top row (the top of the head) is hair or a hat: each person gets one at random.",
@@ -149,6 +161,13 @@
   "colors": {
     "#FFB300": 10,
     "#18B7A6": 3,
-    "#1D2B53": 2
-  }
+    "#1D2B53": 2,
+    "#2B2351": 3
+  },
+  "separate": [
+    "#1D2B53",
+    "#2B2351"
+  ],
+  "_separate": "Colors forced above only so a part can be swapped apart from the same color elsewhere (the priest's hair from his cassock, the benedictine's eyes from his habit): their own look shows them as their nearest PICO-8 color.",
+  "gray": "p7"
 }

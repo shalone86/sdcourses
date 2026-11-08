@@ -26,9 +26,12 @@
     "battle": "node scripts/battle.mjs",
     "pico8": "node scripts/pico8.mjs",
     "music": "node scripts/midi2pico8.mjs",
-    "pico8-release": "node scripts/pico8-release.mjs",
+    "pico8-release": "node scripts/pico8-4p.mjs && node scripts/pico8-release.mjs && node scripts/pico8-release.mjs game/blessed4.p8",
     "pico8-label": "node scripts/pico8-label.mjs",
-    "game-to-theme": "node scripts/game-to-theme.mjs"
+    "game-to-theme": "node scripts/game-to-theme.mjs",
+    "pico8-4p": "node scripts/pico8-4p.mjs",
+    "nuns": "node scripts/pico8.mjs game/nuns/nuns.p8 && node scripts/pico8-4p.mjs game/nuns/nuns.p8 && node scripts/pico8-release.mjs game/nuns/nuns.p8 && node scripts/pico8-release.mjs game/nuns/nuns4.p8",
+    "ship": "node scripts/ship.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.530",
