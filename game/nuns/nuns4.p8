@@ -949,10 +949,10 @@ end
   end
   say"procession: walkers blessed"
  end
- if got["cathedral chapter"] or got["sisters' rounds"] or near(p.x,p.y,church_x+8,church_y+24,22) then
+ if got["cathedral chapter"] or got["sisters' rounds"] or touch({x=church_x+8,y=church_y+20},22) then
   if church_pile>0 then xp+=church_pile church_pile=0 sfx(1) end
  end
- if got["healing relics"] or got["sisters' rounds"] or near(p.x,p.y,hosp_x+8,hosp_y+24,22) then
+ if got["healing relics"] or got["sisters' rounds"] or touch({x=hosp_x+8,y=hosp_y+20},22) then
   if hosp_pile>0 then xp+=hosp_pile hosp_pile=0 sfx(1) end
  end
 
@@ -964,7 +964,7 @@ end
    step(g,p.x,p.y-4,3)
   end
   -- either player picks it up
- if near(g.x,g.y,p.x,p.y-4,5) or touch(g,6) then
+  if touch(g,6) then
    del(graces,g) xp+=g.v sfx(1)
    -- the angel brought it
    if g.pull or l"guardian angel">0 then angel_t=30 end
@@ -972,7 +972,7 @@ end
  end
 
  for it in all(items) do
- if near(it.x,it.y,p.x,p.y-4,8) or touch(it,8) then
+  if touch(it,8) then
    del(items,it) use(it.k)
    if state=="pick" then break end
   end
@@ -1040,12 +1040,14 @@ function closest(list,o,ok)
  return tg
 end
 
--- which of players 2-4 is
--- touching o?
+-- which player is touching o?
+-- (players 2-4 first, then 1; nil
+-- if none)
 function touch(o,r)
- for _,x in pairs(xs) do
-  if near(o.x,o.y,x.x,x.y-4,r) then return x end
- end
+for _,x in pairs(xs) do
+ if near(o.x,o.y,x.x,x.y-4,r) then return x end
+end
+ return near(o.x,o.y,p.x,p.y-4,r) and p
 end
 
 function onscreen(q)
