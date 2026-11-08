@@ -32,11 +32,11 @@ scores are kept.
 ## One-time setup
 
 ### 1. The list of devices
-Copy `game/devices.example.json` to `game/devices.json` and change the
+Copy `game/devices.example.json` to `game/devices.json` (your addresses are already in it) and check the
 addresses. That file stays on your computer; it isn't in the repo.
 - **host**: `user@address`. RetroPie is usually `pi@retropie.local`. For
   muOS, use the handheld's IP address from your router or muOS's network
-  screen: `root@192.168.1.…`.
+  screen: `root@192.168.1.127`.
 - **dir**: the folder the games go in.
   - RetroPie: `/home/pi/RetroPie/roms/pico8`
   - muOS: your PICO-8 folder, usually `/mnt/mmc/ROMS/PICO-8` (or
@@ -60,8 +60,12 @@ addresses. That file stays on your computer; it isn't in the repo.
       Start-Service sshd
       Set-Service sshd -StartupType Automatic
 
-  The login is your Windows user name and password. The address is the
-  laptop's name (Settings → System → About) or its IP address.
+  (No keyboard? Open **Services** instead, find **OpenSSH SSH Server**,
+  press Start, and set Startup type to Automatic.)
+  The login is your Windows user name (`shalo`) and the password you use
+  to sign in to Windows. If you sign in with a Microsoft account, it's
+  that account's password, not your PIN. The address is the laptop's IP
+  address (`192.168.1.32`).
 
 ### 3. A key, so it stops asking for passwords (optional)
 On the Mac, once:
@@ -70,12 +74,15 @@ On the Mac, once:
 
 (press Enter at every question). Then for each device:
 
-    ssh-copy-id root@192.168.1.50
+    ssh-copy-id root@192.168.1.127
     ssh-copy-id pi@retropie.local
 
-Type the device's password one last time. For the Windows laptop, your
-user is an administrator, so the key goes in a different place. Ask
-Claude to walk you through it when you get there.
+Type the device's password one last time. The Windows laptop puts an
+administrator's keys in a different place, so for it type this instead
+(one line, on the Mac):
+
+    cat ~/.ssh/id_ed25519.pub | ssh shalo@192.168.1.32 "more >> C:\ProgramData\ssh\administrators_authorized_keys && icacls C:\ProgramData\ssh\administrators_authorized_keys /inheritance:r /grant Administrators:F /grant SYSTEM:F"
+
 
 If the handheld still asks for a password after this, muOS may have
 forgotten the key on restart. That's fine; type `root`.

@@ -801,7 +801,7 @@ function draw_map()
   if q.ev then print("\146",q.x/4-3,q.y/4-2,t%10<5 and 9 or c)
   elseif q.k=="home" then print("\138",q.x/4-3,q.y/4-2,t%10<5 and 10 or c) end
  end
- circfill(p.x/4,p.y/4,2,t%10<5 and 12 or 7)
+ circfill(p.x/4,p.y/4,t%20<10 and 2 or 3,12)
  rectfill(0,112,127,127,1)
  print("\fcyou  \fa\138 house  \f9\146 need",2,114)
  print("\142 back   \151 book",2,121,6)
