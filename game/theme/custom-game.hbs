@@ -1,0 +1,35 @@
+{{!< default}}
+
+{{!-- "Game" template (Page or post settings → Template → Game).
+  The game is the theme file /assets/games/<slug>.html, so the page's slug
+  must match the game's export name (blessed → blessed.html). Everything
+  else (how to play, downloads, credit) is the page's own content. --}}
+{{#post}}
+
+  <div class="container wrapper game-page">
+
+    <header class="game-head">
+      <a class="game-back" href="/games/">&larr; All games</a>
+      <h1 class="game-title">{{title}}</h1>
+      {{#if custom_excerpt}}<p class="game-tagline">{{custom_excerpt}}</p>{{/if}}
+    </header>
+
+    <div class="game-cabinet">
+      <div class="game-screen">
+        <iframe src="/assets/games/{{slug}}.html" title="{{title}}"
+          allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <article class="{{page_class}} content game-content post-access-{{visibility}}">
+      {{content}}
+    </article>
+
+  </div>
+
+{{/post}}
+
+{{#contentFor "scripts"}}
+  <link rel="stylesheet" href="{{asset "css/game.css"}}">
+  <script src="{{asset "js/game.js"}}"></script>
+{{/contentFor}}

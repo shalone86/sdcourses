@@ -26,6 +26,7 @@ import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCa
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
 import {ensureFigure, figureCast} from '../scripts/characters.mjs';
+import {checkLinks, deploySite, saveGif, saveSite, siteFile, siteState} from '../scripts/picoparish.mjs';
 
 const PORT = 5178;
 const URL_BASE = `http://localhost:${PORT}`;
@@ -298,10 +299,11 @@ function saveTiming(id, timing) {
       if (Number.isFinite(o.end)) out.end = Math.round(o.end * 100) / 100;
       const cues = Object.fromEntries(Object.entries(o.cues ?? {}).filter(([, t]) => Number.isFinite(t)).map(([k, t]) => [k, Math.round(t * 100) / 100]));
       if (Object.keys(cues).length) out.cues = cues;
-      // Moved/resized in the Timing tab (pixels of 1920×1080, size in %).
+      // Moved/resized/flipped in the Timing tab (pixels of 1920×1080, size in %).
       const n = o.nudge ?? {};
       const nx = Math.round(Number(n.x) || 0), ny = Math.round(Number(n.y) || 0), size = Math.min(200, Math.max(30, Math.round(Number(n.size) || 100)));
-      if (nx || ny || size !== 100) out.nudge = {x: nx, y: ny, size};
+      // (flip: mirrored left to right, for pictures and her drawings)
+      if (nx || ny || size !== 100 || n.flip) out.nudge = {x: nx, y: ny, size, ...(n.flip ? {flip: true} : {})};
       // The keyboard puppet's recording: [seconds into the recording, key, down 1/0].
       const KEYS = ['left', 'right', 'shift', 'up', 'down', 'p', 't', 'a', 'x', 'h', 'i'];
       if (Array.isArray(o.puppet)) {
@@ -522,7 +524,7 @@ function errorMessage(log) {
 
 function httpError(status, message) { return Object.assign(new Error(message), {status}); }
 
-const TYPES = {'.js': 'text/javascript', '.mp3': 'audio/mpeg', '.png': 'image/png', '.html': 'text/html; charset=utf-8', '.wav': 'audio/wav', '.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml'};
+const TYPES = {'.js': 'text/javascript', '.mp3': 'audio/mpeg', '.png': 'image/png', '.html': 'text/html; charset=utf-8', '.wav': 'audio/wav', '.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.gif': 'image/gif'};
 
 /** Serve a file with Range support (Safari needs it to play audio and video). */
 function sendFile(req, res, file) {
@@ -586,6 +588,10 @@ async function handle(req, res) {
       catch (e) { throw httpError(404, e.message); }
     }
     if (p === '/battles.js') return sendFile(req, res, path.join(ROOT, 'studio/battles.js'));
+    // Pico Parish tab: the site's catalog, and its built page to preview.
+    if (p === '/picoparish.js') return sendFile(req, res, path.join(ROOT, 'studio/picoparish.js'));
+    if (p === '/api/pp') { try { return json(res, 200, siteState()); } catch (e) { throw httpError(404, e.message); } }
+    if (p.startsWith('/pp/')) { const f = siteFile(p.slice(4)); if (!f) throw httpError(404, 'Not found'); return sendFile(req, res, f); }
     if (p === '/api/puppet-bases') return json(res, 200, {...puppetBases(), cast: puppetCast().characters});
     if (p === '/api/figures') return json(res, 200, figureCast());
     if (/^\/characters\/[a-z0-9-]+\/rest(@[a-z-]+)?\.png$/.test(p)) return sendFile(req, res, path.join(ROOT, p.slice(1)));
@@ -605,7 +611,34 @@ async function handle(req, res) {
     }
     if (p === '/api/fetch-image') return fetchImage(res, url.searchParams.get('url') ?? '');
     if (p === '/api/courses') return json(res, 200, await courseChoices());
-    if (p === '/pixels.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
+    if (p === '/api/draw-info') {
+      const pin = process.env.STUDIO_DRAW_PIN;
+      if (!pin) return json(res, 200, {enabled: false});
+      const domain = process.env.STUDIO_DRAW_DOMAIN?.trim();
+      const host = `${os.hostname().split('.')[0]}.local`;
+      const localUrl = `http://${host}:${DRAW_PORT}/draw`;
+      const url = domain ? `https://${domain}` : localUrl;
+      const ips = Object.values(os.networkInterfaces()).flat().filter((i) => i.family === 'IPv4' && !i.internal).map((i) => `http://${i.address}:${DRAW_PORT}/draw`);
+      return json(res, 200, {
+        enabled: true,
+        domain: domain || null,
+        host,
+        url,
+        localUrl,
+        pin,
+        ips,
+      });
+    }
+    if (p === '/icon.png' || p === '/apple-touch-icon.png') {
+      return sendFile(req, res, path.join(ROOT, 'studio', 'icon.png'));
+    }
+    if (p === '/icon-192.png') {
+      return sendFile(req, res, path.join(ROOT, 'studio', 'icon-192.png'));
+    }
+    if (p === '/manifest.json') {
+      return sendFile(req, res, path.join(ROOT, 'studio', 'manifest.json'));
+    }
+    if (p === '/pixels.js' || p === '/studio-draw.js') return sendFile(req, res, path.join(ROOT, 'studio/pixels.js'));
     if (p === '/sketch.js') return sendFile(req, res, path.join(ROOT, 'studio/sketch.js'));
     if (p === '/reference.js') return sendFile(req, res, path.join(ROOT, 'studio/reference.js'));
     if (p === '/ask.js') return sendFile(req, res, path.join(ROOT, 'studio/ask.js'));
@@ -647,6 +680,16 @@ async function handle(req, res) {
     if (p === '/api/battle') {
       const body = await readJson(req);
       try { const name = saveBattle(body.name, body.battle); return json(res, 200, {name, battles: listBattles()}); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/pp/save') {
+      const {catalog} = await readJson(req);
+      try { return json(res, 200, await saveSite(catalog)); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/pp/deploy') { try { return json(res, 200, await deploySite()); } catch (e) { throw httpError(409, e.message); } }
+    if (p === '/api/pp/links') { const {catalog} = await readJson(req); return json(res, 200, await checkLinks(catalog)); }
+    if (p === '/api/pp/gif') {
+      const buf = await readBody(req, 15e6);
+      try { return json(res, 200, {gif: saveGif(id, buf)}); } catch (e) { throw httpError(400, e.message); }
     }
     if (p === '/api/battle/new') {
       const body = await readJson(req);
@@ -924,16 +967,19 @@ const server = http.createServer((req, res) => {
 // http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
 // Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
 const DRAW_PORT = 5179;
-const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources)$/;
+const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/studio-draw\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources|\/icon\.png|\/icon-192\.png|\/apple-touch-icon\.png|\/manifest\.json)$/;
 const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
 const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
+function drawTokenForPin(pin) {
+  return crypto.createHmac('sha256', String(pin || '')).update('sdcourses-draw-session-v1').digest('hex').slice(0, 48);
+}
 
 function drawPage(res, signedIn, message = '') {
   const html = fs.readFileSync(path.join(ROOT, 'studio', 'index.html'), 'utf8');
   const style = (/<style>[\s\S]*?<\/style>/.exec(html) ?? [''])[0];
   const body = signedIn
     ? `<main class="draw-only"><h1 class="draw-title">Pixel art</h1><div id="draw"></div></main>
-<script src="/ask.js"></script><script src="/reference.js"></script><script src="/pixels.js"></script><script src="/sketch.js"></script>
+<script src="/ask.js"></script><script src="/reference.js"></script><script src="/studio-draw.js"></script><script src="/sketch.js"></script>
 <script>
 'use strict';
 const api = (p, o = {}) => fetch(p, {...o, headers: {...(o.headers || {}), 'X-Studio': '1'}}).then((r) => r.json().catch(() => ({})).then((j) => { if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status); return j; }));
@@ -961,7 +1007,8 @@ show();
 <label for="pin">PIN</label><input id="pin" name="pin" class="read-line" inputmode="numeric" autocomplete="off" maxlength="12" autofocus>
 ${message ? `<div class="small bad">${message}</div>` : ''}<button class="btn primary">Open</button></form></main>`;
   res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store'});
-  res.end(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pixel art · Lesson Studio</title>${style}
+  res.end(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Pixel art · Lesson Studio</title>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Pixel Studio"><meta name="mobile-web-app-capable" content="yes"><link rel="manifest" href="/manifest.json"><link rel="apple-touch-icon" href="/icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">${style}
 <style>.draw-only{max-width:1200px;margin:0 auto;padding:18px}.draw-title{font:600 28px/1.2 var(--serif);margin:0 0 14px}body{-webkit-user-select:none;user-select:none}input,textarea{-webkit-user-select:text;user-select:text}</style></head><body class="wide">${body}</body></html>`);
 }
 
@@ -969,7 +1016,17 @@ async function handleDraw(req, res) {
   const pin = process.env.STUDIO_DRAW_PIN;
   const url = new URL(req.url, 'http://draw');
   const p = url.pathname;
-  const signedIn = !!cookieToken(req) && draw.tokens.has(cookieToken(req));
+  if (p === '/icon.png' || p === '/apple-touch-icon.png') {
+    return sendFile(req, res, path.join(ROOT, 'studio', 'icon.png'));
+  }
+  if (p === '/icon-192.png') {
+    return sendFile(req, res, path.join(ROOT, 'studio', 'icon-192.png'));
+  }
+  if (p === '/manifest.json') {
+    return sendFile(req, res, path.join(ROOT, 'studio', 'manifest.json'));
+  }
+  const tok = cookieToken(req);
+  const signedIn = !!tok && (draw.tokens.has(tok) || (pin && tok === drawTokenForPin(pin)));
   if (p === '/' || p === '/draw' || p === '/draw/') return drawPage(res, signedIn);
   if (p === '/draw/login' && req.method === 'POST') {
     if (Date.now() < draw.waitUntil) return drawPage(res, false, 'Too many tries. Wait a minute, then try again.');
@@ -980,7 +1037,7 @@ async function handleDraw(req, res) {
       return drawPage(res, false, 'That PIN isn’t right.');
     }
     draw.misses = 0;
-    const token = crypto.randomBytes(24).toString('hex');
+    const token = drawTokenForPin(pin);
     draw.tokens.add(token);
     res.writeHead(303, {Location: '/draw', 'Set-Cookie': `sd_draw=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000`});
     return res.end();
@@ -1000,7 +1057,8 @@ if (process.env.STUDIO_DRAW_PIN) {
     if (!res.headersSent) json(res, e.status ?? 500, {error: e.message}); else res.end();
   }));
   drawServer.on('error', (e) => console.log(`iPad drawing page unavailable: ${e.message}`));
-  drawServer.listen(DRAW_PORT, '0.0.0.0', () => console.log(`iPad drawing page: http://${os.hostname().split('.')[0]}.local:${DRAW_PORT}/draw (PIN in .env)`));
+  const drawUrl = process.env.STUDIO_DRAW_DOMAIN ? `https://${process.env.STUDIO_DRAW_DOMAIN}` : `http://${os.hostname().split('.')[0]}.local:${DRAW_PORT}/draw`;
+  drawServer.listen(DRAW_PORT, '0.0.0.0', () => console.log(`iPad drawing page: ${drawUrl} (PIN in .env)`));
 }
 
 const open = !process.argv.includes('--no-open');

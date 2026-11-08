@@ -58,7 +58,7 @@ export function ghost(which = 'courses') {
       const form = new FormData();
       form.append('file', new Blob([fs.readFileSync(file)], {type}), path.basename(file));
       const res = await call('POST', `/${kind}/upload/`, form);
-      return (res.media ?? res.images)[0].url;
+      return (res.media ?? res.images ?? res.files)[0].url;
     },
     /** Create or update a post/page by slug, always as a draft unless already live (then refuse). */
     async saveDraft(resource, doc, {updateLive = false} = {}) {

@@ -11,7 +11,7 @@ import type {SceneProps} from '.';
 //   size: small | medium (default) | big | full (fills the slide, for a wide scene)
 // A sketch (kind: 'sketch') has a picture per frame instead of pixel rows.
 export type Art = {kind?: 'sketch'; width: number; height: number; fps: number; palette: string[]; frames: string[][] | string[]};
-type SpriteScene = {sprite: string; figure?: string; art: Art; colors?: Colors; move?: 'stay' | 'hop' | 'across' | 'across-left'; size?: 'small' | 'medium' | 'big' | 'full'; caption?: string};
+type SpriteScene = {sprite: string; figure?: string; nudge?: {flip?: boolean}; art: Art; colors?: Colors; move?: 'stay' | 'hop' | 'across' | 'across-left'; size?: 'small' | 'medium' | 'big' | 'full'; caption?: string};
 
 const CODES = '0123456789abcdefghijklmnopqrstuvwxyz';
 
@@ -74,7 +74,8 @@ export const Sprite: React.FC<SceneProps<SpriteScene>> = ({scene, duration}) => 
   const width = art.kind === 'sketch' ? art.width * scale : b.w * px;
   if (across) dx = (ramp(f, 0, Math.max(1, duration)) - 0.5) * Math.max(0, stage.w - 320 - width) * (scene.move === 'across-left' ? -1 : 1);
   // Her drawings face right, so going left they're mirrored (a Blender character is drawn from the left instead).
-  const mirror = scene.move === 'across-left' && !scene.figure ? ' scaleX(-1)' : '';
+  // Flipped on the Timing tab (`nudge.flip`): mirrored as well (or back, for one walking left).
+  const mirror = (scene.move === 'across-left' && !scene.figure) !== !!scene.nudge?.flip ? ' scaleX(-1)' : '';
   return (
     <Center style={{flexDirection: 'column', gap: 26}}>
       {art.kind === 'sketch' ? (

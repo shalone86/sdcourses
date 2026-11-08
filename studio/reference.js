@@ -201,5 +201,31 @@ window.SpriteGallery = (() => {
       state.open ? panel : null,
     ]);
   }
-  return {build};
+  /**
+   * Pick one drawing (the Timing tab's Pixel animation): a search box and a grid of moving
+   * thumbnails, favorites first. `input` is a hidden box that holds the pick (its value, and a
+   * change event when it changes), so a form reads it like any other box.
+   */
+  function picker({items, value, input, noun = 'drawing'}) {
+    const state = {q: ''};
+    const list = h('div', {style: {maxHeight: '300px', overflowY: 'auto', padding: '2px'}});
+    const chosen = h('div', {class: 'small muted'});
+    const showChosen = () => { const s = items.find((x) => x.slug === input.value); chosen.textContent = s ? 'Picked: ' + s.name : 'Pick one below.'; };
+    const draw = () => {
+      const q = state.q.trim().toLowerCase();
+      const hits = items.filter((s) => !q || q.split(/\s+/).every((w) => s.name.toLowerCase().includes(w) || s.slug.includes(w)))
+        .sort((a, b) => (b.slug === input.value) - (a.slug === input.value) || (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (b.at || 0) - (a.at || 0));
+      list.replaceChildren(hits.length ? h('div', {class: 'sg-grid'}, hits.map((s) => h('div', {class: 'sg-tile' + (s.slug === input.value ? ' on' : ''), title: s.name}, [
+        h('button', {class: 'sg-open', type: 'button', 'aria-label': 'Use ' + s.name, 'aria-pressed': s.slug === input.value ? 'true' : 'false', onclick: () => {
+          input.value = s.slug; input.dispatchEvent(new Event('change', {bubbles: true})); showChosen(); draw();
+        }}, [thumb(s), h('span', {class: 'sg-name', text: (s.favorite ? '★ ' : '') + s.name})]),
+      ]))) : h('div', {class: 'small muted', text: items.length ? 'Nothing matches.' : `No ${noun}s yet: draw one on the Pixel art tab.`}));
+      play(list);
+    };
+    input.value = value || '';
+    const search = h('input', {type: 'search', placeholder: `Search your ${noun}s by name`, 'aria-label': `Search your ${noun}s`, style: {flex: '1', minWidth: '0'}, oninput: (e) => { state.q = e.target.value; draw(); }});
+    showChosen(); draw();
+    return h('div', {class: 'stack', style: {gap: '6px'}}, [h('div', {class: 'row', style: {gap: '8px', flexWrap: 'nowrap'}}, [search]), chosen, list]);
+  }
+  return {build, picker};
 })();
