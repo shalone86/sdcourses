@@ -138,7 +138,7 @@ If it's already running, `npm start` just opens the page.
   I pick, M select (Delete clears it), . / , next / previous frame; Export frame (PNG, enlarged) or animation (GIF, made by
   ffmpeg at `/api/sprite/gif`)). Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
-  Pixel animation, a `sprite` scene (`move: stay | hop | across | across-left`, `size`; across-left mirrors it);
+  Pixel animation (picked from a search box and moving thumbnails, `SpriteGallery.picker` in studio/reference.js), a `sprite` scene (`move: stay | hop | across | across-left`, `size`; across-left mirrors it);
   prepare.mjs copies the drawing into the props. With `motion: dance` it
   changes frame on the beat. **Sketch** mode (same tab, `studio/sketch.js`):
   free drawing with brush sizes and the same tools, saved as one PNG per
@@ -206,13 +206,13 @@ If it's already running, `npm start` just opens the page.
   Anything Claude blocked out is `origin: scaffold` in the manifest and shows as a draft
   in the picker (so far: `angel`); don't put drafts in a lesson she is publishing.
 - **Nudging:** clicking any scene block shows Move ← ↑ ↓ → / Smaller / Bigger
-  (Shift moves further), and lets her drag it on the video (mouse wheel there: size), saved in timing.yml as `scenes.<i>.nudge: {x, y, size}`
+  (Shift moves further), and lets her drag it on the video (its corner handles or the mouse wheel there: size), saved in timing.yml as `scenes.<i>.nudge: {x, y, size, flip}` (⇋ Flip mirrors a picture or drawing, not its caption or credit)
   (pixels of 1920×1080, %), e.g. to lift a scene off the progress bar.
 - **Stacking:** in the Timing tab, a picture's ◫/⧉ button shows it beside or
   over the picture before (`with: side | over` on the scene); the add form's "Shows"
   sets it when adding (remembered for the next one).
 - **Trimming:** in the Timing tab, a picture's right edge ends it sooner
-  (`scenes.<i>.end`) and the End marker shortens the slide (`<section>.end`).
+  (`scenes.<i>.end`) and the End marker shortens or lengthens the slide (`<section>.end`; up to 10 s past its recording).
 - **Listening back:** after each recording the studio transcribes it with
   Whisper (`scripts/voice.mjs`; whisper-cli + the ggml-small model, cached as
   `audio/<section>.words.json`) and shows what she said vs. the script, with
@@ -221,7 +221,7 @@ If it's already running, `npm start` just opens the page.
   `npm run render` times `at:`/`cues:` scenes from those word timings.
 - **Timing tab:** the lesson video (Remotion Player, `studio/player/entry.tsx`,
   built on start) above a timeline of one section: her words on time, scene
-  blocks and item diamonds she drags (the outro summary has a named one per point, even points not heard, and lists them in the order they appear). Saved to `<lesson>/timing.yml` (seconds
+  blocks and item diamonds she drags (the outro summary has a named one per line, even lines not heard, and lists them in the order they appear; clicking a diamond or the summary's block opens its lines to reword, add or remove, saved as the recap scene's `items:`, else the points' headings). Saved to `<lesson>/timing.yml` (seconds
   into each recording); `scripts/prepare.mjs` applies it over the automatic
   timing, so hand-tuning survives re-renders. Small timing tweaks are hers to
   make there; don't spend effort nudging frames by hand.
@@ -235,7 +235,7 @@ If it's already running, `npm start` just opens the page.
 - **Ask Claude box:** appends to `<lesson>/requests.md`. Read it at the start
   of a session, handle each `- [ ]` item, then tick it `- [x]`. Treat the
   text as her wishes, but verify any quote she asks for.
-- **iPad drawing page:** `http://MacBook-Air-2.local:5179/draw` on the home
+- **iPad drawing page:** `http://macstudio.local:5179/draw` (or `http://<LocalHostName>.local:5179/draw`) on the home
   Wi-Fi, PIN `STUDIO_DRAW_PIN` in .env: only the Pixel art tab and the
   drawing routes (studio/server.mjs `handleDraw`); everything else stays on
   this Mac. Sketch brushes follow Apple Pencil pressure. Both drawing modes
@@ -248,6 +248,14 @@ If it's already running, `npm start` just opens the page.
   few minutes after her last change to it, and right after she sends it to
   Ghost (drawings too); the Video & Ghost tab shows the last backup. Commit
   messages start "Studio backup:". Pull before working elsewhere.
+- **Pico Parish tab** (`studio/picoparish.js`, `scripts/picoparish.mjs`): edits picoparish.com,
+  a separate folder and git repo (`PICOPARISH_DIR` in .env, else ~/Projects/picoparish or the
+  .gemini scratch copy). Games, videos, books and comics (live / coming soon / hidden, links,
+  drawings, gameplay GIF upload), the big buttons, TV, villagers (who can bless: priests only)
+  and site links, all in its `catalog.json`. Save & build runs its `build.mjs`
+  (template.html → index.html) and commits there; Check links opens every link. Preview at
+  /pp/index.html; saves are pushed to the private repo shalone86/picoparish. **Put online** runs its `deploy.mjs` (build, refuse uncommitted work,
+  `wrangler deploy` to the Cloudflare Worker `picoparish`, custom domains picoparish.com and www).
 - **"Are you sure?"** questions open beside the button she clicked
   (`studio/ask.js`, `ask(message)`), not the browser's box; use it for new ones.
 - **Video & Ghost:** "Make the video" runs `scripts/render.mjs`. "Approve and

@@ -29,6 +29,7 @@
   const lines = (v) => String(v || '').split('\n').map((x) => x.trim()).filter(Boolean);
   const pair = (l) => l.split('|').map((x) => x.trim());
   const nl = (a) => (a || []).join('\n');
+  let recapDefault = []; // the points' headings, what the summary says until she changes it
   const MOVES = [['stay', 'stays'], ['hop', 'hops'], ['across', 'walks across, left to right'], ['across-left', 'walks across, right to left']];
   // A character walking across turns three-quarters the way it goes, so the face still shows (unless she picked another view).
   const figureView = (v) => (!v.view || v.view === 'front') && /^across/.test(v.move || '') ? (v.move === 'across' ? 'front-right' : 'front-left') : v.view || 'front';
@@ -84,7 +85,7 @@
       read: (sc) => ({years: nl((sc.items || []).map((x) => x.year)), events: nl((sc.items || []).map((x) => x.label || ''))})},
     sprite: {label: 'Pixel animation (from the Pixel art tab)', fields: [['sprite', 'Which drawing', 'sprite'], ['colors', 'Colors (just in this picture)', 'colors', 'sprite'], ['move', 'How it moves', 'select', MOVES],
       ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
-      make: (v) => { if (!v.sprite) throw new Error('Make a drawing on the Pixel art tab first');
+      make: (v) => { if (!v.sprite) throw new Error('Pick a drawing (or make one on the Pixel art tab first)');
         return {type: 'sprite', sprite: v.sprite, ...(colorsOf(v) ? {colors: v.colors} : {}), ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
       read: (sc) => ({sprite: sc.sprite || '', colors: sc.colors || {}, move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
     battle: {label: 'Battle (game footage from the Battles tab)', fields: [['battle', 'Which battle', 'battlepick'], ['from', 'Starts at (seconds into the battle)', 'text'], ['to', 'Stops at (seconds into the battle; empty = the end)', 'text'],
@@ -105,6 +106,10 @@
       make: (v) => { if (!v.character) throw new Error('Draw a character first: <name>-idle and <name>-walk on the Pixel art tab');
         return {type: 'puppet', character: v.character, ...(colorsOf(v) ? {colors: v.colors} : {}), ...(v.item ? {item: v.item} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.start && v.start !== 'center' ? {start: v.start} : {})}; },
       read: (sc) => ({character: sc.character || '', colors: sc.colors || {}, item: sc.item || '', size: sc.size || 'medium', start: sc.start || 'center'})},
+    // The outro's summary: its lines are the points' headings until she writes her own (`items`).
+    recap: {label: 'Lesson summary', hidden: true, fields: [['items', 'What the summary says, one line per check mark, in order (empty: the points’ headings)', 'lines']],
+      make: (v) => { const l = lines(v.items); return {type: 'recap', ...(l.length && nl(l) !== nl(recapDefault) ? {items: l} : {})}; },
+      read: (sc) => ({items: nl(sc.items || recapDefault)})},
     term: {label: 'A word', fields: [['term', 'The word', 'text'], ['origin', 'From (e.g. Greek …)', 'text'], ['meaning', 'Meaning', 'text']],
       make: (v) => ({type: 'term', term: v.term, origin: v.origin, meaning: v.meaning}),
       read: (sc) => ({term: sc.term || '', origin: sc.origin || '', meaning: sc.meaning || ''})},
@@ -118,7 +123,7 @@
 
   /** Short name for an item cue ("Antioch", "Title 2", "Check"). */
   function cueLabel(scene, k, headings) {
-    if (scene.type === 'recap') return headings?.[+k] || 'Point ' + (+k + 1);
+    if (scene.type === 'recap') return (scene.items || headings)?.[+k] || 'Line ' + (+k + 1);
     if (scene.type === 'compare' && k === 'decide') return 'Check';
     if (scene.type === 'quote') return k === 'start' ? 'Quote starts' : 'Quote ends';
     if (scene.type === 'trinity') return k === 'son' ? 'Cross' : k === 'spirit' ? 'Dove' : k;
@@ -166,11 +171,12 @@
       // can set when each appears (same spacing as video/scenes/Recap.tsx for the ones not heard).
       seg.scenes.forEach((sc) => {
         if (sc.type !== 'recap' || seg.kind !== 'outro') return;
-        const n = (props.headings || []).length;
+        recapDefault = props.headings || [];
+        const n = (sc.items || recapDefault).length;
         if (!n) return;
         const next = Math.min(seg.durationInFrames, sc.until ?? Infinity, ...seg.scenes.filter((o) => o !== sc && !o.with && (o.from || 0) > (sc.from || 0)).map((o) => o.from));
         const gap = Math.floor(((next - (sc.from || 0)) * 0.5) / n);
-        const cues = sc.cues || {};
+        const cues = Object.fromEntries(Object.entries(sc.cues || {}).filter(([k]) => +k < n));
         for (let k = 0; k < n; k++) if (cues[k] == null) cues[k] = 8 + k * gap;
         sc.cues = cues;
       });
@@ -214,7 +220,9 @@
     function timeline() {
       const s = seg();
       const px = T.zoom / FPS; // pixels per frame
-      const W = Math.ceil(s.durationInFrames * px) + 40;
+      // Room past the end, so a slide made too short can be made longer again (up to 10 s past its recording).
+      const room = Math.max(s.durationInFrames, T.data.segments[T.seg].autoDuration ?? 0) + 10 * FPS;
+      const W = Math.ceil(room * px) + 40;
       const words = T.data.segments[T.seg].words;
       const x = (f) => 20 + f * px;
       const wrap = h('div', {class: 'tl', style: {width: W + 'px'}});
@@ -313,15 +321,19 @@
           const moved = touched && touched.cues && touched.cues[k] != null;
           const m = h('div', {class: 'tl-cue' + (moved ? ' moved' : ''), style: {left: x(at) + 'px'}, title: 'Drag to change when it appears'},
             [h('i'), h('span', {text: cueLabel(sc, k, T.props.headings)})]);
-          drag(m, at, (f) => setCue(i, k, f), () => T.player.seek(segStart(T.seg) + Math.max(0, at - 10)));
+          // A click seeks there; on the summary it also opens its lines to change the words.
+          drag(m, at, (f) => setCue(i, k, f), () => {
+            T.player.seek(segStart(T.seg) + Math.max(0, at - 10));
+            if (sc.type === 'recap') { T.editing = {seg: T.seg, i, line: +k}; T.adding = false; T.editPic = null; T.nudge = null; draw(); }
+          });
           cuesRow.append(m);
         }
       });
       // The slide's end: drag left to make the whole slide shorter (double-click to undo).
       const cut = (T.timing[s.name] || {}).end != null;
-      const endMark = h('div', {class: 'tl-end' + (cut ? ' moved' : ''), style: {left: x(s.durationInFrames) + 'px'}, title: 'End of this slide: drag to make it shorter · double-click to undo',
+      const endMark = h('div', {class: 'tl-end' + (cut ? ' moved' : ''), style: {left: x(s.durationInFrames) + 'px'}, title: 'End of this slide: drag left to make it shorter, right to make it longer · double-click to undo',
         ondblclick: () => { if (cut) { delete T.timing[s.name].end; updatePlayer(); draw(); setDirty(); } }}, [h('span', {text: 'End'})]);
-      drag(endMark, s.durationInFrames, (f) => setSlideEnd(Math.max(s.audioOffsetInFrames + 30, f)), () => T.player.seek(segStart(T.seg) + Math.max(0, s.durationInFrames - 30)));
+      drag(endMark, s.durationInFrames, (f) => setSlideEnd(Math.max(s.audioOffsetInFrames + 30, f)), () => T.player.seek(segStart(T.seg) + Math.max(0, s.durationInFrames - 30)), undefined, room);
       wrap.append(endMark);
       const head = h('div', {class: 'tl-head', 'data-playhead': '', title: 'Drag to scrub'}, [h('i')]);
       scrubFrom(head);
@@ -330,7 +342,7 @@
 
       // Drag horizontally; on release, apply and redraw.
       // `resize`: dragging a block's right edge, so the block grows/shrinks instead of moving.
-      function drag(node, startFrame, set, after, resize) {
+      function drag(node, startFrame, set, after, resize, limit = s.durationInFrames - 5) {
         node.addEventListener('pointerdown', (e) => {
           e.preventDefault();
           try { node.setPointerCapture(e.pointerId); } catch { /* still drags while the pointer stays on it */ }
@@ -342,7 +354,7 @@
             // (a click that wobbles a few pixels is still a click)
             if (!moved && Math.abs(ev.clientX - x0) < 5) return;
             moved = true;
-            f = snap(Math.max(0, Math.min(s.durationInFrames - 5, startFrame + (ev.clientX - x0) / px)));
+            f = snap(Math.max(0, Math.min(limit, startFrame + (ev.clientX - x0) / px)));
             if (resize) resize.style.width = Math.max(24, width0 + (f - startFrame) * px) + 'px';
             else node.style.left = left0 + (f - startFrame) * px + 'px';
             T.player.seek(segStart(T.seg) + f);
@@ -525,7 +537,7 @@
       const set = (fn) => {
         const o = (((T.timing[s.name] ||= {}).scenes ||= {})[i] ||= {});
         const n = fn({x: 0, y: 0, size: 100, ...o.nudge});
-        if (!n.x && !n.y && n.size === 100) delete o.nudge; else o.nudge = n;
+        if (!n.x && !n.y && n.size === 100 && !n.flip) delete o.nudge; else o.nudge = n;
         if (!Object.keys(o).length) delete T.timing[s.name].scenes[i];
         updatePlayer(); draw(); setDirty();
         T.player.seek(segStart(T.seg) + Math.max(sc.from || 0, Math.min(T.player.frame() - segStart(T.seg), s.durationInFrames - 1)));
@@ -542,8 +554,11 @@
         btn('→', 'Right (Shift: further)', (v, d) => ({...v, x: v.x + d})),
         btn('Smaller', 'Smaller', (v) => ({...v, size: Math.max(30, v.size - 5)})),
         btn('Bigger', 'Bigger', (v) => ({...v, size: Math.min(200, v.size + 5)})),
-        h('span', {class: 'small muted', text: (n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made') + ' · or drag it on the video (mouse wheel: size)'}),
-        n.x || n.y || n.size !== 100 ? btn('Reset', 'Put it back', () => ({x: 0, y: 0, size: 100})) : null,
+        // Pictures and her drawings can be mirrored left to right.
+        ['image', 'sprite', 'figure'].includes(sc.type) ? h('button', {class: 'btn', title: 'Mirror it left to right', 'aria-pressed': n.flip ? 'true' : 'false',
+          text: n.flip ? '⇋ Flipped' : '⇋ Flip', onclick: () => set((v) => { const {flip, ...rest} = v; return flip ? rest : {...rest, flip: true}; })}) : null,
+        h('span', {class: 'small muted', text: (n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made') + (n.flip ? ' · flipped' : '') + ' · or drag it on the video (a corner, or the mouse wheel: size)'}),
+        n.x || n.y || n.size !== 100 || n.flip ? btn('Reset', 'Put it back', () => ({x: 0, y: 0, size: 100})) : null,
         h('button', {class: 'btn', text: 'Close', onclick: () => { T.nudge = null; draw(); }}),
       ]);
     }
@@ -565,11 +580,37 @@
         };
         const up = () => {
           layer.removeEventListener('pointermove', move); layer.removeEventListener('pointerup', up);
-          if (!o.nudge.x && !o.nudge.y && o.nudge.size === 100) delete o.nudge;
+          if (!o.nudge.x && !o.nudge.y && o.nudge.size === 100 && !o.nudge.flip) delete o.nudge;
           updatePlayer(); draw(); setDirty();
         };
         layer.addEventListener('pointermove', move); layer.addEventListener('pointerup', up);
       });
+      // Corner handles: drag one away from the middle to make it bigger, toward the middle for smaller.
+      for (const corner of ['nw', 'ne', 'sw', 'se']) {
+        const grip = h('div', {class: 'tl-grip ' + corner, title: 'Drag to make it bigger or smaller'});
+        grip.addEventListener('pointerdown', (e) => {
+          const s = seg(), i = T.nudge?.i;
+          if (!T.nudge || T.nudge.seg !== T.seg || !s.scenes[i]) return;
+          e.preventDefault(); e.stopPropagation();
+          try { grip.setPointerCapture(e.pointerId); } catch { /* fine */ }
+          const r = layer.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+          const d0 = Math.max(20, Math.hypot(e.clientX - cx, e.clientY - cy));
+          const o = (((T.timing[s.name] ||= {}).scenes ||= {})[i] ||= {});
+          const n0 = {x: 0, y: 0, size: 100, ...o.nudge};
+          let frame = 0;
+          const move = (ev) => {
+            o.nudge = {...n0, size: Math.max(30, Math.min(200, Math.round((n0.size * Math.hypot(ev.clientX - cx, ev.clientY - cy)) / d0)))};
+            if (!frame) frame = requestAnimationFrame(() => { frame = 0; updatePlayer(); });
+          };
+          const up = () => {
+            grip.removeEventListener('pointermove', move); grip.removeEventListener('pointerup', up);
+            if (!o.nudge.x && !o.nudge.y && o.nudge.size === 100 && !o.nudge.flip) delete o.nudge;
+            updatePlayer(); draw(); setDirty();
+          };
+          grip.addEventListener('pointermove', move); grip.addEventListener('pointerup', up);
+        });
+        layer.append(grip);
+      }
       // The mouse wheel (or two fingers on the trackpad) over the video makes it bigger or smaller.
       layer.addEventListener('wheel', (e) => {
         const s = seg(), i = T.nudge?.i;
@@ -653,7 +694,7 @@
       const old = edit != null ? s.scenes[edit] : null;
       const kind = old ? old.type : (T.addType || 'map');
       const now = Math.max(0, secOf(T.player.frame() - segStart(T.seg)));
-      const typeSel = h('select', {'aria-label': 'Kind of picture', disabled: !!old}, Object.entries(ADD).map(([k, d]) => h('option', {value: k, text: d.label, selected: k === kind})));
+      const typeSel = h('select', {'aria-label': 'Kind of picture', disabled: !!old}, Object.entries(ADD).filter(([, d]) => !d.hidden).map(([k, d]) => h('option', {value: k, text: d.label, selected: k === kind})));
       const fields = h('div', {class: 'stack', style: {gap: '8px'}});
       const vals = {};
       const start = old && ADD[kind].read ? ADD[kind].read(old) : {};
@@ -664,7 +705,13 @@
           if (type === 'head') return h('div', {class: 'tl-head-row', text: label});
           let input;
           const value = start[name];
-          if (type === 'lines') { input = h('textarea', {rows: 3}); input.value = value || ''; }
+          if (type === 'lines') {
+            input = h('textarea', {rows: Math.max(3, String(value || '').split('\n').length)}); input.value = value || '';
+            // Opened from a diamond: that line is selected, ready to type over.
+            const line = T.editing?.line;
+            if (line != null) queueMicrotask(() => { delete T.editing?.line; const ls = input.value.split('\n'); if (line >= ls.length) return;
+              const a = ls.slice(0, line).join('\n').length + (line ? 1 : 0); input.focus(); input.setSelectionRange(a, a + ls[line].length); });
+          }
           else if (type === 'check') input = h('input', {type: 'checkbox', checked: value === undefined ? true : value || null});
           else if (type === 'select') { input = h('select', {}, extra.map((o) => { const [val, text] = Array.isArray(o) ? o : [o, o]; return h('option', {value: val, text, selected: val === value}); })); }
           else if (type === 'areas') {
@@ -759,9 +806,12 @@
           }
           else if (type === 'sprite') {
             // Her saved pixel animations and sketches.
-            input = h('select', {}, [h('option', {value: '', text: 'Loading…'})]);
-            api('/api/sprites').then((list) => input.replaceChildren(...(list.length ? [...list].sort((x, y) => (y.favorite ? 1 : 0) - (x.favorite ? 1 : 0) || (y.at || 0) - (x.at || 0)).map((x) => h('option', {value: x.slug, text: (x.favorite ? '★ ' : '') + x.name, selected: x.slug === value}))
-              : [h('option', {value: '', text: 'None yet: draw one on the Pixel art tab'})])));
+            // A search box and moving thumbnails (there are too many for a list); the pick is held in a hidden box.
+            input = h('input', {type: 'hidden', value: value || ''});
+            const box = h('div', {class: 'small muted', text: 'Loading your drawings…'});
+            api('/api/sprites').then((list) => box.replaceWith(window.SpriteGallery.picker({items: list, value, input})));
+            vals[name] = input;
+            return h('div', {class: 'tl-field'}, [h('span', {text: label}), input, box]);
           }
           else input = h('input', {type: 'text', value: value ?? extra ?? ''});
           vals[name] = input;

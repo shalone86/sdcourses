@@ -157,6 +157,9 @@ body.wide .wrap{max-width:1600px}
 .tl-player{max-width:600px;margin:0 auto}
 .tl-drag{position:absolute;inset:0;display:none;border-radius:10px;cursor:move;touch-action:none}
 .tl-drag.on{display:block;outline:3px dashed var(--accent);outline-offset:-3px}
+.tl-grip{position:absolute;width:18px;height:18px;background:var(--accent);border:3px solid #fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.4);touch-action:none}
+.tl-grip.nw{left:-6px;top:-6px;cursor:nwse-resize}.tl-grip.se{right:-6px;bottom:-6px;cursor:nwse-resize}
+.tl-grip.ne{right:-6px;top:-6px;cursor:nesw-resize}.tl-grip.sw{left:-6px;bottom:-6px;cursor:nesw-resize}
 .tl-scene.fixed{background:var(--bg);border-style:dashed;cursor:default;color:var(--muted)}
 .tl-scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
 .tl{position:relative;height:250px;user-select:none;-webkit-user-select:none}
@@ -281,6 +284,7 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
     <button role="tab" id="tab-timing" aria-selected="false">Timing</button>
     <button role="tab" id="tab-pixels" aria-selected="false">Pixel art</button>
     <button role="tab" id="tab-battles" aria-selected="false">Battles</button>
+    <button role="tab" id="tab-pico" aria-selected="false">Pico Parish</button>
     <button role="tab" id="tab-video" aria-selected="false">Video &amp; Ghost</button>
   </div>
   <main id="view"></main>
@@ -292,9 +296,10 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
 <script src="/thumb.js"></script>
 <script src="/colors.js"></script>
 <script src="/reference.js"></script>
-<script src="/pixels.js"></script>
+<script src="/studio-draw.js"></script>
 <script src="/sketch.js"></script>
 <script src="/battles.js"></script>
+<script src="/picoparish.js"></script>
 <script>
 'use strict';
 const S = {
@@ -394,7 +399,7 @@ function renderHeader() {
   pick.replaceChildren(...active.map((l) => el('option', {value: l.id, selected: S.tab !== 'archive' && l.id === S.id, text: l.course + ' ' + l.number + ': ' + l.title + (isDone(l) ? ' (done)' : '')})),
     archived.length ? el('option', {value: '__archive', selected: S.tab === 'archive', text: 'Archive (' + archived.length + ' finished)…'}) : null);
   pick.disabled = !!(S.rec || S.busy);
-  for (const t of ['script', 'timing', 'pixels', 'battles', 'video']) {
+  for (const t of ['script', 'timing', 'pixels', 'battles', 'pico', 'video']) {
     const b = document.getElementById('tab-' + t);
     b.setAttribute('aria-selected', S.tab === t);
     b.disabled = !!(S.rec || S.busy);
@@ -403,12 +408,13 @@ function renderHeader() {
 
 function render() {
   renderHeader();
-  document.body.classList.toggle('wide', S.tab === 'timing' || S.tab === 'pixels' || S.tab === 'battles');
+  document.body.classList.toggle('wide', S.tab === 'timing' || S.tab === 'pixels' || S.tab === 'battles' || S.tab === 'pico');
   const kids = [];
   if (S.notice) kids.push(noticeEl(S.notice));
   if (S.tab === 'new') kids.push(newLessonView());
   else if (S.tab === 'archive') kids.push(archiveView());
   else if (S.tab === 'battles') kids.push(battlesView());
+  else if (S.tab === 'pico') kids.push(picoView());
   else if (S.L) kids.push(S.tab === 'script' ? scriptView() : S.tab === 'timing' ? timingView() : S.tab === 'pixels' ? pixelsView() : videoView());
   view.replaceChildren(...kids);
   for (const t of view.querySelectorAll('textarea.read')) grow(t);
@@ -426,11 +432,12 @@ document.getElementById('tab-video').addEventListener('click', () => switchTab('
 document.getElementById('tab-timing').addEventListener('click', () => switchTab('timing'));
 document.getElementById('tab-pixels').addEventListener('click', () => switchTab('pixels'));
 document.getElementById('tab-battles').addEventListener('click', () => switchTab('battles'));
+document.getElementById('tab-pico').addEventListener('click', () => switchTab('pico'));
 document.getElementById('new-lesson').addEventListener('click', async () => { await saveAll(); if (S.timing) S.timing.pause(); S.tab = 'new'; S.notice = null; stopPlayback(); releaseMic(); render(); });
 document.getElementById('pick').addEventListener('change', async (e) => {
   await saveAll();
   if (e.target.value === '__archive') { if (S.timing) S.timing.pause(); S.tab = 'archive'; S.notice = null; stopPlayback(); releaseMic(); render(); return; }
-  if (S.tab === 'new' || S.tab === 'archive' || S.tab === 'battles') S.tab = 'script';
+  if (S.tab === 'new' || S.tab === 'archive' || S.tab === 'battles' || S.tab === 'pico') S.tab = 'script';
   openLesson(e.target.value, 0);
 });
 
@@ -458,6 +465,7 @@ async function switchTab(tab) {
   if (S.timing && S.timing.dirty() && !(await ask('You have timing changes that aren’t saved. Leave them?'))) return;
   if (S.tab === 'pixels' && S.pixels && S.pixels.dirty() && !(await ask('Your drawing isn’t saved. Leave it?'))) return;
   if (S.tab === 'battles' && S.battles && S.battles.dirty() && !(await ask('Your battle changes aren’t saved. Leave them?'))) return;
+  if (S.tab === 'pico' && S.pico && S.pico.dirty() && !(await ask('Your Pico Parish changes aren’t saved. Leave them?'))) return;
   if (S.timing) S.timing.pause();
   if (S.battles) S.battles.pause();
   S.tab = tab; S.notice = null;
@@ -465,6 +473,7 @@ async function switchTab(tab) {
   if (tab === 'timing') { releaseMic(); S.timingRoot = null; }
   if (tab === 'pixels') { releaseMic(); S.pixelsRoot = null; }
   if (tab === 'battles') releaseMic();
+  if (tab === 'pico') releaseMic();
   if (tab === 'video') { releaseMic(); await refresh(); }
   render();
 }
@@ -531,10 +540,60 @@ function battlesView() {
   return S.battlesRoot;
 }
 
+// Pico Parish tab (studio/picoparish.js): the picoparish.com page's games, videos, villagers and links.
+function picoView() {
+  if (!S.picoRoot) {
+    S.picoRoot = el('div', {class: 'stack'});
+    S.pico = window.PicoParishTab.open(S.picoRoot, api, post);
+  }
+  return S.picoRoot;
+}
+
 // ---------- pixel art ----------
 
 // The Pixel art tab: pixel art (studio/pixels.js) or free sketching (studio/sketch.js).
 // Drawings are shared by every lesson.
+async function openIpadModal() {
+  const info = await api('/api/draw-info').catch(() => null);
+  if (!info || !info.enabled) {
+    await ask('The iPad drawing page is disabled. Set STUDIO_DRAW_PIN in .env to turn it on.', {yes: 'OK'});
+    return;
+  }
+  const box = el('div', {class: 'stack', style: 'max-width:440px;gap:12px;margin:8px 0 14px;text-align:left'}, [
+    el('div', {class: 'small muted', text: info.domain ? 'Open this link in Safari on your iPad or phone from anywhere:' : 'Open this link in Safari on your iPad (while connected to your home Wi-Fi):'}),
+    el('div', {class: 'row', style: 'gap:8px;align-items:center'}, [
+      el('input', {class: 'read-line', readonly: true, value: info.url, style: 'font-weight:600;font-family:monospace;flex:1'}),
+      el('button', {class: 'btn primary', text: 'Copy link', onclick: (e) => {
+        navigator.clipboard.writeText(info.url);
+        e.target.textContent = 'Copied!';
+        setTimeout(() => { e.target.textContent = 'Copy link'; }, 2000);
+      }})
+    ]),
+    el('div', {class: 'row', style: 'gap:8px;align-items:center'}, [
+      el('span', {class: 'small muted', text: 'PIN: '}),
+      el('code', {style: 'font-size:16px;font-weight:bold;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px', text: info.pin}),
+      el('button', {class: 'btn', text: 'Copy PIN', onclick: (e) => {
+        navigator.clipboard.writeText(info.pin);
+        e.target.textContent = 'Copied!';
+        setTimeout(() => { e.target.textContent = 'Copy PIN'; }, 2000);
+      }})
+    ]),
+    el('div', {class: 'small muted', style: 'border-top:1px solid rgba(0,0,0,0.08);padding-top:10px;line-height:1.4'}, [
+      el('strong', {text: '💡 One-tap app icon: '}),
+      el('span', {text: 'In Safari on your iPad or phone, tap Share ➔ "Add to Home Screen". It adds a Pixel Studio app icon right on your home screen!'})
+    ]),
+    info.domain && info.localUrl ? el('details', {class: 'small muted'}, [
+      el('summary', {text: 'Local Wi-Fi link'}),
+      el('div', {style: 'margin-top:6px;font-family:monospace', text: info.localUrl})
+    ]) : null,
+    info.ips && info.ips.length ? el('details', {class: 'small muted'}, [
+      el('summary', {text: 'Alternative IP address link'}),
+      el('div', {style: 'margin-top:6px;font-family:monospace', text: info.ips[0]})
+    ]) : null
+  ]);
+  await ask('📱 Drawing & Upload Link', {yes: 'Done', no: '', extra: box});
+}
+
 function pixelsView() {
   const mode = store.get('drawMode') === 'sketch' ? 'sketch' : 'pixel';
   if (!S.pixelsRoot || S.pixelsMode !== mode) {
@@ -546,7 +605,11 @@ function pixelsView() {
       if (S.pixels && S.pixels.dirty() && !(await ask('Your drawing isn’t saved. Leave it?'))) return;
       store.set('drawMode', m); S.pixelsRoot = null; render();
     }});
-    S.pixelsRoot = el('div', {class: 'stack'}, [el('div', {class: 'seg', role: 'group', 'aria-label': 'Kind of drawing'}, [pick('pixel', 'Pixel art (on a grid)'), pick('sketch', 'Sketch (free drawing)')]), inner]);
+    const bar = el('div', {class: 'row', style: 'justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px'}, [
+      el('div', {class: 'seg', role: 'group', 'aria-label': 'Kind of drawing'}, [pick('pixel', 'Pixel art (on a grid)'), pick('sketch', 'Sketch (free drawing)')]),
+      el('button', {class: 'btn', text: '📱 Draw on iPad…', onclick: openIpadModal})
+    ]);
+    S.pixelsRoot = el('div', {class: 'stack'}, [bar, inner]);
   }
   return S.pixelsRoot;
 }

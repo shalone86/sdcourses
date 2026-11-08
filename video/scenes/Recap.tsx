@@ -6,14 +6,15 @@ import {Center} from './Center';
 import {Check} from './Check';
 import type {SceneProps} from '.';
 
-/** The lesson's point headings, checked off in order. */
+/** The lesson's point headings (or her own lines, `items`), checked off in order. */
 export const Recap: React.FC<SceneProps> = ({scene, lesson, duration}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const gap = Math.floor((duration * 0.5) / lesson.headings.length);
+  const texts: string[] = (scene as any).items?.length ? (scene as any).items : lesson.headings;
+  const gap = Math.floor((duration * 0.5) / texts.length);
   const at = (i: number) => (scene as any).cues?.[i] ?? 8 + i * gap; // when each is said, else spaced
   // Lines stack top to bottom in the order they're said.
-  const rows = lesson.headings.map((h, i) => ({h, i})).sort((a, b) => at(a.i) - at(b.i));
+  const rows = texts.map((h, i) => ({h, i})).sort((a, b) => at(a.i) - at(b.i));
   // Long headings (or a camera bubble taking space) shrink the list so every line stays in frame.
   const stage = useStage();
   const padLeft = Math.min(420, Math.round(stage.w * 0.14)), padRight = 160;
