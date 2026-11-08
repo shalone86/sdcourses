@@ -30,7 +30,8 @@
     "pico8-label": "node scripts/pico8-label.mjs",
     "game-to-theme": "node scripts/game-to-theme.mjs",
     "pico8-4p": "node scripts/pico8-4p.mjs",
-    "nuns": "node scripts/pico8.mjs game/nuns/nuns.p8 && node scripts/pico8-4p.mjs game/nuns/nuns.p8 && node scripts/pico8-release.mjs game/nuns/nuns.p8 && node scripts/pico8-release.mjs game/nuns/nuns4.p8"
+    "nuns": "node scripts/pico8.mjs game/nuns/nuns.p8 && node scripts/pico8-4p.mjs game/nuns/nuns.p8 && node scripts/pico8-release.mjs game/nuns/nuns.p8 && node scripts/pico8-release.mjs game/nuns/nuns4.p8",
+    "ship": "node scripts/ship.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.530",

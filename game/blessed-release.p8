@@ -3,6 +3,7 @@ version 41
 __lua__
 -- blessed!
 -- by shalone cason
+-- v1.1
 world=512
 day_len=300
 miss_cost=5

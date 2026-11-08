@@ -3,6 +3,7 @@ version 42
 __lua__
 -- candles! (4 players)
 -- by shalone cason
+-- v1.0
 world=512
 day_len=300
 miss_cost=5
@@ -140,7 +141,7 @@ chars={
  {n="discalced carmelite",s=6,d="candles burn twice as long",
   u="build 3 shrines in a day"},
  {n="poor clare",s=8,d="2 more candles at once",
-  u="pray for 500 in a day"},
+  u="pray for 400 in a day"},
 }
 who=max(1,dget(3))
 xs={}
@@ -171,7 +172,7 @@ function found()
 end
 function check_unlocks()
  local f=found()
- local won={false,sick_healed>=50,f>=3,#shrines>=3,score>=500}
+ local won={false,sick_healed>=50,f>=3,#shrines>=3,score>=400}
  newchar=nil
  for i=2,#chars do
   if won[i] and not unlocked(i) then

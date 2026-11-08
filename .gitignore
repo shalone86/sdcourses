@@ -33,3 +33,6 @@ courses/*/*/camera/
 
 # Pixel animations she deleted in the studio (kept on this Mac in case she wants one back)
 sprites/.deleted/
+
+# Her devices for npm run ship (addresses stay on her computer)
+game/devices.json

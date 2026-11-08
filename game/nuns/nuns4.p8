@@ -2,6 +2,7 @@ pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
 -- title: candles!
+-- version: 1.0
 -- candles! (working title): the
 -- sisters' game, blessed! with nuns
 -- arrows walk. your candle lights
@@ -235,7 +236,7 @@ chars={
  {n="discalced carmelite",s=6,d="candles burn twice as long",
   u="build 3 shrines in a day"},
  {n="poor clare",s=8,d="2 more candles at once",
-  u="pray for 500 in a day"},
+  u="pray for 400 in a day"},
 }
 -- who: the character you play
 -- (the last one you played)
@@ -286,7 +287,7 @@ end
 -- end of the day: anything new?
 function check_unlocks()
  local f=found()
- local won={false,sick_healed>=50,f>=3,#shrines>=3,score>=500}
+ local won={false,sick_healed>=50,f>=3,#shrines>=3,score>=400}
  newchar=nil
  for i=2,#chars do
   if won[i] and not unlocked(i) then

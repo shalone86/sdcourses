@@ -26,7 +26,7 @@ and big needs work as in Blessed!, in the words of prayer.
 | Sister of Charity | `nun-sister-of-charity-idle` | starts at the hospital | pray for 50 sick in a day |
 | Missionary Sister | `nun-missionary-sister-idle` | walks faster | find 3 combos |
 | Discalced Carmelite | `nun-discalced-carmelite-idle` | candles burn twice as long | build 3 shrines in a day |
-| Poor Clare | `nun-poor-clare-idle` | 2 more candles at once | pray for 500 in a day |
+| Poor Clare | `nun-poor-clare-idle` | 2 more candles at once | pray for 400 in a day |
 
 Players pick skin and eyes (up/down); the habits stay as she drew them.
 Each nun holds `nun-candle` (its bottom-left 8x8, `nun-candle-small`) on

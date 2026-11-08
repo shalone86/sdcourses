@@ -2,6 +2,7 @@ pico-8 cartridge // http://www.pico-8.com
 version 41
 __lua__
 -- blessed! a priest survivors game
+-- version: 1.1
 -- arrows walk. you bless anyone
 -- near you on your own.
 -- z (the o button): town map.
