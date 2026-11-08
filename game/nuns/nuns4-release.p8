@@ -58,7 +58,7 @@ cartdata("sdcason_nuns")
 function _init()
  season=flr(rnd(4))+1
  make_town()
- p={x=256,y=272,spd=1,r=14,cd=0,
+ p={x=256,y=272,spd=1,r=14,cd=0,b=0,
   rate=45,fl=false,fast=0,mag=14,
   cl=150,cn=2,dt=0}
  cands={} shrines={} np=1 shr=20 carry=nil
@@ -605,16 +605,20 @@ end
  p.cd-=1
  if p.cd<=0 then
   p.cd=p.rate
+ by=p
   sb(p.x,p.y-4,p.r)
+ by=nil
   if chap and near(p.x,p.y,hosp_x+8,hosp_y+20,p.r+14) then
    heal(pow)
   end
  end
  if t%(p.rate*2)==0 then
   for c in all(cands) do
+  by=c.o
    bless(c.x,c.y,p.r)
    if chap and near(c.x,c.y,hosp_x+8,hosp_y+20,p.r+14) then heal(1) end
   end
+ by=nil
   for s in all(shrines) do bless(s.x,s.y,shr) end
  end
  for c in all(cands) do
@@ -672,7 +676,7 @@ end
 function drop(o)
  o.dt-=1
  if o.mv and o.dt<=0 then
-  o.dt=40 add(cands,{x=o.x,y=o.y,t=p.cl})
+  o.dt=40 add(cands,{x=o.x,y=o.y,t=p.cl,o=o})
   if #cands>p.cn*np then deli(cands,1) end
  end
 end
@@ -1012,8 +1016,8 @@ if next(xs) then print(1,p.x-1,p.y-17,11) end
   print("prayed for: "..score,34,46,7)
   print("missed: "..missed,34,53,6)
   print("best: "..dget(10)\1,34,60,9)
- local s=""
- for _,o in pairs(xs) do s..="p"..o.n+1 .." "..o.b.."  " end
+ local s="p1 "..p.b.." "
+ for _,o in pairs(xs) do s..="p"..o.n+1 .." "..o.b.." " end
  print(s,16,72,12)
   print("combos found: "..found().."/"..#combos,26,83,10)
   if newchar then print("unlocked: "..newchar.."!",64-(#newchar+11)*2,22,10) end

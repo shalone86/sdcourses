@@ -58,7 +58,7 @@ cartdata("sdcason_nuns")
 function _init()
  season=flr(rnd(4))+1
  make_town()
- p={x=256,y=272,spd=1,r=14,cd=0,
+ p={x=256,y=272,spd=1,r=14,cd=0,b=0,
   rate=45,fl=false,fast=0,mag=14,
   cl=150,cn=2,dt=0}
  cands={} shrines={} np=1 shr=20 carry=nil
@@ -663,7 +663,7 @@ end
 function drop(o)
  o.dt-=1
  if o.mv and o.dt<=0 then
-  o.dt=40 add(cands,{x=o.x,y=o.y,t=p.cl})
+  o.dt=40 add(cands,{x=o.x,y=o.y,t=p.cl,o=o})
   if #cands>p.cn*np then deli(cands,1) end
  end
 end

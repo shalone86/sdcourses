@@ -145,7 +145,7 @@ function _init()
  -- changes the trees and flowers
  season=flr(rnd(4))+1
  make_town()
- p={x=256,y=272,spd=1,r=14,cd=0,
+ p={x=256,y=272,spd=1,r=14,cd=0,b=0,
   rate=45,fl=false,fast=0,mag=14}
  people={} fx={} drops={}
  helpers={} graces={} items={}
@@ -940,7 +940,9 @@ function _update()
  p.cd-=1
  if p.cd<=0 then
   p.cd=p.rate
+--4p  by=p
   sb(p.x,p.y-4,p.r)
+--4p  by=nil
   -- at the hospital, as chaplain
   if chap and near(p.x,p.y,hosp_x+8,hosp_y+20,p.r+14) then
    heal(pow)
@@ -1405,9 +1407,8 @@ function _draw()
  end
  pal()
  end
---4p -- with others playing: your
---4p -- number over your head too
---4p if next(xs) then print(1,p.x-1,p.y-17,11) end
+--4p -- your number over your head
+--4p print(1,p.x-1,p.y-17,11)
  -- your guardian angel, bringing grace
  if angel_t>0 then
   angel_t-=1
@@ -1515,9 +1516,9 @@ function _draw()
   print("time lost:",34,68,8) --1p
   print("home "..lost[1].." sick "..lost[2].." need "..lost[3].."s",16,75,8) --1p
 --4p  -- each player's blessings
---4p  -- (player 1 has the rest)
---4p  local s=""
---4p  for _,o in pairs(xs) do s..="p"..o.n+1 .." "..o.b.."  " end
+--4p  -- (helpers count in the total only)
+--4p  local s="p1 "..p.b.." "
+--4p  for _,o in pairs(xs) do s..="p"..o.n+1 .." "..o.b.." " end
 --4p  print(s,16,72,12)
   print("combos found: "..found().."/"..#combos,26,83,10)
   if newchar then print("unlocked: "..newchar.."!",64-(#newchar+11)*2,22,10) end

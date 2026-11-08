@@ -69,7 +69,7 @@ cartdata("sdcason_blessed")
 function _init()
  season=flr(rnd(4))+1
  make_town()
- p={x=256,y=272,spd=1,r=14,cd=0,
+ p={x=256,y=272,spd=1,r=14,cd=0,b=0,
   rate=45,fl=false,fast=0,mag=14}
  people={} fx={} drops={}
  helpers={} graces={} items={}

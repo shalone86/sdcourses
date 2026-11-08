@@ -140,7 +140,7 @@ function _init()
  -- changes the trees and flowers
  season=flr(rnd(4))+1
  make_town()
- p={x=256,y=272,spd=1,r=14,cd=0,
+ p={x=256,y=272,spd=1,r=14,cd=0,b=0,
   rate=45,fl=false,fast=0,mag=14}
  people={} fx={} drops={}
  helpers={} graces={} items={}
@@ -933,7 +933,9 @@ end
  p.cd-=1
  if p.cd<=0 then
   p.cd=p.rate
+ by=p
   sb(p.x,p.y-4,p.r)
+ by=nil
   -- at the hospital, as chaplain
   if chap and near(p.x,p.y,hosp_x+8,hosp_y+20,p.r+14) then
    heal(pow)
@@ -1393,9 +1395,8 @@ end
  end
  pal()
  end
--- with others playing: your
--- number over your head too
-if next(xs) then print(1,p.x-1,p.y-17,11) end
+-- your number over your head
+print(1,p.x-1,p.y-17,11)
  -- your guardian angel, bringing grace
  if angel_t>0 then
   angel_t-=1
@@ -1490,9 +1491,9 @@ if next(xs) then print(1,p.x-1,p.y-17,11) end
   print("best: "..dget(10)\1,34,60,9)
   -- where the time went
  -- each player's blessings
- -- (player 1 has the rest)
- local s=""
- for _,o in pairs(xs) do s..="p"..o.n+1 .." "..o.b.."  " end
+ -- (helpers count in the total only)
+ local s="p1 "..p.b.." "
+ for _,o in pairs(xs) do s..="p"..o.n+1 .." "..o.b.." " end
  print(s,16,72,12)
   print("combos found: "..found().."/"..#combos,26,83,10)
   if newchar then print("unlocked: "..newchar.."!",64-(#newchar+11)*2,22,10) end
