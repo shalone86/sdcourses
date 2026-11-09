@@ -3,7 +3,7 @@ title: "San Pico"
 size: [64, 64]
 player: thick-guy
 start: [32, 32]
-tiles: {g: tile-grass, G: tile-grass2}
+tiles: {g: tile-grass, G: tile-grass2, t: tile-grass3, T: tile-grass4}
 blocked: []
 map:
   - "GgggggGgggggGgggggGgggggGgggggGgggggGgggggGgggggGgggggGgggggGggg"
@@ -36,8 +36,8 @@ map:
   - "gGggggggGggggggGgGggggggGggggggGggggggGggggggGgGggggggGggggggGgg"
   - "gggggggGgggGggggggggGgggGgggGggggggggGgggGggggggggGgggGgggGggggg"
   - "gggggggggggggggggggggGGGGGgggggggggggggggggggggggggGGGGGgggggggg"
-  - "GgggggGgggggGgggggGgggggGgggggGgggggGgggggGgggggGgggggGgggggGggg"
-  - "gggggGggGgggggggGggGgggggggGgggggggGggGgggggggGggGgggggggGgggggg"
+  - "GgggggGgggggGgggggGgggggGgggggGggTggGgggggGgggggGgggggGgggggGggg"
+  - "gggggGggGgggggggGggGgggggggGgggggtgGggGgggggggGggGgggggggGgggggg"
   - "gggGggggggGgGggggggGggggggGggggggGggggggGgGggggggGggggggGggggggG"
   - "ggGgggGggggggggGgggGgggGggggggggGgggGggggggggGgggGgggGggggggggGg"
   - "ggggggggggggggggGGGGGgggggggggggggggggggggggggGGGGGggggggggggggg"
