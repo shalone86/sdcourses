@@ -108,7 +108,7 @@ window.PixelTab = (() => {
 
   function open(root, api, post, reference = window.DrawReference) {
     const pal = PALETTES[store.get('studio.pixelPalette')] ? store.get('studio.pixelPalette') : 'video';
-    const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false, gal: {open: false, q: ''},
+    const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false, gal: {open: false, q: ''}, ins: {open: false, all: true, q: ''},
       undo: [], saved: '', timer: null,
       bases: {open: false, list: [], versions: {}, cast: [], pick: null, name: ''},
       poses: {open: false, from: '', pose: '', drafts: [], skip: new Set(), busy: false, timer: null},
@@ -322,6 +322,10 @@ window.PixelTab = (() => {
       let c = P.clip;
       try { c = JSON.parse(store.get(CLIP_KEY)) || c; } catch { /* use the one in memory */ }
       if (!c) { note('Nothing copied yet: select something (or nothing, for the whole picture) and press Copy.'); return; }
+      place(c, everywhere);
+    }
+    /** Put pixels `c = {x, y, w, h, frames}` in as a lifted piece she drags and resizes (Paste and Insert a drawing). */
+    function place(c, everywhere, what = 'Pasted') {
       const frames = c.frames || [c.px];
       commit();
       remember();
@@ -332,8 +336,18 @@ window.PixelTab = (() => {
       P.sel = null;
       P.tool = 'select';
       draw(); markDirty();
-      note(layers.length > 1 ? `Pasted into ${everywhere ? 'every frame' : `frames ${layers[0].frame + 1}–${layers[layers.length - 1].frame + 1}`}. Drag it into place; it moves in all of them.`
-        : `Pasted into frame ${P.frame + 1}. Drag it into place, or drag the corner square to make it bigger or smaller.`);
+      note(layers.length > 1 ? `${what} into ${everywhere ? 'every frame' : `frames ${layers[0].frame + 1}–${layers[layers.length - 1].frame + 1}`}. Drag it into place; it moves in all of them.`
+        : `${what} into frame ${P.frame + 1}. Drag it into place, or drag the corner square to make it bigger or smaller.`);
+    }
+    /** Drop a saved drawing into the open one (all its frames, or just the first). The saved one isn't changed. */
+    function insert(s, all) {
+      const src = fromSaved(s), frames = all ? src.frames : [src.frames[0]];
+      P.ins.open = false; P.gal.open = false; // so the canvas, with the piece on it, is in view
+      P.sel = null;
+      place({x: Math.max(0, Math.floor((W() - s.width) / 2)), y: Math.max(0, Math.floor((H() - s.height) / 2)), w: s.width, h: s.height, frames}, false, `Put “${s.name}”`);
+      const n = body.querySelector('[data-note]');
+      if (n && (s.width > W() || s.height > H())) n.textContent += ` It's ${s.width} × ${s.height} and this drawing is ${W()} × ${H()}: drag the corner square to shrink it.`;
+      else if (n && frames.length > MAX_FRAMES - P.frame) n.textContent += ` Only ${MAX_FRAMES} frames fit, so its last ones were left out.`;
     }
 
     // ---------- bigger and smaller ----------
@@ -622,7 +636,7 @@ window.PixelTab = (() => {
         if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
         P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.saved = snap(); P.version = null; draw();
       };
-      const pick = window.SpriteGallery.build({items: P.list, state: P.gal, current: a.slug, noun: 'drawing', onNew: startNew, onToggle: draw, onOpen: openSaved,
+      const pick = window.SpriteGallery.build({items: P.list, state: P.gal, current: a.slug, noun: 'drawing', onNew: startNew, onToggle: draw, onOpen: openSaved, onInsert: (s) => insert(s, true),
         onFavorite: async (slug, on) => {
           try { const d = await post('/api/sprite/favorite', {slug, on}); P.list = d.sprites.filter((x) => x.kind !== 'sketch'); draw(); } catch (e) { alert('Couldn’t change the favorite: ' + e.message); }
         }});
@@ -855,6 +869,7 @@ window.PixelTab = (() => {
           btn('Cut', cut),
           btn('Paste', () => paste(false), {title: 'Into the frame showing (a copy of all frames: this frame and the ones after)'}),
           btn('Paste in every frame', () => paste(true)),
+          btn(P.ins.open ? 'Hide the drawings' : 'Insert a drawing…', () => { P.ins.open = !P.ins.open; draw(); }, {'aria-expanded': P.ins.open ? 'true' : 'false', title: 'Put one of your saved drawings into this one'}),
           btn('Bigger ×2', () => scaleBy(2), {title: 'Make the selection twice as big'}),
           btn('Smaller ÷2', () => scaleBy(0.5), {title: 'Make the selection half the size'}),
           btn('Flip ↔', () => flip('h'), {title: selecting ? 'Flip the selection left to right' : 'Flip left to right'}),
@@ -868,6 +883,14 @@ window.PixelTab = (() => {
           a.frames.length > 1 ? btn('Export animation (GIF)', () => exportArt(true), {title: 'All the frames as an animated GIF, at the preview speed'}) : null,
           selecting ? btn('Done moving', () => { letGo(); draw(); markDirty(); }) : null,
         ]),
+        P.ins.open ? h('div', {class: 'stack', 'data-insert': '', style: {gap: '6px', padding: '8px', border: '1px solid currentColor', borderRadius: '8px'}}, [
+          h('div', {class: 'row', style: {gap: '14px', justifyContent: 'flex-start', alignItems: 'center'}}, [
+            h('strong', {class: 'small', text: 'Click a drawing to put it in this one'}),
+            ...[[true, 'All its frames'], [false, 'Just its first frame']].map(([v, t]) => h('label', {class: 'small'}, [
+              h('input', {type: 'radio', name: 'px-ins-all', checked: P.ins.all === v || null, onchange: () => { P.ins.all = v; }}), ' ' + t])),
+          ]),
+          window.SpriteGallery.picker({items: P.list.filter((s) => s.slug !== a.slug), state: P.ins, onPick: (s) => insert(s, P.ins.all)}),
+        ]) : null,
         h('div', {class: 'small muted', 'data-note': '', text: (selecting ? 'Drag inside the box to move it. Copy, Cut and Flip use the selection.' : 'Copy, Cut and Flip use the whole picture when nothing is selected.')
           + ' Copy all frames, then Paste in another drawing, brings a whole animation across.'}),
         h('div', {class: 'row', style: {gap: '14px'}}, [

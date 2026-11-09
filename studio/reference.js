@@ -148,29 +148,36 @@ window.SpriteGallery = (() => {
     return el;
   }
   let loop = null;
+  const playing = new Set(); // every grid on the page keeps moving (the gallery and a picker can be open together)
   function play(root) {
+    playing.add(root);
     cancelAnimationFrame(loop);
     const t0 = performance.now();
+    let seen = false;
     const tick = (now) => {
-      if (!root.isConnected) return;
-      for (const el of root.querySelectorAll('.sg-thumb')) {
-        const p = el.sgPlay;
-        if (!p) continue;
-        const i = Math.floor(((now - t0) / 1000) * p.fps) % p.n;
-        if (i !== p.at) { p.at = i; p.show(i); }
+      for (const r of playing) {
+        if (!r.isConnected) { if (seen || r !== root) playing.delete(r); continue; }
+        if (r === root) seen = true;
+        for (const el of r.querySelectorAll('.sg-thumb')) {
+          const p = el.sgPlay;
+          if (!p) continue;
+          const i = Math.floor(((now - t0) / 1000) * p.fps) % p.n;
+          if (i !== p.at) { p.at = i; p.show(i); }
+        }
       }
-      loop = requestAnimationFrame(tick);
+      if (playing.size) loop = requestAnimationFrame(tick);
     };
     loop = requestAnimationFrame(tick);
   }
   /** items: saved drawings (name, slug, at, favorite, frames…). state: {open, q} kept by the tab between redraws. */
-  function build({items, state, current, noun, onNew, onToggle, onOpen, onFavorite}) {
+  function build({items, state, current, noun, onNew, onToggle, onOpen, onFavorite, onInsert}) {
     const byNew = (a, b) => (b.at || 0) - (a.at || 0);
     const list = h('div', {class: 'stack', style: {gap: '6px'}});
     const tile = (s) => h('div', {class: 'sg-tile' + (s.slug === current ? ' on' : ''), title: s.name}, [
       h('button', {class: 'sg-open', 'aria-label': 'Open ' + s.name, onclick: () => onOpen(s, false)}, [thumb(s), h('span', {class: 'sg-name', text: s.name})]),
       h('div', {class: 'sg-foot'}, [h('button', {class: 'sg-star', title: s.favorite ? 'Remove from favorites' : 'Add to favorites', 'aria-label': (s.favorite ? 'Unfavorite ' : 'Favorite ') + s.name,
         'aria-pressed': s.favorite ? 'true' : 'false', text: s.favorite ? '★' : '☆', onclick: () => onFavorite(s.slug, !s.favorite)}),
+      onInsert && s.slug !== current ? h('button', {class: 'sg-copy', title: 'Put this into the drawing you have open (all frames)', 'aria-label': 'Insert ' + s.name, text: 'Insert', onclick: () => onInsert(s)}) : null,
       h('button', {class: 'sg-copy', title: 'Start a new one from a copy of this (all frames)', 'aria-label': 'Copy ' + s.name, text: 'Copy', onclick: () => onOpen(s, true)})]),
     ]);
     const grid = (xs) => h('div', {class: 'sg-grid'}, xs.map(tile));
@@ -204,10 +211,11 @@ window.SpriteGallery = (() => {
   /**
    * Pick one drawing (the Timing tab's Pixel animation): a search box and a grid of moving
    * thumbnails, favorites first. `input` is a hidden box that holds the pick (its value, and a
-   * change event when it changes), so a form reads it like any other box.
+   * change event when it changes), so a form reads it like any other box. With `onPick(s)` instead
+   * (the Pixel art tab's Insert a drawing), a click just hands the drawing over; `state` keeps the search.
    */
-  function picker({items, value, input, noun = 'drawing'}) {
-    const state = {q: ''};
+  function picker({items, value, input = {value: '', dispatchEvent() {}}, noun = 'drawing', onPick, state = {q: ''}}) {
+    state.q = state.q || '';
     const list = h('div', {style: {maxHeight: '300px', overflowY: 'auto', padding: '2px'}});
     const chosen = h('div', {class: 'small muted'});
     const showChosen = () => { const s = items.find((x) => x.slug === input.value); chosen.textContent = s ? 'Picked: ' + s.name : 'Pick one below.'; };
@@ -217,15 +225,16 @@ window.SpriteGallery = (() => {
         .sort((a, b) => (b.slug === input.value) - (a.slug === input.value) || (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (b.at || 0) - (a.at || 0));
       list.replaceChildren(hits.length ? h('div', {class: 'sg-grid'}, hits.map((s) => h('div', {class: 'sg-tile' + (s.slug === input.value ? ' on' : ''), title: s.name}, [
         h('button', {class: 'sg-open', type: 'button', 'aria-label': 'Use ' + s.name, 'aria-pressed': s.slug === input.value ? 'true' : 'false', onclick: () => {
+          if (onPick) { onPick(s); return; }
           input.value = s.slug; input.dispatchEvent(new Event('change', {bubbles: true})); showChosen(); draw();
         }}, [thumb(s), h('span', {class: 'sg-name', text: (s.favorite ? '★ ' : '') + s.name})]),
       ]))) : h('div', {class: 'small muted', text: items.length ? 'Nothing matches.' : `No ${noun}s yet: draw one on the Pixel art tab.`}));
       play(list);
     };
     input.value = value || '';
-    const search = h('input', {type: 'search', placeholder: `Search your ${noun}s by name`, 'aria-label': `Search your ${noun}s`, style: {flex: '1', minWidth: '0'}, oninput: (e) => { state.q = e.target.value; draw(); }});
+    const search = h('input', {type: 'search', value: state.q, placeholder: `Search your ${noun}s by name`, 'aria-label': `Search your ${noun}s`, style: {flex: '1', minWidth: '0'}, oninput: (e) => { state.q = e.target.value; draw(); }});
     showChosen(); draw();
-    return h('div', {class: 'stack', style: {gap: '6px'}}, [h('div', {class: 'row', style: {gap: '8px', flexWrap: 'nowrap'}}, [search]), chosen, list]);
+    return h('div', {class: 'stack', style: {gap: '6px'}}, [h('div', {class: 'row', style: {gap: '8px', flexWrap: 'nowrap'}}, [search]), onPick ? null : chosen, list]);
   }
   return {build, picker};
 })();
