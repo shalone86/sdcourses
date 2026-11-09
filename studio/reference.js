@@ -144,7 +144,7 @@ window.SpriteGallery = (() => {
       show = (i) => paintPixels(el, s, i);
       show(0);
     }
-    if (n > 1) el.sgPlay = {n, fps: Math.max(1, s.fps || 4), show, at: 0};
+    if (n > 1 && s.kind !== 'comic') el.sgPlay = {n, fps: Math.max(1, s.fps || 4), show, at: 0};
     return el;
   }
   let loop = null;

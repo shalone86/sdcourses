@@ -2,6 +2,7 @@
 //   sprites/<name>.json  {name, width, height, fps, palette: ['#rrggbb', …], frames: [[row, …], …]}
 // Each row is a string, one character per pixel: '.' is see-through, otherwise
 // the position in the palette (0–9, then a–z). 1 to 8 frames.
+// A comic (kind: 'comic') has up to 12 frames, its panels, with `words` (typed words per panel) and `comic` (paper, gap, border).
 // Sketches (free drawing, kind: 'sketch') keep each frame as a picture instead:
 //   sprites/<name>.json {name, kind: 'sketch', width, height, fps, frames: ['<name>/1.png', …]}
 //   sprites/<name>/1.png …
@@ -111,11 +112,22 @@ export function saveSprite(s) {
   const palette = (s.palette ?? []).slice(0, CODES.length);
   if (!palette.every((c) => /^#[0-9a-f]{6}$/i.test(c))) throw new Error('Bad color in the palette');
   const allowed = new RegExp(`^[.${CODES.slice(0, palette.length)}]{${w}}$`);
-  if (!Array.isArray(s.frames) || s.frames.length < 1 || s.frames.length > 8) throw new Error('1 to 8 frames');
+  const comic = s.kind === 'comic'; // each frame is a panel, with typed words
+  if (!Array.isArray(s.frames) || s.frames.length < 1 || s.frames.length > (comic ? 12 : 8)) throw new Error(comic ? '1 to 12 panels' : '1 to 8 frames');
   for (const fr of s.frames) if (!Array.isArray(fr) || fr.length !== h || !fr.every((row) => allowed.test(row))) throw new Error('A frame doesn\'t match the size');
   const fps = Math.max(1, Math.min(12, Math.round(Number(s.fps) || 4)));
   fs.mkdirSync(SPRITES, {recursive: true});
   const out = {name: String(s.name).trim().slice(0, 60), width: w, height: h, fps, palette, frames: s.frames};
+  if (comic) {
+    const pick = (v, list, d) => (list.includes(v) ? v : d);
+    out.kind = 'comic';
+    out.comic = {paper: pick(s.comic?.paper, ['white', 'black', 'none'], 'white'), gap: Math.max(0, Math.min(16, Math.round(Number(s.comic?.gap) || 0))), border: s.comic?.border !== false};
+    out.words = s.frames.map((_, i) => (Array.isArray(s.words?.[i]) ? s.words[i] : []).slice(0, 20).map((t) => ({
+      text: String(t?.text ?? '').slice(0, 400), x: Math.round(Number(t?.x) || 0), y: Math.round(Number(t?.y) || 0),
+      font: pick(t?.font, ['pixel', 'sans', 'serif', 'bold'], 'pixel'), size: pick(t?.size, ['s', 'm', 'l'], 'm'),
+      bubble: pick(t?.bubble, ['none', 'speech', 'thought', 'box'], 'none'), tail: pick(t?.tail, ['left', 'right'], 'left'),
+      wrap: Math.max(10, Math.min(64, Math.round(Number(t?.wrap) || 40))), dark: !!t?.dark})));
+  }
   fs.writeFileSync(path.join(SPRITES, `${slug}.json`), JSON.stringify(out, null, 1) + '\n');
   return slug;
 }

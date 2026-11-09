@@ -140,7 +140,11 @@ If it's already running, `npm start` just opens the page.
   select & move, color picker; copy/cut/paste across drawings; **Insert a drawing…** (and Insert on each saved drawing's tile) drops a saved drawing into the open one as a piece she drags and resizes, all its frames or just the first (`insert` → `place` in studio/pixels.js, the same path as Paste); flips; frames can be added empty or as a copy, and moved by dragging or with Move left / right; "Draw in every frame" makes pencil, eraser, shapes, fill and moves change all frames; saved drawings open from a grid of moving thumbnails; mirror, onion
   skin, speed; keys: B pencil, E eraser, F fill, S line/box/circle, C next / X previous color,
   I pick, M select (Delete clears it), . / , next / previous frame; Export frame (PNG, enlarged) or animation (GIF, made by
-  ffmpeg at `/api/sprite/gif`)). Saved to `sprites/<name>.json` (shared by all lessons;
+  ffmpeg at `/api/sprite/gif`)). **Comic** checkbox: each frame is a panel (up to 12; `kind: comic`), with a
+  **Words** tool: click the panel to type words she drags, in Pixel, Sans, Serif or Bold letters, three sizes,
+  with an optional speech bubble, thought bubble or box (`window.ComicWords` at the top of studio/pixels.js;
+  kept as `words`, never painted into her pixels); paper white, black or see-through; export this panel, every
+  panel, or one strip with a space between panels and a line around each. Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
   Pixel animation (picked from a search box and moving thumbnails, `SpriteGallery.picker` in studio/reference.js), a `sprite` scene (`move: stay | hop | across | across-left`, `size`; across-left mirrors it);
   prepare.mjs copies the drawing into the props. With `motion: dance` it
