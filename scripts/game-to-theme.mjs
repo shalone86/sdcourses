@@ -36,12 +36,13 @@ const gamesDir = path.join(root, 'assets', 'games');
 fs.mkdirSync(gamesDir, {recursive: true});
 for (const f of games) fs.copyFileSync(f, path.join(gamesDir, path.basename(f)));
 // PICO-8's shell keeps a 5% margin (95vw/95vh) and a grey page; inside the
-// Game template's 512px screen that leaves a grey strip, so fill the frame.
+// Game template's 512px screen that leaves a grey strip, so fill the frame
+// (and hide the scrollbars its menu buttons would then cause).
 for (const h of htmls) {
   const out = path.join(gamesDir, path.basename(h));
   fs.writeFileSync(out, fs.readFileSync(out, 'utf8')
     .replace('max-width:95vw; height:100vw; max-height:95vh;', 'max-width:100vw; height:100vw; max-height:100vh;')
-    .replace('background-color:#222;', 'background-color:#000;'));
+    .replace('background-color:#222;', 'background-color:#000; overflow:hidden;'));
 }
 const template = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'game', 'theme');
 fs.cpSync(template, root, {recursive: true});

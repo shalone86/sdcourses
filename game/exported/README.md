@@ -11,10 +11,12 @@ The exact carts behind what is live on kids.methodiusmedia.com:
   at commit 0499159 (PICO-8 only left out the empty sounds), so the
   repo's `game/nuns/nuns.p8` is the source.
 
-Since then (to export next): each player's own score on the 4-player end
-screen, everyone picks up the grace piles, the map's "you" dot is blue,
-Poor Clare unlocks at 400, and version numbers (Blessed! 1.1, Candles!
-1.0).
+Newer versions went live on 2026-11-09 (Blessed! 1.1, Candles! 1.0):
+each player's own score on the 4-player end screen, everyone picks up the
+grace piles, the map's "you" dot is blue, Poor Clare unlocks at 400. The
+carts listed above are the earlier exports. The Blessed! web game is her
+export from that morning; Candles! was exported from
+`game/nuns/nuns-release.p8` in this repo. The downloads are her own exports.
 
 `*-cart.png` are the cartridge pictures (download cards, Games shelf);
 `candles-thumbnail.png` is the Candles! page's sharing picture.
