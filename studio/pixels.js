@@ -27,10 +27,11 @@ window.ArtExport = {
     setTimeout(() => URL.revokeObjectURL(a.href), 10000);
   },
 };
-// Comic words: typed words (with an optional bubble) on a comic panel. They are drawn as sharp
-// pixels on a grid twice as fine as the drawing's, so they stay readable in a small panel. The
-// Pixel font is a 3 × 5 table (capitals, like PICO-8); Sans, Serif and Bold are the Mac's Verdana
-// and Georgia cut down to on/off pixels.
+// Comic words: typed words (with an optional bubble) on a comic panel. The Pixel font is a 3 × 5
+// table (capitals, like PICO-8) drawn as sharp pixels on a grid twice as fine as the drawing's,
+// with a pixel bubble. Sans, Serif and Bold are real, smooth letters (Helvetica, Georgia) with a
+// smooth bubble, drawn over the pixel art at whatever size the canvas is. All sizes here are in
+// "units": 2 units to 1 pixel of the drawing.
 window.ComicWords = (() => {
   const G = {A: '111101111101101', B: '111101110101111', C: '011100100100011', D: '110101101101110', E: '111100110100111', F: '111100110100100',
     G: '011100100101111', H: '101101111101101', I: '111010010010111', J: '111010010010110', K: '101101110101101', L: '100100100100111',
@@ -44,21 +45,19 @@ window.ComicWords = (() => {
     '/': '001001010100100', '&': '010101010101011', '*': '101010111010101', '=': '000111000111000', '%': '101001010100101', '#': '101111101111101',
     _: '000000000000111', ' ': '000000000000000'};
   const FONTS = {pixel: {label: 'Pixel', scale: {s: 1, m: 2, l: 3}},
-    sans: {label: 'Sans', css: 'Npx Verdana, Helvetica, sans-serif', px: {s: 9, m: 11, l: 14}},
-    serif: {label: 'Serif', css: 'Npx Georgia, serif', px: {s: 10, m: 12, l: 15}},
-    bold: {label: 'Bold', css: 'bold Npx Verdana, Helvetica, sans-serif', px: {s: 9, m: 12, l: 14}}};
+    sans: {label: 'Sans', css: 'Npx "Helvetica Neue", Helvetica, Arial, sans-serif', px: {s: 8, m: 11, l: 15}},
+    serif: {label: 'Serif', css: 'Npx Georgia, "Times New Roman", serif', px: {s: 8, m: 11, l: 15}},
+    bold: {label: 'Bold', css: 'bold Npx "Helvetica Neue", Helvetica, Arial, sans-serif', px: {s: 8, m: 11, l: 15}}};
   const SIZES = {s: 'Small', m: 'Medium', l: 'Big'};
   const BUBBLES = {none: 'No bubble', speech: 'Speech bubble', thought: 'Thought bubble', box: 'Box'};
   const plain = (t) => String(t ?? '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/[–—]/g, '-').replace(/…/g, '...');
   const meter = document.createElement('canvas').getContext('2d', {willReadFrequently: true});
 
-  /** The words as on/off pixels: {w, h, on: Uint8Array}, wrapped to maxW and (in a bubble) each line centered. */
+  /** The Pixel font's words as on/off pixels: {w, h, on: Uint8Array}, wrapped to maxW and (in a bubble) each line centered. */
   function mask(it, maxW, center) {
-    const f = FONTS[it.font] || FONTS.pixel, size = SIZES[it.size] ? it.size : 'm';
-    const pixel = !f.css, sc = pixel ? f.scale[size] : 1, px = pixel ? 0 : f.px[size];
-    const text = pixel ? plain(it.text).toUpperCase() : String(it.text ?? '');
-    if (!pixel) meter.font = f.css.replace('N', px);
-    const width = (s) => (pixel ? Math.max(0, s.length * 4 * sc - sc) : Math.ceil(meter.measureText(s).width));
+    const sc = FONTS.pixel.scale[SIZES[it.size] ? it.size : 'm'];
+    const text = plain(it.text).toUpperCase();
+    const width = (s) => Math.max(0, s.length * 4 * sc - sc);
     const lines = [];
     for (const para of text.split('\n')) {
       let line = '';
@@ -67,10 +66,10 @@ window.ComicWords = (() => {
       }
       lines.push(line);
     }
-    const lh = pixel ? 6 * sc : Math.round(px * 1.3);
-    const cw = Math.max(1, ...lines.map(width)) + (pixel ? 0 : 6), ch = lines.length * lh + (pixel ? 0 : px);
+    const lh = 6 * sc;
+    const cw = Math.max(1, ...lines.map(width)), ch = lines.length * lh;
     const raw = new Uint8Array(cw * ch);
-    if (pixel) {
+    {
       lines.forEach((line, li) => {
         const x0 = center ? Math.floor((cw - width(line)) / 2) : 0;
         [...line].forEach((chr, ci) => {
@@ -80,13 +79,6 @@ window.ComicWords = (() => {
           }
         });
       });
-    } else {
-      meter.canvas.width = cw; meter.canvas.height = ch; // (also clears it)
-      meter.font = f.css.replace('N', px); meter.textBaseline = 'alphabetic'; meter.fillStyle = '#000';
-      meter.textAlign = center ? 'center' : 'left';
-      lines.forEach((line, li) => meter.fillText(line, center ? Math.round(cw / 2) : 3, px + li * lh));
-      const d = meter.getImageData(0, 0, cw, ch).data;
-      for (let i = 0; i < cw * ch; i++) if (d[i * 4 + 3] > 110) raw[i] = 1;
     }
     // Cut away the empty edges.
     let x0 = cw, y0 = ch, x1 = -1, y1 = -1;
@@ -98,7 +90,7 @@ window.ComicWords = (() => {
   }
 
   const cache = new Map();
-  /** One words item as a small picture, 2 of its pixels to 1 of the drawing's: {canvas, w, h}. */
+  /** One Pixel-font words item as a small picture, 2 of its pixels to 1 of the drawing's: {canvas, w, h}. */
   function render(it) {
     const key = JSON.stringify([it.text, it.font, it.size, it.bubble, it.tail, it.wrap, it.dark]);
     if (cache.has(key)) return cache.get(key);
@@ -136,14 +128,61 @@ window.ComicWords = (() => {
     cache.set(key, out);
     return out;
   }
+  /** Real letters: where the lines and the bubble go, in units. */
+  const laid = new Map();
+  function layout(it) {
+    const key = JSON.stringify([it.text, it.font, it.size, it.bubble, it.wrap]);
+    if (laid.has(key)) return laid.get(key);
+    const f = FONTS[it.font], px = f.px[SIZES[it.size] ? it.size : 'm'];
+    const kind = BUBBLES[it.bubble] ? it.bubble : 'none', bub = kind !== 'none';
+    const padX = bub ? px * 0.55 : 0, padY = bub ? px * 0.35 : 0, lh = px * 1.2;
+    meter.font = f.css.replace('N', px * 10); // (measured big, for exact widths)
+    const width = (t) => meter.measureText(t).width / 10;
+    const maxW = Math.max(8, (it.wrap || 40) * 2 - padX * 2), lines = [];
+    for (const para of String(it.text ?? '').split('\n')) {
+      let line = '';
+      for (const word of para.split(/ +/)) {
+        if (line && width(line + ' ' + word) > maxW) { lines.push(line); line = word; } else line = line ? line + ' ' + word : word;
+      }
+      lines.push(line);
+    }
+    const tw = Math.max(px, ...lines.map(width)), bw = Math.ceil(tw + padX * 2), bh = Math.ceil(lines.length * lh + padY * 2);
+    const out = {px, lh, lines, kind, padX, padY, bw, bh, w: bw, h: bh + (kind === 'speech' || kind === 'thought' ? 6 : 0), font: f.css.replace('N', px)};
+    if (laid.size > 300) laid.clear();
+    laid.set(key, out);
+    return out;
+  }
+  function drawReal(g, it, c) {
+    const L = layout(it), ink = it.dark ? '#FFFFFF' : '#000000', paper = it.dark ? '#000000' : '#FFFFFF', left = it.tail !== 'right';
+    g.save(); g.translate(it.x * c, it.y * c); g.scale(c / 2, c / 2);
+    if (L.kind !== 'none') {
+      const x0 = 0.5, y0 = 0.5, x1 = L.bw - 0.5, y1 = L.bh - 0.5;
+      const r = L.kind === 'box' ? 0 : Math.min(L.kind === 'thought' ? 9 : 4, (y1 - y0) / 2, (x1 - x0) / 2);
+      g.beginPath(); g.moveTo(x0 + r, y0); g.lineTo(x1 - r, y0); g.arcTo(x1, y0, x1, y0 + r, r); g.lineTo(x1, y1 - r); g.arcTo(x1, y1, x1 - r, y1, r);
+      if (L.kind === 'speech') { // the tail, on the way back along the bottom
+        const a = left ? x0 + r + 8 : x1 - r - 3, b = left ? x0 + r + 3 : x1 - r - 8, tip = left ? x0 + r + 1.5 : x1 - r - 1.5;
+        g.lineTo(Math.min(a, x1 - r), y1); g.lineTo(tip, y1 + 5); g.lineTo(Math.max(b, x0 + r), y1);
+      }
+      g.lineTo(x0 + r, y1); g.arcTo(x0, y1, x0, y1 - r, r); g.lineTo(x0, y0 + r); g.arcTo(x0, y0, x0 + r, y0, r); g.closePath();
+      g.fillStyle = paper; g.strokeStyle = ink; g.lineWidth = 1; g.lineJoin = 'round'; g.fill(); g.stroke();
+      if (L.kind === 'thought') for (const [dx, dy, rad] of [[6, 2.2, 1.6], [2.5, 4.8, 0.9]]) {
+        g.beginPath(); g.arc(left ? x0 + r + dx : x1 - r - dx, y1 + dy, rad, 0, Math.PI * 2); g.fill(); g.stroke();
+      }
+    }
+    g.font = L.font; g.fillStyle = ink; g.textBaseline = 'alphabetic'; g.textAlign = L.kind === 'none' ? 'left' : 'center';
+    L.lines.forEach((line, i) => g.fillText(line, L.kind === 'none' ? 0 : L.bw / 2, L.padY + L.px * 0.92 + i * L.lh));
+    g.restore();
+  }
+  const real = (it) => !!(FONTS[it.font] || {}).css;
   /** Draw it on a canvas where one pixel of the drawing is c pixels wide. */
   function draw(g, it, c) {
+    if (real(it)) return drawReal(g, it, c);
     const r = render(it);
     g.imageSmoothingEnabled = false;
     g.drawImage(r.canvas, it.x * c, it.y * c, (r.w * c) / 2, (r.h * c) / 2);
   }
   /** Its size in the drawing's pixels. */
-  const size = (it) => { const r = render(it); return {w: r.w / 2, h: r.h / 2}; };
+  const size = (it) => { const r = real(it) ? layout(it) : render(it); return {w: r.w / 2, h: r.h / 2}; };
   return {FONTS, SIZES, BUBBLES, render, draw, size};
 })();
 window.PixelTab = (() => {

@@ -142,7 +142,8 @@ If it's already running, `npm start` just opens the page.
   I pick, M select (Delete clears it), . / , next / previous frame; Export frame (PNG, enlarged) or animation (GIF, made by
   ffmpeg at `/api/sprite/gif`)). **Comic** checkbox: each frame is a panel (up to 12; `kind: comic`), with a
   **Words** tool: click the panel to type words she drags, in Pixel, Sans, Serif or Bold letters, three sizes,
-  with an optional speech bubble, thought bubble or box (`window.ComicWords` at the top of studio/pixels.js;
+  with an optional speech bubble, thought bubble or box (`window.ComicWords` at the top of studio/pixels.js; Pixel is a
+  pixel font with a pixel bubble, the other three are real smooth letters (Helvetica, Georgia) with smooth bubbles, her choice;
   kept as `words`, never painted into her pixels); paper white, black or see-through; export this panel, every
   panel, or one strip with a space between panels and a line around each. Saved to `sprites/<name>.json` (shared by all lessons;
   `scripts/sprites.mjs`). In a lesson: Timing tab → + Add a picture here →
