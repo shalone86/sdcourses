@@ -149,6 +149,15 @@ a{color:var(--accent)}
 /* Timing tab */
 .tl-top{position:sticky;top:0;z-index:4;background:var(--bg);padding-bottom:10px}
 body.wide .wrap{max-width:1600px}
+.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.toolbar strong{font:500 22px/1 var(--serif)}
+body.mode-home .toolbar,body.mode-home .tabs,body.mode-home .meta,body.mode-tool header,body.mode-tool .tabs{display:none}
+body.mode-lesson #tool-name{display:none}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.home-tool{font:inherit;color:inherit;text-align:left;cursor:pointer;gap:6px}
+.home-tool:hover{border-color:var(--accent)}
+.home-tool b{font:500 22px/1.1 var(--serif)}
+.home-last{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px;border:1px solid var(--rule);border-radius:10px;background:var(--bg)}
 @media (min-width:1000px){
   .tl-grid{display:grid;grid-template-columns:minmax(380px,42%) minmax(0,1fr);gap:24px;align-items:start}
   .tl-grid .tl-top{top:12px;padding-bottom:0}
@@ -274,6 +283,7 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
 </head>
 <body>
 <div class="wrap">
+  <div class="toolbar"><button class="btn" id="go-home" type="button">← Home</button><strong id="tool-name"></strong></div>
   <header>
     <div class="eyebrow" id="eyebrow">Lesson Studio</div>
     <h1 id="title">Loading…</h1>
@@ -282,10 +292,10 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
   <div class="tabs" role="tablist">
     <button role="tab" id="tab-script" aria-selected="true">Script &amp; recording</button>
     <button role="tab" id="tab-timing" aria-selected="false">Timing</button>
-    <button role="tab" id="tab-pixels" aria-selected="false">Pixel art</button>
-    <button role="tab" id="tab-battles" aria-selected="false">Battles</button>
-    <button role="tab" id="tab-town" aria-selected="false">Town</button>
-    <button role="tab" id="tab-pico" aria-selected="false">Pico Parish</button>
+    <button role="tab" id="tab-pixels" aria-selected="false" hidden>Pixel art</button>
+    <button role="tab" id="tab-battles" aria-selected="false" hidden>Battles</button>
+    <button role="tab" id="tab-town" aria-selected="false" hidden>Town</button>
+    <button role="tab" id="tab-pico" aria-selected="false" hidden>Pico Parish</button>
     <button role="tab" id="tab-video" aria-selected="false">Video &amp; Ghost</button>
   </div>
   <main id="view"></main>
@@ -361,8 +371,11 @@ async function boot() {
   if (!S.lessons.length) { document.getElementById('title').textContent = 'No lessons yet'; view.replaceChildren(el('div', {class: 'notice', text: 'Ask Claude to start a lesson; it shows up here.'})); return; }
   const last = store.get('last');
   // Open on the tab she was last on (a refresh keeps her place).
+  // A fresh start opens on Home; a refresh keeps her place (sessionStorage lasts as long as the browser tab).
   const tab = store.get('tab');
-  if (['script', 'timing', 'pixels', 'battles', 'town', 'pico', 'video'].includes(tab)) S.tab = tab;
+  let again = false;
+  try { again = sessionStorage.getItem('studio.open') === '1'; sessionStorage.setItem('studio.open', '1'); } catch {}
+  S.tab = again && ['home', 'script', 'timing', 'pixels', 'battles', 'town', 'pico', 'video'].includes(tab) ? tab : 'home';
   const id = last && S.lessons.some((l) => l.id === last.id) ? last.id : S.lessons[S.lessons.length - 1].id;
   await openLesson(id, last && last.id === id ? last.slide : 0);
   poll();
@@ -388,11 +401,17 @@ function remember() { store.set('last', {id: S.id, slide: S.slide}); }
 
 // ---------- header and tabs ----------
 
+const TOOLS = {pixels: 'Pixel art', battles: 'Battles', town: 'Town', pico: 'Pico Parish'};
 function renderHeader() {
-  const L = S.L;
-  document.getElementById('eyebrow').textContent = L ? L.course + ' · Lesson ' + L.number : 'Lesson Studio';
+  // Three looks: Home (just the cards), a tool (Home button and its name), a lesson (its title and three tabs).
+  const mode = S.tab === 'home' ? 'home' : TOOLS[S.tab] ? 'tool' : 'lesson';
+  for (const m of ['home', 'tool', 'lesson']) document.body.classList.toggle('mode-' + m, m === mode);
+  document.getElementById('tool-name').textContent = TOOLS[S.tab] || '';
+  document.getElementById('go-home').disabled = !!(S.rec || S.busy);
+  const L = mode === 'lesson' ? S.L : null;
+  document.getElementById('eyebrow').textContent = L ? L.course + ' · Lesson ' + L.number : '';
   document.getElementById('title').textContent = L ? L.title : 'Lesson Studio';
-  document.title = L ? L.title + ' · Lesson Studio' : 'Lesson Studio';
+  document.title = (L ? L.title + ' · ' : TOOLS[S.tab] ? TOOLS[S.tab] + ' · ' : '') + 'Lesson Studio';
   const st = document.getElementById('status');
   st.replaceChildren(L ? el('span', {class: 'pill' + (L.status === 'reviewed' ? ' approved' : ''), text: L.status === 'reviewed' ? 'Approved' : L.status === 'published' ? 'Published' : 'Draft'}) : '');
   const pick = document.getElementById('pick');
@@ -416,7 +435,8 @@ function render() {
   document.body.classList.toggle('wide', S.tab === 'timing' || S.tab === 'pixels' || S.tab === 'battles' || S.tab === 'town' || S.tab === 'pico');
   const kids = [];
   if (S.notice) kids.push(noticeEl(S.notice));
-  if (S.tab === 'new') kids.push(newLessonView());
+  if (S.tab === 'home') kids.push(homeView());
+  else if (S.tab === 'new') kids.push(newLessonView());
   else if (S.tab === 'archive') kids.push(archiveView());
   else if (S.tab === 'battles') kids.push(battlesView());
   else if (S.tab === 'town') kids.push(townView());
@@ -433,6 +453,7 @@ function noticeEl(n) {
   ]);
 }
 
+document.getElementById('go-home').addEventListener('click', () => switchTab('home'));
 document.getElementById('tab-script').addEventListener('click', () => switchTab('script'));
 document.getElementById('tab-video').addEventListener('click', () => switchTab('video'));
 document.getElementById('tab-timing').addEventListener('click', () => switchTab('timing'));
@@ -444,9 +465,40 @@ document.getElementById('new-lesson').addEventListener('click', async () => { aw
 document.getElementById('pick').addEventListener('change', async (e) => {
   await saveAll();
   if (e.target.value === '__archive') { if (S.timing) S.timing.pause(); S.tab = 'archive'; S.notice = null; stopPlayback(); releaseMic(); render(); return; }
-  if (S.tab === 'new' || S.tab === 'archive' || S.tab === 'battles' || S.tab === 'town' || S.tab === 'pico') S.tab = 'script';
+  if (S.tab === 'new' || S.tab === 'archive' || S.tab === 'home' || S.tab === 'battles' || S.tab === 'town' || S.tab === 'pico') S.tab = 'script';
   openLesson(e.target.value, 0);
 });
+
+// Home: where the studio opens. The lesson she last worked on, and the tools that aren't part of a lesson.
+function homeView() {
+  const L = S.L;
+  const isDone = (l) => l.status === 'reviewed' || l.status === 'published';
+  const others = S.lessons.filter((l) => !isDone(l) && l.id !== S.id);
+  const archived = S.lessons.filter(isDone).length;
+  const go = (tab) => el('button', {class: 'btn', type: 'button', text: {script: 'Script & recording', timing: 'Timing', video: 'Video & Ghost'}[tab], onclick: () => switchTab(tab)});
+  const another = el('select', {'aria-label': 'Open another lesson', onchange: (e) => {
+    const v = e.target.value;
+    if (v === '__archive') { S.tab = 'archive'; store.set('tab', 'script'); render(); }
+    else if (v) { S.tab = 'script'; store.set('tab', 'script'); openLesson(v, 0); }
+  }}, [el('option', {value: '', text: 'Open another lesson…'}), ...others.map((l) => el('option', {value: l.id, text: l.course + ' ' + l.number + ': ' + l.title})),
+    archived ? el('option', {value: '__archive', text: 'Archive (' + archived + ' finished)…'}) : null]);
+  const lessons = el('section', {class: 'card'}, [
+    el('h2', {text: 'Lessons'}),
+    L ? el('div', {class: 'home-last'}, [
+      el('div', {}, [el('div', {class: 'small muted', text: 'The last one you worked on · ' + L.course + ' ' + L.number}),
+        el('div', {style: 'font:500 20px/1.2 var(--serif);margin-top:4px'}, [L.title, ' ', el('span', {class: 'pill' + (L.status === 'reviewed' ? ' approved' : ''), text: L.status === 'reviewed' ? 'Approved' : L.status === 'published' ? 'Published' : 'Draft'})])]),
+      el('div', {class: 'row', style: 'gap:8px'}, [go('script'), go('timing'), go('video')])]) : null,
+    el('div', {class: 'row', style: 'justify-content:flex-start;gap:10px'}, [others.length || archived ? another : null,
+      el('button', {class: 'btn', type: 'button', text: '+ New lesson', onclick: () => document.getElementById('new-lesson').click()})]),
+  ]);
+  const tool = (tab, about) => el('button', {class: 'card home-tool', type: 'button', onclick: () => switchTab(tab)}, [el('b', {text: TOOLS[tab]}), el('span', {class: 'small muted', text: about})]);
+  return el('div', {class: 'stack'}, [lessons, el('div', {class: 'home-grid'}, [
+    tool('pixels', 'Drawings, characters, comics and sketches'),
+    tool('battles', 'Game footage for the videos'),
+    tool('town', 'Lay out a town for a PICO-8 game'),
+    tool('pico', 'Edit picoparish.com'),
+  ])]);
+}
 
 // Finished lessons, searchable, so the lesson list stays short as the courses grow.
 function archiveView() {
@@ -481,7 +533,7 @@ async function switchTab(tab) {
   if (tab === 'timing') { releaseMic(); S.timingRoot = null; }
   if (tab === 'pixels') { releaseMic(); S.pixelsRoot = null; }
   if (tab === 'battles') releaseMic();
-  if (tab === 'town') releaseMic();
+  if (tab === 'town' || tab === 'home') releaseMic();
   if (tab === 'pico') releaseMic();
   if (tab === 'video') { releaseMic(); await refresh(); }
   render();

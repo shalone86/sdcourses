@@ -118,6 +118,11 @@ if it stops; logs in `~/Library/Logs/sdcourses-studio.log`. After changing
 studio or script code, `npm run studio-restart` (don't start a second copy).
 If it's already running, `npm start` just opens the page.
 
+- **Home:** a fresh start opens on Home (`homeView` in studio/index.html): the last lesson with
+  its three tabs (Script & recording, Timing, Video & Ghost), Open another lesson, + New lesson,
+  and a card for each tool (Pixel art, Battles, Town, Pico Parish; `TOOLS`). A refresh reopens
+  where she was (`sessionStorage['studio.open']` tells the two apart). Tools show only ← Home and
+  their name; lessons show ← Home, the title and the three tabs. A new tool gets a card there.
 - **Script & recording:** one slide per section. Her edits are saved straight
   into lesson.yml (`applyEdits` in `scripts/studio.mjs` splices only the
   changed text), then the quote check runs. Changing the script of an
