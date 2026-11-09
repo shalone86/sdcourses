@@ -24,6 +24,7 @@
     "studio-autostart": "cp studio/launchd/com.sdcourses.studio.plist ~/Library/LaunchAgents/ && (launchctl bootout gui/$(id -u)/com.sdcourses.studio 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.sdcourses.studio.plist)",
     "studio-restart": "launchctl kickstart -k gui/$(id -u)/com.sdcourses.studio",
     "battle": "node scripts/battle.mjs",
+    "town": "node scripts/town2pico8.mjs",
     "pico8": "node scripts/pico8.mjs",
     "music": "node scripts/midi2pico8.mjs",
     "pico8-release": "node scripts/pico8-4p.mjs && node scripts/pico8-release.mjs && node scripts/pico8-release.mjs game/blessed4.p8",

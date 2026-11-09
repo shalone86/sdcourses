@@ -265,6 +265,18 @@ If it's already running, `npm start` just opens the page.
   (template.html → index.html) and commits there; Check links opens every link. Preview at
   /pp/index.html; saves are pushed to the private repo shalone86/picoparish. **Put online** runs its `deploy.mjs` (build, refuse uncommitted work,
   `wrangler deploy` to the Cloudflare Worker `picoparish`, custom domains picoparish.com and www).
+- **Town tab** (`studio/town.js`, `scripts/town.mjs`): she lays out a town for a PICO-8 game, 64 × 64 squares,
+  everything snapped to the 8-pixel squares. Tools: paint or fill the ground with her `tile-*` drawings (a
+  checkbox says which tiles can't be walked on), put down buildings and things (any saved drawing; first frame),
+  put down people (characters with an `-idle`; name, job and what they say are her words), Move / change (drag,
+  arrow keys, Delete; a thing's "can't walk through" is all, base, trunk or none; a door square and the place's
+  name), and the start spot with "You play as". Undo is ⌘Z. "Show where you can't walk" and the three meters
+  (sprite-sheet squares of 256, overflow, letters) come from `/api/town/check`, the same `packTown` that makes
+  the game. Saved to `towns/<name>.yml`. **Make the game** (or `npm run town -- <name>`) writes
+  `sanpico/<name>.p8` in the games folder (`GAMES_DIR` in .env, else ~/Projects/games): a new cart gets the small
+  walk-and-talk engine `game/town-engine.lua`; an existing cart keeps its code, sounds and music, and only the
+  part between `--town:begin` and `--town:end` plus the sprite sheet and map are replaced. Big drawings that
+  don't fit the sheet are kept as text and unpacked when the game starts. Insides of buildings come later.
 - **"Are you sure?"** questions open beside the button she clicked
   (`studio/ask.js`, `ask(message)`), not the browser's box; use it for new ones.
 - **Video & Ghost:** "Make the video" runs `scripts/render.mjs`. "Approve and

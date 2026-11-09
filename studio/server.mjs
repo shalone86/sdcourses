@@ -22,6 +22,7 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import * as esbuild from 'esbuild';
 import {importImage, importUpload, searchImages, sourceList} from './images.mjs';
 import {battleProps, battleSlug, listBattles, newBattle, saveBattle} from '../scripts/battles.mjs';
+import {cartPath, exportTown, listTowns, loadTown, newTown, packTown, saveTown, townSlug} from '../scripts/town.mjs';
 import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCast, saveColors, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
@@ -588,6 +589,9 @@ async function handle(req, res) {
       catch (e) { throw httpError(404, e.message); }
     }
     if (p === '/battles.js') return sendFile(req, res, path.join(ROOT, 'studio/battles.js'));
+    if (p === '/town.js') return sendFile(req, res, path.join(ROOT, 'studio/town.js'));
+    if (p === '/api/towns') return json(res, 200, listTowns());
+    if (p === '/api/town') { try { return json(res, 200, {town: loadTown(townSlug(url.searchParams.get('name')))}); } catch (e) { throw httpError(404, e.message); } }
     // Pico Parish tab: the site's catalog, and its built page to preview.
     if (p === '/picoparish.js') return sendFile(req, res, path.join(ROOT, 'studio/picoparish.js'));
     if (p === '/api/pp') { try { return json(res, 200, siteState()); } catch (e) { throw httpError(404, e.message); } }
@@ -677,6 +681,33 @@ async function handle(req, res) {
       return json(res, 200, {clip, cast: figureCast()});
     }
     if (/^\/api\/battle(\/new)?$/.test(p)) backupSoon('battles', ['battles'], 'battles');
+    // The Town tab (studio/town.js): towns/<name>.yml, and the PICO-8 cart made from it (scripts/town.mjs).
+    if (/^\/api\/town(\/new)?$/.test(p)) backupSoon('towns', ['towns'], 'towns');
+    if (p === '/api/town') {
+      const body = await readJson(req);
+      try { return json(res, 200, {name: saveTown(body.name, body.town), towns: listTowns()}); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/town/new') {
+      const body = await readJson(req);
+      try { return json(res, 200, {name: newTown(body.name, body.title), towns: listTowns()}); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/town/check') {
+      // What fits in the cart and where you can't walk, for the town as it is on the page (saved or not).
+      const body = await readJson(req);
+      try { const k = packTown(body.town); return json(res, 200, {budget: k.budget, solid: k.solid}); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/town/export' || p === '/api/town/play') {
+      const body = await readJson(req);
+      let made;
+      try { made = exportTown(townSlug(body.name)); } catch (e) { throw httpError(400, e.message); }
+      const where = path.join(path.basename(path.dirname(made.file)), path.basename(made.file));
+      const said = `${made.fresh ? 'Made a new game' : 'Put the town into the game'}: ${where} in your games folder.`;
+      if (p === '/api/town/export') return json(res, 200, {...made, message: said});
+      const pico = [process.env.PICO8, '/Applications/PICO-8.app/Contents/MacOS/pico8'].find((f) => f && fs.existsSync(f));
+      if (!pico) return json(res, 200, {...made, message: `${said} PICO-8 wasn’t found on this Mac, so open the file there yourself.`});
+      spawn(pico, ['-run', made.file], {detached: true, stdio: 'ignore'}).unref();
+      return json(res, 200, {...made, message: `${said} PICO-8 is opening with it.`});
+    }
     if (p === '/api/battle') {
       const body = await readJson(req);
       try { const name = saveBattle(body.name, body.battle); return json(res, 200, {name, battles: listBattles()}); } catch (e) { throw httpError(400, e.message); }
