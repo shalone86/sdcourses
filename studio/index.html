@@ -358,6 +358,9 @@ async function boot() {
   }
   if (!S.lessons.length) { document.getElementById('title').textContent = 'No lessons yet'; view.replaceChildren(el('div', {class: 'notice', text: 'Ask Claude to start a lesson; it shows up here.'})); return; }
   const last = store.get('last');
+  // Open on the tab she was last on (a refresh keeps her place).
+  const tab = store.get('tab');
+  if (['script', 'timing', 'pixels', 'battles', 'town', 'pico', 'video'].includes(tab)) S.tab = tab;
   const id = last && S.lessons.some((l) => l.id === last.id) ? last.id : S.lessons[S.lessons.length - 1].id;
   await openLesson(id, last && last.id === id ? last.slide : 0);
   poll();
@@ -468,7 +471,7 @@ async function switchTab(tab) {
   if (S.tab === 'pico' && S.pico && S.pico.dirty() && !(await ask('Your Pico Parish changes aren’t saved. Leave them?'))) return;
   if (S.timing) S.timing.pause();
   if (S.battles) S.battles.pause();
-  S.tab = tab; S.notice = null;
+  S.tab = tab; S.notice = null; store.set('tab', tab);
   stopPlayback();
   if (tab === 'timing') { releaseMic(); S.timingRoot = null; }
   if (tab === 'pixels') { releaseMic(); S.pixelsRoot = null; }
