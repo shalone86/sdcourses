@@ -6,6 +6,10 @@ Claude does the file work. Start a lesson with `/lesson` (see
 `.claude/skills/lesson/SKILL.md`). **Current state and next job:
 HANDOFF.md.**
 
+## Branch names
+
+Name a branch for the work, in plain words: `game/4-player-grace-piles`, not `claude/happy-lovelace-ote8op` or `ccr-…`. If a session starts on an automatic name, rename it (`git branch -m`) before pushing or opening a PR.
+
 ## Who decides what (never cross these lines)
 
 - **Shalone chooses** the topic (and the music, or the course's track).
