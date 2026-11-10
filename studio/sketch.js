@@ -360,7 +360,7 @@ window.SketchTab = (() => {
       catch (e) { alert('Couldn’t export it: ' + e.message); }
     }
     function note(text) { const n = body.querySelector('[data-note]'); if (n) n.textContent = text; }
-    function markDirty() { const b = body.querySelector('[data-save]'); if (b) { b.disabled = !dirty(); b.textContent = dirty() ? 'Save' : 'Saved'; } }
+    function markDirty() { for (const b of body.querySelectorAll('[data-save]')) { b.disabled = !dirty(); b.textContent = dirty() ? 'Save' : 'Saved'; } }
 
     async function openSaved(s, asCopy) {
       const imgs = await Promise.all(s.urls.map(loadImage));
@@ -425,13 +425,14 @@ window.SketchTab = (() => {
           h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         name,
+        h('div', {class: 'row px-quick'}, [btn('Undo', undo), h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save})]),
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
-        h('div', {class: 'small muted', text: 'Keys: B brush · E eraser · F fill · S line → box → circle · C next color · X color before · I pick a color · M select (Delete clears it) · . next frame · , frame before'}),
-        h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Brush size:'}), brushes]),
-        SHAPES.includes(P.tool) && P.tool !== 'line' ? h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
-        h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
+        h('div', {class: 'small muted px-keys', text: 'Keys: B brush · E eraser · F fill · S line → box → circle · C next color · X color before · I pick a color · M select (Delete clears it) · . next frame · , frame before'}),
+        h('div', {class: 'row px-toolopt', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Brush size:'}), brushes]),
+        SHAPES.includes(P.tool) && P.tool !== 'line' ? h('label', {class: 'small px-toolopt'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
+        h('div', {class: 'row px-palrow', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
         h('div', {class: 'px-palette'}, [...colors.map(swatch), h('label', {class: 'px-any', title: 'Any color'}, [custom, h('span', {text: 'Any color'})])]),
-        h('div', {class: 'row', style: {gap: '8px', flexWrap: 'wrap'}}, [
+        h('div', {class: 'row px-actions', style: {gap: '8px', flexWrap: 'wrap'}}, [
           btn('Undo', undo),
           btn('Copy', () => copy(false)), btn('Copy all frames', () => copy(true)), btn('Cut', cut),
           btn('Paste', () => paste(false)), btn('Paste in every frame', () => paste(true)),
@@ -450,7 +451,7 @@ window.SketchTab = (() => {
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.mirror || null, onchange: (e) => { P.mirror = e.target.checked; drawCanvas(); }}), ' Mirror (draw both sides)']),
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.onion || null, onchange: (e) => { P.onion = e.target.checked; drawCanvas(); }}), ' Show the frame before, faintly']),
         ]),
-        h('div', {class: 'small muted', text: 'Frames (2 to 8 make it move):'}),
+        h('div', {class: 'small muted px-frames-label', text: 'Frames (2 to 8 make it move):'}),
         h('div', {class: 'px-frames'}, [...frames,
           a.frames.length < MAX_FRAMES ? btn('+ Copy this frame', () => { letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame + 1, 0, copyOf(cur())); P.frame++; P.changed = true; draw(); }) : null,
           a.frames.length < MAX_FRAMES ? btn('+ Empty frame', () => { letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame + 1, 0, layer(W(), H())); P.frame++; P.changed = true; draw(); }) : null,

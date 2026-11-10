@@ -57,6 +57,16 @@ window.PicoParishTab = (() => {
 .pp-poses{font-size:13px;color:var(--muted)}
 .pp-poses b{color:var(--rec);font-weight:600}
 .pp-sw{width:22px;height:22px;border-radius:50%;border:2px solid var(--rule);cursor:pointer;padding:0}
+@media (max-width:700px){
+.pp-form{grid-template-columns:1fr}
+.pp-item{flex-wrap:wrap}
+.pp-item .t{flex:1 1 60%}
+.pp-row{grid-template-columns:auto minmax(0,1fr)}
+.pp-row>.pp-field{grid-column:1/-1}
+.pp-vill{grid-template-columns:auto minmax(0,1fr)}
+.pp-vill .f{grid-template-columns:1fr}
+.pp-field input,.pp-form input,.pp-form textarea,.pp-form select{width:100%;min-width:0;box-sizing:border-box}
+}
 .pp-sw[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--ink)}
 .pp-shade{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:grid;place-items:center;padding:16px}
 .pp-dialog{background:var(--paper);border-radius:12px;padding:16px;width:min(720px,100%);max-height:90vh;overflow:auto;display:flex;flex-direction:column;gap:10px}

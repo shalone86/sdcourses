@@ -287,7 +287,7 @@ window.PixelTab = (() => {
     const preview = h('canvas', {class: 'px-preview', width: 192, height: 192, 'aria-label': 'Animation preview'});
     const body = h('div', {class: 'px-side'});
     root.replaceChildren(h('div', {class: 'px-wrap'}, [h('div', {class: 'px-left'}, [canvas, reference.controls(() => drawCanvas()),
-      h('div', {class: 'small muted', text: 'Click or drag to draw. ⌘Z undo · ⌘C copy · ⌘X cut · ⌘V paste · arrows move a selection · Delete clears it · Esc lets go.'})]), body]));
+      h('div', {class: 'small muted px-keys', text: 'Click or drag to draw. ⌘Z undo · ⌘C copy · ⌘X cut · ⌘V paste · arrows move a selection · Delete clears it · Esc lets go.'})]), body]));
 
     const W = () => P.art.width, H = () => P.art.height;
     const px = () => P.art.frames[P.frame];
@@ -878,8 +878,7 @@ window.PixelTab = (() => {
     document.addEventListener('keydown', onKey);
 
     function markDirty() {
-      const b = body.querySelector('[data-save]');
-      if (b) { b.disabled = !dirty(); b.textContent = dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved'; }
+      for (const b of body.querySelectorAll('[data-save]')) { b.disabled = !dirty(); b.textContent = dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved'; }
     }
     function note(text) { const n = body.querySelector('[data-note]'); if (n) n.textContent = text; }
 
@@ -1167,16 +1166,17 @@ window.PixelTab = (() => {
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         P.version ? null : name,
         P.version ? null : comicBox,
+        h('div', {class: 'row px-quick'}, [btn('Undo', undo), h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved', onclick: save})]),
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, (comic ? [...TOOLS, ['words', 'Words']] : TOOLS).map(tool)),
         wordsBox,
-        h('div', {class: 'small muted', text: 'Keys: B pencil · E eraser · F fill · S line → box → circle · C next color · X color before · I pick a color · M select (Delete clears it) · . next frame · , frame before'}),
+        h('div', {class: 'small muted px-keys', text: 'Keys: B pencil · E eraser · F fill · S line → box → circle · C next color · X color before · I pick a color · M select (Delete clears it) · . next frame · , frame before'}),
         SHAPES.includes(P.tool) && P.tool !== 'line'
-          ? h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
-        h('div', {class: 'row', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
+          ? h('label', {class: 'small px-toolopt'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
+        h('div', {class: 'row px-palrow', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
         h('div', {class: 'px-palette'}, [...colors.map(swatch),
           used.length ? h('span', {class: 'small muted', text: 'In this drawing:'}) : null, ...used.map(swatch),
           h('label', {class: 'px-any', title: 'Any color'}, [custom, h('span', {text: 'Any color'})])]),
-        h('div', {class: 'row', style: {gap: '8px', flexWrap: 'wrap'}}, [
+        h('div', {class: 'row px-actions', style: {gap: '8px', flexWrap: 'wrap'}}, [
           btn('Undo', undo),
           btn('Copy', () => copy(false), {title: 'From this frame: the selection, or the whole picture'}),
           btn('Copy all frames', () => copy(true), {title: 'The whole animation (or the selected spot in every frame)'}),
@@ -1214,7 +1214,7 @@ window.PixelTab = (() => {
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.mirror || null, onchange: (e) => { P.mirror = e.target.checked; drawCanvas(); }}), ' Mirror (draw both sides)']),
           comic ? null : h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.onion || null, onchange: (e) => { P.onion = e.target.checked; drawCanvas(); }}), ' Show the frame before, faintly']),
         ]),
-        h('div', {class: 'small muted', text: comic ? `Panels (up to ${MAX_PANELS}; click one to draw in it, drag to reorder):` : 'Frames (2 to 8 make it move):'}),
+        h('div', {class: 'small muted px-frames-label', text: comic ? `Panels (up to ${MAX_PANELS}; click one to draw in it, drag to reorder):` : 'Frames (2 to 8 make it move):'}),
         h('div', {class: 'px-frames'}, [...frames,
           a.frames.length < maxFrames() ? btn('+ Copy this ' + Fr, () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, [...px()]); if (comic) a.words.splice(P.frame + 1, 0, a.words[P.frame].map((w) => ({...w}))); P.frame++; P.word = null; draw(); markDirty(); }) : null,
           a.frames.length < maxFrames() ? btn('+ Empty ' + Fr, () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, blank(a.width, a.height)); if (comic) a.words.splice(P.frame + 1, 0, []); P.frame++; P.word = null; draw(); markDirty(); }) : null,

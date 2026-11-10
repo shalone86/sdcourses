@@ -30,7 +30,7 @@ import {ghost} from '../scripts/ghost.mjs';
 import {ensureFigure, figureCast} from '../scripts/characters.mjs';
 import {checkLinks, deploySite, saveGif, saveSite, siteFile, siteState} from '../scripts/picoparish.mjs';
 
-const PORT = 5178;
+const PORT = Number(process.env.STUDIO_PORT) || 5178; // (the env settings are only for trying a second copy)
 const URL_BASE = `http://localhost:${PORT}`;
 const AUDIO_EXT = ['.wav', '.m4a', '.mp3', '.aac', '.flac', '.ogg']; // same order as scripts/prepare.mjs
 const run = promisify(execFile);
@@ -633,6 +633,7 @@ async function handle(req, res) {
       const url = domain ? `https://${domain}` : localUrl;
       const ips = Object.values(os.networkInterfaces()).flat().filter((i) => i.family === 'IPv4' && !i.internal).map((i) => `http://${i.address}:${DRAW_PORT}/draw`);
       return json(res, 200, {
+        studioUrl: `${domain ? `https://${domain}` : `http://${host}:${DRAW_PORT}`}/studio`, studioReady: !!studioPassword(),
         enabled: true,
         domain: domain || null,
         host,
@@ -1034,7 +1035,7 @@ const server = http.createServer((req, res) => {
 // Only the Pixel art tab, on the home Wi-Fi, behind her PIN (STUDIO_DRAW_PIN in .env):
 // http://<this Mac>.local:5179/draw. Everything else (recording, lessons, Ghost) stays on this
 // Mac only. A right PIN gets a cookie for this run of the studio; 5 wrong ones wait a minute.
-const DRAW_PORT = 5179;
+const DRAW_PORT = Number(process.env.STUDIO_DRAW_PORT) || 5179;
 const DRAW_PATHS = /^(\/ask\.js|\/pixels\.js|\/studio-draw\.js|\/sketch\.js|\/reference\.js|\/fonts\/[\w.-]+|\/sprites\/[a-z0-9-]+\/\d+\.png|\/api\/sprites|\/api\/sprite|\/api\/sprite\/delete|\/api\/sprite\/favorite|\/api\/sprite\/gif|\/api\/sprite\/version|\/api\/sprite\/copy-pose|\/api\/puppet-bases|\/api\/fetch-image|\/api\/images\/search|\/api\/images\/sources|\/icon\.png|\/icon-192\.png|\/apple-touch-icon\.png|\/manifest\.json)$/;
 const draw = {tokens: new Set(), misses: 0, waitUntil: 0};
 const cookieToken = (req) => /(?:^|;\s*)sd_draw=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
@@ -1080,6 +1081,32 @@ ${message ? `<div class="small bad">${message}</div>` : ''}<button class="btn pr
 <style>.draw-only{max-width:1200px;margin:0 auto;padding:18px}.draw-title{font:600 28px/1.2 var(--serif);margin:0 0 14px}body{-webkit-user-select:none;user-select:none}input,textarea{-webkit-user-select:text;user-select:text}</style></head><body class="wide">${body}</body></html>`);
 }
 
+// ---------- the whole studio from other computers ----------
+// Same door as the drawing page (port 5179, and her https address through the tunnel), at /studio,
+// behind STUDIO_PASSWORD in .env (she types it there; at least 10 characters, or it stays shut).
+// Signed in, a computer can do everything this Mac's page can.
+const remote = {misses: 0, waitUntil: 0};
+const studioPassword = () => { const v = (process.env.STUDIO_PASSWORD ?? '').trim(); return v.length >= 10 ? v : null; };
+const studioToken = () => crypto.createHmac('sha256', studioPassword() ?? crypto.randomBytes(16)).update('sdcourses-studio-session-v1').digest('hex').slice(0, 48);
+function studioSignedIn(req) {
+  const t = /(?:^|;\s*)sd_studio=([a-f0-9]{48})/.exec(req.headers.cookie ?? '')?.[1];
+  if (!t || !studioPassword()) return false;
+  const a = Buffer.from(t), b = Buffer.from(studioToken());
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+function studioLogin(res, message = '') {
+  const html = fs.readFileSync(path.join(ROOT, 'studio', 'index.html'), 'utf8');
+  const style = (/<style>[\s\S]*?<\/style>/.exec(html) ?? [''])[0];
+  const body = studioPassword()
+    ? `<form method="post" action="/studio/login" class="card stack" style="max-width:380px">
+<label for="pw">Password</label><input id="pw" name="password" type="password" class="read-line" autocomplete="current-password" autofocus>
+${message ? `<div class="small bad">${message}</div>` : ''}<button class="btn primary">Open the studio</button></form>`
+    : `<div class="card stack" style="max-width:520px"><p>The studio isn’t open to other computers yet.</p><p class="small muted">On the Mac, add a line to the .env file in the sdcourses folder: STUDIO_PASSWORD= and then a password of 10 or more letters and numbers. Then restart the studio.</p></div>`;
+  res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store'});
+  res.end(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Lesson Studio</title>${style}
+<style>.draw-only{max-width:1200px;margin:0 auto;padding:18px}.draw-title{font:600 28px/1.2 var(--serif);margin:0 0 14px}</style></head><body><main class="draw-only"><h1 class="draw-title">Lesson Studio</h1>${body}</main></body></html>`);
+}
+
 async function handleDraw(req, res) {
   const pin = process.env.STUDIO_DRAW_PIN;
   const url = new URL(req.url, 'http://draw');
@@ -1093,9 +1120,45 @@ async function handleDraw(req, res) {
   if (p === '/manifest.json') {
     return sendFile(req, res, path.join(ROOT, 'studio', 'manifest.json'));
   }
+  // The whole studio, behind her longer password (STUDIO_PASSWORD in .env): /studio.
+  const full = studioSignedIn(req);
+  if (p === '/studio/login' && req.method === 'POST') {
+    if (!studioPassword()) return studioLogin(res);
+    if (Date.now() < remote.waitUntil) return studioLogin(res, 'Too many tries. Wait a few minutes, then try again.');
+    const given = new URLSearchParams(String(await readBody(req, 4000))).get('password') ?? '';
+    const a = crypto.createHash('sha256').update(given).digest(), b = crypto.createHash('sha256').update(studioPassword()).digest();
+    if (!crypto.timingSafeEqual(a, b)) {
+      // Each run of 5 wrong tries waits longer: 1 minute, 2, 4… up to an hour.
+      if (++remote.misses % 5 === 0) remote.waitUntil = Date.now() + Math.min(3600000, 60000 * 2 ** (remote.misses / 5 - 1));
+      console.log(`Studio password: wrong try (${remote.misses}) from ${req.headers['cf-connecting-ip'] ?? req.socket.remoteAddress}`);
+      return studioLogin(res, 'That password isn’t right.');
+    }
+    remote.misses = 0;
+    const secure = req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : '';
+    res.writeHead(303, {Location: '/studio', 'Set-Cookie': `sd_studio=${studioToken()}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000${secure}`});
+    return res.end();
+  }
+  if (p === '/studio/leave' && req.method === 'POST') {
+    res.writeHead(303, {Location: '/studio', 'Set-Cookie': 'sd_studio=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0'});
+    return res.end();
+  }
+  if (p === '/studio' || p === '/studio/') {
+    if (!full) return studioLogin(res);
+    req.url = '/';
+  }
+  if (full) {
+    if (req.method === 'POST' && (req.headers['x-studio'] !== '1' || !req.headers.origin || new URL(req.headers.origin).host !== req.headers.host)) throw httpError(403, 'Forbidden');
+    // Hand the request to the studio as if it came from this Mac.
+    if (p !== '/' && p !== '/draw' && p !== '/draw/') {
+      req.headers.host = `localhost:${PORT}`;
+      if (req.headers.origin) req.headers.origin = `http://localhost:${PORT}`;
+      return handle(req, res);
+    }
+  }
   const tok = cookieToken(req);
-  const signedIn = !!tok && (draw.tokens.has(tok) || (pin && tok === drawTokenForPin(pin)));
-  if (p === '/' || p === '/draw' || p === '/draw/') return drawPage(res, signedIn);
+  const signedIn = full || (!!tok && (draw.tokens.has(tok) || (pin && tok === drawTokenForPin(pin))));
+  if ((p === '/' || p === '/draw' || p === '/draw/') && (pin || full)) return drawPage(res, signedIn);
+  if (!pin && !full) { res.writeHead(303, {Location: '/studio'}); return res.end(); }
   if (p === '/draw/login' && req.method === 'POST') {
     if (Date.now() < draw.waitUntil) return drawPage(res, false, 'Too many tries. Wait a minute, then try again.');
     const given = new URLSearchParams(String(await readBody(req, 2000))).get('pin') ?? '';
@@ -1119,7 +1182,7 @@ async function handleDraw(req, res) {
   return handle(req, res);
 }
 
-if (process.env.STUDIO_DRAW_PIN) {
+if (process.env.STUDIO_DRAW_PIN || studioPassword()) {
   const drawServer = http.createServer((req, res) => handleDraw(req, res).catch((e) => {
     if (!e.status) console.error(e);
     if (!res.headersSent) json(res, e.status ?? 500, {error: e.message}); else res.end();

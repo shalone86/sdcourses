@@ -186,6 +186,37 @@ body.mode-home .tabs,body.mode-home .meta,body.mode-tool header{display:none}
 .tl-scene.moved{box-shadow:0 0 0 2px var(--ok) inset}
 .px-wrap{display:grid;grid-template-columns:minmax(0,520px) minmax(0,1fr);gap:22px;align-items:start}
 @media (max-width:900px){.px-wrap{grid-template-columns:1fr}}
+.px-quick{display:none}
+/* Phones and narrow upright screens: the tools, colors and frames sit right under the drawing;
+   the rest (new, open, size, name, copy and paste…) comes after. */
+@media (max-width:700px){
+  .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{flex:0 0 auto;padding:12px 12px}
+  .px-wrap{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+  .px-left>*,.px-side>*{min-width:0;max-width:100%}
+  .px-wrap>.px-left,.px-wrap>.px-side{display:contents}
+  .px-left>*,.px-side>*{order:10}
+  .px-wrap .px-canvas{order:1;max-width:none}
+  .px-wrap .px-quick{order:2;display:flex;justify-content:space-between}
+  .px-side>.px-tools{order:3;display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .px-side>.px-tools::-webkit-scrollbar{display:none}
+  .px-side>.px-tools button{flex:0 0 auto;padding:12px 13px}
+  .px-side>.px-toolopt,.px-side>[data-words]{order:4}
+  .px-side>.px-palette{order:5;gap:8px}
+  .px-side>.px-palette .px-swatch{width:38px;height:38px}
+  .px-side>.px-frames-label{order:6}
+  .px-side>.px-frames{order:7}
+  .px-side>.px-palrow{order:8}
+  .px-left>.ref-box,.px-left>details{order:9}
+  .px-keys{display:none}
+  .card,.small{overflow-wrap:anywhere}
+  .seg{max-width:100%;overflow-x:auto;scrollbar-width:none}
+  .seg::-webkit-scrollbar{display:none}
+  .seg button{flex:0 0 auto;white-space:nowrap}
+  .wrap input[type=text],.wrap select,.wrap textarea{max-width:100%}
+  .px-actions .btn{flex:1 1 auto}
+}
 .px-left{display:flex;flex-direction:column;gap:8px}
 .px-canvas{width:100%;max-width:512px;aspect-ratio:1;image-rendering:pixelated;border:1px solid var(--rule);border-radius:10px;cursor:crosshair;touch-action:none;background:#fff}
 .px-side{display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -430,6 +461,8 @@ function renderHeader() {
     const b = document.getElementById('tab-' + t);
     b.setAttribute('aria-selected', S.tab === t);
     b.disabled = !!(S.rec || S.busy);
+    // On a phone the tabs are one row that slides sideways: keep the open one in sight.
+    if (S.tab === t && S.tabShown !== t) { S.tabShown = t; const row = b.parentElement; if (row.scrollWidth > row.clientWidth) row.scrollLeft = b.offsetLeft - (row.clientWidth - b.offsetWidth) / 2; }
   }
 }
 
@@ -672,6 +705,12 @@ async function openIpadModal() {
       el('strong', {text: '💡 One-tap app icon: '}),
       el('span', {text: 'In Safari on your iPad or phone, tap Share ➔ "Add to Home Screen". It adds a Pixel Studio app icon right on your home screen!'})
     ]),
+    info.studioUrl ? el('div', {class: 'small muted', style: 'border-top:1px solid rgba(0,0,0,0.08);padding-top:10px;line-height:1.4'}, [
+      el('strong', {text: 'The whole studio on another computer: '}),
+      el('span', {text: info.studioReady ? 'open ' : 'once STUDIO_PASSWORD is set in .env (10 or more letters and numbers), open '}),
+      el('span', {style: 'font-family:monospace', text: info.studioUrl}),
+      el('span', {text: info.studioReady ? ' and type your studio password.' : '.'})
+    ]) : null,
     info.domain && info.localUrl ? el('details', {class: 'small muted'}, [
       el('summary', {text: 'Local Wi-Fi link'}),
       el('div', {style: 'margin-top:6px;font-family:monospace', text: info.localUrl})

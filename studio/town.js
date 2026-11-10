@@ -210,7 +210,7 @@ window.TownTab = (() => {
     let drag = null;
     function onDown(e) {
       const t = T.town;
-      if (!t || e.button > 0) return;
+      if (!t || e.button > 0 || T.slide) return; // sliding: the finger moves the map, it doesn't paint
       e.preventDefault();
       const p = worldAt(e);
       T.error = '';
@@ -288,7 +288,7 @@ window.TownTab = (() => {
       R.bar = h('div', {class: 'row', style: {justifyContent: 'flex-start', gap: '10px'}});
       R.notice = h('div');
       R.tools = h('div', {class: 'stack', style: {gap: '10px'}});
-      T.canvas = h('canvas', {style: {imageRendering: 'pixelated', cursor: 'crosshair', touchAction: 'none', display: 'block'}});
+      T.canvas = h('canvas', {style: {imageRendering: 'pixelated', cursor: 'crosshair', touchAction: T.slide ? 'auto' : 'none', display: 'block'}});
       T.canvas.addEventListener('pointerdown', onDown);
       T.canvas.addEventListener('pointermove', onMove);
       T.canvas.addEventListener('pointerleave', () => { T.hover = null; mapSoon(); });
@@ -396,6 +396,7 @@ window.TownTab = (() => {
           T.zoom = z; localStorage.setItem('townZoom', z); drawMap(); renderUnder();
           s.scrollLeft = fx * z - s.clientWidth / 2; s.scrollTop = fy * z - s.clientHeight / 2;
         }}))),
+        h('label', {class: 'small', title: 'On a phone or iPad: tick this to move around the map with your finger, untick it to paint again'}, [h('input', {type: 'checkbox', checked: T.slide || null, onchange: (e) => { T.slide = e.target.checked; T.canvas.style.touchAction = T.slide ? 'auto' : 'none'; }}), ' Slide the map with my finger']),
         h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: T.showSolid, onchange: (e) => { T.showSolid = e.target.checked; drawMap(); }}), ' Show where you can’t walk (red)']),
         R.where,
         h('span', {class: 'small muted', text: T.town.things.length + ' buildings and things · ' + T.town.people.length + ' people · yellow marks a door'}));

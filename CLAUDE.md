@@ -259,6 +259,20 @@ If it's already running, `npm start` just opens the page.
   (pixel mode shrinks it to the grid and matches the palette, and cuts a sprite sheet,
   a row, column or grid of frames at any whole-number enlargement, into its frames).
   Her Pixel Studio .psp files can't be read; she exports PNG or a sprite sheet.
+- **The whole studio from other computers:** the same door as the drawing page (port 5179 and her
+  https address, `STUDIO_DRAW_DOMAIN`), at `/studio`: `https://pixel.shalonely.com/studio`. It asks for
+  `STUDIO_PASSWORD` from .env (she types it there, 10 or more characters; without it the door stays shut;
+  wrong tries wait longer and longer). Signed in, a computer can do everything this Mac's page can,
+  recording included (it is https), also send to Ghost and Put online: her choice (`studioSignedIn`,
+  `studioLogin` in studio/server.mjs). Buttons that open Finder open it on the Mac. The PIN still
+  opens only drawing. To try server changes without touching her copy: `STUDIO_PORT=5278
+  STUDIO_DRAW_PORT=5279 STUDIO_PASSWORD=<test> node studio/server.mjs --no-open`, then stop it
+  (find it with `ps`; `lsof` hangs on this Mac's Time Machine share).
+- **Phones and upright screens** (700 px and narrower, the `@media (max-width:700px)` block in
+  studio/index.html): the tabs are one row that slides sideways; in Pixel art and Sketch the Undo/Save
+  row, tools, colors and frames sit right under the drawing and the rest follows; tool rows slide
+  sideways instead of wrapping; the Town map has "Slide the map with my finger". Check new screens at
+  375 px wide: nothing may scroll the page sideways.
 - **Posters** (`npm run render`): the title card without her camera clip.
 - **Backup to GitHub:** the studio commits and pushes a lesson's folder a
   few minutes after her last change to it, and right after she sends it to
@@ -285,7 +299,7 @@ If it's already running, `npm start` just opens the page.
   (regions with the same name are one part); without one the beat, drums, bass and melody are guessed from
   the sound (`songParts`, cached in `parts.json`). **Make the video** (or `npm run song -- <name>`, with
   `--seconds <n>` or `--still <s>` for a quick look) writes `dist/songs/<name>/<name>.mp4`; nothing is
-  uploaded anywhere. The words on the slides are hers: never write or change lyrics for her.
+  uploaded anywhere. Her sound and MIDI files stay on this Mac (gitignored; the repo is public): only `song.yml` is backed up. The words on the slides are hers: never write or change lyrics for her.
 - **Town tab** (`studio/town.js`, `scripts/town.mjs`): she lays out a town for a PICO-8 game, 64 × 64 squares,
   everything snapped to the 8-pixel squares. Tools: paint or fill the ground with her `tile-*` drawings (a
   checkbox says which tiles can't be walked on), put down buildings and things (any saved drawing; first frame),
