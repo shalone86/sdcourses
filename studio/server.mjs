@@ -633,7 +633,7 @@ async function handle(req, res) {
       const url = domain ? `https://${domain}` : localUrl;
       const ips = Object.values(os.networkInterfaces()).flat().filter((i) => i.family === 'IPv4' && !i.internal).map((i) => `http://${i.address}:${DRAW_PORT}/draw`);
       return json(res, 200, {
-        studioUrl: `${domain ? `https://${domain}` : `http://${host}:${DRAW_PORT}`}/studio`, studioReady: !!studioPassword(),
+        studioUrl: domain ? `https://${domain.replace(/^[^.]+/, 'studio')}` : `http://${host}:${DRAW_PORT}/studio`, studioReady: !!studioPassword(),
         enabled: true,
         domain: domain || null,
         host,
@@ -1135,21 +1135,23 @@ async function handleDraw(req, res) {
     }
     remote.misses = 0;
     const secure = req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : '';
-    res.writeHead(303, {Location: '/studio', 'Set-Cookie': `sd_studio=${studioToken()}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000${secure}`});
+    res.writeHead(303, {Location: /^studio\./i.test(req.headers.host ?? '') ? '/' : '/studio', 'Set-Cookie': `sd_studio=${studioToken()}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000${secure}`});
     return res.end();
   }
   if (p === '/studio/leave' && req.method === 'POST') {
-    res.writeHead(303, {Location: '/studio', 'Set-Cookie': 'sd_studio=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0'});
+    res.writeHead(303, {Location: /^studio\./i.test(req.headers.host ?? '') ? '/' : '/studio', 'Set-Cookie': 'sd_studio=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0'});
     return res.end();
   }
-  if (p === '/studio' || p === '/studio/') {
+  // studio.<her domain> is the whole studio's own address: its front page is the hub.
+  const hub = /^studio\./i.test(req.headers.host ?? '');
+  if (p === '/studio' || p === '/studio/' || (hub && (p === '/' || p === '/draw' || p === '/draw/'))) {
     if (!full) return studioLogin(res);
     req.url = '/';
   }
   if (full) {
     if (req.method === 'POST' && (req.headers['x-studio'] !== '1' || !req.headers.origin || new URL(req.headers.origin).host !== req.headers.host)) throw httpError(403, 'Forbidden');
     // Hand the request to the studio as if it came from this Mac.
-    if (p !== '/' && p !== '/draw' && p !== '/draw/') {
+    if (hub || (p !== '/' && p !== '/draw' && p !== '/draw/')) {
       req.headers.host = `localhost:${PORT}`;
       if (req.headers.origin) req.headers.origin = `http://localhost:${PORT}`;
       return handle(req, res);

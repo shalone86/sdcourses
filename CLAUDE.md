@@ -260,7 +260,7 @@ If it's already running, `npm start` just opens the page.
   a row, column or grid of frames at any whole-number enlargement, into its frames).
   Her Pixel Studio .psp files can't be read; she exports PNG or a sprite sheet.
 - **The whole studio from other computers:** the same door as the drawing page (port 5179 and her
-  https address, `STUDIO_DRAW_DOMAIN`), at `/studio`: `https://pixel.shalonely.com/studio`. It asks for
+  https address, `STUDIO_DRAW_DOMAIN`), at its own address `https://studio.shalonely.com` (any host starting `studio.` opens the hub; `/studio` on the drawing address works too; pixel.shalonely.com stays the pixel editor; both are lines in `~/.cloudflared/config.yml`, tunnel `kokoro-voice`, which also carries her voice services). It asks for
   `STUDIO_PASSWORD` from .env (she types it there, 10 or more characters; without it the door stays shut;
   wrong tries wait longer and longer). Signed in, a computer can do everything this Mac's page can,
   recording included (it is https), also send to Ghost and Put online: her choice (`studioSignedIn`,
