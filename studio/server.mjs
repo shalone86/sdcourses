@@ -23,6 +23,7 @@ import * as esbuild from 'esbuild';
 import {importImage, importUpload, searchImages, sourceList} from './images.mjs';
 import {battleProps, battleSlug, listBattles, newBattle, saveBattle} from '../scripts/battles.mjs';
 import {cartPath, exportTown, listTowns, loadTown, newTown, packTown, saveTown, townSlug} from '../scripts/town.mjs';
+import {listSongs, newSong, saveSong, setSongFile, songArt, songProps, songSlug} from '../scripts/songs.mjs';
 import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCast, saveColors, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
@@ -435,9 +436,11 @@ const recordingExt = (type) => (isVideo(type) ? (/mp4/.test(type) ? '.mp4' : '.w
 // ---------- long jobs (render, publish): one at a time ----------
 
 let job = null;
+/** A song's finished video, if it has been made. */
+const songVideo = (name) => { const f = path.join('dist', 'songs', name, `${name}.mp4`); const full = path.join(ROOT, f); return fs.existsSync(full) ? {file: f, at: Math.round(fs.statSync(full).mtimeMs), mb: Math.round(fs.statSync(full).size / 1e5) / 10} : null; };
 
 function startJob(kind, id, script) {
-  if (job?.running) throw httpError(409, `Still busy: ${job.kind === 'render' ? 'making the video' : 'sending to Ghost'}`);
+  if (job?.running) throw httpError(409, `Still busy: ${job.kind === 'publish' ? 'sending to Ghost' : 'making a video'}`);
   job = {kind, id, running: true, ok: null, startedAt: Date.now(), endedAt: null, step: 'Starting…', progress: null, log: '', error: null, link: null};
   const current = job;
   const child = spawn(process.execPath, [path.join(ROOT, script), id], {cwd: ROOT, env: {...process.env, STUDIO: '1', FORCE_COLOR: '0'}});
@@ -453,7 +456,7 @@ function startJob(kind, id, script) {
     current.endedAt = Date.now();
     current.ok = code === 0;
     if (code !== 0) current.error = errorMessage(current.log) || `Stopped with code ${code}`;
-    else current.step = kind === 'render' ? 'Done' : 'Saved to Ghost as a draft';
+    else current.step = kind === 'publish' ? 'Saved to Ghost as a draft' : 'Done';
     // Sent to Ghost: back the lesson up right away.
     if (code === 0 && kind === 'publish') backupSoon(id, lessonPaths(id), `${id} (sent to Ghost)`, true);
   });
@@ -590,6 +593,12 @@ async function handle(req, res) {
     }
     if (p === '/battles.js') return sendFile(req, res, path.join(ROOT, 'studio/battles.js'));
     if (p === '/town.js') return sendFile(req, res, path.join(ROOT, 'studio/town.js'));
+    // Music videos (studio/songs.js): songs/<name>/, scripts/songs.mjs.
+    if (p === '/songs.js') return sendFile(req, res, path.join(ROOT, 'studio/songs.js'));
+    if (p === '/api/songs') return json(res, 200, listSongs());
+    if (p === '/api/song') { try { return json(res, 200, {...songProps(songSlug(url.searchParams.get('name'))), video: songVideo(songSlug(url.searchParams.get('name')))}); } catch (e) { throw httpError(404, e.message); } }
+    if (p === '/api/song/art') { try { return json(res, 200, songArt(songSlug(url.searchParams.get('name')), url.searchParams.get('sprite'))); } catch (e) { throw httpError(404, e.message); } }
+    if (p.startsWith('/song-video/')) { const n = songSlug(path.basename(p, '.mp4')); const f = path.join(ROOT, 'dist', 'songs', n, `${n}.mp4`); if (!fs.existsSync(f)) throw httpError(404, 'Not found'); return sendFile(req, res, f); }
     if (p === '/api/towns') return json(res, 200, listTowns());
     if (p === '/api/town') { try { return json(res, 200, {town: loadTown(townSlug(url.searchParams.get('name')))}); } catch (e) { throw httpError(404, e.message); } }
     // Pico Parish tab: the site's catalog, and its built page to preview.
@@ -681,6 +690,34 @@ async function handle(req, res) {
       return json(res, 200, {clip, cast: figureCast()});
     }
     if (/^\/api\/battle(\/new)?$/.test(p)) backupSoon('battles', ['battles'], 'battles');
+    // Music videos: the song file, its slides, the sound and MIDI she picks, and making the video.
+    if (/^\/api\/song(\/new|\/file)?$/.test(p)) backupSoon('songs', ['songs'], 'songs');
+    if (p === '/api/song') {
+      const body = await readJson(req);
+      try { return json(res, 200, {name: saveSong(songSlug(body.name), body.song), songs: listSongs()}); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/song/new') {
+      const body = await readJson(req);
+      try { return json(res, 200, {name: newSong(body.name, body.title), songs: listSongs()}); } catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/song/file') {
+      // The song's sound (mp3, wav…) or its MIDI, sent as the file itself.
+      const buf = await readBody(req, 300e6);
+      try { setSongFile(songSlug(url.searchParams.get('name')), url.searchParams.get('kind') === 'midi' ? 'midi' : 'audio', buf, url.searchParams.get('ext')); return json(res, 200, {ok: true}); }
+      catch (e) { throw httpError(400, e.message); }
+    }
+    if (p === '/api/song/render') {
+      const body = await readJson(req);
+      try { songProps(songSlug(body.name)); } catch (e) { throw httpError(400, e.message); }
+      return json(res, 200, startJob('song', songSlug(body.name), 'scripts/song.mjs'));
+    }
+    if (p === '/api/song/reveal') {
+      const body = await readJson(req);
+      const v = songVideo(songSlug(body.name));
+      if (!v) throw httpError(404, 'Make the video first.');
+      spawn('open', ['-R', path.join(ROOT, v.file)], {stdio: 'ignore'});
+      return json(res, 200, {ok: true});
+    }
     // The Town tab (studio/town.js): towns/<name>.yml, and the PICO-8 cart made from it (scripts/town.mjs).
     if (/^\/api\/town(\/new)?$/.test(p)) backupSoon('towns', ['towns'], 'towns');
     if (p === '/api/town') {

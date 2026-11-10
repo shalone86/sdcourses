@@ -2,6 +2,7 @@ import {Composition} from 'remotion';
 import {Cover, type CoverProps} from './Cover';
 import {KidsThumb, type KidsThumbProps} from './KidsThumb';
 import {Lesson} from './Lesson';
+import {MusicVideo, songFrames, type SongProps} from './MusicVideo';
 import {BattleClip, battleClipFrames, type BattleClipProps} from './scenes/Battle';
 import {FPS} from './theme';
 import type {LessonProps} from './types';
@@ -33,6 +34,10 @@ export const Root: React.FC = () => (
   <Composition id="Battle" component={BattleClip} fps={FPS} width={1920} height={1080} durationInFrames={30}
     defaultProps={{battle: {name: 'empty', view: [16, 9], map: ['g'], tiles: {}, units: [], script: []}, arts: {}} satisfies BattleClipProps}
     calculateMetadata={({props}) => ({durationInFrames: battleClipFrames(props, FPS)})} />
+  {/* A music video (npm run song -- <name>) */}
+  <Composition id="MusicVideo" component={MusicVideo} fps={FPS} width={1920} height={1080} durationInFrames={30}
+    defaultProps={{song: {title: 'Song', slides: []}, audio: null, duration: 10, parts: {}, arts: {}} satisfies SongProps}
+    calculateMetadata={({props}) => ({durationInFrames: songFrames(props, FPS)})} />
   {/* Course cover image for Ghost (npm run cover -- <course>) */}
   <Composition id="Cover" component={Cover} fps={30} width={1200} height={675} durationInFrames={1}
     defaultProps={{title: 'Course title', icon: 'book-open'} satisfies CoverProps} />

@@ -78,6 +78,7 @@ Name a branch for the work, in plain words: `game/4-player-grace-piles`, not `cl
 | `npm run studio-export` / `studio-import` | sync a lesson with the Lesson Studio |
 | `npm run characters -- <character> <animation>` | draw a Blender character's clip now (the studio does it on demand); `-- --manifest`, `-- --all-rest`, `-- --build <old.blend>` (see `blender/README.md`) |
 | `npm run split -- <c>/<l> <file>` | split a one-take recording into sections |
+| `npm run song -- <name>` | make a music video from `songs/<name>/` (`dist/songs/<name>/<name>.mp4`) |
 
 Rendering on the Mac needs nothing extra (Remotion downloads its own
 Chrome). In the cloud container, prefix with
@@ -118,11 +119,12 @@ if it stops; logs in `~/Library/Logs/sdcourses-studio.log`. After changing
 studio or script code, `npm run studio-restart` (don't start a second copy).
 If it's already running, `npm start` just opens the page.
 
-- **Home:** a fresh start opens on Home (`homeView` in studio/index.html): the last lesson with
+- **Home and the tabs:** a fresh start opens on Home (`homeView` in studio/index.html): the last lesson with
   its three tabs (Script & recording, Timing, Video & Ghost), Open another lesson, + New lesson,
-  and a card for each tool (Pixel art, Battles, Town, Pico Parish; `TOOLS`). A refresh reopens
-  where she was (`sessionStorage['studio.open']` tells the two apart). Tools show only ← Home and
-  their name; lessons show ← Home, the title and the three tabs. A new tool gets a card there.
+  and a card for each tool (Pixel art, Battles, Town, Music videos, Pico Parish; `TOOLS`). A refresh reopens
+  where she was (`sessionStorage['studio.open']` tells the two apart). Off Home, every tab is across the
+  top after ← Home (the three lesson tabs, then the tools), so she switches straight between them; a
+  lesson's title shows only on its own tabs. A new tool gets a tab there and a card on Home.
 - **Script & recording:** one slide per section. Her edits are saved straight
   into lesson.yml (`applyEdits` in `scripts/studio.mjs` splices only the
   changed text), then the quote check runs. Changing the script of an
@@ -270,6 +272,20 @@ If it's already running, `npm start` just opens the page.
   (template.html → index.html) and commits there; Check links opens every link. Preview at
   /pp/index.html; saves are pushed to the private repo shalone86/picoparish. **Put online** runs its `deploy.mjs` (build, refuse uncommitted work,
   `wrangler deploy` to the Cloudflare Worker `picoparish`, custom domains picoparish.com and www).
+- **Music videos tab** (`studio/songs.js`, `scripts/songs.mjs`, `video/MusicVideo.tsx`): she makes the song in
+  Logic; here she makes its video (1920 × 1080). A song is `songs/<name>/`: `song.yml`, the sound
+  (`song.mp3`/wav/m4a/aiff) and, if she has it, `song.mid` (Logic: File → Export → All Tracks as MIDI File).
+  One slide per line of the words (**Paste all the words…** makes them; a slide with no words is fine), each
+  with a start time: **Tap the lines** (Space as each line starts, from the picked slide) or **Tap the words**
+  (Space on every word: a sing-along, the word lights up when sung; `times`), or typed / "Starts now". Per
+  slide: a background (the song's color with bouncing shapes, another color, or one of her drawings) and
+  characters (any saved drawing), both "same as the slide before" unless changed; she drags a character on
+  the paused video and resizes it by its corner. Each character **Dances to** the beat or one part of the
+  song and hops, sways, grows or only changes frame on each hit. With a MIDI the parts are her tracks, exact
+  (regions with the same name are one part); without one the beat, drums, bass and melody are guessed from
+  the sound (`songParts`, cached in `parts.json`). **Make the video** (or `npm run song -- <name>`, with
+  `--seconds <n>` or `--still <s>` for a quick look) writes `dist/songs/<name>/<name>.mp4`; nothing is
+  uploaded anywhere. The words on the slides are hers: never write or change lyrics for her.
 - **Town tab** (`studio/town.js`, `scripts/town.mjs`): she lays out a town for a PICO-8 game, 64 × 64 squares,
   everything snapped to the 8-pixel squares. Tools: paint or fill the ground with her `tile-*` drawings (a
   checkbox says which tiles can't be walked on), put down buildings and things (any saved drawing; first frame),

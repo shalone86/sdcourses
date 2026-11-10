@@ -6,6 +6,7 @@ import {createRoot} from 'react-dom/client';
 import {battleAt, battleSeconds, CELL, unitColors, unitPos} from '../../video/battle';
 import {KidsThumb, type KidsThumbProps} from '../../video/KidsThumb';
 import {Lesson} from '../../video/Lesson';
+import {MusicVideo, songFrames, timedSlides, type SongProps} from '../../video/MusicVideo';
 import {BattleClip, type BattleClipProps} from '../../video/scenes/Battle';
 import {FPS} from '../../video/theme';
 import type {LessonProps} from '../../video/types';
@@ -94,4 +95,34 @@ function mountBattle(el: HTMLElement, initial: BattleClipProps) {
   };
 }
 
-(window as any).StudioPlayer = {mount, mountThumb, mountBattle, engine: {battleAt, battleSeconds, unitColors, unitPos, CELL, FPS}};
+// A music video (Music videos tool): the song with its slides, redrawn as she changes them.
+function mountSong(el: HTMLElement, initial: SongProps) {
+  const root = createRoot(el);
+  const ref = createRef<PlayerRef>();
+  let props = initial;
+  const listeners: ((f: number) => void)[] = [];
+  const draw = () => root.render(
+    <Player ref={ref} component={MusicVideo as any} inputProps={props} durationInFrames={songFrames(props, FPS)} fps={FPS}
+      compositionWidth={1920} compositionHeight={1080} style={{width: '100%', aspectRatio: '16 / 9', borderRadius: 10, overflow: 'hidden'}}
+      controls={false} clickToPlay={false} acknowledgeRemotionLicense />,
+  );
+  draw();
+  const attach = () => {
+    const p = ref.current;
+    if (!p) { requestAnimationFrame(attach); return; }
+    p.addEventListener('frameupdate', (e: any) => listeners.forEach((cb) => cb(e.detail.frame)));
+  };
+  attach();
+  return {
+    setProps(p: SongProps) { props = p; draw(); },
+    seek(f: number) { ref.current?.seekTo(Math.max(0, Math.round(f))); },
+    play() { ref.current?.play(); },
+    pause() { ref.current?.pause(); },
+    toggle() { ref.current?.toggle(); },
+    playing() { return !!ref.current?.isPlaying(); },
+    frame() { return ref.current?.getCurrentFrame() ?? 0; },
+    onFrame(cb: (f: number) => void) { listeners.push(cb); },
+  };
+}
+
+(window as any).StudioPlayer = {mount, mountThumb, mountBattle, mountSong, timedSlides, engine: {battleAt, battleSeconds, unitColors, unitPos, CELL, FPS}};

@@ -36,3 +36,14 @@ sprites/.deleted/
 
 # Her devices for npm run ship (addresses stay on her computer)
 game/devices.json
+
+# Music videos: worked out from the song and its MIDI when needed
+songs/*/parts.json
+songs/*/song.beats.json
+# Her songs (sound and MIDI) stay on this Mac; only the slides file is backed up
+songs/*/song.mp3
+songs/*/song.wav
+songs/*/song.m4a
+songs/*/song.aif
+songs/*/song.aiff
+songs/*/song.mid
