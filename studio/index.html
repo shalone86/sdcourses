@@ -154,6 +154,11 @@ body.mode-home .tabs,body.mode-home .meta,body.mode-tool header{display:none}
 .tabs button{white-space:nowrap;padding:12px 8px}
 .tabs #go-home{flex:0 0 auto;color:var(--ink)}
 .tabs-gap{flex:0 0 1px;background:var(--rule);margin:6px 4px}
+.title-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
+.title-row h1{flex:1 1 320px}
+.tabs.lesson-tabs{margin:0;flex:0 1 auto;flex-wrap:nowrap}
+.tabs.lesson-tabs button{flex:0 0 auto;padding:11px 14px}
+body.lesson-off .lesson-tabs{display:none}
 .home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
 .home-tool{font:inherit;color:inherit;text-align:left;cursor:pointer;gap:6px}
 .home-tool:hover{border-color:var(--accent)}
@@ -193,6 +198,9 @@ body.mode-home .tabs,body.mode-home .meta,body.mode-tool header{display:none}
   .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .tabs::-webkit-scrollbar{display:none}
   .tabs button{flex:0 0 auto;padding:12px 12px}
+  .title-row h1{flex-basis:100%}
+  .tabs.lesson-tabs{flex:1 1 100%}
+  .tabs.lesson-tabs button{flex:1 1 0;padding:10px 4px;font-size:14px;white-space:normal;line-height:1.15}
   .px-wrap{display:flex;flex-direction:column;align-items:stretch;gap:10px}
   .px-left>*,.px-side>*{min-width:0;max-width:100%}
   .px-wrap>.px-left,.px-wrap>.px-side{display:contents}
@@ -324,9 +332,6 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
 <div class="wrap">
   <div class="tabs" role="tablist">
     <button id="go-home" type="button">← Home</button>
-    <button role="tab" id="tab-script" aria-selected="true">Script &amp; recording</button>
-    <button role="tab" id="tab-timing" aria-selected="false">Timing</button>
-    <button role="tab" id="tab-video" aria-selected="false">Video &amp; Ghost</button>
     <span class="tabs-gap" aria-hidden="true"></span>
     <button role="tab" id="tab-pixels" aria-selected="false">Pixel art</button>
     <button role="tab" id="tab-battles" aria-selected="false">Battles</button>
@@ -336,7 +341,15 @@ textarea.quote-edit{font-style:italic;border-left:4px solid var(--gold)}
   </div>
   <header>
     <div class="eyebrow" id="eyebrow">Lesson Studio</div>
-    <h1 id="title">Loading…</h1>
+    <div class="title-row">
+      <h1 id="title">Loading…</h1>
+      <!-- The lesson's own three tabs, beside its title (the tools are in the bar above). -->
+      <div class="tabs lesson-tabs" role="tablist" aria-label="This lesson">
+        <button role="tab" id="tab-script" aria-selected="true">Script &amp; recording</button>
+        <button role="tab" id="tab-timing" aria-selected="false">Timing</button>
+        <button role="tab" id="tab-video" aria-selected="false">Video &amp; Ghost</button>
+      </div>
+    </div>
     <div class="meta"><span id="status"></span><select id="pick" hidden aria-label="Choose a lesson"></select><button class="btn" id="new-lesson" type="button">+ New lesson</button></div>
   </header>
   <main id="view"></main>
@@ -448,6 +461,7 @@ function renderHeader() {
   // Three looks: Home (just the cards), a tool, a lesson (its title too). Off Home, every tab is across the top, after ← Home.
   const mode = S.tab === 'home' ? 'home' : TOOLS[S.tab] ? 'tool' : 'lesson';
   for (const m of ['home', 'tool', 'lesson']) document.body.classList.toggle('mode-' + m, m === mode);
+  document.body.classList.toggle('lesson-off', !S.L || S.tab === 'new' || S.tab === 'archive');
   document.getElementById('go-home').disabled = !!(S.rec || S.busy);
   const L = mode === 'lesson' ? S.L : null;
   document.getElementById('eyebrow').textContent = L ? L.course + ' · Lesson ' + L.number : '';

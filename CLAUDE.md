@@ -122,9 +122,9 @@ If it's already running, `npm start` just opens the page.
 - **Home and the tabs:** a fresh start opens on Home (`homeView` in studio/index.html): the last lesson with
   its three tabs (Script & recording, Timing, Video & Ghost), Open another lesson, + New lesson,
   and a card for each tool (Pixel art, Battles, Town, Music videos, Pico Parish; `TOOLS`). A refresh reopens
-  where she was (`sessionStorage['studio.open']` tells the two apart). Off Home, every tab is across the
-  top after ← Home (the three lesson tabs, then the tools), so she switches straight between them; a
-  lesson's title shows only on its own tabs. A new tool gets a tab there and a card on Home.
+  where she was (`sessionStorage['studio.open']` tells the two apart). Off Home, the tools are across the
+  top after ← Home, and a lesson's three tabs sit beside its title (`.lesson-tabs` in the header), so she
+  switches straight between them; a lesson's title shows only on its own tabs. A new tool gets a tab there and a card on Home.
 - **Script & recording:** one slide per section. Her edits are saved straight
   into lesson.yml (`applyEdits` in `scripts/studio.mjs` splices only the
   changed text), then the quote check runs. Changing the script of an
