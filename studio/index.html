@@ -186,7 +186,7 @@ body.mode-home .tabs,body.mode-home .meta,body.mode-tool header{display:none}
 .tl-scene.moved{box-shadow:0 0 0 2px var(--ok) inset}
 .px-wrap{display:grid;grid-template-columns:minmax(0,520px) minmax(0,1fr);gap:22px;align-items:start}
 @media (max-width:900px){.px-wrap{grid-template-columns:1fr}}
-.px-quick{display:none}
+.px-quick,.px-sheets{display:none}
 /* Phones and narrow upright screens: the tools, colors and frames sit right under the drawing;
    the rest (new, open, size, name, copy and paste…) comes after. */
 @media (max-width:700px){
@@ -207,8 +207,15 @@ body.mode-home .tabs,body.mode-home .meta,body.mode-tool header{display:none}
   .px-side>.px-palette .px-swatch{width:38px;height:38px}
   .px-side>.px-frames-label{order:6}
   .px-side>.px-frames{order:7}
-  .px-side>.px-palrow{order:8}
-  .px-left>.ref-box,.px-left>details{order:9}
+  .px-side>.px-frames-del{order:7}
+  .px-side>.px-sheets{order:8;display:flex}
+  .px-side>.px-sheets button{flex:1 1 0;padding:13px 4px;white-space:nowrap}
+  .px-wrap [data-g],.px-left>.ref-box,.px-left>details{order:9}
+  .px-wrap:not([data-sheet=edit]) [data-g=edit],.px-wrap:not([data-sheet=file]) [data-g=file],
+  .px-wrap:not([data-sheet=more]) [data-g=more],.px-wrap:not([data-sheet=more])>.px-left>.ref-box{display:none!important}
+  .px-wrap .px-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .px-wrap .px-actions .btn{white-space:normal;padding-left:8px;padding-right:8px}
+  .px-wrap .px-actions label,.px-wrap .px-actions .primary{grid-column:1/-1}
   .px-keys{display:none}
   .card,.small{overflow-wrap:anywhere}
   .seg{max-width:100%;overflow-x:auto;scrollbar-width:none}

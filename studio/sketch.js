@@ -374,6 +374,10 @@ window.SketchTab = (() => {
     function draw() {
       const a = P.art;
       const btn = (text, onclick, attrs = {}) => h('button', {class: 'btn', text, onclick, ...attrs});
+      // Phones: everything under the frames is in three drawers (Copy & flip, Drawing, More); one opens at a time.
+      const g = (k, el) => { if (el) el.dataset.g = k; return el; };
+      const sheets = h('div', {class: 'seg px-sheets', role: 'group', 'aria-label': 'More'}, [['edit', 'Copy & flip'], ['file', 'Drawing'], ['more', 'More']]
+        .map(([k, t]) => h('button', {'aria-pressed': P.sheet === k ? 'true' : 'false', 'aria-expanded': P.sheet === k ? 'true' : 'false', text: t, onclick: () => { P.sheet = P.sheet === k ? null : k; draw(); }})));
       const mine = P.list.filter((s) => s.kind === 'sketch');
       const startNew = async () => {
         if (dirty() && !(await ask('Leave this sketch without saving?'))) return;
@@ -420,19 +424,20 @@ window.SketchTab = (() => {
       };
       const selecting = !!(P.sel || P.float);
       body.replaceChildren(...[
-        pick,
-        h('div', {class: 'row', style: {gap: '8px'}}, [size,
+        g('file', pick),
+        h('div', {class: 'row', 'data-g': 'file', style: {gap: '8px'}}, [size,
           h('label', {class: 'btn px-upload', title: 'Pictures from Procreate or anywhere: each becomes a frame (from this one on)'}, ['Upload pictures…',
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
-        name,
+        g('file', name),
         h('div', {class: 'row px-quick'}, [btn('Undo', undo), h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save})]),
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, TOOLS.map(tool)),
         h('div', {class: 'small muted px-keys', text: 'Keys: B brush · E eraser · F fill · S line → box → circle · C next color · X color before · I pick a color · M select (Delete clears it) · . next frame · , frame before'}),
         h('div', {class: 'row px-toolopt', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Brush size:'}), brushes]),
         SHAPES.includes(P.tool) && P.tool !== 'line' ? h('label', {class: 'small px-toolopt'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
-        h('div', {class: 'row px-palrow', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
+        h('div', {class: 'row px-palrow', 'data-g': 'more', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
         h('div', {class: 'px-palette'}, [...colors.map(swatch), h('label', {class: 'px-any', title: 'Any color'}, [custom, h('span', {text: 'Any color'})])]),
-        h('div', {class: 'row px-actions', style: {gap: '8px', flexWrap: 'wrap'}}, [
+        sheets,
+        h('div', {class: 'row px-actions', 'data-g': 'edit', style: {gap: '8px', flexWrap: 'wrap'}}, [
           btn('Undo', undo),
           btn('Copy', () => copy(false)), btn('Copy all frames', () => copy(true)), btn('Cut', cut),
           btn('Paste', () => paste(false)), btn('Paste in every frame', () => paste(true)),
@@ -440,14 +445,16 @@ window.SketchTab = (() => {
           btn('Flip ↔', () => flip('h')), btn('Flip ↕', () => flip('v')),
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.every || null, onchange: (e) => { P.every = e.target.checked; }}), ' Fill, move, cut, flip and clear in every frame']),
           btn('Clear this frame', () => { letGo(); remember([P.frame]); cur().getContext('2d').clearRect(0, 0, W(), H()); P.changed = true; draw(); }),
+          selecting ? btn('Done moving', () => { letGo(); draw(); }) : null,
+        ]),
+        h('div', {class: 'row px-actions', 'data-g': 'file', style: {gap: '8px', flexWrap: 'wrap'}}, [
           h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? 'Save' : 'Saved', onclick: save}),
           a.slug ? btn('Delete this sketch', remove) : null,
           btn('Export frame (PNG)', () => exportArt(false), {title: 'This frame as a picture'}),
           a.frames.length > 1 ? btn('Export animation (GIF)', () => exportArt(true), {title: 'All the frames as an animated GIF, at the preview speed'}) : null,
-          selecting ? btn('Done moving', () => { letGo(); draw(); }) : null,
         ]),
-        h('div', {class: 'small muted', 'data-note': '', text: selecting ? 'Drag inside the box to move it; drag its corner square to resize (Shift keeps the shape).' : 'Copy, Cut and Flip use the whole picture when nothing is selected.'}),
-        h('div', {class: 'row', style: {gap: '14px'}}, [
+        h('div', {class: 'small muted', 'data-note': '', 'data-g': 'edit', text: selecting ? 'Drag inside the box to move it; drag its corner square to resize (Shift keeps the shape).' : 'Copy, Cut and Flip use the whole picture when nothing is selected.'}),
+        h('div', {class: 'row', 'data-g': 'more', style: {gap: '14px'}}, [
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.mirror || null, onchange: (e) => { P.mirror = e.target.checked; drawCanvas(); }}), ' Mirror (draw both sides)']),
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.onion || null, onchange: (e) => { P.onion = e.target.checked; drawCanvas(); }}), ' Show the frame before, faintly']),
         ]),
@@ -458,11 +465,12 @@ window.SketchTab = (() => {
           a.frames.length > 1 ? btn('◀ Move left', () => moveFrame(P.frame, P.frame - 1), {disabled: P.frame === 0 || null}) : null,
           a.frames.length > 1 ? btn('Move right ▶', () => moveFrame(P.frame, P.frame + 1), {disabled: P.frame === a.frames.length - 1 || null}) : null,
           a.frames.length > 1 ? btn('Delete this frame', async () => { if (!(await ask('Delete frame ' + (P.frame + 1) + '?'))) return; letGo(); remember(a.frames.map((_, i) => i)); a.frames.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); P.changed = true; draw(); }) : null]),
-        h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
+        h('div', {class: 'row', 'data-g': 'more', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; P.changed = true; startPreview(); markDirty(); }})])]),
-        h('div', {class: 'small muted', text: 'Saved sketches go in a lesson like pixel art: Timing tab, + Add a picture here → Pixel animation.'}),
+        h('div', {class: 'small muted', 'data-g': 'more', text: 'Saved sketches go in a lesson like pixel art: Timing tab, + Add a picture here → Pixel animation.'}),
       ].filter(Boolean));
+      body.parentNode.dataset.sheet = P.sheet ?? '';
       drawCanvas();
       startPreview();
       markDirty();

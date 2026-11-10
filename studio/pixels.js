@@ -886,6 +886,10 @@ window.PixelTab = (() => {
     function draw() {
       const a = P.art;
       const btn = (text, onclick, attrs = {}) => h('button', {class: 'btn', text, onclick, ...attrs});
+      // Phones: everything under the frames is in three drawers (Copy & flip, Drawing, More); one opens at a time.
+      const g = (k, el) => { if (el) el.dataset.g = k; return el; };
+      const sheets = h('div', {class: 'seg px-sheets', role: 'group', 'aria-label': 'More'}, [['edit', 'Copy & flip'], ['file', 'Drawing'], ['more', 'More']]
+        .map(([k, t]) => h('button', {'aria-pressed': P.sheet === k ? 'true' : 'false', 'aria-expanded': P.sheet === k ? 'true' : 'false', text: t, onclick: () => { P.sheet = P.sheet === k ? null : k; draw(); }})));
       const openSaved = async (s, copy) => {
         if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
         // The copied pixels stay, so they can be pasted into the drawing opened now.
@@ -1151,32 +1155,33 @@ window.PixelTab = (() => {
       }
 
       body.replaceChildren(...[
-        pick,
-        h('button', {class: 'btn', 'aria-expanded': P.bases.open ? 'true' : 'false', text: 'New character from a base…', onclick: async () => {
+        g('file', pick),
+        h('button', {class: 'btn', 'data-g': 'more', 'aria-expanded': P.bases.open ? 'true' : 'false', text: 'New character from a base…', onclick: async () => {
           P.bases.open = !P.bases.open;
           if (P.bases.open) { try { const d = await api('/api/puppet-bases'); P.bases.list = d.bases; P.bases.versions = d.versions; P.bases.cast = d.cast ?? []; } catch {} }
           draw();
         }}),
-        basesPanel,
-        h('button', {class: 'btn', 'aria-expanded': P.poses.open ? 'true' : 'false', text: 'Copy a pose to other characters…', onclick: openPoses}),
-        posesPanel,
-        versionBox,
-        h('div', {class: 'row', style: {gap: '8px'}}, [size,
+        g('more', basesPanel),
+        h('button', {class: 'btn', 'data-g': 'more', 'aria-expanded': P.poses.open ? 'true' : 'false', text: 'Copy a pose to other characters…', onclick: openPoses}),
+        g('more', posesPanel),
+        g('file', versionBox),
+        h('div', {class: 'row', 'data-g': 'file', style: {gap: '8px'}}, [size,
           h('label', {class: 'btn px-upload', title: 'Pictures from Procreate, Pixel Studio or anywhere: each becomes a frame (from this one on); a sprite sheet is cut into its frames'}, ['Upload pictures…',
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
-        P.version ? null : name,
-        P.version ? null : comicBox,
+        P.version ? null : g('file', name),
+        P.version ? null : g('file', comicBox),
         h('div', {class: 'row px-quick'}, [btn('Undo', undo), h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved', onclick: save})]),
         h('div', {class: 'seg px-tools', role: 'group', 'aria-label': 'Tool'}, (comic ? [...TOOLS, ['words', 'Words']] : TOOLS).map(tool)),
         wordsBox,
         h('div', {class: 'small muted px-keys', text: 'Keys: B pencil · E eraser · F fill · S line → box → circle · C next color · X color before · I pick a color · M select (Delete clears it) · . next frame · , frame before'}),
         SHAPES.includes(P.tool) && P.tool !== 'line'
           ? h('label', {class: 'small px-toolopt'}, [h('input', {type: 'checkbox', checked: P.filled || null, onchange: (e) => { P.filled = e.target.checked; }}), ' Filled']) : null,
-        h('div', {class: 'row px-palrow', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
+        h('div', {class: 'row px-palrow', 'data-g': 'more', style: {gap: '8px', alignItems: 'center'}}, [h('span', {class: 'small muted', text: 'Colors:'}), paletteSel]),
         h('div', {class: 'px-palette'}, [...colors.map(swatch),
           used.length ? h('span', {class: 'small muted', text: 'In this drawing:'}) : null, ...used.map(swatch),
           h('label', {class: 'px-any', title: 'Any color'}, [custom, h('span', {text: 'Any color'})])]),
-        h('div', {class: 'row px-actions', style: {gap: '8px', flexWrap: 'wrap'}}, [
+        sheets,
+        h('div', {class: 'row px-actions', 'data-g': 'edit', style: {gap: '8px', flexWrap: 'wrap'}}, [
           btn('Undo', undo),
           btn('Copy', () => copy(false), {title: 'From this frame: the selection, or the whole picture'}),
           btn('Copy all frames', () => copy(true), {title: 'The whole animation (or the selected spot in every frame)'}),
@@ -1191,6 +1196,9 @@ window.PixelTab = (() => {
           h('label', {class: 'small', title: 'Drawing, erasing, shapes, fill, moving, cutting, flipping and clearing work on all the frames at once'}, [h('input', {type: 'checkbox', checked: P.every || null, disabled: !!P.float,
             onchange: (e) => { P.every = e.target.checked; }}), ' Draw in every frame (pencil, eraser, shapes, fill, move, cut, flip, clear)']),
           btn('Clear this frame', () => { letGo(); remember(); a.frames[P.frame] = blank(a.width, a.height); draw(); markDirty(); }),
+          selecting ? btn('Done moving', () => { letGo(); draw(); markDirty(); }) : null,
+        ]),
+        h('div', {class: 'row px-actions', 'data-g': 'file', style: {gap: '8px', flexWrap: 'wrap'}}, [
           h('button', {class: 'btn primary', 'data-save': '', disabled: !dirty(), text: dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved', onclick: save}),
           a.slug ? btn('Delete this drawing', remove) : null,
           comic ? btn('Export this panel (PNG)', () => exportComic('panel'), {title: 'The panel showing, with its words, enlarged with sharp pixels'})
@@ -1198,9 +1206,8 @@ window.PixelTab = (() => {
           comic ? btn('Export every panel (PNGs)', () => exportComic('panels'), {title: 'One picture for each panel'}) : null,
           comic ? btn('Export the strip (one PNG)', () => exportComic('strip'), {title: 'Every panel in a row, left to right, with the space between set below'}) : null,
           !comic && a.frames.length > 1 ? btn('Export animation (GIF)', () => exportArt(true), {title: 'All the frames as an animated GIF, at the preview speed'}) : null,
-          selecting ? btn('Done moving', () => { letGo(); draw(); markDirty(); }) : null,
         ]),
-        P.ins.open ? h('div', {class: 'stack', 'data-insert': '', style: {gap: '6px', padding: '8px', border: '1px solid currentColor', borderRadius: '8px'}}, [
+        P.ins.open ? h('div', {class: 'stack', 'data-insert': '', 'data-g': 'edit', style: {gap: '6px', padding: '8px', border: '1px solid currentColor', borderRadius: '8px'}}, [
           h('div', {class: 'row', style: {gap: '14px', justifyContent: 'flex-start', alignItems: 'center'}}, [
             h('strong', {class: 'small', text: 'Click a drawing to put it in this one'}),
             ...[[true, 'All its frames'], [false, 'Just its first frame']].map(([v, t]) => h('label', {class: 'small'}, [
@@ -1208,9 +1215,9 @@ window.PixelTab = (() => {
           ]),
           window.SpriteGallery.picker({items: P.list.filter((s) => s.slug !== a.slug), state: P.ins, onPick: (s) => insert(s, P.ins.all)}),
         ]) : null,
-        h('div', {class: 'small muted', 'data-note': '', text: (selecting ? 'Drag inside the box to move it. Copy, Cut and Flip use the selection.' : 'Copy, Cut and Flip use the whole picture when nothing is selected.')
+        h('div', {class: 'small muted', 'data-note': '', 'data-g': 'edit', text: (selecting ? 'Drag inside the box to move it. Copy, Cut and Flip use the selection.' : 'Copy, Cut and Flip use the whole picture when nothing is selected.')
           + ' Copy all frames, then Paste in another drawing, brings a whole animation across.'}),
-        h('div', {class: 'row', style: {gap: '14px'}}, [
+        h('div', {class: 'row', 'data-g': 'more', style: {gap: '14px'}}, [
           h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.mirror || null, onchange: (e) => { P.mirror = e.target.checked; drawCanvas(); }}), ' Mirror (draw both sides)']),
           comic ? null : h('label', {class: 'small'}, [h('input', {type: 'checkbox', checked: P.onion || null, onchange: (e) => { P.onion = e.target.checked; drawCanvas(); }}), ' Show the frame before, faintly']),
         ]),
@@ -1221,12 +1228,13 @@ window.PixelTab = (() => {
           a.frames.length > 1 ? btn('◀ Move left', () => moveFrame(P.frame, P.frame - 1), {disabled: P.frame === 0 || null}) : null,
           a.frames.length > 1 ? btn('Move right ▶', () => moveFrame(P.frame, P.frame + 1), {disabled: P.frame === a.frames.length - 1 || null}) : null,
         ]),
-        a.frames.length > 1 ? h('div', {class: 'row', style: {gap: '8px'}}, [btn(`🗑 Delete ${Fr} ` + (P.frame + 1), async () => { if (!(await ask(`Delete ${Fr} ` + (P.frame + 1) + '?'))) return; letGo(); remember(); a.frames.splice(P.frame, 1); if (comic) a.words.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); P.word = null; draw(); markDirty(); }, {title: `Delete the ${Fr} that’s showing`})]) : null,
-        comic ? null : h('div', {class: 'row', style: {gap: '14px', alignItems: 'center'}}, [preview,
+        a.frames.length > 1 ? h('div', {class: 'row px-frames-del', style: {gap: '8px'}}, [btn(`🗑 Delete ${Fr} ` + (P.frame + 1), async () => { if (!(await ask(`Delete ${Fr} ` + (P.frame + 1) + '?'))) return; letGo(); remember(); a.frames.splice(P.frame, 1); if (comic) a.words.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); P.word = null; draw(); markDirty(); }, {title: `Delete the ${Fr} that’s showing`})]) : null,
+        comic ? null : h('div', {class: 'row', 'data-g': 'more', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; startPreview(); markDirty(); }})])]),
-        h('div', {class: 'small muted', text: 'Saved drawings can go in any lesson: on the Timing tab, + Add a picture here → Pixel animation.'}),
+        h('div', {class: 'small muted', 'data-g': 'more', text: 'Saved drawings can go in any lesson: on the Timing tab, + Add a picture here → Pixel animation.'}),
       ].filter(Boolean));
+      body.parentNode.dataset.sheet = P.sheet ?? '';
       drawCanvas();
       startPreview();
       markDirty();
