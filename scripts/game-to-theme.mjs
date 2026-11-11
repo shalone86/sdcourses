@@ -4,7 +4,10 @@
 // template from game/theme/ (custom-game.hbs, css/game.css, js/game.js).
 // Writes a new zip beside the old one to upload in Ghost
 // (Settings > Design > Change theme > Upload).
-// Usage: npm run game-to-theme -- <theme.zip> <game.html>...
+// Since 2026-11-10 the games live on Pico Parish (npm run add-game), and the Game template
+// shows them from there, so this is only needed to put the template into the theme:
+//   npm run game-to-theme -- <theme.zip>          (games already in the theme stay, for old links)
+// Usage: npm run game-to-theme -- <theme.zip> [<game.html>...]
 //   e.g. npm run game-to-theme -- ~/Downloads/kids-theme.zip ~/Library/Application\ Support/pico-8/carts/blessed.html
 import fs from 'node:fs';
 import os from 'node:os';
@@ -12,8 +15,8 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 
 const [zip, ...htmls] = process.argv.slice(2);
-if (!zip || !htmls.length) {
-  console.error('usage: npm run game-to-theme -- <theme.zip> <game.html>...');
+if (!zip) {
+  console.error('usage: npm run game-to-theme -- <theme.zip> [<game.html>...]');
   process.exit(1);
 }
 const games = htmls.flatMap((h) => [h, h.replace(/\.html$/, '.js')]);

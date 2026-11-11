@@ -278,6 +278,9 @@ If it's already running, `npm start` just opens the page.
   few minutes after her last change to it, and right after she sends it to
   Ghost (drawings too); the Video & Ghost tab shows the last backup. Commit
   messages start "Studio backup:". Pull before working elsewhere.
+- **Games on the kids site** live on Pico Parish (`play/`, `npm run add-game -- <carts>/<name>.html`,
+  served at picoparish.com/play/<name>); the kids theme's Game template shows them in a frame, so a
+  new game needs only a Ghost page (game/WEBSITE.md). Old copies stay in the theme for old links.
 - **Pico Parish tab** (`studio/picoparish.js`, `scripts/picoparish.mjs`): edits picoparish.com,
   a separate folder and git repo (`PICOPARISH_DIR` in .env, else ~/Projects/picoparish or the
   .gemini scratch copy). Games, videos, books and comics (live / coming soon / hidden, links,

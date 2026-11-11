@@ -1,8 +1,9 @@
 {{!< default}}
 
 {{!-- "Game" template (Page or post settings → Template → Game).
-  The game is the theme file /assets/games/<slug>.html, so the page's slug
-  must match the game's export name (blessed → blessed.html). Everything
+  The game lives on Pico Parish, picoparish.com/play/<slug> (its play/ folder),
+  so the page's slug must match the game's export name (blessed → blessed.html).
+  Adding a game needs no theme upload. Everything
   else (how to play, downloads, credit) is the page's own content. --}}
 {{#post}}
 
@@ -16,7 +17,7 @@
 
     <div class="game-cabinet">
       <div class="game-screen">
-        <iframe src="/assets/games/{{slug}}.html" title="{{title}}"
+        <iframe src="https://picoparish.com/play/{{slug}}" title="{{title}}"
           allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
       </div>
     </div>
