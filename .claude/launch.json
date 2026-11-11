@@ -28,6 +28,21 @@
       "name": "ipad-draw-page",
       "url": "http://localhost:5179",
       "port": 5179
+    },
+    {
+      "name": "picoparish-local",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "-y",
+        "wrangler@4.158.0",
+        "dev",
+        "-c",
+        "/Users/shalone/.gemini/antigravity/scratch/picoparish/wrangler.jsonc",
+        "--port",
+        "8790",
+        "--local"
+      ],
+      "port": 8790
     }
   ]
 }

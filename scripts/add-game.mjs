@@ -1,7 +1,7 @@
 // Puts a PICO-8 web game online on Pico Parish, where the kids site's Game pages show it.
 // Usage: npm run add-game -- <carts folder>/blessed.html [more.html...]
 // Each <name>.html and its <name>.js (from PICO-8's `export <name>.html`) go to Pico Parish's play/
-// folder, with the screen filling its frame (PICO-8 leaves a grey 5% margin); then it is committed,
+// folder, with the screen filling its frame (PICO-8 leaves a grey 5% margin) and ?autoplay starting it; then it is committed,
 // put online (picoparish.com/play/<name>) and pushed. The kids site needs only a page with slug <name>
 // and Template: Game (game/WEBSITE.md).
 import fs from 'node:fs';
@@ -20,7 +20,9 @@ for (const h of htmls) {
   for (const f of [h, js]) if (!fs.existsSync(f)) { console.error(`not found: ${f}`); process.exit(1); }
   fs.writeFileSync(path.join(play, path.basename(h)), fs.readFileSync(h, 'utf8')
     .replace('max-width:95vw; height:100vw; max-height:95vh;', 'max-width:100vw; height:100vw; max-height:100vh;')
-    .replace('background-color:#222;', 'background-color:#000; overflow:hidden;'));
+    .replace('background-color:#222;', 'background-color:#000; overflow:hidden;')
+    // picoparish.com starts the game right on its card (play/<name>?autoplay=1) after a click there
+    .replace('var p8_autoplay = false;', 'var p8_autoplay = /[?&]autoplay/.test(location.search);'));
   fs.copyFileSync(js, path.join(play, path.basename(js)));
 }
 const names = htmls.map((h) => path.basename(h, '.html'));
