@@ -26,7 +26,10 @@ for (const h of htmls) {
     .replace('max-width:95vw; height:100vw; max-height:95vh;', 'max-width:100vw; height:100vw; max-height:100vh;')
     .replace('background-color:#222;', 'background-color:#000; overflow:hidden;')
     // picoparish.com starts the game right on its card (play/<name>?autoplay=1) after a click there
-    .replace('var p8_autoplay = false;', 'var p8_autoplay = /[?&]autoplay/.test(location.search);'));
+    .replace('var p8_autoplay = false;', 'var p8_autoplay = /[?&]autoplay/.test(location.search);')
+    // and with sound at once: the sound player the click on the card made (template.html playHere)
+    .replace('\tvar pico8_audio_context;\n', '\tvar pico8_audio_context;\n\ttry { if (/[?&]autoplay/.test(location.search) && parent !== window && parent.__p8audio) pico8_audio_context = parent.__p8audio; } catch (e) {}\n')
+    .replace('\tif (p8_autoplay)\n\t{\n\t\tvar temp_context', '\tif (p8_autoplay && pico8_audio_context) p8_run_cart();\n\telse if (p8_autoplay)\n\t{\n\t\tvar temp_context'));
   fs.copyFileSync(js, path.join(play, path.basename(js)));
 }
 const names = htmls.map((h) => path.basename(h, '.html'));
