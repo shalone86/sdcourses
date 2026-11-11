@@ -33,6 +33,18 @@ for (const h of htmls) {
   fs.copyFileSync(js, path.join(play, path.basename(js)));
 }
 const names = htmls.map((h) => path.basename(h, '.html'));
+// The computer versions, if PICO-8 made them (`export <name>.bin`, and `<name>4.bin` for a 4-player
+// edition): their zips go to Pico Parish's downloads/<name>/, shown on the game's own page.
+for (const h of htmls) {
+  const n = path.basename(h, '.html');
+  for (const base of [n, n + '4']) {
+    const bin = path.join(path.dirname(h), base + '.bin');
+    if (!fs.existsSync(bin)) continue;
+    fs.mkdirSync(path.join(dir, 'downloads', n), {recursive: true});
+    for (const z of fs.readdirSync(bin).filter((f) => /_(windows|osx|linux|raspi)\.zip$/.test(f))) fs.copyFileSync(path.join(bin, z), path.join(dir, 'downloads', n, z));
+    console.log(`Downloads: ${base}.bin → downloads/${n}/`);
+  }
+}
 const catFile = path.join(dir, 'catalog.json');
 const catalog = JSON.parse(fs.readFileSync(catFile, 'utf8'));
 for (const n of names) {
@@ -42,12 +54,13 @@ for (const n of names) {
     try { saveGif(n, await autoTrailer(n, {playDir: play})); } catch (e) { console.warn(`No trailer for ${n}: ${e.message}`); }
   }
   if (item && !item.gif && fs.existsSync(path.join(dir, 'games', n + '.gif'))) item.gif = `games/${n}.gif`;
+  if (item && !item.url) item.url = `/games/${n}`;
   if (!item) console.log(`Note: Pico Parish has no game "${n}" yet. Add it in the Studio's Pico Parish tab (its id must be "${n}") and it plays on its card.`);
 }
 fs.writeFileSync(catFile, JSON.stringify(catalog, null, 2) + '\n');
 const git = (...a) => execFileSync('git', ['-C', dir, ...a], {encoding: 'utf8'});
-git('add', 'play', 'games', 'catalog.json');
-if (git('status', '--porcelain', '--', 'play', 'games', 'catalog.json').trim()) git('commit', '-qm', `Games: ${names.join(', ')}`);
+git('add', 'play', 'games', 'downloads', 'catalog.json');
+if (git('status', '--porcelain', '--', 'play', 'games', 'downloads', 'catalog.json').trim()) git('commit', '-qm', `Games: ${names.join(', ')}`);
 execFileSync('node', [path.join(dir, 'deploy.mjs')], {stdio: 'inherit'});
 try { git('push', '-q'); } catch (e) { console.warn('Not pushed:', e.message); }
 for (const n of names) console.log(`Online: https://picoparish.com/play/${n}  (kids site: a page with slug "${n}", Template: Game)`);

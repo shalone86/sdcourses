@@ -35,7 +35,8 @@ compressed-size limit, separate from tokens).
 The game lives on Pico Parish (since 2026-11-10): this copies the `.html` and `.js` into its
 `play/` folder (making the screen fill its frame), commits, puts it online at
 `https://picoparish.com/play/blessed` and pushes. Several games can go at once. A fix is the same
-command again. A game with no trailer gets a stand-in GIF (a bot plays 10 seconds); record a real one
+command again. If `<name>.bin` (and `<name>4.bin`) are in the carts folder, their zips become the downloads on the game's
+Pico Parish page. A game with no trailer gets a stand-in GIF (a bot plays 10 seconds); record a real one
 in the Studio's Pico Parish tab (open the game → **● Record a trailer…**, play, **Save the last 10
 seconds**, then Save & build and Put online). (The carts folder is usually `~/Library/Application Support/pico-8/carts`.)
 

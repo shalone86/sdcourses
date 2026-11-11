@@ -269,10 +269,12 @@ window.PicoParishTab = (() => {
         field('Small label above the title', text(it, 'badge', {placeholder: 'e.g. PICO-8 Game · 1P & 4P'})),
         field('One line about it', text(it, 'subtitle'), 'full'),
         field('Longer description', text(it, 'description', {area: true}), 'full'),
-        field('Link', text(it, 'url', {type: 'url', placeholder: 'https://kids.methodiusmedia.com/…'}), 'full'),
+        field('Link', text(it, 'url', {placeholder: it.type === 'game' ? '/games/' + it.id : 'https://kids.methodiusmedia.com/…'}), 'full'),
         h('div', {class: 'pp-field full'}, ['Drawings (★ = the main one, used on video and book covers)',
           drawingList(it.sprites = it.sprites || [], 'Add a drawing to ' + (it.title || 'this entry'), () => { if (!it.heroSprite) it.heroSprite = it.sprites[0] || ''; changed(); draw(); },
             {main: it.heroSprite, onMain: (s) => { it.heroSprite = s; changed(); draw(); }})]),
+        it.type === 'game' ? field('How to play (on its game page)', text(it, 'howToPlay', {area: true, placeholder: 'e.g. Arrow keys walk; Z opens the map…'}), 'full') : null,
+        it.type === 'game' ? field('Credit line (bottom of its game page)', text(it, 'credit'), 'full') : null,
         it.type === 'game' ? gifBox() : null,
         h('div', {class: 'row full'}, [
           h('span', {class: 'small muted', text: 'id: ' + it.id}),
