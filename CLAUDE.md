@@ -281,7 +281,8 @@ If it's already running, `npm start` just opens the page.
 - **Games on the kids site** live on Pico Parish (`play/`, `npm run add-game -- <carts>/<name>.html`,
   served at picoparish.com/play/<name>); the kids theme's Game template shows them in a frame, so a
   new game needs only a Ghost page (game/WEBSITE.md). Old copies stay in the theme for old links.
-  On picoparish.com the trailer GIF turns into the game when clicked. Trailers: `add-game` makes a
+  On picoparish.com the trailer GIF turns into the game when clicked, and each live game has its own page
+  (picoparish.com/games/<id>, built by the site's `gamepage.mjs`, with a sitemap). Trailers: `add-game` makes a
   stand-in for a game with none (`scripts/trailer.mjs`: a bot plays it in Remotion's hidden Chrome);
   she replaces it with **● Record a trailer…** (Pico Parish tab, a game's form): she plays, Save keeps the
   last 10 seconds (`studio/trailer-capture.js`, `/api/pp/trailer`). Her trailers are never replaced.
