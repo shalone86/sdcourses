@@ -29,6 +29,7 @@ import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mj
 import {ghost} from '../scripts/ghost.mjs';
 import {ensureFigure, figureCast} from '../scripts/characters.mjs';
 import {checkLinks, deploySite, saveGif, saveSite, siteFile, siteState} from '../scripts/picoparish.mjs';
+import {framesToGif} from '../scripts/trailer.mjs';
 
 const PORT = Number(process.env.STUDIO_PORT) || 5178; // (the env settings are only for trying a second copy)
 const URL_BASE = `http://localhost:${PORT}`;
@@ -602,6 +603,7 @@ async function handle(req, res) {
     if (p === '/api/towns') return json(res, 200, listTowns());
     if (p === '/api/town') { try { return json(res, 200, {town: loadTown(townSlug(url.searchParams.get('name')))}); } catch (e) { throw httpError(404, e.message); } }
     // Pico Parish tab: the site's catalog, and its built page to preview.
+    if (p === '/trailer-capture.js') return sendFile(req, res, path.join(ROOT, 'studio/trailer-capture.js'));
     if (p === '/picoparish.js') return sendFile(req, res, path.join(ROOT, 'studio/picoparish.js'));
     if (p === '/api/pp') { try { return json(res, 200, siteState()); } catch (e) { throw httpError(404, e.message); } }
     if (p.startsWith('/pp/')) { const f = siteFile(p.slice(4)); if (!f) throw httpError(404, 'Not found'); return sendFile(req, res, f); }
@@ -756,6 +758,11 @@ async function handle(req, res) {
     }
     if (p === '/api/pp/deploy') { try { return json(res, 200, await deploySite()); } catch (e) { throw httpError(409, e.message); } }
     if (p === '/api/pp/links') { const {catalog} = await readJson(req); return json(res, 200, await checkLinks(catalog)); }
+    if (p === '/api/pp/trailer') {
+      // Record a trailer: the last seconds she played, as raw 128 × 128 frames → games/<id>.gif
+      const buf = await readBody(req, 40e6);
+      try { return json(res, 200, {gif: saveGif(id, await framesToGif(new Uint8Array(buf)))}); } catch (e) { throw httpError(400, e.message); }
+    }
     if (p === '/api/pp/gif') {
       const buf = await readBody(req, 15e6);
       try { return json(res, 200, {gif: saveGif(id, buf)}); } catch (e) { throw httpError(400, e.message); }

@@ -29,7 +29,9 @@ export function siteState() {
   const gamesDir = path.join(dir, 'games');
   const gifs = fs.existsSync(gamesDir) ? fs.readdirSync(gamesDir).filter((f) => f.endsWith('.gif')).map((f) => 'games/' + f) : [];
   const built = fs.existsSync(path.join(dir, 'public/index.html')) ? fs.statSync(path.join(dir, 'public/index.html')).mtimeMs : 0;
-  return {dir, catalog, gifs, built};
+  const playDir = path.join(dir, 'play');
+  const plays = fs.existsSync(playDir) ? fs.readdirSync(playDir).filter((f) => f.endsWith('.html')).map((f) => f.slice(0, -5)) : [];
+  return {dir, catalog, gifs, plays, built};
 }
 
 export async function saveSite(catalog) {
@@ -91,6 +93,8 @@ export function siteFile(rel) {
   const dir = siteDir();
   if (rel === '' || rel === 'index.html') return path.join(dir, 'public/index.html');
   if (/^games\/[a-z0-9-]+\.gif$/.test(rel)) return path.join(dir, 'public', rel);
+  // the games themselves (play/<id>.html + .js), for Record a trailer
+  if (/^play\/[a-z0-9-]+\.(html|js)$/.test(rel)) { const f = path.join(dir, rel); return fs.existsSync(f) ? f : null; }
   return null;
 }
 

@@ -71,6 +71,8 @@ window.PicoParishTab = (() => {
 .pp-shade{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:grid;place-items:center;padding:16px}
 .pp-dialog{background:var(--paper);border-radius:12px;padding:16px;width:min(720px,100%);max-height:90vh;overflow:auto;display:flex;flex-direction:column;gap:10px}
 .pp-gif{width:128px;height:128px;image-rendering:pixelated;border-radius:6px;border:1px solid var(--rule);background:#111}
+.pp-rec{display:grid;gap:8px;margin-top:10px;max-width:420px}
+.pp-rec-game{width:100%;aspect-ratio:1;border:0;border-radius:8px;background:#000}
 .pp-sticky{position:sticky;top:0;z-index:5;background:var(--bg);padding-block:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 @media (max-width:700px){.pp-form,.pp-vill .f{grid-template-columns:1fr}.pp-row{grid-template-columns:auto 1fr auto}}
 `;
@@ -117,7 +119,7 @@ window.PicoParishTab = (() => {
     async function load() {
       try {
         const [state, sprites] = await Promise.all([api('/api/pp'), api('/api/sprites')]);
-        P.cat = state.catalog; P.dir = state.dir; P.gifs = state.gifs;
+        P.cat = state.catalog; P.dir = state.dir; P.gifs = state.gifs; P.plays = state.plays || [];
         P.cat.page = P.cat.page || {};
         P.cat.page.menu = P.cat.page.menu || [];
         P.cat.page.tv = P.cat.page.tv || {buildings: [], walkers: [], vehicle: ''};
@@ -135,7 +137,7 @@ window.PicoParishTab = (() => {
       P.busy = true; draw();
       try {
         const r = await post('/api/pp/save', {catalog: P.cat});
-        P.cat = r.state.catalog; P.gifs = r.state.gifs; P.dirty = false;
+        P.cat = r.state.catalog; P.gifs = r.state.gifs; P.plays = r.state.plays || P.plays; P.dirty = false;
         P.msg = {text: `Saved and built (${r.items} entries, ${r.sprites} drawings, ${r.kb} KB).` + (r.committed ? ' Saved in git.' : ''), list: r.warnings};
       } catch (e) { P.msg = {error: true, text: 'Not saved: ' + e.message}; }
       P.busy = false; draw();
@@ -222,12 +224,43 @@ window.PicoParishTab = (() => {
           try { const r = await api('/api/pp/gif?id=' + encodeURIComponent(it.id), {method: 'POST', body: f}); it.gif = r.gif; changed(); draw(); }
           catch (err) { P.msg = {error: true, text: err.message}; draw(); }
         }});
-        return h('div', {class: 'pp-field full'}, ['Gameplay GIF (shown on the cartridge instead of the drawings)',
+        const canPlay = (P.plays || []).includes(it.id);
+        return h('div', {class: 'pp-field full'}, ['Trailer GIF (shown on the cartridge; clicking it starts the game)',
           h('div', {class: 'pp-chips'}, [
             it.gif ? h('img', {class: 'pp-gif', src: '/pp/' + it.gif + '?v=' + Date.now(), alt: ''}) : h('span', {class: 'small muted', text: 'None yet'}),
+            canPlay ? h('button', {class: 'pp-mini', text: '● Record a trailer…', onclick: () => { P.rec = it.id; draw(); }}) : null,
             file, h('button', {class: 'pp-mini', text: it.gif ? 'Replace GIF…' : 'Upload a GIF…', onclick: () => file.click()}),
             it.gif ? h('button', {class: 'pp-mini', text: 'Don’t show it', onclick: () => { delete it.gif; changed(); draw(); }}) : null,
-          ])]);
+          ]),
+          P.rec === it.id ? recorder(it) : null]);
+      };
+      // Record a trailer: the game plays here; the last 10 seconds are always kept, and Save turns
+      // them into games/<id>.gif (studio/trailer-capture.js, /api/pp/trailer).
+      const recorder = (it) => {
+        const frame = h('iframe', {class: 'pp-rec-game', src: '/pp/play/' + encodeURIComponent(it.id) + '.html', title: it.title || it.id, allow: 'autoplay; fullscreen; gamepad'});
+        const status = h('span', {class: 'small muted', text: 'Press ▶ in the game and play. When something good just happened, press Save.'});
+        const save = h('button', {class: 'pp-mini', text: 'Save the last 10 seconds', disabled: true});
+        let rec = null;
+        const live = () => { try { const w = frame.contentWindow; return w && w.p8_is_running ? w.document.getElementById('canvas') : null; } catch { return null; } };
+        frame.addEventListener('load', () => {
+          rec = window.TrailerRecorder(live, {seconds: 10});
+          const tick = setInterval(() => {
+            if (!frame.isConnected) { rec.stop(); clearInterval(tick); return; }
+            const n = rec.count();
+            if (n) { save.disabled = n < rec.fps; status.textContent = `Recording: the last ${Math.floor(n / rec.fps)} of 10 seconds are kept. Save when something good just happened.`; }
+          }, 500);
+        });
+        save.addEventListener('click', async () => {
+          if (!rec) return;
+          save.disabled = true; status.textContent = 'Making the GIF…';
+          try {
+            const r = await api('/api/pp/trailer?id=' + encodeURIComponent(it.id), {method: 'POST', body: rec.pixels()});
+            it.gif = r.gif; P.rec = null; changed();
+            P.msg = {text: 'Trailer saved. Save & build, then Put online, to show it on picoparish.com.'}; draw();
+          } catch (err) { status.textContent = err.message; save.disabled = false; }
+        });
+        return h('div', {class: 'pp-rec'}, [frame, h('div', {class: 'pp-chips'}, [save,
+          h('button', {class: 'pp-mini', text: 'Close', onclick: () => { P.rec = null; draw(); }})]), status]);
       };
       return h('div', {class: 'pp-form'}, [
         field('Title', text(it, 'title', {after: () => { if (/^new-/.test(it.id) && it.title) { it.id = slugify(it.title); P.edit = it.id; } }})),

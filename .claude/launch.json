@@ -43,6 +43,19 @@
         "--local"
       ],
       "port": 8790
+    },
+    {
+      "name": "studio-test",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "studio/server.mjs",
+        "--no-open"
+      ],
+      "env": {
+        "STUDIO_PORT": "5278",
+        "STUDIO_DRAW_PORT": "5279"
+      },
+      "port": 5278
     }
   ]
 }
