@@ -237,9 +237,10 @@ body.lesson-off .lesson-tabs{display:none}
 }
 .px-left{display:flex;flex-direction:column;gap:8px}
 /* Phones held upright: the pixel editor fills the screen like a drawing app (built in studio/pixels.js, class pxm). */
-.pxm-play,.pxm-top,.pxm-tools,.pxm-sheet,.pxm-words{display:none}
+.pxm-play,.pxm-top,.pxm-tools,.pxm-sheet,.pxm-words,.pxm-layers{display:none}
+.px-frame.off,.pxm-frame.off{opacity:.4}
 body:has(.px-wrap.pxm){overflow:hidden}
-.px-wrap.pxm{position:fixed;inset:0;z-index:60;display:grid!important;grid-template-rows:auto minmax(0,1fr) auto auto;grid-template-columns:100%;gap:0;background:#2b2b2e;color:#fff;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.px-wrap.pxm{position:fixed;inset:0;z-index:60;display:grid!important;grid-template-rows:auto minmax(0,1fr) auto auto auto;grid-template-columns:100%;gap:0;background:#2b2b2e;color:#fff;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 .px-wrap.pxm>.px-side{display:contents}
 .px-wrap.pxm .pxm-top{display:block;grid-row:1;background:#111;padding:6px 6px 0}
 .px-wrap.pxm>.px-left{display:flex;grid-row:2;align-items:center;justify-content:center;overflow:hidden;position:relative;container-type:size;touch-action:none;min-height:0}
@@ -262,11 +263,15 @@ body:has(.px-wrap.pxm){overflow:hidden}
 .pxm-b.on{background:#C8F31D}
 .pxm-b[data-save].dirty{background:#FF4F6D;color:#fff}
 .pxm-i,.pxm-i svg{display:block}
-.px-wrap.pxm .pxm-tools{display:grid;grid-row:4;grid-template-rows:repeat(2,52px);grid-auto-flow:column;grid-auto-columns:52px;gap:6px;overflow-x:auto;padding:6px;background:#111;scrollbar-width:none}
+.px-wrap.pxm .pxm-layers{display:flex;grid-row:4;gap:6px;align-items:center;padding:6px 6px 0;background:#111}
+.pxm-layers .pxm-b{width:46px;height:46px}
+.pxm-layers .pxm-frame{width:46px;height:46px}
+.pxm-b[disabled]{opacity:.35}
+.px-wrap.pxm .pxm-tools{display:grid;grid-row:5;grid-template-rows:repeat(2,52px);grid-auto-flow:column;grid-auto-columns:52px;gap:6px;overflow-x:auto;padding:6px;background:#111;scrollbar-width:none}
 .px-wrap.pxm .pxm-words{display:block;grid-row:3;max-height:35vh;overflow:auto;background:var(--paper);color:var(--ink);padding:8px}
 .px-wrap.pxm .pxm-sheet{display:flex;flex-direction:column;gap:12px;position:fixed;left:0;right:0;bottom:0;top:12vh;z-index:61;overflow:auto;background:var(--bg);color:var(--ink);border-radius:16px 16px 0 0;padding:14px 16px calc(24px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.5)}
 .pxm-sheet-head{display:flex;gap:8px;justify-content:space-between;position:sticky;top:-14px;background:var(--bg);padding:4px 0 8px;z-index:1;order:-1}
-.pxm-sheet>.px-quick,.pxm-sheet>.px-tools,.pxm-sheet>.px-palette,.pxm-sheet>.px-keys,.pxm-sheet>.px-toolopt{display:none!important}
+.pxm-sheet>.px-layers,.pxm-sheet>.px-layers-label,.pxm-sheet>.px-quick,.pxm-sheet>.px-tools,.pxm-sheet>.px-palette,.pxm-sheet>.px-keys,.pxm-sheet>.px-toolopt{display:none!important}
 .pxm-sheet>.px-sheets{display:flex;order:8}
 .pxm-sheet>.px-sheets button{flex:1 1 0;padding:13px 4px;white-space:nowrap}
 .px-canvas{width:100%;max-width:512px;aspect-ratio:1;image-rendering:pixelated;border:1px solid var(--rule);border-radius:10px;cursor:crosshair;touch-action:none;background:#fff}

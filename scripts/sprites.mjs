@@ -118,6 +118,14 @@ export function saveSprite(s) {
   const fps = Math.max(1, Math.min(12, Math.round(Number(s.fps) || 4)));
   fs.mkdirSync(SPRITES, {recursive: true});
   const out = {name: String(s.name).trim().slice(0, 60), width: w, height: h, fps, palette, frames: s.frames};
+  // Layers (bottom first) for editing; `frames` stays the visible layers put together, which everything else uses.
+  if (Array.isArray(s.layers) && s.layers.length > 1) {
+    if (s.layers.length > 8) throw new Error('8 layers at most');
+    out.layers = s.layers.map((l, i) => {
+      if (!Array.isArray(l?.frames) || l.frames.length !== s.frames.length || !l.frames.every((fr) => Array.isArray(fr) && fr.length === h && fr.every((row) => allowed.test(row)))) throw new Error('A layer doesn\'t match the drawing');
+      return {name: String(l.name || `Layer ${i + 1}`).slice(0, 30), ...(l.hidden ? {hidden: true} : {}), frames: l.frames};
+    });
+  }
   if (comic) {
     const pick = (v, list, d) => (list.includes(v) ? v : d);
     out.kind = 'comic';

@@ -144,7 +144,7 @@ If it's already running, `npm start` just opens the page.
   (geometry in `video/Camera.tsx`).
 - **Pixel art tab** (`studio/pixels.js`): she draws 1–8 frame pixel
   animations, 1–8 frames (8/16/24/32/48/64 px; pencil, dither, eraser, fill, line, box, circle,
-  select & move, color picker; copy/cut/paste across drawings; **Insert a drawing…** (and Insert on each saved drawing's tile) drops a saved drawing into the open one as a piece she drags and resizes, all its frames or just the first (`insert` → `place` in studio/pixels.js, the same path as Paste); flips; frames can be added empty or as a copy, and moved by dragging or with Move left / right; "Draw in every frame" makes pencil, eraser, shapes, fill and moves change all frames; saved drawings open from a grid of moving thumbnails; mirror, onion
+  select & move, color picker; copy/cut/paste across drawings; **Insert a drawing…** (and Insert on each saved drawing's tile) drops a saved drawing into the open one as a piece she drags and resizes, all its frames or just the first (`insert` → `place` in studio/pixels.js, the same path as Paste); flips; **layers** (up to 8, left/bottom at the back: new, hide, send back / bring forward, delete; saved as `layers` beside `frames`, which stay the visible layers put together, so everything else reads drawings as before; in the editor `frames` is the active layer, `flatOf` in studio/pixels.js puts them together); frames can be added empty or as a copy, and moved by dragging or with Move left / right; "Draw in every frame" makes pencil, eraser, shapes, fill and moves change all frames; saved drawings open from a grid of moving thumbnails; mirror, onion
   skin, speed; keys: B pencil, E eraser, F fill, S line/box/circle, C next / X previous color,
   I pick, M select (Delete clears it), . / , next / previous frame; Export frame (PNG, enlarged) or animation (GIF, made by
   ffmpeg at `/api/sprite/gif`)). **Comic** checkbox: each frame is a panel (up to 12; `kind: comic`), with a
@@ -274,7 +274,7 @@ If it's already running, `npm start` just opens the page.
   sideways instead of wrapping; the Town map has "Slide the map with my finger". A phone held upright gets a full-screen Pixel art editor
   like her drawing app (class `pxm` in studio/pixels.js and index.html): colors and frames with play, save and a
   wrench on top, the drawing in the middle (two fingers zoom and slide; a stroke the first finger began is taken
-  back), two rows of icon tools at the bottom (`studio/px-icons.js`, made by `node scripts/px-icons.mjs` from Lucide),
+  back), a layers strip and two rows of icon tools at the bottom (the rows keep where she slid them) (`studio/px-icons.js`, made by `node scripts/px-icons.mjs` from Lucide),
   everything else in the wrench's sheet. Sketch and landscape/iPad keep the older layout for now. Check new screens at
   375 px wide: nothing may scroll the page sideways.
 - **Posters** (`npm run render`): the title card without her camera clip.

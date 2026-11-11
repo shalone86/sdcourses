@@ -229,17 +229,40 @@ window.PixelTab = (() => {
   const fresh = (w, hgt = w) => ({name: '', width: w, height: hgt, fps: 4, frames: [blank(w, hgt), blank(w, hgt)]});
 
   /** Saved form (palette + one character per pixel) → editing form (a color or null per pixel). */
+  // Layers: a drawing can have several (bottom first), each with its own pixels in every frame. The saved
+  // `frames` are always the visible layers put together, so videos, battles and towns use them as before;
+  // `layers` keeps them apart for editing. In the editor, `frames` is the layer being drawn on (`active`).
   function fromSaved(s) {
-    return {name: s.name, slug: s.slug, width: s.width, height: s.height, fps: s.fps,
+    const read = (frames) => frames.map((rows) => rows.join('').split('').map((c) => (c === '.' ? null : s.palette[CODES.indexOf(c)])));
+    const art = {name: s.name, slug: s.slug, width: s.width, height: s.height, fps: s.fps,
       ...(s.kind === 'comic' ? {kind: 'comic', comic: {...COMIC, ...s.comic}, words: s.frames.map((_, i) => (s.words?.[i] || []).map((w) => ({...w})))} : {}),
-      frames: s.frames.map((rows) => rows.join('').split('').map((c) => (c === '.' ? null : s.palette[CODES.indexOf(c)])))};
+      frames: read(s.frames)};
+    if (Array.isArray(s.layers) && s.layers.length > 1 && s.layers.every((l) => l.frames?.length === s.frames.length)) {
+      art.flat = art.frames; // (what it looks like, for Insert)
+      art.layers = s.layers.map((l, i) => ({name: l.name || 'Layer ' + (i + 1), ...(l.hidden ? {hidden: true} : {}), frames: read(l.frames)}));
+      art.active = art.layers.length - 1;
+      art.frames = art.layers[art.active].frames;
+    }
+    return art;
+  }
+  /** One frame of a drawing with its visible layers put together (the active one from `frames`). */
+  function flatOf(a, i) {
+    if (!(a.layers?.length > 1)) return a.frames[i];
+    const out = new Array(a.width * a.height).fill(null);
+    a.layers.forEach((l, k) => { if (l.hidden) return; const fr = (k === a.active ? a.frames : l.frames)[i]; if (fr) fr.forEach((c, j) => { if (c) out[j] = c; }); });
+    return out;
   }
   function toSaved(a) {
-    const palette = [...new Set(a.frames.flat().filter(Boolean).map((c) => c.toUpperCase()))].slice(0, CODES.length);
+    const layered = a.layers?.length > 1;
+    const flat = a.frames.map((_, i) => flatOf(a, i));
+    const all = layered ? a.layers.map((l, k) => (k === a.active ? a.frames : l.frames)) : [a.frames];
+    const palette = [...new Set([...flat, ...all.flat()].flat().filter(Boolean).map((c) => c.toUpperCase()))].slice(0, CODES.length);
     const code = (c) => (c ? CODES[palette.indexOf(c.toUpperCase())] : '.');
+    const rows = (frames) => frames.map((px) => Array.from({length: a.height}, (_, y) => px.slice(y * a.width, (y + 1) * a.width).map(code).join('')));
     return {name: a.name.trim(), width: a.width, height: a.height, fps: a.fps, palette,
       ...(a.kind === 'comic' ? {kind: 'comic', comic: a.comic, words: a.frames.map((_, i) => a.words[i] || [])} : {}),
-      frames: a.frames.map((px) => Array.from({length: a.height}, (_, y) => px.slice(y * a.width, (y + 1) * a.width).map(code).join('')))};
+      frames: rows(flat),
+      ...(layered ? {layers: a.layers.map((l, k) => ({name: l.name, ...(l.hidden ? {hidden: true} : {}), frames: rows(all[k])}))} : {})};
   }
 
   // Squares on a line, a box outline or a filled box, an ellipse inside a box.
@@ -279,7 +302,8 @@ window.PixelTab = (() => {
       sel: null,    // selected box {x, y, w, h}
       float: null,  // lifted pixels being moved or pasted {x, y, w, h, layers: [{frame, px}]} (one layer per frame)
       shape: null}; // a shape being dragged: its preview squares
-    const snap = () => JSON.stringify({name: P.art.name, fps: P.art.fps, frames: P.art.frames, kind: P.art.kind, comic: P.art.comic, words: P.art.words});
+    const snap = () => { if (P.art.layers) P.art.layers[P.art.active].frames = P.art.frames;
+      return JSON.stringify({name: P.art.name, fps: P.art.fps, frames: P.art.frames, kind: P.art.kind, comic: P.art.comic, words: P.art.words, layers: P.art.layers?.map((l) => [l.name, !!l.hidden, l.frames])}); };
     P.saved = snap();
     const dirty = () => snap() !== P.saved || !!P.float;
 
@@ -349,6 +373,50 @@ window.PixelTab = (() => {
 
     const W = () => P.art.width, H = () => P.art.height;
     const px = () => P.art.frames[P.frame];
+    const layered = () => P.art.layers?.length > 1;
+    /** Keep the layers in step: the active one's pixels, and the same number of frames in each. */
+    function syncLayers() {
+      const a = P.art;
+      if (!a.layers) return;
+      a.layers[a.active].frames = a.frames;
+      for (const l of a.layers) { while (l.frames.length < a.frames.length) l.frames.push(blank(a.width, a.height)); l.frames.length = a.frames.length; }
+    }
+    const flat = (i) => { syncLayers(); return flatOf(P.art, i); };
+    /** Do the same to the frames of every other layer (adding, moving or deleting frames). */
+    const others = (fn) => { if (!P.art.layers) return; syncLayers(); P.art.layers.forEach((l, k) => { if (k !== P.art.active) fn(l.frames); }); };
+    function useLayer(k) {
+      const a = P.art;
+      if (!a.layers || k === a.active || k < 0 || k >= a.layers.length) return;
+      letGo(); syncLayers(); a.active = k; a.frames = a.layers[k].frames; draw();
+    }
+    function addLayer() {
+      const a = P.art;
+      letGo(); remember(true);
+      if (!a.layers) { a.layers = [{name: 'Layer 1', frames: a.frames}]; a.active = 0; }
+      syncLayers();
+      const n = a.layers.length + 1;
+      a.layers.splice(a.active + 1, 0, {name: 'Layer ' + n, frames: a.frames.map(() => blank(a.width, a.height))});
+      a.active++; a.frames = a.layers[a.active].frames;
+      draw(); markDirty();
+    }
+    async function removeLayer() {
+      const a = P.art;
+      if (!layered()) return;
+      if (a.frames.some((f) => f.some(Boolean)) && !(await ask(`Delete ${a.layers[a.active].name} and what's drawn on it?`))) return;
+      letGo(); remember(true); syncLayers();
+      a.layers.splice(a.active, 1);
+      a.active = Math.max(0, a.active - 1); a.frames = a.layers[a.active].frames;
+      if (a.layers.length === 1) { delete a.layers; delete a.active; }
+      draw(); markDirty();
+    }
+    function moveLayer(d) {
+      const a = P.art, to = a.active + d;
+      if (!layered() || to < 0 || to >= a.layers.length) return;
+      letGo(); remember(true); syncLayers();
+      a.layers.splice(to, 0, a.layers.splice(a.active, 1)[0]); a.active = to;
+      draw(); markDirty();
+    }
+    function toggleLayer() { const l = P.art.layers?.[P.art.active]; if (!l) return; l.hidden = !l.hidden; if (!l.hidden) delete l.hidden; draw(); markDirty(); }
     const inBounds = (x, y) => x >= 0 && y >= 0 && x < W() && y < H();
     // Comic mode: frames are panels (up to 12), each with its own typed words.
     const isComic = () => P.art.kind === 'comic';
@@ -399,9 +467,9 @@ window.PixelTab = (() => {
     function drawCanvas() {
       const a = P.art;
       // Onion skin: the frame before (on the first frame, the last one, since it loops).
-      const prev = P.onion && !isComic() && a.frames.length > 1 ? a.frames[(P.frame + a.frames.length - 1) % a.frames.length] : null;
+      const prev = P.onion && !isComic() && a.frames.length > 1 ? flat((P.frame + a.frames.length - 1) % a.frames.length) : null;
       syncWords();
-      const {g, c} = paint(canvas, px(), a.width, a.height, canvas.width, {grid: true, onion: prev, ref: true, paper: paperOf(a)});
+      const {g, c} = paint(canvas, flat(P.frame), a.width, a.height, canvas.width, {grid: true, onion: prev, ref: true, paper: paperOf(a)});
       const layer = P.float && P.float.layers.find((l) => l.frame === P.frame);
       if (layer) {
         const f = P.float;
@@ -439,15 +507,17 @@ window.PixelTab = (() => {
         g.fillRect((box.x + box.w) * c - hs, (box.y + box.h) * c - hs, hs, hs);
         g.strokeRect((box.x + box.w) * c - hs + 1, (box.y + box.h) * c - hs + 1, hs - 2, hs - 2);
       }
+      // (each layer's own picture in this frame)
+      body.querySelectorAll('canvas[data-layer]').forEach((t) => { const l = a.layers?.[+t.dataset.layer]; if (l) paint(t, (+t.dataset.layer === a.active ? a.frames : l.frames)[P.frame], a.width, a.height, t.width); });
       body.querySelectorAll('canvas[data-thumb]').forEach((t) => {
-        const th = paint(t, a.frames[+t.dataset.thumb], a.width, a.height, t.width, {paper: paperOf(a)});
+        const th = paint(t, flat(+t.dataset.thumb), a.width, a.height, t.width, {paper: paperOf(a)});
         drawWords(th.g, th.c, +t.dataset.thumb);
       });
     }
     function startPreview() {
       clearInterval(P.timer);
       let i = 0;
-      const tick = () => { if (!root.isConnected) return clearInterval(P.timer); const a = P.art; const f = a.frames[i % a.frames.length];
+      const tick = () => { if (!root.isConnected) return clearInterval(P.timer); const a = P.art; const f = flat(i % a.frames.length);
         if (preview.isConnected) paint(preview, f, a.width, a.height, preview.width);
         if (P.play && phone()) paint(playCanvas, f, a.width, a.height, playCanvas.width, {paper: paperOf(a)});
         i++; };
@@ -486,13 +556,23 @@ window.PixelTab = (() => {
         stack.push([cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]);
       }
     }
-    const remember = () => { P.undo.push(JSON.stringify(isComic() ? {frames: P.art.frames, words: P.art.words} : P.art.frames)); if (P.undo.length > 80) P.undo.shift(); };
+    // (full: every layer too, for changes to frames or layers; otherwise just the layer being drawn on)
+    const remember = (full) => {
+      const a = P.art;
+      if (!a.layers && !isComic()) P.undo.push(JSON.stringify(a.frames));
+      else { if (full) syncLayers(); P.undo.push(JSON.stringify({frames: a.frames, words: isComic() ? a.words : undefined, active: a.active, layers: full ? a.layers ?? null : undefined})); }
+      if (P.undo.length > 80) P.undo.shift();
+    };
     function undo() {
       if (P.float) { P.float = null; P.sel = null; }
       const u = P.undo.pop();
       if (u) {
-        const was = JSON.parse(u);
+        const was = JSON.parse(u), a = P.art;
+        if (!Array.isArray(was) && was.layers !== undefined) {
+          if (was.layers) { a.layers = was.layers; a.active = was.active; } else { delete a.layers; delete a.active; }
+        } else if (!Array.isArray(was) && a.layers && was.active != null && was.active < a.layers.length && was.active !== a.active) { syncLayers(); a.active = was.active; }
         P.art.frames = Array.isArray(was) ? was : was.frames;
+        if (a.layers) a.layers[a.active].frames = a.frames;
         if (isComic()) { if (!Array.isArray(was)) P.art.words = was.words; syncWords(); }
         P.frame = Math.min(P.frame, P.art.frames.length - 1);
       }
@@ -543,7 +623,7 @@ window.PixelTab = (() => {
         pixels.forEach((col, i) => { if (col) { g.fillStyle = col; g.fillRect((i % a.width) * k, Math.floor(i / a.width) * k, k, k); } });
         return c;
       };
-      try { await window.ArtExport.save(a.name, gif ? a.frames.map(cv) : [cv(a.frames[P.frame])], a.fps, gif); }
+      try { await window.ArtExport.save(a.name, gif ? a.frames.map((_, i) => cv(flat(i))) : [cv(flat(P.frame))], a.fps, gif); }
       catch (e) { alert('Couldn’t export it: ' + e.message); }
     }
     /** One comic panel as a picture: paper, drawing and words, with a 1-pixel border round it if she wants one. */
@@ -554,7 +634,7 @@ window.PixelTab = (() => {
       if (b) { g.fillStyle = a.comic.paper === 'black' ? '#FFFFFF' : '#000000'; g.fillRect(0, 0, cv.width, cv.height); g.clearRect(k, k, a.width * k, a.height * k); }
       g.translate(b * k, b * k);
       if (paper) { g.fillStyle = paper; g.fillRect(0, 0, a.width * k, a.height * k); }
-      a.frames[i].forEach((col, j) => { if (col) { g.fillStyle = col; g.fillRect((j % a.width) * k, Math.floor(j / a.width) * k, k, k); } });
+      flat(i).forEach((col, j) => { if (col) { g.fillStyle = col; g.fillRect((j % a.width) * k, Math.floor(j / a.width) * k, k, k); } });
       drawWords(g, k, i);
       return cv;
     }
@@ -636,7 +716,7 @@ window.PixelTab = (() => {
     }
     /** Drop a saved drawing into the open one (all its frames, or just the first). The saved one isn't changed. */
     function insert(s, all) {
-      const src = fromSaved(s), frames = all ? src.frames : [src.frames[0]];
+      const src = fromSaved(s), look = src.flat ?? src.frames, frames = all ? look : [look[0]];
       P.ins.open = false; P.gal.open = false; // so the canvas, with the piece on it, is in view
       P.sel = null;
       place({x: Math.max(0, Math.floor((W() - s.width) / 2)), y: Math.max(0, Math.floor((H() - s.height) / 2)), w: s.width, h: s.height, frames}, false, `Put “${s.name}”`);
@@ -788,7 +868,7 @@ window.PixelTab = (() => {
         canvas.addEventListener('pointerup', end);
       };
       if (P.tool === 'pick') { const layer = P.float && inside(P.float, c) && P.float.layers.find((l) => l.frame === P.frame);
-        const col = (layer && layer.px[(c.y - P.float.y) * P.float.w + c.x - P.float.x]) || px()[c.y * W() + c.x]; if (col) { P.color = col; P.tool = 'pen'; draw(); } return; }
+        const col = (layer && layer.px[(c.y - P.float.y) * P.float.w + c.x - P.float.x]) || flat(P.frame)[c.y * W() + c.x]; if (col) { P.color = col; P.tool = 'pen'; draw(); } return; }
 
       if (P.tool === 'words' && isComic()) {
         // Click words to pick them (drag to move); click an empty spot to put new words there.
@@ -957,7 +1037,7 @@ window.PixelTab = (() => {
       const openSaved = async (s, copy) => {
         if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
         // The copied pixels stay, so they can be pasted into the drawing opened now.
-        P.art = fromSaved(s); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.word = null; P.saved = snap();
+        P.art = fromSaved(s); delete P.art.flat; P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.word = null; P.saved = snap();
         if (P.tool === 'words' && !isComic()) P.tool = 'pen';
         // "Start from a copy": every frame of that one, as a new unsaved drawing.
         if (copy) { delete P.art.slug; P.art.name = s.name + ' copy'; P.saved = ''; }
@@ -1006,7 +1086,7 @@ window.PixelTab = (() => {
       const comic = isComic(), Fr = comic ? 'panel' : 'frame';
       syncWords();
       if (!comic && P.tool === 'words') P.tool = 'pen';
-      const moveFrame = (from, to) => { if (to < 0 || to >= a.frames.length || to === from) return; letGo(); remember(); a.frames.splice(to, 0, a.frames.splice(from, 1)[0]); if (comic) a.words.splice(to, 0, a.words.splice(from, 1)[0]); P.frame = to; P.word = null; draw(); markDirty(); };
+      const moveFrame = (from, to) => { if (to < 0 || to >= a.frames.length || to === from) return; letGo(); remember(true); others((f) => f.splice(to, 0, f.splice(from, 1)[0])); a.frames.splice(to, 0, a.frames.splice(from, 1)[0]); if (comic) a.words.splice(to, 0, a.words.splice(from, 1)[0]); P.frame = to; P.word = null; draw(); markDirty(); };
       const frames = a.frames.map((_, i) => h('button', {class: 'px-frame' + (i === P.frame ? ' on' : ''), 'aria-label': (comic ? 'Panel ' : 'Frame ') + (i + 1), draggable: 'true', title: 'Drag to move it',
         onclick: () => { letGo(); P.frame = i; P.word = null; draw(); },
         ondragstart: (e) => { e.dataTransfer.setData('text/plain', String(i)); e.dataTransfer.effectAllowed = 'move'; },
@@ -1114,7 +1194,7 @@ window.PixelTab = (() => {
       // One box per area of the base (each of the base's colors), so two areas can share a color
       // and still be changed apart later.
       const baseArt = P.version && P.bases.list.find((b) => b.name === P.version.base);
-      const basePx = baseArt ? fromSaved(baseArt.idle).frames : null;
+      const basePx = baseArt ? (({flat: f, frames}) => f ?? frames)(fromSaved(baseArt.idle)) : null;
       const areas = basePx && basePx[0].length === a.width * a.height ? [...new Set(basePx.flat().filter(Boolean).map((c) => c.toUpperCase()))] : [];
       const squares = (area) => basePx.flatMap((fr, f) => (a.frames[f] ? fr.map((c, i) => (c && c.toUpperCase() === area && a.frames[f][i] ? [f, i] : null)).filter(Boolean) : []));
       const nowColor = (area) => {
@@ -1288,12 +1368,22 @@ window.PixelTab = (() => {
         ]),
         h('div', {class: 'small muted px-frames-label', text: comic ? `Panels (up to ${MAX_PANELS}; click one to draw in it, drag to reorder):` : 'Frames (2 to 8 make it move):'}),
         h('div', {class: 'px-frames'}, [...frames,
-          a.frames.length < maxFrames() ? btn('+ Copy this ' + Fr, () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, [...px()]); if (comic) a.words.splice(P.frame + 1, 0, a.words[P.frame].map((w) => ({...w}))); P.frame++; P.word = null; draw(); markDirty(); }) : null,
-          a.frames.length < maxFrames() ? btn('+ Empty ' + Fr, () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, blank(a.width, a.height)); if (comic) a.words.splice(P.frame + 1, 0, []); P.frame++; P.word = null; draw(); markDirty(); }) : null,
+          a.frames.length < maxFrames() ? btn('+ Copy this ' + Fr, () => { letGo(); remember(true); others((f) => f.splice(P.frame + 1, 0, [...f[P.frame]])); a.frames.splice(P.frame + 1, 0, [...px()]); if (comic) a.words.splice(P.frame + 1, 0, a.words[P.frame].map((w) => ({...w}))); P.frame++; P.word = null; draw(); markDirty(); }) : null,
+          a.frames.length < maxFrames() ? btn('+ Empty ' + Fr, () => { letGo(); remember(true); others((f) => f.splice(P.frame + 1, 0, blank(a.width, a.height))); a.frames.splice(P.frame + 1, 0, blank(a.width, a.height)); if (comic) a.words.splice(P.frame + 1, 0, []); P.frame++; P.word = null; draw(); markDirty(); }) : null,
           a.frames.length > 1 ? btn('◀ Move left', () => moveFrame(P.frame, P.frame - 1), {disabled: P.frame === 0 || null}) : null,
           a.frames.length > 1 ? btn('Move right ▶', () => moveFrame(P.frame, P.frame + 1), {disabled: P.frame === a.frames.length - 1 || null}) : null,
         ]),
-        a.frames.length > 1 ? h('div', {class: 'row px-frames-del', style: {gap: '8px'}}, [btn(`🗑 Delete ${Fr} ` + (P.frame + 1), async () => { if (!(await ask(`Delete ${Fr} ` + (P.frame + 1) + '?'))) return; letGo(); remember(); a.frames.splice(P.frame, 1); if (comic) a.words.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); P.word = null; draw(); markDirty(); }, {title: `Delete the ${Fr} that’s showing`})]) : null,
+        a.frames.length > 1 ? h('div', {class: 'row px-frames-del', style: {gap: '8px'}}, [btn(`🗑 Delete ${Fr} ` + (P.frame + 1), async () => { if (!(await ask(`Delete ${Fr} ` + (P.frame + 1) + '?'))) return; letGo(); remember(true); others((f) => f.splice(P.frame, 1)); a.frames.splice(P.frame, 1); if (comic) a.words.splice(P.frame, 1); P.frame = Math.max(0, P.frame - 1); P.word = null; draw(); markDirty(); }, {title: `Delete the ${Fr} that’s showing`})]) : null,
+        h('div', {class: 'small muted px-layers-label', text: layered() ? 'Layers (left is at the back, right is in front; you draw on the outlined one):' : 'Layers: one so far. Add one to draw things in front of or behind the rest.'}),
+        h('div', {class: 'px-frames px-layers'}, [
+          ...(a.layers ?? []).map((l, k) => h('button', {class: 'px-frame' + (k === a.active ? ' on' : '') + (l.hidden ? ' off' : ''), type: 'button', 'aria-label': l.name + (l.hidden ? ' (hidden)' : ''), title: l.name, onclick: () => useLayer(k)},
+            [h('canvas', {width: 64, height: 64, 'data-layer': k}), h('span', {text: String(k + 1)})])),
+          btn('+ New layer', addLayer, {title: 'An empty layer in front of the one you’re drawing on'}),
+          layered() ? btn(a.layers[a.active].hidden ? 'Show it' : 'Hide it', toggleLayer) : null,
+          layered() ? btn('◀ Send back', () => moveLayer(-1), {disabled: a.active === 0 || null}) : null,
+          layered() ? btn('Bring forward ▶', () => moveLayer(1), {disabled: a.active === a.layers.length - 1 || null}) : null,
+          layered() ? btn('Delete this layer', removeLayer) : null,
+        ]),
         comic ? null : h('div', {class: 'row', 'data-g': 'more', style: {gap: '14px', alignItems: 'center'}}, [preview,
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; startPreview(); markDirty(); }})])]),
@@ -1318,7 +1408,7 @@ window.PixelTab = (() => {
             h('label', {class: 'px-swatch pxm-any', title: 'Any color'}, [custom, I('palette')])]),
           h('div', {class: 'pxm-bar'}, [
             h('div', {class: 'pxm-frames'}, [...thumbs,
-              a.frames.length < maxFrames() ? ib('plus', 'Add a copy of this ' + Fr, null, () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, [...px()]); if (comic) a.words.splice(P.frame + 1, 0, a.words[P.frame].map((w) => ({...w}))); P.frame++; P.word = null; draw(); markDirty(); }) : null]),
+              a.frames.length < maxFrames() ? ib('plus', 'Add a copy of this ' + Fr, null, () => { letGo(); remember(true); others((f) => f.splice(P.frame + 1, 0, [...f[P.frame]])); a.frames.splice(P.frame + 1, 0, [...px()]); if (comic) a.words.splice(P.frame + 1, 0, a.words[P.frame].map((w) => ({...w}))); P.frame++; P.word = null; draw(); markDirty(); }) : null]),
             comic ? null : ib(P.play ? 'pause' : 'play', P.play ? 'Stop the animation' : 'Play the animation', null, () => { P.play = !P.play; draw(); }),
             ib('save', dirty() ? 'Save' : 'Saved', null, phoneSave, {'data-save': ''}),
             ib('menu', 'Everything else', !!P.menu, () => { P.menu = !P.menu; draw(); }),
@@ -1331,12 +1421,21 @@ window.PixelTab = (() => {
           ib('line', 'Line', P.tool === 'line', pickTool('line')), ib('box', 'Box', P.tool === 'box', pickTool('box')),
           ib('circle', 'Circle', P.tool === 'circle', pickTool('circle')), ib('dither', 'Dither', P.tool === 'dither', pickTool('dither')),
           ib('filled', 'Filled shapes', P.filled, () => { P.filled = !P.filled; draw(); }), ib('mirror', 'Mirror (draw both sides)', P.mirror, () => { P.mirror = !P.mirror; draw(); }),
-          ib('every', 'Draw in every frame', P.every, () => { if (P.float) return; P.every = !P.every; draw(); }), comic ? ib('words', 'Words', P.tool === 'words', pickTool('words')) : ib('fit', 'Fit the drawing on the screen', null, () => { Z.s = 1; Z.x = 0; Z.y = 0; applyZoom(); }),
+          ib('every', 'Draw in every frame', P.every, () => { if (P.float) return; P.every = !P.every; draw(); }), comic ? ib('words', 'Words', P.tool === 'words', pickTool('words')) : ib('fit', 'Zoom back out', null, () => { Z.s = 1; Z.x = 0; Z.y = 0; applyZoom(); }),
           ib('copy', 'Copy', null, () => copy(false)), ib('paste', 'Paste', null, () => paste(false)),
           ib('cut', 'Cut', null, cut), ib('insert', 'Insert a drawing', null, () => { P.menu = true; P.sheet = 'edit'; P.ins.open = true; draw(); }),
           ib('flipH', 'Flip left to right', null, () => flip('h')), ib('flipV', 'Flip upside down', null, () => flip('v')),
           selecting ? ib('done', 'Done moving', null, () => { letGo(); draw(); markDirty(); }) : null,
-          comic ? ib('fit', 'Fit the drawing on the screen', null, () => { Z.s = 1; Z.x = 0; Z.y = 0; applyZoom(); }) : null,
+          comic ? ib('fit', 'Zoom back out', null, () => { Z.s = 1; Z.x = 0; Z.y = 0; applyZoom(); }) : null,
+        ]);
+        const layerStrip = h('div', {class: 'pxm-layers'}, [
+          h('div', {class: 'pxm-frames'}, (a.layers ?? [{name: 'Layer 1'}]).map((l, k) => h('button', {class: 'pxm-frame' + (k === (a.active ?? 0) ? ' on' : '') + (l.hidden ? ' off' : ''), type: 'button', 'aria-label': (l.name || 'Layer 1') + (l.hidden ? ' (hidden)' : ''), onclick: () => useLayer(k)},
+            [h('canvas', {width: 48, height: 48, ...(a.layers ? {'data-layer': k} : {'data-thumb': P.frame})})]))),
+          ib('plus', 'New layer in front', null, addLayer),
+          layered() ? ib(a.layers[a.active].hidden ? 'eyeOff' : 'eye', a.layers[a.active].hidden ? 'Show this layer' : 'Hide this layer', null, toggleLayer) : null,
+          layered() ? ib('back', 'Send this layer back', null, () => moveLayer(-1), {disabled: a.active === 0 || null}) : null,
+          layered() ? ib('forward', 'Bring this layer forward', null, () => moveLayer(1), {disabled: a.active === a.layers.length - 1 || null}) : null,
+          layered() ? ib('trash', 'Delete this layer', null, removeLayer) : null,
         ]);
         const goHome = document.getElementById('go-home');
         const sketchBtn = [...document.querySelectorAll('button')].find((b) => b.textContent.startsWith('Sketch (free'));
@@ -1349,8 +1448,11 @@ window.PixelTab = (() => {
           ...items.filter((x) => x !== wordsBox),
         ]);
         const scrolled = body.querySelector('.pxm-sheet')?.scrollTop ?? 0;
-        body.replaceChildren(...[top, wordsBox ? h('div', {class: 'pxm-words'}, [wordsBox]) : null, bottom, P.menu ? sheet : null].filter(Boolean));
+        // (the sliding rows stay where she left them)
+        const slid = ['.pxm-tools', '.pxm-pal', '.pxm-top .pxm-frames', '.pxm-layers .pxm-frames'].map((c) => body.querySelector(c)?.scrollLeft ?? 0);
+        body.replaceChildren(...[top, wordsBox ? h('div', {class: 'pxm-words'}, [wordsBox]) : null, layerStrip, bottom, P.menu ? sheet : null].filter(Boolean));
         if (P.menu) sheet.scrollTop = scrolled;
+        ['.pxm-tools', '.pxm-pal', '.pxm-top .pxm-frames', '.pxm-layers .pxm-frames'].forEach((c, i) => { const e = body.querySelector(c); if (e) e.scrollLeft = slid[i]; });
         if (P.play) startPreview();
       } else body.replaceChildren(...items);
       applyZoom();
