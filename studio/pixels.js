@@ -1057,7 +1057,7 @@ window.PixelTab = (() => {
         onFavorite: async (slug, on) => {
           try { const d = await post('/api/sprite/favorite', {slug, on}); P.list = d.sprites.filter((x) => x.kind !== 'sketch'); draw(); } catch (e) { alert('Couldn’t change the favorite: ' + e.message); }
         }});
-      const size = h('select', {'aria-label': 'Size', disabled: !!a.slug || a.frames.some((f) => f.some(Boolean)), onchange: (e) => {
+      const size = h('select', {'aria-label': 'Size', disabled: !!a.slug || a.frames.some((f) => f.some(Boolean)) || (a.layers ?? []).some((l) => l.frames.some((f) => f.some(Boolean))), onchange: (e) => {
         const [w, hgt] = e.target.value.split('x').map(Number);
         P.art = {...fresh(w, hgt), name: a.name, fps: a.fps, ...(a.kind === 'comic' ? {kind: 'comic', comic: a.comic, words: [[], []]} : {})}; P.frame = 0; P.word = null; draw();
       }}, SIZES.map(([w, hgt]) => h('option', {value: `${w}x${hgt}`, text: `${w} × ${hgt}${w !== hgt ? ' (wide scene)' : ''}`, selected: a.width === w && a.height === hgt})));
