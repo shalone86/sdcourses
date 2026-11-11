@@ -239,6 +239,9 @@ body.lesson-off .lesson-tabs{display:none}
 /* Phones held upright: the pixel editor fills the screen like a drawing app (built in studio/pixels.js, class pxm). */
 .pxm-play,.pxm-top,.pxm-tools,.pxm-sheet,.pxm-words,.pxm-layers{display:none}
 .px-frame.off,.pxm-frame.off{opacity:.4}
+.px-anchor{display:grid;grid-template-columns:repeat(3,16px);gap:3px;padding:4px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+.px-anchor button{width:16px;height:16px;padding:0;border:1px solid var(--rule);border-radius:3px;background:var(--bg);cursor:pointer}
+.px-anchor button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent)}
 body:has(.px-wrap.pxm){overflow:hidden}
 .px-wrap.pxm{position:fixed;inset:0;z-index:60;display:grid!important;grid-template-rows:auto minmax(0,1fr) auto auto auto;grid-template-columns:100%;gap:0;background:#2b2b2e;color:#fff;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 .px-wrap.pxm>.px-side{display:contents}

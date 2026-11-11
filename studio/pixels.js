@@ -293,7 +293,7 @@ window.PixelTab = (() => {
 
   function open(root, api, post, reference = window.DrawReference) {
     const pal = PALETTES[store.get('studio.pixelPalette')] ? store.get('studio.pixelPalette') : 'video';
-    const P = {list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false, gal: {open: false, q: ''}, ins: {open: false, all: true, q: ''},
+    const P = {anchor: [0.5, 0.5], list: [], art: fresh(16), frame: 0, tool: 'pen', color: PALETTES[pal].colors[0], pal, mirror: false, onion: true, filled: false, every: false, gal: {open: false, q: ''}, ins: {open: false, all: true, q: ''},
       word: null, wordStyle: {font: 'pixel', size: 'm', bubble: 'speech', tail: 'left', dark: false}, // comic words: the one picked in this panel, and how the next new one looks
       undo: [], saved: '', timer: null,
       bases: {open: false, list: [], versions: {}, cast: [], pick: null, name: ''},
@@ -414,6 +414,18 @@ window.PixelTab = (() => {
       if (!layered() || to < 0 || to >= a.layers.length) return;
       letGo(); remember(true); syncLayers();
       a.layers.splice(to, 0, a.layers.splice(a.active, 1)[0]); a.active = to;
+      draw(); markDirty();
+    }
+    /** A new canvas size keeping the drawing (every layer, frame and comic words), lined up by P.anchor. */
+    function resizeArt(w, hgt) {
+      const a = P.art, ow = a.width, oh = a.height;
+      if (w === ow && hgt === oh) return;
+      letGo(); remember(true); syncLayers();
+      const dx = Math.round((w - ow) * P.anchor[0]), dy = Math.round((hgt - oh) * P.anchor[1]);
+      const move = (px) => { const out = blank(w, hgt); px.forEach((c, i) => { const x = (i % ow) + dx, y = Math.floor(i / ow) + dy; if (c && x >= 0 && y >= 0 && x < w && y < hgt) out[y * w + x] = c; }); return out; };
+      if (a.layers) { for (const l of a.layers) l.frames = l.frames.map(move); a.frames = a.layers[a.active].frames; } else a.frames = a.frames.map(move);
+      if (a.words) for (const list of a.words) for (const t of list) { t.x += dx; t.y += dy; }
+      a.width = w; a.height = hgt;
       draw(); markDirty();
     }
     function toggleLayer() { const l = P.art.layers?.[P.art.active]; if (!l) return; l.hidden = !l.hidden; if (!l.hidden) delete l.hidden; draw(); markDirty(); }
@@ -559,8 +571,8 @@ window.PixelTab = (() => {
     // (full: every layer too, for changes to frames or layers; otherwise just the layer being drawn on)
     const remember = (full) => {
       const a = P.art;
-      if (!a.layers && !isComic()) P.undo.push(JSON.stringify(a.frames));
-      else { if (full) syncLayers(); P.undo.push(JSON.stringify({frames: a.frames, words: isComic() ? a.words : undefined, active: a.active, layers: full ? a.layers ?? null : undefined})); }
+      if (!a.layers && !isComic() && !full) P.undo.push(JSON.stringify(a.frames));
+      else { if (full) syncLayers(); P.undo.push(JSON.stringify({frames: a.frames, words: isComic() ? a.words : undefined, active: a.active, layers: full ? a.layers ?? null : undefined, size: full ? [a.width, a.height] : undefined})); }
       if (P.undo.length > 80) P.undo.shift();
     };
     function undo() {
@@ -572,6 +584,7 @@ window.PixelTab = (() => {
           if (was.layers) { a.layers = was.layers; a.active = was.active; } else { delete a.layers; delete a.active; }
         } else if (!Array.isArray(was) && a.layers && was.active != null && was.active < a.layers.length && was.active !== a.active) { syncLayers(); a.active = was.active; }
         P.art.frames = Array.isArray(was) ? was : was.frames;
+        if (!Array.isArray(was) && was.size) { a.width = was.size[0]; a.height = was.size[1]; }
         if (a.layers) a.layers[a.active].frames = a.frames;
         if (isComic()) { if (!Array.isArray(was)) P.art.words = was.words; syncWords(); }
         P.frame = Math.min(P.frame, P.art.frames.length - 1);
@@ -1057,10 +1070,19 @@ window.PixelTab = (() => {
         onFavorite: async (slug, on) => {
           try { const d = await post('/api/sprite/favorite', {slug, on}); P.list = d.sprites.filter((x) => x.kind !== 'sketch'); draw(); } catch (e) { alert('Couldn’t change the favorite: ' + e.message); }
         }});
-      const size = h('select', {'aria-label': 'Size', disabled: !!a.slug || a.frames.some((f) => f.some(Boolean)) || (a.layers ?? []).some((l) => l.frames.some((f) => f.some(Boolean))), onchange: (e) => {
+      // A new size keeps what's drawn, lined up where the little 3 × 3 square says (cut off where it doesn't fit).
+      const drawn = a.frames.some((f) => f.some(Boolean)) || (a.layers ?? []).some((l) => l.frames.some((f) => f.some(Boolean)));
+      const sizes = SIZES.some(([w, hgt]) => w === a.width && hgt === a.height) ? SIZES : [...SIZES, [a.width, a.height]];
+      const size = h('select', {'aria-label': 'Size', onchange: async (e) => {
         const [w, hgt] = e.target.value.split('x').map(Number);
-        P.art = {...fresh(w, hgt), name: a.name, fps: a.fps, ...(a.kind === 'comic' ? {kind: 'comic', comic: a.comic, words: [[], []]} : {})}; P.frame = 0; P.word = null; draw();
-      }}, SIZES.map(([w, hgt]) => h('option', {value: `${w}x${hgt}`, text: `${w} × ${hgt}${w !== hgt ? ' (wide scene)' : ''}`, selected: a.width === w && a.height === hgt})));
+        if (!drawn) { P.art = {...fresh(w, hgt), name: a.name, fps: a.fps, ...(a.slug ? {slug: a.slug} : {}), ...(a.kind === 'comic' ? {kind: 'comic', comic: a.comic, words: [[], []]} : {})}; P.frame = 0; P.word = null; draw(); markDirty(); return; }
+        const smaller = w < a.width || hgt < a.height;
+        if (smaller && !(await ask(`Make it ${w} × ${hgt}? Anything outside the new size is cut off (Undo brings it back).`))) return draw();
+        resizeArt(w, hgt);
+      }}, sizes.map(([w, hgt]) => h('option', {value: `${w}x${hgt}`, text: `${w} × ${hgt}${w !== hgt ? ' (wide scene)' : ''}`, selected: a.width === w && a.height === hgt})));
+      const anchor = drawn ? h('div', {class: 'px-anchor', role: 'group', 'aria-label': 'Where the drawing stays when the size changes', title: 'Where the drawing stays when the size changes'},
+        [0, 0.5, 1].flatMap((y) => [0, 0.5, 1].map((x) => h('button', {type: 'button', 'aria-pressed': P.anchor[0] === x && P.anchor[1] === y ? 'true' : 'false',
+          'aria-label': ({0: 'top', 0.5: 'middle', 1: 'bottom'})[y] + ' ' + ({0: 'left', 0.5: 'middle', 1: 'right'})[x], onclick: () => { P.anchor = [x, y]; draw(); }})))) : null;
       const paletteSel = h('select', {'aria-label': 'Colors', onchange: (e) => { P.pal = e.target.value; store.set('studio.pixelPalette', P.pal); draw(); }},
         Object.entries(PALETTES).map(([k, v]) => h('option', {value: k, text: v.label, selected: k === P.pal})));
       const remove = async () => {
@@ -1310,7 +1332,7 @@ window.PixelTab = (() => {
         h('button', {class: 'btn', 'data-g': 'more', 'aria-expanded': P.poses.open ? 'true' : 'false', text: 'Copy a pose to other characters…', onclick: openPoses}),
         g('more', posesPanel),
         g('file', versionBox),
-        h('div', {class: 'row', 'data-g': 'file', style: {gap: '8px'}}, [size,
+        h('div', {class: 'row', 'data-g': 'file', style: {gap: '8px', alignItems: 'center'}}, [size, anchor,
           h('label', {class: 'btn px-upload', title: 'Pictures from Procreate, Pixel Studio or anywhere: each becomes a frame (from this one on); a sprite sheet is cut into its frames'}, ['Upload pictures…',
             h('input', {type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (e) => { upload(e.target.files); e.target.value = ''; }})])]),
         P.version ? null : g('file', name),
