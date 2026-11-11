@@ -289,6 +289,64 @@ window.PixelTab = (() => {
     root.replaceChildren(h('div', {class: 'px-wrap'}, [h('div', {class: 'px-left'}, [canvas, reference.controls(() => drawCanvas()),
       h('div', {class: 'small muted px-keys', text: 'Click or drag to draw. ⌘Z undo · ⌘C copy · ⌘X cut · ⌘V paste · arrows move a selection · Delete clears it · Esc lets go.'})]), body]));
 
+    // ---------- phones held upright: a full-screen editor like a drawing app ----------
+    // Colors and frames on top, the drawing in the middle (two fingers zoom and slide it), icon tools at the
+    // bottom, everything else behind the wrench. Wider screens keep the page as it is.
+    const phoneMQ = window.matchMedia('(max-width: 700px) and (orientation: portrait)');
+    const phone = () => phoneMQ.matches;
+    const zone = root.querySelector('.px-left');
+    const playCanvas = h('canvas', {class: 'pxm-play', width: 160, height: 160, 'aria-label': 'The animation playing'});
+    zone.append(playCanvas);
+    const Z = {s: 1, x: 0, y: 0};
+    const applyZoom = () => { canvas.style.transform = phone() && (Z.s !== 1 || Z.x || Z.y) ? `translate(${Z.x}px, ${Z.y}px) scale(${Z.s})` : ''; };
+    const fingers = new Map();
+    let pinch = null, stroke = null, ending = false;
+    const pts = () => [...fingers.values()];
+    zone.addEventListener('pointerdown', (e) => {
+      if (!phone() || e.pointerType === 'mouse') return;
+      fingers.set(e.pointerId, {x: e.clientX, y: e.clientY});
+      if (fingers.size === 1 && !pinch) {
+        // What the drawing was before this finger touched it, in case a second finger turns it into a zoom.
+        stroke = {id: e.pointerId, x: e.clientX, y: e.clientY, frames: JSON.stringify(P.art.frames), undo: P.undo.length, float: P.float && JSON.stringify(P.float), sel: P.sel, color: P.color, tool: P.tool};
+        return;
+      }
+      e.stopPropagation(); e.preventDefault();
+      if (pinch) return;
+      if (stroke) {
+        // (finish the first finger's stroke the usual way, then put the drawing back as it was)
+        ending = true;
+        try { canvas.dispatchEvent(new PointerEvent('pointerup', {pointerId: stroke.id, clientX: stroke.x, clientY: stroke.y, bubbles: true})); } finally { ending = false; }
+        P.art.frames = JSON.parse(stroke.frames); P.undo.length = Math.min(P.undo.length, stroke.undo);
+        P.float = stroke.float ? JSON.parse(stroke.float) : null; P.sel = stroke.sel; P.shape = null; P.color = stroke.color; P.tool = stroke.tool;
+        draw();
+      }
+      const [a, b] = pts(), r = canvas.getBoundingClientRect();
+      const m = {x: (a.x + b.x) / 2, y: (a.y + b.y) / 2};
+      const o = {x: r.left - Z.x, y: r.top - Z.y};
+      pinch = {d: Math.hypot(a.x - b.x, a.y - b.y) || 1, s: Z.s, o, u: {x: (m.x - o.x - Z.x) / Z.s, y: (m.y - o.y - Z.y) / Z.s}};
+    }, true);
+    zone.addEventListener('pointermove', (e) => {
+      if (!fingers.has(e.pointerId)) return;
+      fingers.set(e.pointerId, {x: e.clientX, y: e.clientY});
+      if (stroke && e.pointerId === stroke.id) { stroke.x = e.clientX; stroke.y = e.clientY; }
+      if (!pinch) return;
+      e.stopPropagation();
+      const [a, b] = pts();
+      if (!b) return;
+      const m = {x: (a.x + b.x) / 2, y: (a.y + b.y) / 2};
+      Z.s = Math.max(1, Math.min(16, pinch.s * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d));
+      Z.x = m.x - pinch.o.x - Z.s * pinch.u.x; Z.y = m.y - pinch.o.y - Z.s * pinch.u.y;
+      applyZoom();
+    }, true);
+    const fingerUp = (e) => {
+      if (ending || !fingers.delete(e.pointerId)) return;
+      if (pinch) e.stopPropagation();
+      if (!fingers.size) { pinch = null; stroke = null; if (Z.s < 1.05 && Math.abs(Z.x) < 30 && Math.abs(Z.y) < 30) { Z.s = 1; Z.x = 0; Z.y = 0; applyZoom(); } }
+    };
+    zone.addEventListener('pointerup', fingerUp, true);
+    zone.addEventListener('pointercancel', fingerUp, true);
+    phoneMQ.addEventListener('change', () => { if (root.isConnected) { applyZoom(); draw(); } });
+
     const W = () => P.art.width, H = () => P.art.height;
     const px = () => P.art.frames[P.frame];
     const inBounds = (x, y) => x >= 0 && y >= 0 && x < W() && y < H();
@@ -389,7 +447,10 @@ window.PixelTab = (() => {
     function startPreview() {
       clearInterval(P.timer);
       let i = 0;
-      const tick = () => { if (!preview.isConnected) return clearInterval(P.timer); const a = P.art; paint(preview, a.frames[i % a.frames.length], a.width, a.height, preview.width); i++; };
+      const tick = () => { if (!root.isConnected) return clearInterval(P.timer); const a = P.art; const f = a.frames[i % a.frames.length];
+        if (preview.isConnected) paint(preview, f, a.width, a.height, preview.width);
+        if (P.play && phone()) paint(playCanvas, f, a.width, a.height, playCanvas.width, {paper: paperOf(a)});
+        i++; };
       tick();
       P.timer = setInterval(tick, 1000 / P.art.fps);
     }
@@ -878,7 +939,10 @@ window.PixelTab = (() => {
     document.addEventListener('keydown', onKey);
 
     function markDirty() {
-      for (const b of body.querySelectorAll('[data-save]')) { b.disabled = !dirty(); b.textContent = dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved'; }
+      for (const b of body.querySelectorAll('[data-save]')) {
+        if (b.classList.contains('pxm-b')) { b.classList.toggle('dirty', dirty()); b.setAttribute('aria-label', dirty() ? 'Save' : 'Saved'); continue; }
+        b.disabled = !dirty(); b.textContent = dirty() ? (P.version ? 'Save and make all 5 poses' : 'Save') : 'Saved';
+      }
     }
     function note(text) { const n = body.querySelector('[data-note]'); if (n) n.textContent = text; }
 
@@ -899,13 +963,14 @@ window.PixelTab = (() => {
         if (copy) { delete P.art.slug; P.art.name = s.name + ' copy'; P.saved = ''; }
         const v = !copy && /-idle$/.test(s.slug) && s.slug.slice(0, -5);
         P.version = v && P.bases.versions[v] && !P.bases.versions[v].isBase ? {base: P.bases.versions[v].base, name: v} : null;
-        P.gal.open = false;
+        P.gal.open = false; P.menu = false;
         draw();
       };
       const startNew = async () => {
         if (dirty() && !(await ask('Leave this drawing without saving?'))) return;
         P.art = fresh(16); P.frame = 0; P.undo = []; P.sel = null; P.float = null; P.word = null; P.saved = snap(); P.version = null;
         if (P.tool === 'words') P.tool = 'pen';
+        P.menu = false;
         draw();
       };
       const pick = window.SpriteGallery.build({items: P.list, state: P.gal, current: a.slug, noun: 'drawing', onNew: startNew, onToggle: draw, onOpen: openSaved, onInsert: (s) => insert(s, !isComic()),
@@ -1154,7 +1219,7 @@ window.PixelTab = (() => {
         Q.timer = setInterval(tick, 1000 / Math.max(1, Q.drafts[0]?.art.fps ?? 4));
       }
 
-      body.replaceChildren(...[
+      const items = [
         g('file', pick),
         h('button', {class: 'btn', 'data-g': 'more', 'aria-expanded': P.bases.open ? 'true' : 'false', text: 'New character from a base…', onclick: async () => {
           P.bases.open = !P.bases.open;
@@ -1233,7 +1298,62 @@ window.PixelTab = (() => {
           h('label', {class: 'tl-field'}, [h('span', {text: 'Speed: ' + a.fps + ' frames a second'}),
             h('input', {type: 'range', min: 1, max: 12, value: a.fps, oninput: (e) => { a.fps = +e.target.value; e.target.previousSibling.textContent = 'Speed: ' + a.fps + ' frames a second'; startPreview(); markDirty(); }})])]),
         h('div', {class: 'small muted', 'data-g': 'more', text: 'Saved drawings can go in any lesson: on the Timing tab, + Add a picture here → Pixel animation.'}),
-      ].filter(Boolean));
+      ].filter(Boolean);
+      const wrap = body.parentNode;
+      wrap.classList.toggle('pxm', phone());
+      wrap.toggleAttribute('data-play', !!P.play);
+      wrap.toggleAttribute('data-menu', !!P.menu);
+      if (phone()) {
+        const I = (k) => { const s = document.createElement('span'); s.className = 'pxm-i'; s.innerHTML = window.PxIcons?.[k] ?? ''; s.setAttribute('aria-hidden', 'true'); return s; };
+        const ib = (k, label, on, onclick, attrs = {}) => h('button', {class: 'pxm-b' + (on ? ' on' : ''), type: 'button', title: label, 'aria-label': label, ...(on === null ? {} : {'aria-pressed': on ? 'true' : 'false'}), onclick, ...attrs}, [I(k)]);
+        const pickTool = (t) => () => { if (t !== 'select') letGo(); P.tool = t; draw(); };
+        const phoneSave = () => {
+          if (!P.version && !a.name.trim()) { P.menu = true; P.sheet = 'file'; draw(); const n = body.querySelector('input[aria-label="Name"]'); if (n) { n.focus(); n.placeholder = 'Give it a name, then Save'; } return; }
+          save();
+        };
+        const thumbs = a.frames.map((_, i) => h('button', {class: 'pxm-frame' + (i === P.frame ? ' on' : ''), type: 'button', 'aria-label': Fr + ' ' + (i + 1),
+          onclick: () => { letGo(); P.frame = i; P.word = null; draw(); }}, [h('canvas', {width: 48, height: 48, 'data-thumb': i})]));
+        const top = h('div', {class: 'pxm-top'}, [
+          h('div', {class: 'pxm-pal'}, [...colors.map(swatch), ...used.map(swatch),
+            h('label', {class: 'px-swatch pxm-any', title: 'Any color'}, [custom, I('palette')])]),
+          h('div', {class: 'pxm-bar'}, [
+            h('div', {class: 'pxm-frames'}, [...thumbs,
+              a.frames.length < maxFrames() ? ib('plus', 'Add a copy of this ' + Fr, null, () => { letGo(); remember(); a.frames.splice(P.frame + 1, 0, [...px()]); if (comic) a.words.splice(P.frame + 1, 0, a.words[P.frame].map((w) => ({...w}))); P.frame++; P.word = null; draw(); markDirty(); }) : null]),
+            comic ? null : ib(P.play ? 'pause' : 'play', P.play ? 'Stop the animation' : 'Play the animation', null, () => { P.play = !P.play; draw(); }),
+            ib('save', dirty() ? 'Save' : 'Saved', null, phoneSave, {'data-save': ''}),
+            ib('menu', 'Everything else', !!P.menu, () => { P.menu = !P.menu; draw(); }),
+          ]),
+          h('div', {class: 'pxm-label', text: (comic ? 'Panel ' : 'Frame ') + (P.frame + 1) + ' / ' + a.frames.length + (a.name ? ' · ' + a.name : '')}),
+        ]);
+        const tools = [['pen', 'Pencil'], ['erase', 'Eraser'], ['fill', 'Fill'], ['pick', 'Pick a color'], ['select', 'Select & move']].map(([t, l]) => ib(t, l, P.tool === t, pickTool(t)));
+        const bottom = h('div', {class: 'pxm-tools'}, [
+          ...tools.slice(0, 2), ...tools.slice(2, 4), tools[4], ib('undo', 'Undo', null, undo),
+          ib('line', 'Line', P.tool === 'line', pickTool('line')), ib('box', 'Box', P.tool === 'box', pickTool('box')),
+          ib('circle', 'Circle', P.tool === 'circle', pickTool('circle')), ib('dither', 'Dither', P.tool === 'dither', pickTool('dither')),
+          ib('filled', 'Filled shapes', P.filled, () => { P.filled = !P.filled; draw(); }), ib('mirror', 'Mirror (draw both sides)', P.mirror, () => { P.mirror = !P.mirror; draw(); }),
+          ib('every', 'Draw in every frame', P.every, () => { if (P.float) return; P.every = !P.every; draw(); }), comic ? ib('words', 'Words', P.tool === 'words', pickTool('words')) : ib('fit', 'Fit the drawing on the screen', null, () => { Z.s = 1; Z.x = 0; Z.y = 0; applyZoom(); }),
+          ib('copy', 'Copy', null, () => copy(false)), ib('paste', 'Paste', null, () => paste(false)),
+          ib('cut', 'Cut', null, cut), ib('insert', 'Insert a drawing', null, () => { P.menu = true; P.sheet = 'edit'; P.ins.open = true; draw(); }),
+          ib('flipH', 'Flip left to right', null, () => flip('h')), ib('flipV', 'Flip upside down', null, () => flip('v')),
+          selecting ? ib('done', 'Done moving', null, () => { letGo(); draw(); markDirty(); }) : null,
+          comic ? ib('fit', 'Fit the drawing on the screen', null, () => { Z.s = 1; Z.x = 0; Z.y = 0; applyZoom(); }) : null,
+        ]);
+        const goHome = document.getElementById('go-home');
+        const sketchBtn = [...document.querySelectorAll('button')].find((b) => b.textContent.startsWith('Sketch (free'));
+        const sheet = h('div', {class: 'pxm-sheet', role: 'dialog', 'aria-label': 'Everything else'}, [
+          h('div', {class: 'pxm-sheet-head'}, [
+            goHome ? h('button', {class: 'btn', type: 'button', text: '← Studio', onclick: () => { P.menu = false; goHome.click(); }}) : null,
+            sketchBtn ? h('button', {class: 'btn', type: 'button', text: 'Sketch mode', onclick: () => { P.menu = false; sketchBtn.click(); }}) : null,
+            h('button', {class: 'btn primary', type: 'button', text: 'Done', onclick: () => { P.menu = false; draw(); }}),
+          ]),
+          ...items.filter((x) => x !== wordsBox),
+        ]);
+        const scrolled = body.querySelector('.pxm-sheet')?.scrollTop ?? 0;
+        body.replaceChildren(...[top, wordsBox ? h('div', {class: 'pxm-words'}, [wordsBox]) : null, bottom, P.menu ? sheet : null].filter(Boolean));
+        if (P.menu) sheet.scrollTop = scrolled;
+        if (P.play) startPreview();
+      } else body.replaceChildren(...items);
+      applyZoom();
       body.parentNode.dataset.sheet = P.sheet ?? '';
       drawCanvas();
       startPreview();

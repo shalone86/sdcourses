@@ -271,7 +271,11 @@ If it's already running, `npm start` just opens the page.
 - **Phones and upright screens** (700 px and narrower, the `@media (max-width:700px)` block in
   studio/index.html): the tabs are one row that slides sideways; in Pixel art and Sketch the Undo/Save
   row, tools, colors and frames sit right under the drawing, and everything else is in three drawers under the frames, one open at a time (Copy & flip, Drawing, More: `data-g` on each piece and `P.sheet`, in studio/pixels.js and studio/sketch.js); tool rows slide
-  sideways instead of wrapping; the Town map has "Slide the map with my finger". Check new screens at
+  sideways instead of wrapping; the Town map has "Slide the map with my finger". A phone held upright gets a full-screen Pixel art editor
+  like her drawing app (class `pxm` in studio/pixels.js and index.html): colors and frames with play, save and a
+  wrench on top, the drawing in the middle (two fingers zoom and slide; a stroke the first finger began is taken
+  back), two rows of icon tools at the bottom (`studio/px-icons.js`, made by `node scripts/px-icons.mjs` from Lucide),
+  everything else in the wrench's sheet. Sketch and landscape/iPad keep the older layout for now. Check new screens at
   375 px wide: nothing may scroll the page sideways.
 - **Posters** (`npm run render`): the title card without her camera clip.
 - **Backup to GitHub:** the studio commits and pushes a lesson's folder a
