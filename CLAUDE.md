@@ -357,3 +357,7 @@ check them against the section lengths. Separate files → copy them to
 `<section>.wav` first (a .wav wins over other formats).
 Music: a course's `music:` in course.yml (files in `music/`), a lesson can
 override; it's mixed low under the voice automatically.
+
+## Master roadmap
+
+Master roadmap for all my projects: `shalone86/picoparish` → `ROADMAP.md` (private repo; attach it with add_repo to read it from another project). Check it before suggesting what to build next, and update it when something ships.
