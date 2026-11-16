@@ -9,6 +9,7 @@ import {initToc, adjustTocPosition} from './table-of-contents.js';
 import {initIndexOfContents, handleScroll, stopScroll} from './index-of-contents.js';
 import {initLessons} from './lessons.js';
 import {initThemeToggle} from './theme-toggle.js';
+import {initLessonOfTheDay} from './lesson-of-the-day.js';
 // The lesson quiz lives in the course repo (ghost/quiz.js) so posts, previews and theme share it.
 import '../../../../ghost/confetti.js';
 import '../../../../ghost/quiz.js';
@@ -101,6 +102,9 @@ Alpine.start();
         wrapper.appendChild(table);
     });
 })();
+
+/* Home page: Lesson of the day */
+initLessonOfTheDay();
 
 /* Video lessons: "Lesson 2 of 4" and progress ticks (after Alpine has drawn the lists) */
 (function () {

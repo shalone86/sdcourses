@@ -1,7 +1,7 @@
 {
   "name": "sdcourses",
   "description": "Free Catholic Courses theme (based on Novel by Rakihub): lessons with video, quiz and progress.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "engines": {
     "ghost": ">=5.0.0"
   },
@@ -143,22 +143,10 @@
         "group": "homepage",
         "visibility": "header_style:[Landing, Search]"
       },
-      "featured_category_tags": {
+      "start_here_courses": {
         "type": "text",
-        "default": "all",
-        "description": "Use the tag slugs separated by commas without spaces, e.g, '_novel,_tech'",
-        "group": "homepage"
-      },
-      "featured_category_tags_limit": {
-        "type": "text",
-        "default": 4,
-        "description": "Limit the category tags number. Accept number or text 'all'.",
-        "group": "homepage"
-      },
-      "featured_category_posts_limit": {
-        "type": "text",
-        "default": 4,
-        "description": "The maximum number of posts displayed in each category. Accept number or text 'all'.",
+        "default": "what-is-the-byzantine-rite,what-is-the-pope,what-is-prayer,what-is-lent-free-catholic-faith-practices-course,what-are-the-basics-of-holy-days-of-obligation,what-is-the-byzantine-rite-for-kids",
+        "description": "Home page \"Start here\": 4 to 6 course page slugs, comma-separated. Empty hides it.",
         "group": "homepage"
       },
       "tag_cloud": {

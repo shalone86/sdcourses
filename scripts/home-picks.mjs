@@ -1,6 +1,6 @@
-// Builds the homepage "picks of the day" snippets for both Ghost sites (ghost/home-picks.js plus
-// each site's settings and styles) into ghost/home-picks-kids.html and ghost/home-picks-courses.html.
-// She pastes each into that site's Settings → Code injection → Site footer.
+// Builds the kids site's homepage "picks of the day" snippet (ghost/home-picks.js plus the
+// site's settings and styles) into ghost/home-picks-kids.html. She pastes it into that site's
+// Settings → Code injection → Site footer. (The courses site has its Lesson of the day in the theme.)
 // Run: node scripts/home-picks.mjs
 import fs from 'node:fs';
 import path from 'node:path';
@@ -38,41 +38,8 @@ const sites = {
   },
 }`,
   },
-  // Courses: one lesson of the day under the welcome banner, and "Surprise me".
-  courses: {
-    css: `.sd-picks{padding-top:8px;padding-bottom:8px}
-.sd-picks .gh-inner{max-width:900px}
-.sd-picks h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px}
-.sd-pick{display:flex;gap:20px;align-items:center;text-decoration:none;color:inherit;border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:14px;background:rgba(255,255,255,.55)}
-.sd-pick img{width:min(240px,38%);aspect-ratio:16/9;object-fit:cover;border-radius:8px;flex:none}
-.sd-pick h3{margin:0 0 8px;font-size:24px;line-height:1.2}
-.sd-pick p{margin:0;opacity:.8;font-size:16px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.sd-pick:hover h3{text-decoration:underline}
-.sd-picks-actions{margin-top:14px}
-@media (max-width:600px){.sd-pick{flex-direction:column;align-items:stretch}.sd-pick img{width:100%}}`,
-    config: `{
-  title: 'Lesson of the day',
-  before: 'section.gh-header.is-slider, section.gh-container',
-  sectionClass: 'gh-outer sd-picks',
-  innerClass: 'gh-inner',
-  titleClass: 'sd-picks-title',
-  gridClass: 'sd-picks-grid',
-  buttonClass: 'cc-btn cc-btn-quiet',
-  lists: [
-    // Lessons: posts with a picture that aren't a course page (#book), blog post or cover,
-    // and not the Advent ones (the Jesse Tree weeks and What is Advent?), which only fit Advent.
-    {label: 'Lesson of the day', button: 'Surprise me with a lesson',
-      filter: 'tag:-hash-book+tag:-hash-blog+tag:-hash-cover+tag:-[jesse-tree,jesse-tree_week-1,jesse-tree_week-2,jesse-tree_week-3,jesse-tree_week-4,what-is-advent]+feature_image:-null'},
-  ],
-  skip: /^(sources|congratulations!?|.*downloads?)$|advent/i,
-  card: function (p, label, esc) {
-    // (an automatic excerpt can start with the video player's "0:00 /1:23 1×")
-    var text = (p.custom_excerpt || p.excerpt || '').replace(/^[\\s\\d:\\/×.]+(?=\\S)/, '');
-    return '<a class="sd-pick" href="' + esc(p.url) + '">' + (p.feature_image ? '<img src="' + esc(p.feature_image) + '" alt="" loading="lazy">' : '') +
-      '<div><h3>' + esc(p.title) + '</h3>' + (text ? '<p>' + esc(text) + '</p>' : '') + '</div></a>';
-  },
-}`,
-  },
+  // Courses: Lesson of the day is built into the theme now
+  // (theme/sdcourses: partials/components/lesson-of-the-day.hbs, assets/js/lesson-of-the-day.js).
 };
 
 for (const [name, s] of Object.entries(sites)) {

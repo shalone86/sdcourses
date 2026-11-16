@@ -1,7 +1,7 @@
-{{#foreach tags visibility="internal" limit=1}}
-    {{#match slug "=" "hash-book"}}
-        {{> "post-book-card" lazyLoad=lazyLoad post=../this}}
-    {{else match slug "=" "hash-blog"}}
-        {{> "post-blog-card" lazyLoad=lazyLoad post=../this}}
-    {{/match}}
-{{/foreach}}
+{{!-- A course page (#book) or blog post (#blog) card. Checked with "has", not the first
+      internal tag: new course pages carry #lesson before #book. --}}
+{{#has tag="#book"}}
+    {{> "post-book-card" lazyLoad=lazyLoad post=this}}
+{{else has tag="#blog"}}
+    {{> "post-blog-card" lazyLoad=lazyLoad post=this}}
+{{/has}}

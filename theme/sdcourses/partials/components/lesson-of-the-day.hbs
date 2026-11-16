@@ -1,0 +1,19 @@
+{{!-- Lesson of the day (was a Code injection snippet, ghost/home-picks-courses.html).
+      assets/js/lesson-of-the-day.js fills it in the visitor's browser, because Ghost
+      serves cached pages: everyone sees the same lesson that day, and the button opens a
+      random one. Lessons only: posts in a course, under /course/ or /lesson/, with a picture;
+      not course pages, blog posts or covers, not the Advent ones (they only fit Advent), and
+      not the slugs in data-skip. data-lent: posts shown as a "For Lent" card from a week
+      before Ash Wednesday through Easter only (worked out from Easter each year). --}}
+<section class="gh-outer sd-picks cc-lotd" data-cc-lotd hidden
+         data-lent="current-fasting-practices-in-the-united-states"
+         data-filter="tag:-hash-book+tag:-hash-blog+tag:-hash-cover+tag:-[jesse-tree,jesse-tree_week-1,jesse-tree_week-2,jesse-tree_week-3,jesse-tree_week-4,what-is-advent]+feature_image:-null"
+         data-skip="quiz-on-current-fasting-practices-for-u-s-catholics,congratulations">
+    <div class="gh-inner">
+        <h2 class="sd-picks-title">Lesson of the day</h2>
+        <div class="sd-picks-grid"></div>
+        <div class="sd-picks-actions">
+            <button class="cc-btn cc-btn-quiet" type="button" data-cc-lotd-random>Surprise me with a lesson</button>
+        </div>
+    </div>
+</section>

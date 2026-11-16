@@ -21,26 +21,15 @@
             <main class="gh-main feed-container" x-data>
                 <div class="gh-feed">
 
-                    {{!-- Homepage --}}
+                    {{!-- Homepage: course pages only (no blog posts), minus the ones already in
+                          "Start here". No "Load more": page 2 is index.hbs, which also lists
+                          blog posts; the link below goes to every course instead. --}}
                     {{#match feed "home"}}
-                        {{#get "posts" filter="tag:[hash-book,hash-blog]" include="tags,authors"
-                               limit=@config.posts_per_page page=pagination.page}}
-
-                            {{#foreach posts}}
-                                {{> "post-card" lazyLoad=true}}
-                            {{/foreach}}
-
-                            {{#match pagination.pages ">" pagination.page}}
-                                <template x-teleport=".feed-container">
-                                    <div class="gh-more is-title">
-                                        <button class="button-secondary custom-loadmore"
-                                                data-current-page="{{pagination.page}}">Load more
-                                        </button>
-                                    </div>
-                                </template>
-                            {{/match}}
-
-                        {{/get}}
+                        {{#if @custom.start_here_courses}}
+                            {{> "home-feed" filter=(concat "tag:hash-book+slug:-[" @custom.start_here_courses "]")}}
+                        {{else}}
+                            {{> "home-feed" filter="tag:hash-book"}}
+                        {{/if}}
                     {{/match}}
 
                     {{#match feed "index"}}

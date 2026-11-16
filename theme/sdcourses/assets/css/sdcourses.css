@@ -246,3 +246,91 @@ a.cc-done::after {
     border-radius: 12px;
 }
 .gh-card-image { overflow: hidden; }
+
+/* ---------- Buttons: the hero's maroon everywhere ---------- */
+/* The header's "Get updates" / "Account" and every sign-up form button
+   (Novel paints them with Ghost's brand accent, which is still blue). */
+.gh-button {
+    background-color: var(--cc-accent);
+    color: var(--background-color);
+}
+/* Accent-colored header or footer (a Design setting): keep Novel's white button there. */
+.gh-navigation.has-accent-color .gh-button,
+.gh-footer.has-accent-color .gh-button {
+    background-color: #fff;
+    color: #15171a;
+}
+.tag-cloud-container a:hover {
+    color: var(--background-color);
+    background-color: var(--cc-accent);
+    border-color: var(--cc-accent);
+}
+
+/* ---------- Home: Lesson of the day (was Code injection) ---------- */
+.sd-picks { padding-top: 8px; padding-bottom: 8px; }
+.sd-picks[hidden] { display: none; }
+.sd-picks .gh-inner { max-width: 900px; }
+.sd-picks h2 { font: 600 1.3rem/1 var(--font-sans); letter-spacing: .08em; text-transform: uppercase; margin: 0 0 12px; }
+.sd-picks-grid { display: grid; gap: 14px; }
+.sd-pick { display: flex; gap: 20px; align-items: center; text-decoration: none; color: inherit; border: 1px solid var(--cc-rule); border-radius: 12px; padding: 14px; background: var(--cc-card); }
+.sd-pick img { width: min(240px, 38%); aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; flex: none; }
+.sd-pick h3 { margin: 0 0 8px; font-size: 2.4rem; line-height: 1.2; }
+.sd-pick p { margin: 0; opacity: .8; font-size: 1.6rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.sd-pick:hover h3 { text-decoration: underline; }
+.sd-pick-label { display: block; font: 600 1.2rem/1 var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--cc-accent); margin-bottom: 8px; }
+.sd-picks-actions { margin-top: 14px; }
+.sd-picks-actions [hidden] { display: none; }
+@media (max-width: 600px) {
+    .sd-pick { flex-direction: column; align-items: stretch; }
+    .sd-pick img { width: 100%; }
+}
+/* The old Code injection copy, if it's still pasted in: hide it (this one replaces it). */
+.sd-picks:not(.cc-lotd) { display: none; }
+
+/* ---------- Home: Start here ---------- */
+/* Up to 6 courses: 3 across on wide screens, so 6 make two even rows. */
+.cc-start-here.is-grid .gh-feed { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 767px) {
+    .cc-start-here.is-grid .gh-feed { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* "See all courses" under the home page's Latest courses (in place of Load more). */
+.cc-all-courses { display: flex; justify-content: center; margin-top: 48px; }
+
+/* ---------- Lessons: sign-up box after Previous / Next ---------- */
+.gh-content .cc-lesson-signup {
+    margin: 4.8rem 0 1.6rem;
+    padding: 28px 28px 40px;
+    border: 1px solid var(--cc-rule);
+    border-radius: 12px;
+    background: var(--cc-card);
+    text-align: center;
+}
+.gh-content .cc-lesson-signup-title {
+    margin: 0;
+    font-size: 2.6rem;
+    line-height: 1.2;
+}
+.gh-content .cc-lesson-signup-text {
+    margin: 10px 0 20px;
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    color: var(--color-secondary-text);
+}
+.gh-content .cc-lesson-signup-form {
+    max-width: 480px;
+    margin: 0 auto;
+    font-family: var(--font-sans);
+}
+.gh-content .cc-lesson-signup-form :is(.cc-lesson-signup-success, [data-members-error]) {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin: 10px 0 0;
+    font-size: 1.4rem;
+    line-height: 1.4;
+    text-align: center;
+}
+.gh-content .cc-lesson-signup-success { display: none; color: var(--cc-ok); }
+.gh-content .cc-lesson-signup-form.success .cc-lesson-signup-success { display: block; }
+.gh-content .cc-lesson-signup-form [data-members-error] { color: var(--cc-accent); }

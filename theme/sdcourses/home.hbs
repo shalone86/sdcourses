@@ -20,12 +20,16 @@
     </section>
 {{/if}}
 
+{{> "components/lesson-of-the-day"}}
+
 {{> "components/header" headerStyle=@custom.header_style}}
 
-{{> "components/category-list"}}
-
-{{> "components/post-list" feed="home" postFeedStyle=@custom.post_feed_style showTitle=true showSidebar=true}}
+{{!-- One row of hand-picked courses, then one link per topic, then the other course pages.
+      (Novel's one-row-per-category list repeated the same courses in every row.) --}}
+{{> "components/start-here"}}
 
 {{> "components/tag-cloud"}}
+
+{{> "components/post-list" feed="home" postFeedStyle=@custom.post_feed_style showTitle=true showSidebar=true}}
 
 {{> "components/cta"}}

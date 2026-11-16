@@ -1,0 +1,26 @@
+{{!-- After a lesson's Previous / Next links (post.hbs): Ghost's own members sign-up form.
+      Only for visitors who aren't signed in, on lessons (not course pages, blog posts or covers). --}}
+{{#if @site.members_enabled}}
+    {{#unless @member}}
+        {{#unless @site.members_invite_only}}
+            {{^has tag="#book,#blog,#cover"}}
+                <aside class="cc-lesson-signup" aria-labelledby="cc-lesson-signup-title">
+                    <h2 class="cc-lesson-signup-title" id="cc-lesson-signup-title">Get the next lesson by email</h2>
+                    <p class="cc-lesson-signup-text">Free. One email when a new lesson goes up. Unsubscribe anytime.</p>
+                    <form class="gh-form cc-lesson-signup-form" data-members-form="signup">
+                        <label for="cc-lesson-signup-email" class="sr-only">Email address</label>
+                        <input class="gh-form-input" id="cc-lesson-signup-email" name="email" type="email"
+                               placeholder="you@example.com" autocomplete="email" required data-members-email>
+                        <button class="gh-button" type="submit">
+                            <span><span>Sign up</span> {{> "icons/arrow"}}</span>
+                            {{> "icons/loader"}}
+                            {{> "icons/checkmark"}}
+                        </button>
+                        <p class="cc-lesson-signup-success" role="status">Check your inbox to confirm.</p>
+                        <p class="cc-lesson-signup-error" data-members-error></p>
+                    </form>
+                </aside>
+            {{/has}}
+        {{/unless}}
+    {{/unless}}
+{{/if}}

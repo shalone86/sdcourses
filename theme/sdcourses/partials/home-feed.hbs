@@ -1,0 +1,19 @@
+{{!-- The home page's course list (components/post-list.hbs, feed "home"): 8 courses, two
+      rows on a wide screen; "See all courses" and the topic links cover the rest. --}}
+{{#get "posts" filter=filter include="tags,authors" limit="8"}}
+
+    {{#foreach posts}}
+        {{> "post-card" lazyLoad=true}}
+    {{/foreach}}
+
+    {{#match pagination.pages ">" 1}}
+        {{#get "tags" filter="slug:_courses" limit="1" as |all|}}{{#foreach all}}
+            <template x-teleport=".feed-container">
+                <div class="cc-all-courses">
+                    <a class="cc-btn cc-btn-quiet" href="{{url}}">See all courses</a>
+                </div>
+            </template>
+        {{/foreach}}{{/get}}
+    {{/match}}
+
+{{/get}}

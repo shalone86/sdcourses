@@ -1,6 +1,7 @@
+{{!-- One link per course category (tags starting with _), on the home page under "Start here". --}}
 <section class="gh-container tag-cloud-container no-image gh-outer">
     <div class="gh-container-inner gh-inner">
-        <h2 class="gh-container-title">Tag Cloud</h2>
+        <h2 class="gh-container-title">Browse by topic</h2>
         <div class="gh-main">
             {{#match @custom.tag_cloud "=" "all"}}
                 {{#get "tags" filter="slug:~^'_'" include="count.posts" order="count.posts desc"}}
