@@ -2,7 +2,6 @@
 # look_for: what to look for in Canva's Elements library (human-made art only, never AI).
 # canva: the finished Canva design, filled in when it's made.
 byzantine-catholic-basics: {look_for: "a small Byzantine Catholic church with three golden onion domes and three-bar crosses", canva: null}
-the-byzantine-rite-for-kids: {look_for: "a friendly little Byzantine church with one golden onion dome, a bell and flowers", canva: null}
 what-is-the-pope: {look_for: "a white papal mitre with crossed gold and silver keys", canva: null}
 all-about-the-pope: {look_for: "crossed gold and silver keys of Saint Peter tied with a red cord", canva: null}
 byzantine-catholic-fasting: {look_for: "a simple wooden table with bread, olives and a bowl of soup, no meat", canva: null}
@@ -19,11 +18,7 @@ what-are-litanies: {look_for: "a long rolled scroll with lines of writing and a 
 what-is-advent: {look_for: "an Advent wreath with three purple candles and one pink candle", canva: null}
 what-is-lent: {look_for: "a small wooden cross with a purple cloth draped over it and a sprouting plant", canva: null}
 what-is-prayer: {look_for: "praying hands with a small glowing light above them", canva: null}
-all-about-angels: {look_for: "a cute cartoon guardian angel figure from behind, wings and halo only", canva: null}
-all-about-easter-for-kids: {look_for: "a basket of painted Easter eggs with a lily", canva: null}
 catholic-confirmation-class-2023-with-father-kluge: {look_for: "a red flame above a white dove", canva: null}
-the-history-and-parts-of-the-latin-mass: {look_for: "an open altar missal on a stand with two candles", canva: null}
-what-is-lent-for-kids: {look_for: "a little sprouting plant in a pot next to a purple ribbon and a cross", canva: null}
 augustine-class-with-father-kluge: {look_for: "a flaming heart pierced by an arrow above an open book", canva: null}
 saint-dymphna: {look_for: "a white lily and a small sword crossed, with a crown of flowers", face: false, canva: null}
 jesse-tree: {look_for: "a small tree with round ornaments hanging from its branches", canva: null}
