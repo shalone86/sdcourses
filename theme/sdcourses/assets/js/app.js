@@ -10,6 +10,7 @@ import {initIndexOfContents, handleScroll, stopScroll} from './index-of-contents
 import {initLessons} from './lessons.js';
 import {initThemeToggle} from './theme-toggle.js';
 import {initLessonOfTheDay} from './lesson-of-the-day.js';
+import {initCatalogPages} from './catalog.js';
 // The lesson quiz lives in the course repo (ghost/quiz.js) so posts, previews and theme share it.
 import '../../../../ghost/confetti.js';
 import '../../../../ghost/quiz.js';
@@ -105,6 +106,9 @@ Alpine.start();
 
 /* Home page: Lesson of the day */
 initLessonOfTheDay();
+
+/* Home page course catalog and the "My learning" page */
+initCatalogPages();
 
 /* Video lessons: "Lesson 2 of 4" and progress ticks (after Alpine has drawn the lists) */
 (function () {

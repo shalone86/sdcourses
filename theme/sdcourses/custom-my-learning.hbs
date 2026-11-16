@@ -1,0 +1,29 @@
+{{!< default}}
+{{!-- Page template "My learning" (choose it for a page at /my-learning/).
+      Everything below is drawn by assets/js/catalog.js from the reader's own
+      browser: lessons finished, quiz average, courses started, this week. --}}
+
+{{#post}}
+<main class="gh-main cc-mine gh-outer" data-cc-mine>
+    <div class="gh-inner">
+        <h1 class="cc-mine-title is-title">{{title}}</h1>
+        <p class="cc-mine-note">Saved in this browser only. On another device or browser, you'll start fresh.</p>
+
+        <div class="cc-stats" data-cc-stats hidden>
+            <div class="cc-stat"><b data-cc-stat="lessons">0</b><span>lessons finished</span></div>
+            <div class="cc-stat"><b data-cc-stat="average">–</b><span>quiz average</span></div>
+            <div class="cc-stat"><b data-cc-stat="courses">0</b><span>courses started</span></div>
+            <div class="cc-stat"><b data-cc-stat="week">0/7</b><span>days this week</span></div>
+        </div>
+
+        <h2 class="cc-mine-sub" data-cc-keep-title hidden>Keep going</h2>
+        <div class="cc-tracks" data-cc-tracks></div>
+
+        <div class="cc-mine-empty" data-cc-mine-empty hidden>
+            <h2>Nothing here yet</h2>
+            <p>Finish a lesson's quiz, or watch its video to the end, and it shows up here with your score.</p>
+            <a class="cc-btn" href="{{@site.url}}/#courses">Find a course</a>
+        </div>
+    </div>
+</main>
+{{/post}}

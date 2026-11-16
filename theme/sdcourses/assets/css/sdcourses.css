@@ -287,14 +287,77 @@ a.cc-done::after {
 /* The old Code injection copy, if it's still pasted in: hide it (this one replaces it). */
 .sd-picks:not(.cc-lotd) { display: none; }
 
-/* ---------- Home: Start here ---------- */
-/* Up to 6 courses: 3 across on wide screens, so 6 make two even rows. */
-.cc-start-here.is-grid .gh-feed { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-@media (max-width: 767px) {
-    .cc-start-here.is-grid .gh-feed { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* ---------- Home: Catalog (every course on one screen) ---------- */
+.cc-intro { padding-block: clamp(32px, 6vw, 72px) 24px; }
+.cc-intro-inner { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 32px; align-items: end; }
+.cc-intro .cc-hero-title { font-size: clamp(3.2rem, 2.2rem + 2.6vw, 5.4rem); line-height: 1.05; margin: 0; text-wrap: balance; }
+.cc-intro .cc-hero-text { margin: 14px 0 0; max-width: 36em; }
+.cc-intro .cc-hero-actions { justify-content: flex-start; }
+.cc-resume { display: grid; gap: 8px; padding: 18px; border-radius: 14px; background: var(--cc-card); box-shadow: 0 0 0 1px var(--cc-rule); }
+.cc-resume[hidden] { display: none; }
+.cc-resume-label { font: 700 1.15rem/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--cc-accent); }
+.cc-resume-title { font: 600 2.2rem/1.2 var(--font-serif); color: var(--color-primary-text); }
+.cc-resume-meta { font: 1.4rem/1.4 var(--font-sans); color: var(--color-secondary-text); }
+.cc-resume .cc-btn { justify-self: start; }
+.cc-bar { display: block; height: 6px; border-radius: 99px; background: var(--cc-rule); overflow: hidden; }
+.cc-bar[hidden] { display: none; }
+.cc-bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--cc-ok); }
+.cc-resume .cc-bar i { background: var(--cc-accent); }
+
+.cc-catalog { padding-block: 8px 48px; scroll-margin-top: 16px; }
+.cc-filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-block: 12px; border-block: 1px solid var(--cc-rule);
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--background-color); }
+.cc-chip { font: 600 1.4rem/1 var(--font-sans); padding: 8px 14px; border-radius: 999px; border: 0; background: transparent; color: var(--color-primary-text); box-shadow: inset 0 0 0 1px var(--cc-rule); cursor: pointer; }
+.cc-chip[aria-pressed="true"] { background: var(--color-primary-text); color: var(--background-color); box-shadow: none; }
+.cc-search { margin-left: auto; flex: 0 1 260px; min-width: 0; font: 1.5rem var(--font-sans); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--cc-rule); background: var(--cc-card); color: var(--color-primary-text); }
+.cc-count { margin: 14px 0 0; font: 1.4rem var(--font-sans); color: var(--color-secondary-text); }
+.cc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; margin-top: 12px; }
+.cc-course { display: grid; grid-template-rows: auto 1fr; border-radius: 14px; overflow: hidden; background: var(--cc-card); box-shadow: 0 0 0 1px var(--cc-rule); color: var(--color-primary-text); }
+.cc-course[hidden] { display: none; }
+.cc-course:hover { opacity: 1; box-shadow: 0 0 0 1.5px var(--color-primary-text); }
+.cc-course-art { position: relative; display: block; aspect-ratio: 16 / 9; max-width: 100%; background: var(--cc-rule); }
+.cc-course-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cc-start-badge { position: absolute; top: 10px; left: 10px; font: 700 1.15rem/1 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; padding: 6px 9px; border-radius: 6px; background: var(--cc-accent); color: var(--background-color); }
+.cc-start-badge[hidden] { display: none; }
+.cc-course-body { display: grid; gap: 6px; align-content: start; padding: 12px 14px 16px; }
+.cc-course-cat { font: 700 1.15rem/1.3 var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--color-secondary-text); }
+.cc-course-cat span + span { display: none; } /* a course in two categories shows the first */
+.cc-course-name { font: 600 2rem/1.15 var(--font-serif); text-wrap: balance; }
+.cc-course-meta { display: flex; justify-content: space-between; gap: 8px; font: 1.35rem var(--font-sans); color: var(--color-secondary-text); font-variant-numeric: tabular-nums; min-height: 1.4em; }
+.cc-empty { font: 1.6rem var(--font-sans); color: var(--color-secondary-text); margin-top: 20px; }
+.cc-link { font: inherit; color: var(--cc-accent); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
+@media (max-width: 760px) {
+    .cc-intro-inner { grid-template-columns: minmax(0, 1fr); }
+    .cc-search { margin-left: 0; flex-basis: 100%; }
 }
-/* "See all courses" under the home page's Latest courses (in place of Load more). */
-.cc-all-courses { display: flex; justify-content: center; margin-top: 48px; }
+
+/* ---------- Header: My learning link ---------- */
+.cc-nav-mine { font-weight: 600; white-space: nowrap; }
+@media (max-width: 767px) { .gh-navigation-actions .cc-nav-mine { order: 3; } }
+
+/* ---------- My learning page ---------- */
+.cc-mine { padding-block: 32px 64px; }
+.cc-mine-title { font-size: clamp(3.2rem, 2.4rem + 2vw, 4.8rem); margin: 0; }
+.cc-mine-note { font: 1.5rem var(--font-sans); color: var(--color-secondary-text); margin: 8px 0 24px; }
+.cc-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.cc-stats[hidden] { display: none; }
+.cc-stat { padding: 16px; border-radius: 14px; background: var(--cc-card); box-shadow: 0 0 0 1px var(--cc-rule); }
+.cc-stat b { display: block; font: 600 3.4rem/1.1 var(--font-serif); font-variant-numeric: tabular-nums; }
+.cc-stat span { font: 1.4rem var(--font-sans); color: var(--color-secondary-text); }
+.cc-mine-sub { font-size: 2.4rem; margin: 36px 0 12px; }
+.cc-tracks { display: grid; gap: 10px; }
+.cc-track { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 14px 16px; border-radius: 14px; background: var(--cc-card); box-shadow: 0 0 0 1px var(--cc-rule); }
+.cc-track-name { font: 600 1.8rem/1.2 var(--font-serif); color: var(--color-primary-text); }
+.cc-track-name small { display: block; font: 1.3rem var(--font-sans); color: var(--color-secondary-text); margin-top: 2px; }
+.cc-squares { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.cc-square { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font: 700 1.1rem var(--font-sans); color: var(--color-secondary-text); box-shadow: inset 0 0 0 1.5px var(--cc-rule); font-variant-numeric: tabular-nums; }
+.cc-square.done { background: var(--cc-ok); color: var(--background-color); box-shadow: none; }
+.cc-square.next { box-shadow: inset 0 0 0 2px var(--cc-gold); color: var(--color-primary-text); }
+.cc-track-go { font: 700 1.45rem var(--font-sans); color: var(--cc-accent); white-space: nowrap; }
+.cc-mine-empty { padding: 28px; border-radius: 14px; background: var(--cc-card); box-shadow: 0 0 0 1px var(--cc-rule); }
+.cc-mine-empty h2 { margin: 0 0 8px; }
+.cc-mine-empty p { font: 1.6rem/1.5 var(--font-sans); color: var(--color-secondary-text); }
+@media (max-width: 700px) { .cc-track { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Lessons: sign-up box after Previous / Next ---------- */
 .gh-content .cc-lesson-signup {

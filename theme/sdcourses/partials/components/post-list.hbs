@@ -21,16 +21,6 @@
             <main class="gh-main feed-container" x-data>
                 <div class="gh-feed">
 
-                    {{!-- Homepage: course pages only (no blog posts), minus the ones already in
-                          "Start here". No "Load more": page 2 is index.hbs, which also lists
-                          blog posts; the link below goes to every course instead. --}}
-                    {{#match feed "home"}}
-                        {{#if @custom.start_here_courses}}
-                            {{> "home-feed" filter=(concat "tag:hash-book+slug:-[" @custom.start_here_courses "]")}}
-                        {{else}}
-                            {{> "home-feed" filter="tag:hash-book"}}
-                        {{/if}}
-                    {{/match}}
 
                     {{#match feed "index"}}
                         {{#get "posts" filter="tag:[hash-book,hash-blog]" include="tags,authors"

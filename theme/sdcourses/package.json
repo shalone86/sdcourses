@@ -1,7 +1,7 @@
 {
   "name": "sdcourses",
   "description": "Free Catholic Courses theme (based on Novel by Rakihub): lessons with video, quiz and progress.",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "engines": {
     "ghost": ">=5.0.0"
   },
@@ -130,29 +130,10 @@
         "default": "Featured slider",
         "group": "homepage"
       },
-      "header_text": {
-        "type": "text",
-        "group": "homepage",
-        "description": "Defaults to site description when empty",
-        "visibility": "header_style:[Landing, Search]"
-      },
-      "background_image": {
-        "type": "boolean",
-        "default": true,
-        "description": "Use the publication cover set on the Brand tab as your background",
-        "group": "homepage",
-        "visibility": "header_style:[Landing, Search]"
-      },
       "start_here_courses": {
         "type": "text",
         "default": "what-is-the-byzantine-rite,what-is-the-pope,what-is-prayer,what-is-lent-free-catholic-faith-practices-course,what-are-the-basics-of-holy-days-of-obligation,what-is-the-byzantine-rite-for-kids",
-        "description": "Home page \"Start here\": 4 to 6 course page slugs, comma-separated. Empty hides it.",
-        "group": "homepage"
-      },
-      "tag_cloud": {
-        "type": "text",
-        "default": "all",
-        "description": "Accept 'all' or  tag slugs separated by commas without spaces, e.g, '_novel,_romance'",
+        "description": "Course page slugs, comma-separated: shown first in the course list with a Start here badge.",
         "group": "homepage"
       },
       "subscribe_heading": {
