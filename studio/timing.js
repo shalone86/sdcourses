@@ -5,7 +5,7 @@
 'use strict';
 (function () {
   const FPS = 30;
-  const LABELS = {figure: 'Character', battle: 'Battle', puppet: 'Puppet', icons: 'Icons', image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
+  const LABELS = {voxel: 'Voxel character', battle: 'Battle', puppet: 'Puppet', icons: 'Icons', image: 'Picture', sprite: 'Pixel animation', quote: 'Quotation', map: 'Map', titles: 'Titles', timeline: 'Timeline', chain: 'Chain', compare: 'Compare',
     recap: 'Lesson summary', union: 'Union', partners: 'Partners', title: 'Title card', host: 'Your photo', trinity: 'Trinity', term: 'Word', keys: 'Keys', college: 'College', iconostasis: 'Iconostasis'};
 
   function h(tag, attrs, kids) {
@@ -31,8 +31,10 @@
   const nl = (a) => (a || []).join('\n');
   let recapDefault = []; // the points' headings, what the summary says until she changes it
   const MOVES = [['stay', 'stays'], ['hop', 'hops'], ['across', 'walks across, left to right'], ['across-left', 'walks across, right to left']];
-  // A character walking across turns three-quarters the way it goes, so the face still shows (unless she picked another view).
-  const figureView = (v) => (!v.view || v.view === 'front') && /^across/.test(v.move || '') ? (v.move === 'across' ? 'front-right' : 'front-left') : v.view || 'front';
+  // Which way a voxel character faces (video/voxel-draw.js VIEWS). Walking across with "Facing you", it turns
+  // three-quarters the way it goes by itself, so the face still shows.
+  const VOXEL_VIEWS = [['front', 'Facing you'], ['front-right', 'Turned a little to the right'], ['right', 'Side, looking right'], ['back-right', 'Turned away, to the right'],
+    ['back', 'Back to you'], ['back-left', 'Turned away, to the left'], ['left', 'Side, looking left'], ['front-left', 'Turned a little to the left']];
   // Each kind of picture: its boxes ([name, label, kind, options]), how to make the scene from
   // them (make), and how to fill them from a scene already in the lesson (read, for editing).
   // Box kinds: text, lines (one per line), check, select, areas, sprite, icon (one, with a picker),
@@ -95,12 +97,11 @@
         if (!Number.isFinite(f) || f < 0 || (t !== null && (!Number.isFinite(t) || t <= f))) throw new Error('The stop time must be after the start time');
         return {type: 'battle', battle: v.battle, ...(f || t !== null ? {clip: [f, t ?? 9999]} : {}), ...(v.palette && v.palette !== 'pico' ? {palette: v.palette} : {})}; },
       read: (sc) => ({battle: typeof sc.battle === 'string' ? sc.battle : sc.battle?.name || '', from: sc.clip ? String(sc.clip[0]) : '0', to: sc.clip && sc.clip[1] < 9999 ? String(sc.clip[1]) : '', palette: sc.palette || 'pico'})},
-    figure: {label: 'Character (from your Blender library)', fields: [['figure', 'Who, and what they do', 'figure'], ['move', 'How it moves', 'select', MOVES],
-      ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
-      make: (v) => { if (!v.figure || !v.anim) throw new Error('Pick a character and what it does');
-        const view = figureView(v);
-        return {type: 'figure', figure: v.figure, anim: v.anim, ...(view !== 'front' ? {view} : {}), ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
-      read: (sc) => ({figure: sc.figure || '', anim: sc.anim || '', view: sc.view || 'front', move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
+    voxel: {label: 'Voxel character (your MagicaVoxel models)', fields: [['voxel', 'Who, and what they do', 'voxel'], ['view', 'Which way they face', 'select', VOXEL_VIEWS],
+      ['move', 'How it moves', 'select', MOVES], ['size', 'Size', 'select', ['medium', 'small', 'big', 'full']], ['caption', 'Caption', 'text']],
+      make: (v) => { if (!v.voxel) throw new Error('Pick a model (upload them on angelio.org/studio/draw/)');
+        return {type: 'voxel', voxel: v.voxel, ...(v.view && v.view !== 'front' ? {view: v.view} : {}), ...(v.move && v.move !== 'stay' ? {move: v.move} : {}), ...(v.size && v.size !== 'medium' ? {size: v.size} : {}), ...(v.caption ? {caption: v.caption} : {})}; },
+      read: (sc) => ({voxel: sc.voxel || '', view: sc.view || 'front', move: sc.move || 'stay', size: sc.size || 'medium', caption: sc.caption || ''})},
     puppet: {label: 'Puppet (a character you play with the keys)', fields: [['character', 'Which character', 'character'], ['colors', 'Colors (just in this picture; every pose follows)', 'colors', 'character'], ['item', 'The item it points to (P)', 'item'],
       ['size', 'Size', 'select', ['medium', 'small', 'big']], ['start', 'Stands at first', 'select', ['center', 'left', 'right']]],
       make: (v) => { if (!v.character) throw new Error('Draw a character first: <name>-idle and <name>-walk on the Pixel art tab');
@@ -555,7 +556,7 @@
         btn('Smaller', 'Smaller', (v) => ({...v, size: Math.max(30, v.size - 5)})),
         btn('Bigger', 'Bigger', (v) => ({...v, size: Math.min(200, v.size + 5)})),
         // Pictures and her drawings can be mirrored left to right.
-        ['image', 'sprite', 'figure'].includes(sc.type) ? h('button', {class: 'btn', title: 'Mirror it left to right', 'aria-pressed': n.flip ? 'true' : 'false',
+        ['image', 'sprite', 'voxel'].includes(sc.type) ? h('button', {class: 'btn', title: 'Mirror it left to right', 'aria-pressed': n.flip ? 'true' : 'false',
           text: n.flip ? '⇋ Flipped' : '⇋ Flip', onclick: () => set((v) => { const {flip, ...rest} = v; return flip ? rest : {...rest, flip: true}; })}) : null,
         h('span', {class: 'small muted', text: (n.x || n.y || n.size !== 100 ? `moved ${n.x}, ${n.y} · ${n.size}%` : 'where it was made') + (n.flip ? ' · flipped' : '') + ' · or drag it on the video (a corner, or the mouse wheel: size)'}),
         n.x || n.y || n.size !== 100 || n.flip ? btn('Reset', 'Put it back', () => ({x: 0, y: 0, size: 100})) : null,
@@ -775,34 +776,55 @@
             api('/api/battles').then((list) => input.replaceChildren(...(list.length ? list.map((b) => h('option', {value: b.name, text: b.title + ' (' + b.seconds + ' s)', selected: b.name === value}))
               : [h('option', {value: '', text: 'None yet: make one on the Battles tab'})])));
           }
-          else if (type === 'figure') {
-            // Her Blender characters (characters/manifest.json): pick who, see them, then pick what they do.
-            const who = h('select', {'aria-label': 'Character'}, [h('option', {value: '', text: 'Loading…'})]);
-            const what = h('select', {'aria-label': 'What they do'});
-            const VIEW_NAMES = {front: 'Facing you', 'front-left': 'Turned a little to the left', left: 'Profile, looking left', 'back-left': 'Turned away, to the left', back: 'Back to you', 'back-right': 'Turned away, to the right', right: 'Profile, looking right', 'front-right': 'Turned a little to the right'};
-            const viewSel = h('select', {'aria-label': 'Which way they face'});
-            const pic = h('img', {alt: '', style: {height: '140px', width: '140px', objectFit: 'contain', background: 'var(--card, #eef)', borderRadius: '8px'}});
+          else if (type === 'voxel') {
+            // Her MagicaVoxel models (scripts/voxels.mjs; new ones come over from angelio.org when this opens):
+            // a search box and pictures of each, a bigger moving one of the pick, turned the way the next box says.
+            input = h('input', {type: 'hidden', value: value || ''});
+            const search = h('input', {type: 'search', placeholder: 'Search (priest, walk…)', 'aria-label': 'Search your voxel models', style: {width: '100%'}});
+            const grid = h('div', {class: 'vx-grid', role: 'listbox', 'aria-label': 'Voxel models'}, [h('span', {class: 'small muted', text: 'Bringing over your models…'})]);
+            const big = h('canvas', {width: 220, height: 220, class: 'vx-big', 'aria-label': 'The model you picked'});
             const note = h('div', {class: 'small muted'});
-            const fillWhat = (cast) => {
-              const c = cast.characters.find((x) => x.slug === who.value);
-              pic.src = c && c.rest ? c.rest : '';
-              const keep = what.value || start.anim;
-              what.replaceChildren(...(c ? c.anims.map((a) => h('option', {value: a.id, text: a.id.replace(/-/g, ' ') + (a.kind === 'loop' ? ' (loops)' : '') + (a.views.includes(viewSel.value) ? '' : ' •'), selected: a.id === keep})) : []));
-              note.textContent = (!cast.blender ? 'Blender isn’t installed on this Mac, so only clips marked without • can be used. ' : 'A clip marked • is drawn by Blender the first time (a few seconds). ') + 'A character that walks across turns the way it goes by itself (three-quarters, so the face shows; the side views show only the back of the head).';
+            const arts = new Map(); // slug → art
+            const getArt = (slug) => (arts.has(slug) ? arts.get(slug) : (arts.set(slug, api('/api/voxel?slug=' + encodeURIComponent(slug))), arts.get(slug)));
+            const viewNow = () => { const vs = vals.view?.value || 'front', mv = vals.move?.value || 'stay'; return vs === 'front' && /^across/.test(mv) ? (mv === 'across' ? 'front-right' : 'front-left') : vs; };
+            let raf = 0;
+            const play = async () => {
+              cancelAnimationFrame(raf);
+              const g = big.getContext('2d'); g.clearRect(0, 0, big.width, big.height);
+              if (!input.value || !window.VoxelDraw) return;
+              const art = await getArt(input.value).catch(() => null);
+              if (!art) return;
+              const t0 = performance.now();
+              const step = (t) => {
+                if (!big.isConnected) return;
+                g.clearRect(0, 0, big.width, big.height);
+                window.VoxelDraw.drawVoxels(g, art, Math.floor(((t - t0) / 1000) * art.fps), {x: 16, y: 10, w: big.width - 32, h: big.height - 20}, viewNow());
+                raf = requestAnimationFrame(step);
+              };
+              raf = requestAnimationFrame(step);
             };
-            api('/api/figures').then((cast) => {
-              viewSel.replaceChildren(...cast.views.map((v) => h('option', {value: v, text: VIEW_NAMES[v] || v, selected: v === (start.view || 'front')})));
-              viewSel.addEventListener('change', () => fillWhat(cast));
-              const people = cast.characters.filter((c) => c.category === 'character'), props = cast.characters.filter((c) => c.category !== 'character');
-              const opt = (c) => h('option', {value: c.slug, text: c.name + (c.draft ? ' (draft: blocked out, not finished)' : ''), selected: c.slug === value});
-              who.replaceChildren(h('optgroup', {label: 'Characters'}, people.map(opt)), h('optgroup', {label: 'Props'}, props.map(opt)));
-              if (!value) who.value = people[0] ? people[0].slug : '';
-              fillWhat(cast);
-              who.addEventListener('change', () => { what.value = ''; fillWhat(cast); });
-            });
-            vals.figure = who; vals.anim = what; vals.view = viewSel;
-            note.textContent = '';
-            return h('div', {class: 'tl-field', style: {gap: '8px'}}, [h('span', {text: label}), h('div', {class: 'row', style: {alignItems: 'flex-start', gap: '12px'}}, [pic, h('div', {class: 'stack', style: {gap: '8px', flex: '1'}}, [who, what, viewSel, note])])]);
+            const pick = (slug) => { input.value = slug; grid.querySelectorAll('button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.slug === slug))); play(); };
+            api('/api/voxels').then(({voxels, offline}) => {
+              note.textContent = offline ? 'Couldn’t reach angelio.org just now: these are the models already on this Mac.' : 'Upload new ones on angelio.org/studio/draw/; they show here the next time this opens.';
+              const show = () => {
+                const q = search.value.trim().toLowerCase();
+                const list = voxels.filter((v) => !q || (v.slug + ' ' + v.who + ' ' + v.pose).includes(q));
+                grid.replaceChildren(...(list.length ? list.map((v) => {
+                  const c = h('canvas', {width: 96, height: 96, 'aria-hidden': 'true'});
+                  getArt(v.slug).then((art) => { if (window.VoxelDraw) window.VoxelDraw.drawVoxels(c.getContext('2d'), art, 0, {x: 6, y: 4, w: 84, h: 88}, 'front-right'); }).catch(() => {});
+                  return h('button', {type: 'button', class: 'vx-tile', role: 'option', 'data-slug': v.slug, 'aria-selected': String(v.slug === input.value), title: v.slug, onclick: () => pick(v.slug)},
+                    [c, h('span', {text: v.who}), h('small', {text: (v.pose || '') + (v.removed ? ' (removed on angelio)' : '')})]);
+                }) : [h('span', {class: 'small muted', text: voxels.length ? 'Nothing matches.' : 'No models yet: upload them on angelio.org/studio/draw/.'})]));
+              };
+              search.addEventListener('input', show);
+              show();
+              if (!input.value && voxels[0]) pick(voxels[0].slug); else play();
+            }).catch((e) => { grid.replaceChildren(h('span', {class: 'small bad', text: 'Couldn’t load the models: ' + e.message})); });
+            // (the next boxes, which way and how it moves, turn the big picture as she changes them)
+            queueMicrotask(() => { vals.view?.addEventListener('change', play); vals.move?.addEventListener('change', play); });
+            vals[name] = input;
+            return h('div', {class: 'tl-field', style: {gap: '8px'}}, [h('span', {text: label}), input,
+              h('div', {class: 'row', style: {alignItems: 'flex-start', gap: '12px'}}, [big, h('div', {class: 'stack', style: {gap: '8px', flex: '1', minWidth: '0'}}, [search, grid, note])])]);
           }
           else if (type === 'sprite') {
             // Her saved pixel animations and sketches.
@@ -832,11 +854,6 @@
         const v = Object.fromEntries(Object.entries(vals).map(([k, el]) => [k, el.type === 'checkbox' ? el.checked : el.value]));
         try {
           await persist();
-          // A character's clip is drawn by Blender the first time it's used.
-          if ((old ? kind : T.addType) === 'figure' && v.figure && v.anim) {
-            busy.textContent = 'Drawing it in Blender…';
-            try { await post('/api/figure', {slug: v.figure, anim: v.anim, view: figureView(v)}); } finally { busy.textContent = ''; }
-          }
           let scene;
           if (!old && T.addType === 'image') {
             if (!T.picked) { alert('Pick a picture first.'); return; }

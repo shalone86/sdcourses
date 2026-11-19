@@ -13,6 +13,7 @@ import {MapView} from './Map';
 import {Quote} from './Quote';
 import {Recap} from './Recap';
 import {Sprite} from './Sprite';
+import {Voxel} from './Voxel';
 import {Puppet} from './Puppet';
 import {BattleScene} from './Battle';
 import {IconsView} from './Icons';
@@ -43,7 +44,7 @@ const registry: Record<string, React.FC<SceneProps<any>>> = {
   iconostasis: Iconostasis,
   trinity: Trinity,
   sprite: Sprite,
-  figure: Sprite, // her Blender characters: prepare.mjs puts the clip's pictures in `art`
+  voxel: Voxel, // her MagicaVoxel characters: prepare.mjs puts the model in `art`
   puppet: Puppet,
   battle: BattleScene,
   icons: IconsView,

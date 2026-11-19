@@ -1,0 +1,62 @@
+{
+ "priest-idle": {
+  "saved": "2026-11-19T20:31:57.064Z",
+  "fps": 2,
+  "frames": 2,
+  "size": [
+   8,
+   8,
+   8
+  ]
+ },
+ "priest-walk-fast": {
+  "saved": "2026-11-19T20:32:18.432Z",
+  "fps": 4,
+  "frames": 2,
+  "size": [
+   8,
+   8,
+   8
+  ]
+ },
+ "priest-mass-walk": {
+  "saved": "2026-11-19T21:11:38.865Z",
+  "fps": 4,
+  "frames": 8,
+  "size": [
+   8,
+   8,
+   8
+  ]
+ },
+ "priest-mass-idle": {
+  "saved": "2026-11-19T21:11:52.000Z",
+  "fps": 2,
+  "frames": 2,
+  "size": [
+   8,
+   8,
+   8
+  ]
+ },
+ "priest-walk-slow": {
+  "saved": "2026-11-19T21:22:53.791Z",
+  "fps": 4,
+  "frames": 8,
+  "size": [
+   8,
+   8,
+   8
+  ]
+ },
+ "priest-bless": {
+  "saved": "2026-11-19T21:48:13.291Z",
+  "fps": 3,
+  "frames": 6,
+  "size": [
+   8,
+   8,
+   8
+  ]
+ }
+}

@@ -27,7 +27,7 @@ import {listSongs, newSong, saveSong, setSongFile, songArt, songProps, songSlug}
 import {colorVersion, copyPose, deleteSprite, listSprites, puppetBases, puppetCast, saveColors, saveSprite, setFavorite} from '../scripts/sprites.mjs';
 import {addClosing, addSlide, newLesson, removeSlide} from '../scripts/slides.mjs';
 import {ghost} from '../scripts/ghost.mjs';
-import {ensureFigure, figureCast} from '../scripts/characters.mjs';
+import {syncVoxels, listVoxels, voxelArt} from '../scripts/voxels.mjs';
 import {checkLinks, deploySite, saveGif, saveSite, siteFile, siteState} from '../scripts/picoparish.mjs';
 import {framesToGif} from '../scripts/trailer.mjs';
 
@@ -488,7 +488,13 @@ async function runBackup(paths, label) {
     if (!staged.stdout.trim()) return;
     await git('commit', '-q', '-m', `Studio backup: ${label}`, '--', ...there);
     const branch = (await git('rev-parse', '--abbrev-ref', 'HEAD')).stdout.trim();
-    if (branch === 'main') await git('push', '-q', 'origin', 'main');
+    if (branch === 'main') {
+      // If GitHub has newer work (made somewhere else, e.g. by Claude in the cloud), bring it in first, then push.
+      try { await git('push', '-q', 'origin', 'main'); } catch {
+        try { await git('pull', '-q', '--rebase', '--autostash', 'origin', 'main'); } catch (e) { await git('rebase', '--abort').catch(() => {}); throw e; }
+        await git('push', '-q', 'origin', 'main');
+      }
+    }
     backup.last = {at: Date.now(), ok: true, label};
     console.log(`Backed up to GitHub: ${label}`);
   } catch (e) {
@@ -608,8 +614,14 @@ async function handle(req, res) {
     if (p === '/api/pp') { try { return json(res, 200, siteState()); } catch (e) { throw httpError(404, e.message); } }
     if (p.startsWith('/pp/')) { const f = siteFile(p.slice(4)); if (!f) throw httpError(404, 'Not found'); return sendFile(req, res, f); }
     if (p === '/api/puppet-bases') return json(res, 200, {...puppetBases(), cast: puppetCast().characters});
-    if (p === '/api/figures') return json(res, 200, figureCast());
-    if (/^\/characters\/[a-z0-9-]+\/rest(@[a-z-]+)?\.png$/.test(p)) return sendFile(req, res, path.join(ROOT, p.slice(1)));
+    // Her voxel characters (scripts/voxels.mjs): new and changed ones are brought over from angelio.org first.
+    if (p === '/api/voxels') {
+      const r = await syncVoxels();
+      if (r.added?.length || r.changed?.length) backupSoon('voxels', ['voxels'], 'voxel models');
+      return json(res, 200, {voxels: listVoxels(), offline: !!r.offline});
+    }
+    if (p === '/api/voxel') { try { return json(res, 200, voxelArt(String(url.searchParams.get('slug') ?? ''))); } catch (e) { throw httpError(404, e.message); } }
+    if (p === '/voxel-draw.js') return sendFile(req, res, path.join(ROOT, 'video/voxel-draw.js'));
     if (p === '/api/icons') {
       // Lucide icons whose name matches, with a small drawing of each, for the Icons picker.
       const q = (url.searchParams.get('q') ?? '').trim().toLowerCase().replace(/\s+/g, '-');
@@ -685,14 +697,6 @@ async function handle(req, res) {
     // Anything that changes a lesson or a drawing: back it up a few minutes after the last change.
     if (id && /^\/api\/(save|use-spoken|quiz|slide|timing|scene|audio|take|ask|images\/import)$/.test(p)) backupSoon(id, lessonPaths(id), id);
     if (/^\/api\/sprite(\/delete|\/favorite)?$/.test(p)) backupSoon('sprites', ['sprites'], 'drawings');
-    if (p === '/api/figure') {
-      // Draw a character's clip with Blender if it isn't drawn yet (a few seconds the first time).
-      const {slug, anim, view} = await readJson(req);
-      let clip;
-      try { clip = await ensureFigure(String(slug), String(anim), String(view || 'front')); } catch (e) { throw httpError(409, e.message); }
-      backupSoon('characters', ['characters'], 'characters');
-      return json(res, 200, {clip, cast: figureCast()});
-    }
     if (/^\/api\/battle(\/new)?$/.test(p)) backupSoon('battles', ['battles'], 'battles');
     // Music videos: the song file, its slides, the sound and MIDI she picks, and making the video.
     if (/^\/api\/song(\/new|\/file)?$/.test(p)) backupSoon('songs', ['songs'], 'songs');
