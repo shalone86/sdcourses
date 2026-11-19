@@ -1,3 +1,7 @@
+> **Archive (Nov 2026).** The Lesson Studio moved into the Angelio repo as `workshop/` (shalone86/angelio), trimmed to
+> kids videos that go to Watch & Sing. Work there. This repo keeps what was left behind: the adult courses, the Ghost
+> theme and publishing, Battles, Town, the Pico Parish tab and the PICO-8 game tools (those go to shalone86/picoparish).
+
 # Catholic Courses
 
 One lesson = one `lesson.yml`. From it come the Ghost post, the quiz, and the
